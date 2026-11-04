@@ -1,43 +1,85 @@
 # API
 
-Basis: `/api/v1`  
-Antworten sind immer JSON.
+Basis: `/api/v1`. Antworten sind JSON und verwenden immer dieselbe Hülle.
+
+Erfolg:
+
+```json
+{ "success": true, "data": {} }
+```
+
+Fehler:
+
+```json
+{
+  "success": false,
+  "error": { "code": "VALIDATION_ERROR", "message": "Sichere Fehlermeldung" }
+}
+```
 
 ## Health
 
 `GET /api/v1/health`
 
+Liefert Status, Datenbankzustand und Anwendungsversion.
+
+## Einmalige Einrichtung
+
+`GET /api/v1/setup/status`
+
+Liefert `required`, `completed` und `version`. Familien- oder Kalenderdaten werden über diesen öffentlichen Statusendpunkt nicht ausgegeben.
+
+`POST /api/v1/setup`
+
+Beispiel:
+
 ```json
 {
-  "success": true,
-  "data": { "status": "ok", "database": "ok", "version": "0.1.0" }
+  "householdName": "Familie Beispiel",
+  "locale": "de-DE",
+  "timezone": "Europe/Berlin",
+  "members": [
+    {
+      "name": "Alex",
+      "role": "ADMIN",
+      "color": "#345B48",
+      "password": "mindestens-acht-zeichen"
+    },
+    {
+      "name": "Kim",
+      "role": "CHILD",
+      "color": "#5E7FAF",
+      "pin": "1234"
+    }
+  ]
 }
 ```
 
-Fehler verwenden dieselbe HÃƒÂ¼lle mit `success: false` und einem `error`-Objekt aus maschinenlesbarem `code` und sicherer `message`.
+Rollen: `ADMIN`, `PARENT`, `CHILD`. Die Installation erzeugt Haushalt, Personen und Kalender transaktional. Nach Abschluss antwortet ein weiterer Versuch mit HTTP 409 und `SETUP_ALREADY_COMPLETED`.
 
-## Regeln fÃƒÂ¼r neue Endpunkte
+## Familienmitglieder
 
-- Controller behandeln HTTP, Services Fachlogik und Repositories PDO-Zugriffe.
-- Verwende ausschlieÃƒÅ¸lich vorbereitete Statements.
-- Ãƒâ€“ffentliche Ressourcen verwenden UUIDs statt interner SQLite-IDs.
-- Autorisierung und Validierung passieren serverseitig.
-- Keine PHP-Fehler oder interne Pfade in API-Antworten ausgeben.
+- `GET /api/v1/family-members`
+- `POST /api/v1/family-members`
+- `PUT /api/v1/family-members/{uuid}`
+- `DELETE /api/v1/family-members/{uuid}`
 
-## Family members
+Create und Update akzeptieren `name`, `color`, `role`, `isActive`, optional `avatarUrl` und optional `pin`. PINs werden als Passwort-Hash gespeichert. Delete ist ein Soft-Delete.
 
-- `GET /api/v1/family-members` lists active and inactive, non-deleted members.
-- `POST /api/v1/family-members` creates a member and returns `201`.
-- `PUT /api/v1/family-members/{uuid}` updates a member.
-- `DELETE /api/v1/family-members/{uuid}` soft-deletes a member and returns `204`.
+## Aufgaben
 
-Create and update accept `name`, `color`, `role`, `isActive`, an optional `avatarUrl`, and an optional `pin`. PINs are validated as 4â€“8 digits and stored only as password hashes.
-## Tasks
+- `GET /api/v1/tasks`
+- `POST /api/v1/tasks`
+- `PUT /api/v1/tasks/{uuid}`
+- `POST /api/v1/tasks/{uuid}/complete`
+- `DELETE /api/v1/tasks/{uuid}`
 
-- `GET /api/v1/tasks` lists current tasks, including the optional assigned family member.
-- `POST /api/v1/tasks` creates a task and returns `201`.
-- `PUT /api/v1/tasks/{uuid}` updates task details.
-- `POST /api/v1/tasks/{uuid}/complete` completes a task; tasks requiring approval become `PENDING_VERIFICATION`.
-- `DELETE /api/v1/tasks/{uuid}` soft-deletes a task and returns `204`.
+Aufgaben unterstützen Titel, Beschreibung, Zuweisung, Datum, Priorität und optionale Elternprüfung. Eine prüfpflichtige Aufgabe wechselt beim Abschluss in `PENDING_VERIFICATION`.
 
-Tasks accept `title`, optional `description`, optional `assignedMemberId`, optional `dueDate` (`YYYY-MM-DD`), `priority` (`LOW`, `MEDIUM`, or `HIGH`), and `requiresVerification`.
+## Regeln für neue Endpunkte
+
+- Controller behandeln HTTP, Services die Fachlogik und Repositories PDO-Zugriffe.
+- Ausschließlich vorbereitete Statements verwenden.
+- Öffentliche Ressourcen verwenden UUIDs statt interner SQLite-IDs.
+- Validierung und Autorisierung passieren serverseitig.
+- Keine PHP-Fehler, Secrets oder internen Pfade in Antworten ausgeben.
