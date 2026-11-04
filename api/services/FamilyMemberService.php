@@ -24,7 +24,11 @@ final class FamilyMemberService
     {
         $data = $this->validatedData($input, true);
         $now = gmdate('c');
-        $member = $this->repository->create($data + ['uuid' => $this->uuid(), 'created_at' => $now, 'updated_at' => $now]);
+        $member = $this->repository->create($data + [
+            'uuid' => $this->uuid(),
+            'created_at' => $now,
+            'updated_at' => $now,
+        ]);
         return $member->toArray();
     }
 
@@ -53,34 +57,78 @@ final class FamilyMemberService
         if (mb_strlen($name) < 2 || mb_strlen($name) > 80) {
             throw new AppException('VALIDATION_ERROR', 'Der Name muss zwischen 2 und 80 Zeichen lang sein.', 422);
         }
+
         $color = array_key_exists('color', $input) ? strtoupper((string) $input['color']) : ($existing?->color ?? '#345B48');
         if (preg_match('/^#[0-9A-F]{6}$/', $color) !== 1) {
             throw new AppException('VALIDATION_ERROR', 'Die Farbe muss ein sechsstelliger Hex-Farbwert sein.', 422);
         }
+
         $role = array_key_exists('role', $input) ? strtoupper((string) $input['role']) : ($existing?->role ?? 'CHILD');
         if (!in_array($role, self::ROLES, true)) {
             throw new AppException('VALIDATION_ERROR', 'Die Rolle ist ungültig.', 422);
         }
-        $isActive = array_key_exists('isActive', $input) ? filter_var($input['isActive'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) : ($existing?->isActive ?? true);
+
+        $isActive = array_key_exists('isActive', $input)
+            ? filter_var($input['isActive'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)
+            : ($existing?->isActive ?? true);
         if ($isActive === null) {
             throw new AppException('VALIDATION_ERROR', 'Der Aktiv-Status ist ungültig.', 422);
         }
+
         $avatarUrl = array_key_exists('avatarUrl', $input) ? trim((string) $input['avatarUrl']) : ($existing?->avatarUrl ?? null);
-        if ($avatarUrl === '') { $avatarUrl = null; }
+        if ($avatarUrl === '') {
+            $avatarUrl = null;
+        }
         if ($avatarUrl !== null && (mb_strlen($avatarUrl) > 500 || filter_var($avatarUrl, FILTER_VALIDATE_URL) === false)) {
             throw new AppException('VALIDATION_ERROR', 'Die Avatar-URL ist ungültig.', 422);
         }
+
         $pinHash = null;
-        if (array_key_exists('pin', $input) && $input['pin'] !== '') {
-            $pin = (string) $input['pin'];
-            if (preg_match('/^\d{4,8}$/', $pin) !== 1) {
-                throw new AppException('VALIDATION_ERROR', 'Die PIN muss aus 4 bis 8 Ziffern bestehen.', 422);
+        $passwordHash = null;
+        $clearPinHash = 0;
+        $clearPasswordHash = 0;
+
+        if ($role === 'CHILD') {
+            $clearPasswordHash = 1;
+            if (array_key_exists('pin', $input)) {
+                $pin = (string) $input['pin'];
+                if ($pin === '') {
+                    $clearPinHash = 1;
+                } elseif (preg_match('/^\d{4,8}$/', $pin) !== 1) {
+                    throw new AppException('VALIDATION_ERROR', 'Die PIN muss aus 4 bis 8 Ziffern bestehen.', 422);
+                } else {
+                    $pinHash = password_hash($pin, PASSWORD_DEFAULT);
+                }
             }
-            $pinHash = password_hash($pin, PASSWORD_DEFAULT);
-        } elseif ($creating && $role === 'CHILD' && array_key_exists('pin', $input)) {
-            throw new AppException('VALIDATION_ERROR', 'Die PIN ist ungültig.', 422);
+        } else {
+            $clearPinHash = 1;
+            $password = array_key_exists('password', $input) ? (string) $input['password'] : '';
+            $passwordRequired = $creating || $existing?->role === 'CHILD';
+            if ($passwordRequired && strlen($password) < 8) {
+                throw new AppException('VALIDATION_ERROR', 'Passwörter für Erwachsene müssen mindestens 8 Zeichen lang sein.', 422);
+            }
+            if ($password !== '') {
+                if (strlen($password) < 8 || strlen($password) > 128) {
+                    throw new AppException('VALIDATION_ERROR', 'Passwörter für Erwachsene müssen zwischen 8 und 128 Zeichen lang sein.', 422);
+                }
+                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+            }
         }
-        return ['name' => $name, 'color' => $color, 'role' => $role, 'pin_hash' => $pinHash, 'avatar_url' => $avatarUrl, 'is_active' => $isActive ? 1 : 0];
+
+        $data = [
+            'name' => $name,
+            'color' => $color,
+            'role' => $role,
+            'pin_hash' => $pinHash,
+            'password_hash' => $passwordHash,
+            'avatar_url' => $avatarUrl,
+            'is_active' => $isActive ? 1 : 0,
+        ];
+        if (!$creating) {
+            $data['clear_pin_hash'] = $clearPinHash;
+            $data['clear_password_hash'] = $clearPasswordHash;
+        }
+        return $data;
     }
 
     private function uuid(): string

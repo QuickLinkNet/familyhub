@@ -5,7 +5,8 @@ Familienkompass ist ein touch-optimierter, selbst hostbarer Familienorganizer. D
 ## Aktueller Stand
 
 - responsive PWA für Wanddisplay, Tablet und Mobilgerät
-- Familienmitglieder mit Rollen, Farben, optionalem Kinder-PIN und sicher gehashtem Elternpasswort
+- Familienmitglieder mit Rollen, Farben, sicherem Elternpasswort und optionalem Kinder-PIN
+- Touch-Anmeldung mit HttpOnly-Session, CSRF-Schutz und serverseitigen Rollenrechten
 - Aufgaben mit Zuweisung, Priorität, Fälligkeit und Elternprüfung
 - einmaliger Einrichtungsassistent für Haushalt, Personen und persönliche Kalender
 - selbstinitialisierende PHP-/SQLite-API mit Migrationen, Backups, Logs und Health-Check
@@ -34,7 +35,7 @@ npm run deploy
 
 Der Befehl prüft TypeScript, baut die PWA, erstellt `deploy/` und lädt Frontend sowie API per FTP hoch. Bestehende Laufzeitdaten unter `storage/` werden nicht gelöscht. Zugangsdaten bleiben in der ignorierten Datei `.env.deploy`.
 
-Nach dem ersten Deployment führt `/setup` durch Haushalt, Familienmitglieder und Kalender. Die Installation ist transaktional und kann nur einmal abgeschlossen werden.
+Nach dem ersten Deployment führt `/setup` durch Haushalt, Familienmitglieder und Kalender. Danach melden sich Erwachsene mit Passwort und Kinder mit ihrer optionalen PIN über die Profilauswahl an. Die Installation ist transaktional und kann nur einmal abgeschlossen werden.
 
 Ausführlich: [Installation](docs/INSTALLATION.md), [Architektur](docs/ARCHITECTURE.md), [API](docs/API.md), [Datenbank](docs/DATABASE.md), [Sicherheit](SECURITY.md).
 

@@ -12,10 +12,11 @@ Aktuelle Entwicklung:
 2. Familienmitglieder
 3. Aufgaben
 4. Haushalt, Erwachsenenpasswörter und Kalender
+5. Login-Sperren und Authentifizierungsgrundlage
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
-Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielsweise `005_calendar_events.sql`. Jede Datei muss vollständig transaktional ausführbar sein.
+Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielsweise `006_calendar_events.sql`. Jede Datei muss vollständig transaktional ausführbar sein.
 
 ## Zentrale Tabellen
 
@@ -24,6 +25,7 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 - `tasks` – Aufgaben und Status
 - `households` – Haushalt, Locale, Zeitzone und Setup-Zeitpunkt
 - `calendars` – gemeinsamer sowie persönliche Kalender
+- `auth_login_attempts` – begrenzte Fehlversuche und zeitweilige Login-Sperren
 - `schema_migrations` – angewendete Migrationen
 
 ## Datenschutz und Backups

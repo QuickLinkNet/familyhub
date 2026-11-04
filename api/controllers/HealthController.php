@@ -18,7 +18,7 @@ final class HealthController
             $pdo->query('SELECT 1')->fetchColumn();
         } catch (\Throwable $exception) {
             $this->logger->error('Health database check failed', ['type' => $exception::class]);
-            Response::error('DATABASE_UNAVAILABLE', 'Die Datenbank ist derzeit nicht verfÃ¼gbar.', 503);
+            Response::error('DATABASE_UNAVAILABLE', 'Die Datenbank ist derzeit nicht verfügbar.', 503);
         }
         Response::success(['status' => 'ok', 'database' => 'ok', 'version' => $this->config->version()]);
     }
