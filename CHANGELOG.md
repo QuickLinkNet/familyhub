@@ -6,8 +6,26 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ### Geplant
 
-- Session-Authentifizierung und Rollenrechte
 - Kalender-Terminmodell und Wochenansicht
+- Aufgabenfreigabe und wiederkehrende Aufgaben
+
+## [0.3.0] - 2026-11-04
+
+### Hinzugefügt
+
+- Touch-Anmeldung über Familienprofile
+- sichere PHP-Sessions mit HttpOnly-Cookie und CSRF-Schutz
+- Login-Sperre nach wiederholten Fehlversuchen
+- Login-, Logout-, Profil- und Session-Endpunkte
+- rollenbasierte API-Rechte für Familie und Aufgaben
+- Profilanzeige und Logout in der App-Shell
+
+### Geändert
+
+- Familienprofile unterstützen sichere Erwachsenenpasswörter und optionale Kinder-PINs
+- Kinder können nur eigene zugewiesene Aufgaben abschließen
+- lokale Frontend-Entwicklung verwendet Cookie-Sessions ausschließlich mit der Live-API
+- fehlerhafte UTF-8-Texte in berührten Oberflächen und Services bereinigt
 
 ## [0.2.0] - 2026-11-04
 

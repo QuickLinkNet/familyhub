@@ -2,18 +2,27 @@
 
 ## Sicherheitsmeldungen
 
-Bitte Sicherheitslücken nicht als öffentliches Issue veröffentlichen. Nutze einen privaten Security Advisory im GitHub-Repository oder kontaktiere den Repository-Eigentümer direkt. Gib betroffene Version, reproduzierbare Schritte und mögliche Auswirkungen an.
+Bitte Sicherheitslücken nicht als öffentliches Issue veröffentlichen. Nutze einen privaten Security Advisory im GitHub-Repository oder kontaktiere den Repository-Eigentümer direkt. Nenne betroffene Version, reproduzierbare Schritte und mögliche Auswirkungen.
 
-## Aktueller Sicherheitsstand
+## Sicherheitsmodell ab Version 0.3.0
 
-- Passwörter und Kinder-PINs werden nur mit PHP `password_hash` gespeichert.
+- Session-ID ausschließlich als `HttpOnly`-, `Secure`- und `SameSite=None`-Cookie auf HTTPS.
+- Zufälliger CSRF-Token für Logout und sämtliche geschützten Mutationen.
+- Rollenrechte werden in der PHP-API erzwungen.
+- Admins und Eltern verwenden Passwort-Hashes; Kinder optional PIN-Hashes.
+- Fünf falsche Loginversuche sperren Client und Profil für fünf Minuten.
+- Kinder können ausschließlich eigene zugewiesene Aufgaben abschließen.
+- Das aktuell angemeldete Profil kann sich nicht selbst löschen.
 - SQL-Zugriffe verwenden vorbereitete Statements.
-- Öffentliche IDs sind UUIDs.
-- `storage/` wird unter Apache vor direktem HTTP-Zugriff geschützt.
+- Öffentliche Datensätze verwenden UUIDs.
+- `storage/` ist unter Apache vor direktem HTTP-Zugriff geschützt.
 - Deployment-Secrets liegen in ignorierten lokalen Umgebungsdateien.
-- Die Einrichtungs-API kann nur solange schreiben, wie noch kein Haushalt existiert.
 
-Die Anwendung befindet sich im Aufbau. Vollständige Session-Authentifizierung und Rollenautorisierung sind der nächste priorisierte Sicherheitsslice. Bis dahin darf eine Instanz nur in einem vertrauenswürdigen Umfeld oder hinter zusätzlichem Webserver-Zugriffsschutz betrieben werden.
+Die öffentliche Profilauswahl liefert Namen, Farbe, Rolle und die Information, ob ein Geheimnis erforderlich ist. Das ist für ein gemeinsames Familien-Touchdisplay beabsichtigt. Öffentlich aus dem Internet erreichbare Installationen sollten zusätzlich durch Firewall, VPN oder Webserver-Zugriffsschutz begrenzt werden.
+
+## Lokale Entwicklung
+
+Der lokale Vite-Server proxyt `/api/v1` zur konfigurierten Live-API. Dadurch bleiben Browser-Session und CSRF-Token same-origin auf `localhost`, während kein lokales Backend gestartet wird. Der CSRF-Header schützt weiterhin alle schreibenden Session-Anfragen.
 
 ## Betreiberpflichten
 
@@ -24,5 +33,3 @@ Die Anwendung befindet sich im Aufbau. Vollständige Session-Authentifizierung u
 - Schreibrechte auf `storage/` beschränken.
 - Backups regelmäßig außerhalb des Webroots sichern und Restore testen.
 - Updates zeitnah einspielen.
-
-Unterstützte Versionen werden im [CHANGELOG.md](CHANGELOG.md) aufgeführt.

@@ -1,6 +1,6 @@
 # API
 
-Basis: `/api/v1`. Antworten sind JSON und verwenden immer dieselbe Hülle.
+Basis: `/api/v1`. Antworten sind JSON und verwenden dieselbe Hülle.
 
 Erfolg:
 
@@ -17,21 +17,62 @@ Fehler:
 }
 ```
 
-## Health
+## Öffentliche Endpunkte
 
-`GET /api/v1/health`
+- `GET /health` – System-, Datenbank- und Versionsstatus
+- `GET /setup/status` – zeigt ausschließlich, ob die Ersteinrichtung offen ist
+- `POST /setup` – einmalige transaktionale Installation
+- `GET /auth/profiles` – aktive Profile für die Touch-Auswahl
+- `GET /auth/me` – aktueller Sessionstatus
+- `POST /auth/login` – Anmeldung mit Profil-ID und Passwort beziehungsweise PIN
 
-Liefert Status, Datenbankzustand und Anwendungsversion.
+`POST /setup` ist nach der ersten erfolgreichen Installation dauerhaft gesperrt und antwortet dann mit HTTP 409.
+
+## Anmeldung
+
+Login-Request:
+
+```json
+{
+  "memberId": "uuid-des-profils",
+  "secret": "Passwort oder PIN"
+}
+```
+
+Die Antwort enthält das angemeldete Profil und einen CSRF-Token. Die Session-ID liegt ausschließlich im HttpOnly-Cookie. Nach fünf falschen Versuchen wird die Kombination aus Client und Profil für fünf Minuten gesperrt.
+
+- Erwachsene melden sich mit mindestens acht Zeichen langem Passwort an.
+- Kinder verwenden optional eine vier- bis achtstellige PIN.
+- Kinder ohne PIN können ihr Profil direkt öffnen.
+
+`POST /auth/logout` beendet die Session. Logout und alle weiteren schreibenden, authentifizierten Endpunkte erwarten den CSRF-Token im Header `X-CSRF-Token`.
+
+## Geschützte Ressourcen
+
+Alle Familien- und Aufgabenendpunkte benötigen eine gültige Session.
+
+### Familienmitglieder
+
+- `GET /family-members` – alle angemeldeten Rollen
+- `POST /family-members` – Admin oder Elternteil
+- `PUT /family-members/{uuid}` – Admin oder Elternteil
+- `DELETE /family-members/{uuid}` – Admin oder Elternteil; das eigene aktive Profil ist geschützt
+
+Create und Update akzeptieren `name`, `color`, `role`, `isActive`, optional `avatarUrl` sowie rollenabhängig `password` oder `pin`. Geheimnisse werden ausschließlich als Passwort-Hash gespeichert.
+
+### Aufgaben
+
+- `GET /tasks` – alle angemeldeten Rollen
+- `POST /tasks` – Admin oder Elternteil
+- `PUT /tasks/{uuid}` – Admin oder Elternteil
+- `DELETE /tasks/{uuid}` – Admin oder Elternteil
+- `POST /tasks/{uuid}/complete` – Erwachsene für jede Aufgabe; Kinder nur für die eigene zugewiesene Aufgabe
+
+Eine prüfpflichtige Aufgabe wechselt beim Abschluss in `PENDING_VERIFICATION`.
 
 ## Einmalige Einrichtung
 
-`GET /api/v1/setup/status`
-
-Liefert `required`, `completed` und `version`. Familien- oder Kalenderdaten werden über diesen öffentlichen Statusendpunkt nicht ausgegeben.
-
-`POST /api/v1/setup`
-
-Beispiel:
+`POST /setup` erzeugt Haushalt, Personen und Kalender. Beispiel:
 
 ```json
 {
@@ -55,31 +96,11 @@ Beispiel:
 }
 ```
 
-Rollen: `ADMIN`, `PARENT`, `CHILD`. Die Installation erzeugt Haushalt, Personen und Kalender transaktional. Nach Abschluss antwortet ein weiterer Versuch mit HTTP 409 und `SETUP_ALREADY_COMPLETED`.
-
-## Familienmitglieder
-
-- `GET /api/v1/family-members`
-- `POST /api/v1/family-members`
-- `PUT /api/v1/family-members/{uuid}`
-- `DELETE /api/v1/family-members/{uuid}`
-
-Create und Update akzeptieren `name`, `color`, `role`, `isActive`, optional `avatarUrl` und optional `pin`. PINs werden als Passwort-Hash gespeichert. Delete ist ein Soft-Delete.
-
-## Aufgaben
-
-- `GET /api/v1/tasks`
-- `POST /api/v1/tasks`
-- `PUT /api/v1/tasks/{uuid}`
-- `POST /api/v1/tasks/{uuid}/complete`
-- `DELETE /api/v1/tasks/{uuid}`
-
-Aufgaben unterstützen Titel, Beschreibung, Zuweisung, Datum, Priorität und optionale Elternprüfung. Eine prüfpflichtige Aufgabe wechselt beim Abschluss in `PENDING_VERIFICATION`.
-
 ## Regeln für neue Endpunkte
 
-- Controller behandeln HTTP, Services die Fachlogik und Repositories PDO-Zugriffe.
+- Controller behandeln HTTP, Services Fachlogik und Repositories PDO-Zugriffe.
 - Ausschließlich vorbereitete Statements verwenden.
 - Öffentliche Ressourcen verwenden UUIDs statt interner SQLite-IDs.
-- Validierung und Autorisierung passieren serverseitig.
-- Keine PHP-Fehler, Secrets oder internen Pfade in Antworten ausgeben.
+- Rechte serverseitig erzwingen; ausgeblendete Buttons sind kein Zugriffsschutz.
+- Schreibende Session-Endpunkte immer mit CSRF-Prüfung versehen.
+- Keine PHP-Fehler, Secrets oder internen Pfade ausgeben.

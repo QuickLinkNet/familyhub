@@ -5,6 +5,8 @@ import { AppShell } from './AppShell';
 import { DashboardPage } from '../features/dashboard/pages/DashboardPage';
 import { FamilyPage } from '../features/family/pages/FamilyPage';
 import { TasksPage } from '../features/tasks/pages/TasksPage';
+import { AuthGate } from '../features/auth/components/AuthGate';
+import { LoginPage } from '../features/auth/pages/LoginPage';
 import { SetupGate } from '../features/setup/components/SetupGate';
 import { SetupPage } from '../features/setup/pages/SetupPage';
 
@@ -25,10 +27,16 @@ export const appRouter = createBrowserRouter([
     element: <SetupGate />,
     children: [
       { path: '/setup', element: <SetupPage /> },
-      { path: '/', element: shell(<DashboardPage />) },
-      { path: '/family', element: shell(<FamilyPage />) },
-      { path: '/tasks', element: shell(<TasksPage />) },
-      { path: '/:module', element: shell(<FutureModule />) }
+      {
+        element: <AuthGate />,
+        children: [
+          { path: '/login', element: <LoginPage /> },
+          { path: '/', element: shell(<DashboardPage />) },
+          { path: '/family', element: shell(<FamilyPage />) },
+          { path: '/tasks', element: shell(<TasksPage />) },
+          { path: '/:module', element: shell(<FutureModule />) }
+        ]
+      }
     ]
   }
 ], {

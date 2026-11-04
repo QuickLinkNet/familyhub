@@ -15,5 +15,6 @@ export interface CreateFamilyMemberInput {
   name: string;
   color: string;
   role: FamilyRole;
+  password?: string;
   pin?: string;
 }

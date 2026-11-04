@@ -26,10 +26,12 @@ copy .env.local.example .env.local
 In `.env.local`:
 
 ```dotenv
-VITE_API_BASE_URL=https://example.org/apps/familyhub/api/v1
+VITE_API_BASE_URL=/api/v1
+VITE_DEV_API_ORIGIN=https://example.org
+VITE_DEV_API_PREFIX=/apps/familyhub
 ```
 
-Die Frontend-Entwicklung spricht ausschließlich mit dieser Live-API. Ein lokaler PHP-Server ist nicht nötig.
+Der Vite-Server leitet `/api/v1` ausschließlich an diese Live-API weiter. Dadurch funktionieren sichere Sessions unter `localhost`, ohne einen lokalen PHP-Server zu starten.
 
 ## 3. Zielpfad konfigurieren
 
@@ -82,7 +84,7 @@ Der Assistent erzeugt in einer Transaktion:
 
 Erwachsenenpasswörter benötigen mindestens acht Zeichen. Kinder-PINs sind optional und bestehen aus vier bis acht Ziffern. Es werden ausschließlich Passwort-Hashes gespeichert.
 
-Die Einrichtung lässt sich über die öffentliche Oberfläche nur einmal abschließen. Lege vorher ein Backup an, wenn du eine bestehende Installation ersetzen willst.
+Die Einrichtung lässt sich über die öffentliche Oberfläche nur einmal abschließen. Anschließend erscheint die Profilauswahl: Erwachsene melden sich mit ihrem Passwort an, Kinder mit ihrer optionalen PIN. Lege vorher ein Backup an, wenn du eine bestehende Installation ersetzen willst.
 
 ## 6. Betrieb prüfen
 
@@ -90,7 +92,7 @@ Die Einrichtung lässt sich über die öffentliche Oberfläche nur einmal abschl
 - Health: `https://example.org/apps/familyhub/api/v1/health`
 - Setup-Status: `https://example.org/apps/familyhub/api/v1/setup/status`
 
-Eine erfolgreiche Health-Antwort meldet HTTP 200 und `database: "ok"`.
+Eine erfolgreiche Health-Antwort meldet HTTP 200 und `database: "ok"`. Geschützte Fachendpunkte antworten ohne Anmeldung mit HTTP 401. Für die Entwicklung hält der Vite-Proxy Browser und Session auf `localhost:5173`, während alle API-Aufrufe an das konfigurierte Live-System gehen.
 
 ## 7. Updates
 

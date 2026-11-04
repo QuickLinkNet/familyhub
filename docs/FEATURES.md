@@ -24,7 +24,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Installation | Haushalt, 1–12 Personen, Rollen, sichere Zugangsdaten, Kalender | fertig | Export/Import und Reset-Werkzeug |
 | Touch-/Kiosk-UX | Wanddisplay, Tablet, Mobilnavigation, große Ziele | fertig | Fokus- und Leerlaufmodus |
 | Dashboard | Heute, Aufgaben, Familie, Einkauf, Essen, Wetter | vorbereitet | echte Daten statt Platzhalter |
-| Identität & Rechte | Admin-/Elternpasswort, Kinder-PIN, Sessions, Rollenrechte | in Arbeit | Login, Session-Cookies, Policy-Matrix |
+| Identität & Rechte | Admin-/Elternpasswort, Kinder-PIN, Sessions, CSRF, Rollenrechte | fertig | Profilbearbeitung und feinere Modulrechte |
 | Aufgaben | Zuweisung, Fälligkeit, Priorität, Abschluss, Eltern-Check | fertig | Bearbeiten, Freigabe, Wiederholung, Historie |
 | Belohnungen | Punkte, Sterne oder Münzen mit nachvollziehbarem Ledger | geplant | Punkte für geprüfte Aufgaben |
 | Kalender | Tag/Woche/Monat, Wiederholungen, Geburtstage, Ferien | Datenmodell fertig | Termin-CRUD und Wochenansicht |
@@ -43,13 +43,12 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 
 ## Empfohlene Produktreihenfolge
 
-1. **Authentifizierung und Rechte** – schützt private Live-Daten und aktiviert Kinder-PINs.
-2. **Kalender-MVP** – Termin-CRUD, Wochenansicht und Dashboard-Karte.
-3. **Aufgaben vervollständigen** – Bearbeitung, Elternfreigabe, Wiederholung und Punkte.
-4. **Routinen** – starker täglicher Nutzen für Kinder und Wanddisplay.
-5. **Einkauf und Essensplanung** – gemeinsamer Haushaltsnutzen.
-6. **Notizen, Schule und Haushalt** – kleine unabhängige Module.
-7. **Idle-Modus, Wetter und Integrationen** – nach stabilem lokalem Kern.
+1. **Kalender-MVP** – Termin-CRUD, Wochenansicht und Dashboard-Karte.
+2. **Aufgaben vervollständigen** – Bearbeitung, Elternfreigabe, Wiederholung und Punkte.
+3. **Routinen** – starker täglicher Nutzen für Kinder und Wanddisplay.
+4. **Einkauf und Essensplanung** – gemeinsamer Haushaltsnutzen.
+5. **Notizen, Schule und Haushalt** – kleine unabhängige Module.
+6. **Idle-Modus, Wetter und Integrationen** – nach stabilem lokalem Kern.
 
 ## Qualitätsmaßstab
 

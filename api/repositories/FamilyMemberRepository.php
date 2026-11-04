@@ -27,14 +27,25 @@ final class FamilyMemberRepository
 
     public function create(array $data): FamilyMember
     {
-        $statement = $this->database->prepare('INSERT INTO family_members (uuid, name, color, role, pin_hash, avatar_url, is_active, created_at, updated_at) VALUES (:uuid, :name, :color, :role, :pin_hash, :avatar_url, :is_active, :created_at, :updated_at)');
+        $statement = $this->database->prepare('INSERT INTO family_members (uuid, name, color, role, pin_hash, password_hash, avatar_url, is_active, created_at, updated_at) VALUES (:uuid, :name, :color, :role, :pin_hash, :password_hash, :avatar_url, :is_active, :created_at, :updated_at)');
         $statement->execute($data);
         return $this->find($data['uuid']) ?? throw new \RuntimeException('Created family member could not be retrieved.');
     }
 
     public function update(string $uuid, array $data): FamilyMember
     {
-        $statement = $this->database->prepare('UPDATE family_members SET name = :name, color = :color, role = :role, pin_hash = COALESCE(:pin_hash, pin_hash), avatar_url = :avatar_url, is_active = :is_active, updated_at = :updated_at WHERE uuid = :uuid AND deleted_at IS NULL');
+        $statement = $this->database->prepare(
+            'UPDATE family_members
+             SET name = :name,
+                 color = :color,
+                 role = :role,
+                 pin_hash = CASE WHEN :clear_pin_hash = 1 THEN NULL ELSE COALESCE(:pin_hash, pin_hash) END,
+                 password_hash = CASE WHEN :clear_password_hash = 1 THEN NULL ELSE COALESCE(:password_hash, password_hash) END,
+                 avatar_url = :avatar_url,
+                 is_active = :is_active,
+                 updated_at = :updated_at
+             WHERE uuid = :uuid AND deleted_at IS NULL'
+        );
         $statement->execute($data + ['uuid' => $uuid]);
         return $this->find($uuid) ?? throw new \RuntimeException('Updated family member could not be retrieved.');
     }
@@ -42,7 +53,8 @@ final class FamilyMemberRepository
     public function softDelete(string $uuid): bool
     {
         $statement = $this->database->prepare('UPDATE family_members SET deleted_at = :deleted_at, updated_at = :updated_at WHERE uuid = :uuid AND deleted_at IS NULL');
-        $statement->execute(['uuid' => $uuid, 'deleted_at' => gmdate('c'), 'updated_at' => gmdate('c')]);
+        $now = gmdate('c');
+        $statement->execute(['uuid' => $uuid, 'deleted_at' => $now, 'updated_at' => $now]);
         return $statement->rowCount() === 1;
     }
 }
