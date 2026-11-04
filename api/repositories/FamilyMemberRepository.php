@@ -25,11 +25,32 @@ final class FamilyMemberRepository
         return $row === false ? null : FamilyMember::fromRow($row);
     }
 
-    public function create(array $data): FamilyMember
+    public function create(array $data, string $calendarUuid): FamilyMember
     {
-        $statement = $this->database->prepare('INSERT INTO family_members (uuid, name, color, role, pin_hash, password_hash, avatar_url, is_active, created_at, updated_at) VALUES (:uuid, :name, :color, :role, :pin_hash, :password_hash, :avatar_url, :is_active, :created_at, :updated_at)');
-        $statement->execute($data);
-        return $this->find($data['uuid']) ?? throw new \RuntimeException('Created family member could not be retrieved.');
+        $this->database->beginTransaction();
+        try {
+            $statement = $this->database->prepare('INSERT INTO family_members (uuid, name, color, role, pin_hash, password_hash, avatar_url, is_active, created_at, updated_at) VALUES (:uuid, :name, :color, :role, :pin_hash, :password_hash, :avatar_url, :is_active, :created_at, :updated_at)');
+            $statement->execute($data);
+            $householdUuid = $this->database->query('SELECT uuid FROM households ORDER BY id LIMIT 1')->fetchColumn();
+            if (!is_string($householdUuid) || $householdUuid === '') {
+                throw new \RuntimeException('Household could not be retrieved.');
+            }
+            $calendar = $this->database->prepare('INSERT INTO calendars (uuid, household_uuid, owner_member_uuid, name, color, calendar_type, is_active, created_at, updated_at) VALUES (:uuid, :household_uuid, :owner_member_uuid, :name, :color, \'PERSONAL\', 1, :created_at, :updated_at)');
+            $calendar->execute([
+                'uuid' => $calendarUuid,
+                'household_uuid' => $householdUuid,
+                'owner_member_uuid' => $data['uuid'],
+                'name' => $data['name'],
+                'color' => $data['color'],
+                'created_at' => $data['created_at'],
+                'updated_at' => $data['updated_at'],
+            ]);
+            $this->database->commit();
+            return $this->find($data['uuid']) ?? throw new \RuntimeException('Created family member could not be retrieved.');
+        } catch (\Throwable $error) {
+            if ($this->database->inTransaction()) { $this->database->rollBack(); }
+            throw $error;
+        }
     }
 
     public function update(string $uuid, array $data): FamilyMember

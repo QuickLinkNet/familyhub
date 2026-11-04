@@ -3,6 +3,7 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import { createBrowserRouter, Link } from 'react-router-dom';
 import { AppShell } from './AppShell';
 import { DashboardPage } from '../features/dashboard/pages/DashboardPage';
+import { CalendarPage } from '../features/calendar/pages/CalendarPage';
 import { FamilyPage } from '../features/family/pages/FamilyPage';
 import { TasksPage } from '../features/tasks/pages/TasksPage';
 import { AuthGate } from '../features/auth/components/AuthGate';
@@ -33,6 +34,7 @@ export const appRouter = createBrowserRouter([
           { path: '/login', element: <LoginPage /> },
           { path: '/', element: shell(<DashboardPage />) },
           { path: '/family', element: shell(<FamilyPage />) },
+          { path: '/calendar', element: shell(<CalendarPage />) },
           { path: '/tasks', element: shell(<TasksPage />) },
           { path: '/:module', element: shell(<FutureModule />) }
         ]

@@ -32,6 +32,8 @@ export const useLogin = () => {
       client.setQueryData(authSessionKey, session);
       void client.invalidateQueries({ queryKey: ['family-members'] });
       void client.invalidateQueries({ queryKey: ['tasks'] });
+      void client.invalidateQueries({ queryKey: ['calendars'] });
+      void client.invalidateQueries({ queryKey: ['calendar-events'] });
     }
   });
 };
@@ -44,6 +46,8 @@ export const useLogout = () => {
       client.setQueryData(authSessionKey, signedOutSession);
       client.removeQueries({ queryKey: ['family-members'] });
       client.removeQueries({ queryKey: ['tasks'] });
+      client.removeQueries({ queryKey: ['calendars'] });
+      client.removeQueries({ queryKey: ['calendar-events'] });
     }
   });
 };

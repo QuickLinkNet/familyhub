@@ -56,3 +56,5 @@ export async function apiRequest<T>(path: string, method: string, body?: unknown
 
 export const apiGet = <T>(path: string, signal?: AbortSignal) => apiRequest<T>(path, 'GET', undefined, signal);
 export const apiPost = <T>(path: string, body: unknown) => apiRequest<T>(path, 'POST', body);
+export const apiPut = <T>(path: string, body: unknown) => apiRequest<T>(path, 'PUT', body);
+export const apiDelete = <T>(path: string) => apiRequest<T>(path, 'DELETE');

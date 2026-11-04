@@ -6,8 +6,23 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ### Geplant
 
-- Kalender-Terminmodell und Wochenansicht
 - Aufgabenfreigabe und wiederkehrende Aufgaben
+- Routinen für Morgen und Abend
+
+## [0.4.0] - 2026-11-04
+
+### Hinzugefügt
+
+- Kalendertermine mit Beschreibung, Ort, Uhrzeit und Ganztagsoption
+- responsive Wochenansicht für gemeinsamen und persönliche Kalender
+- Terminverwaltung für Admins und Eltern; schreibgeschützte Kinderansicht
+- echte Kalender-, Aufgaben- und Familiendaten auf dem Dashboard
+- persönlicher Kalender für nachträglich angelegte Familienmitglieder
+
+### Geändert
+
+- Dashboard-Platzhalter für spätere Module sind klar als Roadmap gekennzeichnet
+- Kalender- und Dashboard-Abfragen verwenden ausschließlich die Live-API
 
 ## [0.3.0] - 2026-11-04
 

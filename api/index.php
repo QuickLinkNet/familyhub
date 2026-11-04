@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use FamilyCompass\Config\Config;
 use FamilyCompass\Controllers\AuthController;
+use FamilyCompass\Controllers\CalendarController;
 use FamilyCompass\Controllers\FamilyMemberController;
 use FamilyCompass\Controllers\HealthController;
 use FamilyCompass\Controllers\SetupController;
@@ -13,10 +14,12 @@ use FamilyCompass\Core\Logger;
 use FamilyCompass\Core\Response;
 use FamilyCompass\Core\Router;
 use FamilyCompass\Repositories\AuthRepository;
+use FamilyCompass\Repositories\CalendarRepository;
 use FamilyCompass\Repositories\FamilyMemberRepository;
 use FamilyCompass\Repositories\SetupRepository;
 use FamilyCompass\Repositories\TaskRepository;
 use FamilyCompass\Services\AuthService;
+use FamilyCompass\Services\CalendarService;
 use FamilyCompass\Services\FamilyMemberService;
 use FamilyCompass\Services\SetupService;
 use FamilyCompass\Services\TaskService;
@@ -56,6 +59,7 @@ try {
 
     $authService = new AuthService(new AuthRepository($database));
     $authController = new AuthController($authService);
+    $calendarController = new CalendarController(new CalendarService(new CalendarRepository($database)));
     $familyRepository = new FamilyMemberRepository($database);
     $familyController = new FamilyMemberController(new FamilyMemberService($familyRepository));
     $taskController = new TaskController(new TaskService(new TaskRepository($database), $familyRepository));
@@ -133,6 +137,29 @@ try {
         $authService->requireAdult();
         $authService->requireCsrf();
         $taskController->delete($uuid);
+    });
+    $router->get('/v1/calendars', static function () use ($authService, $calendarController): void {
+        $authService->requireUser();
+        $calendarController->calendars();
+    });
+    $router->get('/v1/calendar-events', static function () use ($authService, $calendarController): void {
+        $authService->requireUser();
+        $calendarController->events();
+    });
+    $router->post('/v1/calendar-events', static function () use ($authService, $calendarController): void {
+        $actor = $authService->requireAdult();
+        $authService->requireCsrf();
+        $calendarController->create($actor);
+    });
+    $router->put('/v1/calendar-events/{uuid}', static function (string $uuid) use ($authService, $calendarController): void {
+        $authService->requireAdult();
+        $authService->requireCsrf();
+        $calendarController->update($uuid);
+    });
+    $router->delete('/v1/calendar-events/{uuid}', static function (string $uuid) use ($authService, $calendarController): void {
+        $authService->requireAdult();
+        $authService->requireCsrf();
+        $calendarController->delete($uuid);
     });
 
     $router->dispatch($_SERVER['REQUEST_METHOD'] ?? 'GET', $_SERVER['REQUEST_URI'] ?? '/');
