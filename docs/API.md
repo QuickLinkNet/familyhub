@@ -70,6 +70,16 @@ Create und Update akzeptieren `name`, `color`, `role`, `isActive`, optional `ava
 
 Eine prüfpflichtige Aufgabe wechselt beim Abschluss in `PENDING_VERIFICATION`.
 
+### Kalender
+
+- `GET /calendars` – aktive gemeinsame und persönliche Kalender für alle angemeldeten Rollen
+- `GET /calendar-events?from={iso}&to={iso}` – überlappende Termine im Zeitraum für alle angemeldeten Rollen
+- `POST /calendar-events` – Admin oder Elternteil
+- `PUT /calendar-events/{uuid}` – Admin oder Elternteil
+- `DELETE /calendar-events/{uuid}` – Admin oder Elternteil
+
+`from`, `to`, `startsAt` und `endsAt` sind ISO-8601-Zeitpunkte. Schreibzugriffe akzeptieren `calendarId`, `title`, optional `description` und `location` sowie `startsAt`, `endsAt` und `allDay`. Das Ende muss nach dem Beginn liegen. Ein Abfragezeitraum ist auf 370 Tage begrenzt.
+
 ## Einmalige Einrichtung
 
 `POST /setup` erzeugt Haushalt, Personen und Kalender. Beispiel:

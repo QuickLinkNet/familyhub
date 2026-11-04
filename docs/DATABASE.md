@@ -13,18 +13,20 @@ Aktuelle Entwicklung:
 3. Aufgaben
 4. Haushalt, Erwachsenenpasswörter und Kalender
 5. Login-Sperren und Authentifizierungsgrundlage
+6. Kalendertermine und Zeitraumindizes
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
-Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielsweise `006_calendar_events.sql`. Jede Datei muss vollständig transaktional ausführbar sein.
+Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielsweise `007_recurring_tasks.sql`. Jede Datei muss vollständig transaktional ausführbar sein.
 
 ## Zentrale Tabellen
 
-- `settings` – technische Einstellungen
+- `app_settings` – technische Einstellungen
 - `family_members` – Personen, Rollen, Farben und Login-Hashes
 - `tasks` – Aufgaben und Status
 - `households` – Haushalt, Locale, Zeitzone und Setup-Zeitpunkt
-- `calendars` – gemeinsamer sowie persönliche Kalender
+- calendars – gemeinsamer sowie persönliche Kalender
+- `calendar_events` – Termine, Zeiträume, Orte und Ersteller
 - `auth_login_attempts` – begrenzte Fehlversuche und zeitweilige Login-Sperren
 - `schema_migrations` – angewendete Migrationen
 

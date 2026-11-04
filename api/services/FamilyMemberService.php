@@ -28,7 +28,7 @@ final class FamilyMemberService
             'uuid' => $this->uuid(),
             'created_at' => $now,
             'updated_at' => $now,
-        ]);
+        ], $this->uuid());
         return $member->toArray();
     }
 

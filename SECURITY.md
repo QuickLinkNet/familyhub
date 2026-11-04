@@ -4,7 +4,7 @@
 
 Bitte Sicherheitslücken nicht als öffentliches Issue veröffentlichen. Nutze einen privaten Security Advisory im GitHub-Repository oder kontaktiere den Repository-Eigentümer direkt. Nenne betroffene Version, reproduzierbare Schritte und mögliche Auswirkungen.
 
-## Sicherheitsmodell ab Version 0.3.0
+## Sicherheitsmodell ab Version 0.4.0
 
 - Session-ID ausschließlich als `HttpOnly`-, `Secure`- und `SameSite=None`-Cookie auf HTTPS.
 - Zufälliger CSRF-Token für Logout und sämtliche geschützten Mutationen.
@@ -12,6 +12,7 @@ Bitte Sicherheitslücken nicht als öffentliches Issue veröffentlichen. Nutze e
 - Admins und Eltern verwenden Passwort-Hashes; Kinder optional PIN-Hashes.
 - Fünf falsche Loginversuche sperren Client und Profil für fünf Minuten.
 - Kinder können ausschließlich eigene zugewiesene Aufgaben abschließen.
+- Kinder können Kalender und Termine lesen; Kalenderänderungen sind Erwachsenen vorbehalten.
 - Das aktuell angemeldete Profil kann sich nicht selbst löschen.
 - SQL-Zugriffe verwenden vorbereitete Statements.
 - Öffentliche Datensätze verwenden UUIDs.

@@ -5,6 +5,7 @@ Familienkompass ist ein touch-optimierter, selbst hostbarer Familienorganizer. D
 ## Aktueller Stand
 
 - responsive PWA für Wanddisplay, Tablet und Mobilgerät
+- gemeinsamer und persönlicher Familienkalender mit Wochenansicht und Terminverwaltung
 - Familienmitglieder mit Rollen, Farben, sicherem Elternpasswort und optionalem Kinder-PIN
 - Touch-Anmeldung mit HttpOnly-Session, CSRF-Schutz und serverseitigen Rollenrechten
 - Aufgaben mit Zuweisung, Priorität, Fälligkeit und Elternprüfung
