@@ -1,0 +1,11 @@
+node_modules/
+dist/
+deploy/
+.vite/
+storage/database/*.sqlite
+storage/database/*.sqlite-*
+storage/backups/*.sqlite
+storage/logs/*.log
+.env
+.env.*
+!.env.deploy.example

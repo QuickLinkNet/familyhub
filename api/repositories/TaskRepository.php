@@ -1,0 +1,62 @@
+<?php
+declare(strict_types=1);
+
+namespace FamilyCompass\Repositories;
+
+use FamilyCompass\Models\Task;
+use PDO;
+
+final class TaskRepository
+{
+    public function __construct(private PDO $database) {}
+
+    /** @return list<Task> */
+    public function all(): array
+    {
+        $statement = $this->database->query($this->selectSql() . ' WHERE t.deleted_at IS NULL ORDER BY CASE t.status WHEN \'OPEN\' THEN 0 WHEN \'PENDING_VERIFICATION\' THEN 1 ELSE 2 END, t.due_date IS NULL, t.due_date, t.created_at DESC');
+        return array_map(static fn (array $row): Task => Task::fromRow($row), $statement->fetchAll());
+    }
+
+    public function find(string $uuid): ?Task
+    {
+        $statement = $this->database->prepare($this->selectSql() . ' WHERE t.uuid = :uuid AND t.deleted_at IS NULL LIMIT 1');
+        $statement->execute(['uuid' => $uuid]);
+        $row = $statement->fetch();
+        return $row === false ? null : Task::fromRow($row);
+    }
+
+    public function create(array $data): Task
+    {
+        $statement = $this->database->prepare('INSERT INTO tasks (uuid, title, description, assigned_member_uuid, due_date, priority, status, requires_verification, created_at, updated_at) VALUES (:uuid, :title, :description, :assigned_member_uuid, :due_date, :priority, :status, :requires_verification, :created_at, :updated_at)');
+        $statement->execute($data);
+        return $this->find($data['uuid']) ?? throw new \RuntimeException('Created task could not be retrieved.');
+    }
+
+    public function update(string $uuid, array $data): Task
+    {
+        $statement = $this->database->prepare('UPDATE tasks SET title = :title, description = :description, assigned_member_uuid = :assigned_member_uuid, due_date = :due_date, priority = :priority, requires_verification = :requires_verification, updated_at = :updated_at WHERE uuid = :uuid AND deleted_at IS NULL');
+        $statement->execute($data + ['uuid' => $uuid]);
+        return $this->find($uuid) ?? throw new \RuntimeException('Updated task could not be retrieved.');
+    }
+
+    public function complete(string $uuid, string $status): ?Task
+    {
+        $statement = $this->database->prepare('UPDATE tasks SET status = :status, completed_at = :completed_at, updated_at = :updated_at WHERE uuid = :uuid AND status = \'OPEN\' AND deleted_at IS NULL');
+        $now = gmdate('c');
+        $statement->execute(['uuid' => $uuid, 'status' => $status, 'completed_at' => $now, 'updated_at' => $now]);
+        return $statement->rowCount() === 1 ? $this->find($uuid) : null;
+    }
+
+    public function softDelete(string $uuid): bool
+    {
+        $statement = $this->database->prepare('UPDATE tasks SET deleted_at = :deleted_at, updated_at = :updated_at WHERE uuid = :uuid AND deleted_at IS NULL');
+        $now = gmdate('c');
+        $statement->execute(['uuid' => $uuid, 'deleted_at' => $now, 'updated_at' => $now]);
+        return $statement->rowCount() === 1;
+    }
+
+    private function selectSql(): string
+    {
+        return 'SELECT t.*, fm.name AS assigned_member_name, fm.color AS assigned_member_color FROM tasks t LEFT JOIN family_members fm ON fm.uuid = t.assigned_member_uuid';
+    }
+}
