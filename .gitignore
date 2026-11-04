@@ -9,3 +9,5 @@ storage/logs/*.log
 .env
 .env.*
 !.env.deploy.example
+!.env.local.example
+!.env.production.example

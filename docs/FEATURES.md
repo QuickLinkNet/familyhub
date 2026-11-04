@@ -1,36 +1,56 @@
-# Feature-Übersicht
+# Produkt- und Feature-Roadmap
 
-Status: **fertig** = vollständig benutzbarer Slice, **geplant** = bewusst noch nicht begonnen, **vorbereitet** = Architektur oder Navigation vorhanden, aber keine Fachfunktion.
+Status: **fertig** = benutzbarer End-to-End-Slice, **in Arbeit** = aktiv vorbereitet, **vorbereitet** = Navigation oder Architektur vorhanden, **geplant** = noch nicht begonnen.
 
-## Produktumfang
+## Vergleich zum Daely-Produktbild
 
-| Bereich | Vorgabe | Status | Nächster sinnvoller Ausbauschritt |
+Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genannten digitalen Familienkalenders. Familienkompass soll nicht nur kopieren, sondern mit Selbsthosting, Datenschutz und frei kombinierbaren Familienmodulen darüber hinausgehen.
+
+| Referenzfunktion | Familienkompass-Ziel | Status |
+| --- | --- | --- |
+| zentraler Familienkalender | gemeinsamer Kalender plus persönlicher Kalender je Person | Datenmodell fertig, Terminansichten geplant |
+| farbige Personen und Termine | feste Personenfarben in Kalender, Aufgaben und Dashboard | Personen fertig, Kalenderdarstellung geplant |
+| Kinder haken Aufgaben selbst ab | Touch-große Aufgaben, Kinder-PIN und optionaler Eltern-Check | Aufgaben-Grundlage fertig |
+| Google-, Apple- oder Outlook-Anbindung | Adapter für Google Calendar, Microsoft Graph und CalDAV | geplant |
+| Wanddisplay plus mobile Nutzung | responsive installierbare PWA für Display, Tablet und Smartphone | fertig |
+| schnelle Ersteinrichtung | Assistent für Haushalt, Rollen, Passwörter und Kalender | fertig |
+| laufende Produktupdates | Migrationen, Backups und reproduzierbares Deployment | fertig |
+
+## Familienkompass-Umfang
+
+| Bereich | Geplanter Funktionsumfang | Status | Nächster Slice |
 | --- | --- | --- | --- |
-| Technische Basis | React-PWA, PHP-API, SQLite, Migrationen, Backups, Logs, Health | fertig | Live-Deployment und Monitoring nutzen |
-| Touch-/Kiosk-UX | Responsive Shell, Desktop-/Tablet-/Mobile-Navigation | fertig | Leerlaufmodus ergänzen |
-| Dashboard | Tagesübersicht, modulare Karten | vorbereitet | Karten mit echten Kalender-/Aufgaben-/Einkaufsdaten versorgen |
-| Familienmitglieder | Rollen, Farbe, Aktivstatus, PIN-Hash, Avatar | fertig | Avatar-Upload und Profilbearbeitung |
-| Authentifizierung | Elternpasswort, Kinder-PIN, Sessions, Rechte | geplant | Als nächstes vor allen privaten Live-Daten umsetzen |
-| Aufgaben | Zuweisung, Fälligkeit, Priorität, Erledigung, Eltern-Check | fertig | Bearbeiten, Eltern-Freigabe, Wiederholung, Historie und Belohnungen |
-| Routinen | Wochentage, Schritte, Fortschritt | geplant | Morgen-/Abendroutine mit abhackbareren Schritten |
-| Belohnungen | Punkte/Münzen/Sterne, spätere Family-Island-Anbindung | geplant | Einheitliches Punkte-Ledger definieren |
-| Kalender | Lokale Termine, Ansichten, Wiederholung, Anbieter-Adapter | geplant | Lokaler Wochen-/Tageskalender als erster Slice |
-| Einkauf | Mehrere Listen, Kategorien, Mengen, schnelles Abhaken | geplant | Gemeinsame Standardliste |
-| Mahlzeiten & Rezepte | Wochenplan, Rezepte, Zutaten in Einkauf übernehmen | geplant | Wochenplan plus Abendessen |
-| Notizen | Familiennotizen und schnelle Hinweise | geplant | Einfache Notizliste |
-| Schule | Stundenplan, Hausaufgaben, Tests, Ferien | geplant | Hausaufgaben als fokussierter erster Slice |
-| Haushalt | Putzen, Müll, Pflanzen, Wäsche, Tiere | geplant | Müllkalender oder Putzplan auswählen |
-| Wetter | Dashboard-Wetter per Anbieter-Adapter | geplant | Datenschutzfreundlichen Wetteradapter wählen |
-| Foto-/Idle-Modus | Diashow mit Zeit, Wetter, nächstem Termin | geplant | Inaktivitäts-Timer und lokaler Bildordner |
-| Benachrichtigungen | In-App, Browser, später Push | geplant | In-App-Erinnerungen nach Authentifizierung |
-| Externe Dienste | Google, Outlook, CalDAV, Home Assistant, Family Island | geplant | Erst nach lokalem Kalender über Adapter anbinden |
+| Plattform | React-PWA, PHP-API, SQLite, Migrationen, Backups, Logs, Health | fertig | automatisierte Smoke-Tests |
+| Installation | Haushalt, 1–12 Personen, Rollen, sichere Zugangsdaten, Kalender | fertig | Export/Import und Reset-Werkzeug |
+| Touch-/Kiosk-UX | Wanddisplay, Tablet, Mobilnavigation, große Ziele | fertig | Fokus- und Leerlaufmodus |
+| Dashboard | Heute, Aufgaben, Familie, Einkauf, Essen, Wetter | vorbereitet | echte Daten statt Platzhalter |
+| Identität & Rechte | Admin-/Elternpasswort, Kinder-PIN, Sessions, Rollenrechte | in Arbeit | Login, Session-Cookies, Policy-Matrix |
+| Aufgaben | Zuweisung, Fälligkeit, Priorität, Abschluss, Eltern-Check | fertig | Bearbeiten, Freigabe, Wiederholung, Historie |
+| Belohnungen | Punkte, Sterne oder Münzen mit nachvollziehbarem Ledger | geplant | Punkte für geprüfte Aufgaben |
+| Kalender | Tag/Woche/Monat, Wiederholungen, Geburtstage, Ferien | Datenmodell fertig | Termin-CRUD und Wochenansicht |
+| Routinen | Morgen-/Abendroutine, Schritte, Wochentage, Fortschritt | geplant | Routine-Builder und Kinderansicht |
+| Einkauf | mehrere Listen, Kategorien, Mengen, schnelles Abhaken | geplant | gemeinsame Standardliste |
+| Mahlzeiten & Rezepte | Wochenplan, Rezepte, Zutatenübernahme | geplant | Abendessen-Wochenplan |
+| Notizen | Familiennotizen, Pinnwand und schnelle Hinweise | geplant | Notizliste |
+| Schule | Stundenplan, Hausaufgaben, Tests, Ferien | geplant | Hausaufgaben-Slice |
+| Haushalt | Putzen, Müll, Pflanzen, Wäsche und Tiere | geplant | Putz- oder Müllplan |
+| Wetter | aktuelle Lage und Vorschau über austauschbaren Anbieter | geplant | datenschutzfreundlicher Adapter |
+| Foto-/Idle-Modus | Diashow, Uhrzeit, Wetter und nächster Termin | geplant | Inaktivitäts-Timer |
+| Benachrichtigungen | In-App, Browser und später Web Push | geplant | In-App-Erinnerungen |
+| Integrationen | Google, Microsoft, CalDAV, Home Assistant | geplant | Kalender erst lokal stabilisieren |
+| Datenhoheit | lokaler Export, Import, Backups und Self-Hosting | teilweise fertig | nutzerfreundlicher Export/Restore |
+| Barrierefreiheit | Tastatur, Kontrast, Screenreader, reduzierte Bewegung | in Arbeit | automatisierte und manuelle Prüfung |
 
-## Empfohlene Reihenfolge
+## Empfohlene Produktreihenfolge
 
-1. **Authentifizierung und Rechte** – schützt das Live-System und ermöglicht Kinder-PINs.
-2. **Aufgaben vervollständigen** – Bearbeiten, Eltern-Freigabe, Wiederholung und Punkte.
-3. **Lokaler Kalender** – der Kern für die tägliche Übersicht.
-4. **Routinen** – besonders wertvoll für den Touchscreen und Kinder.
-5. **Einkauf sowie Essensplanung** – gemeinsamer Alltagsnutzen.
-6. **Notizen, Schule, Haushalt** – jeweils als kleine unabhängige Slices.
-7. **Foto-/Idle-Modus, Wetter und Integrationen** – erst auf der stabilen Basis.
+1. **Authentifizierung und Rechte** – schützt private Live-Daten und aktiviert Kinder-PINs.
+2. **Kalender-MVP** – Termin-CRUD, Wochenansicht und Dashboard-Karte.
+3. **Aufgaben vervollständigen** – Bearbeitung, Elternfreigabe, Wiederholung und Punkte.
+4. **Routinen** – starker täglicher Nutzen für Kinder und Wanddisplay.
+5. **Einkauf und Essensplanung** – gemeinsamer Haushaltsnutzen.
+6. **Notizen, Schule und Haushalt** – kleine unabhängige Module.
+7. **Idle-Modus, Wetter und Integrationen** – nach stabilem lokalem Kern.
+
+## Qualitätsmaßstab
+
+Ein Slice gilt erst als fertig, wenn Frontend, Live-API, Validierung, Fehlerzustände, responsive Touch-Bedienung, Migration und Dokumentation zusammen funktionieren. Platzhalterkarten allein zählen als vorbereitet, nicht als fertiges Feature.

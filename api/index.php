@@ -4,6 +4,7 @@ declare(strict_types=1);
 use FamilyCompass\Config\Config;
 use FamilyCompass\Controllers\FamilyMemberController;
 use FamilyCompass\Controllers\HealthController;
+use FamilyCompass\Controllers\SetupController;
 use FamilyCompass\Controllers\TaskController;
 use FamilyCompass\Core\AppException;
 use FamilyCompass\Core\Bootstrap;
@@ -11,8 +12,10 @@ use FamilyCompass\Core\Logger;
 use FamilyCompass\Core\Response;
 use FamilyCompass\Core\Router;
 use FamilyCompass\Repositories\FamilyMemberRepository;
+use FamilyCompass\Repositories\SetupRepository;
 use FamilyCompass\Repositories\TaskRepository;
 use FamilyCompass\Services\FamilyMemberService;
+use FamilyCompass\Services\SetupService;
 use FamilyCompass\Services\TaskService;
 
 spl_autoload_register(static function (string $class): void {
@@ -38,8 +41,11 @@ try {
     $familyRepository = new FamilyMemberRepository($database);
     $familyController = new FamilyMemberController(new FamilyMemberService($familyRepository));
     $taskController = new TaskController(new TaskService(new TaskRepository($database), $familyRepository));
+    $setupController = new SetupController(new SetupService(new SetupRepository($database)), $config->version());
     $router = new Router();
     $router->get('/v1/health', static function () use ($config, $logger): void { (new HealthController($config, $logger))->show(); });
+    $router->get('/v1/setup/status', static function () use ($setupController): void { $setupController->status(); });
+    $router->post('/v1/setup', static function () use ($setupController): void { $setupController->install(); });
     $router->get('/v1/family-members', static function () use ($familyController): void { $familyController->index(); });
     $router->post('/v1/family-members', static function () use ($familyController): void { $familyController->create(); });
     $router->put('/v1/family-members/{uuid}', static function (string $uuid) use ($familyController): void { $familyController->update($uuid); });

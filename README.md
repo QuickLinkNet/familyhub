@@ -1,46 +1,56 @@
 # Familienkompass
 
-Ein touchscreen-orientierter Familienorganizer als React-PWA mit nativer PHP-/SQLite-API. Phase 1 liefert die technische Grundlage und eine responsive Dashboard-OberflÃ¤che.
+Familienkompass ist ein touch-optimierter, selbst hostbarer Familienorganizer. Die React-PWA bündelt Termine, Aufgaben und Personen in einer ruhigen Oberfläche; eine schlanke PHP-/SQLite-API hält Installation und Betrieb bewusst einfach.
 
-## Voraussetzungen
+## Aktueller Stand
 
-- Node.js 20+ fÃ¼r Entwicklung und den Produktions-Build
-- PHP 8.2+ mit aktivierter Erweiterung `pdo_sqlite`
-- Apache mit `mod_rewrite` fÃ¼r Production Routing
+- responsive PWA für Wanddisplay, Tablet und Mobilgerät
+- Familienmitglieder mit Rollen, Farben, optionalem Kinder-PIN und sicher gehashtem Elternpasswort
+- Aufgaben mit Zuweisung, Priorität, Fälligkeit und Elternprüfung
+- einmaliger Einrichtungsassistent für Haushalt, Personen und persönliche Kalender
+- selbstinitialisierende PHP-/SQLite-API mit Migrationen, Backups, Logs und Health-Check
+- reproduzierbarer FTP-Deploy per `npm run deploy`
 
-## Entwicklung
+Die vollständige Produkt-Roadmap steht in [docs/FEATURES.md](docs/FEATURES.md).
+
+## Schnellstart für die Entwicklung
+
+Voraussetzungen: Node.js 20+ und eine bereits bereitgestellte Live-API.
 
 ```bash
 npm install
+copy .env.local.example .env.local
 npm run dev
 ```
 
-Der Vite-Server startet die OberflÃ¤che. FÃ¼r einen lokalen API-Test kann PHP den Projektordner bereitstellen:
+Trage in `.env.local` die URL deiner Live-API ein. Der Entwicklungsserver läuft standardmäßig unter [http://localhost:5173](http://localhost:5173). In diesem Projekt wird bewusst kein lokaler PHP-Server verwendet.
+
+## Deployment
 
 ```bash
-C:\xampp\php\php.exe -S localhost:8080 api/dev-router.php
+copy .env.deploy.example .env.deploy
+npm run deploy
 ```
 
-Danach liefert [http://localhost:8080/api/v1/health](http://localhost:8080/api/v1/health) die initialisierte Gesundheitsmeldung. FÃ¼r getrennte Entwicklungsserver setze `VITE_API_BASE_URL`, zum Beispiel in einer nicht versionierten `.env.local`.
+Der Befehl prüft TypeScript, baut die PWA, erstellt `deploy/` und lädt Frontend sowie API per FTP hoch. Bestehende Laufzeitdaten unter `storage/` werden nicht gelöscht. Zugangsdaten bleiben in der ignorierten Datei `.env.deploy`.
 
-## Produktions-Build und Deployment
+Nach dem ersten Deployment führt `/setup` durch Haushalt, Familienmitglieder und Kalender. Die Installation ist transaktional und kann nur einmal abgeschlossen werden.
 
-```bash
-npm run build
-```
+Ausführlich: [Installation](docs/INSTALLATION.md), [Architektur](docs/ARCHITECTURE.md), [API](docs/API.md), [Datenbank](docs/DATABASE.md), [Sicherheit](SECURITY.md).
 
-Lade den Inhalt von `dist/` in das Webroot hoch und lege die Ordner `api/` und `storage/` daneben ab. Apache benÃ¶tigt Schreibrechte auf `storage/database`, `storage/backups` und `storage/logs`. `storage/.htaccess` verhindert den direkten HTTP-Zugriff; bei einem Webserver ohne Apache muss die entsprechende Sperre dort konfiguriert werden.
+## Projektstruktur
 
-Die erste Anfrage startet die Selbstinstallation: Ordner werden angelegt, die Datenbank wird erstellt und ausstehende Migrationen werden angewendet.
+- `src/app` – Router, Theme und App-Shell
+- `src/components` – wiederverwendbare UI-Bausteine
+- `src/features` – fachliche Frontend-Module
+- `src/services` – zentraler API-Client
+- `api/` – native PHP-API
+- `storage/` – geschützte Laufzeitdaten
+- `scripts/` – Build- und FTP-Deployment
+- `docs/` – Produkt- und Technikdokumentation
 
-## Struktur
+## Mitwirken
 
-- `src/app` â€“ Router und App-Shell
-- `src/components` â€“ wiederverwendbare UI-Bausteine
-- `src/features` â€“ fachliche Frontend-Module
-- `src/services` â€“ zentraler API-Zugang
-- `api/` â€“ native PHP-API
-- `storage/` â€“ geschÃ¼tzte Laufzeitdaten
-- `docs/` â€“ Architektur-, Datenbank- und API-Dokumentation
+Bitte [CONTRIBUTING.md](CONTRIBUTING.md) lesen. Sicherheitsprobleme gehören nicht in öffentliche Issues; Hinweise stehen in [SECURITY.md](SECURITY.md).
 
-Weitere Details: [Architektur](docs/ARCHITECTURE.md), [Datenbank](docs/DATABASE.md), [API](docs/API.md).
+> Hinweis: Für das Repository ist noch keine Open-Source-Lizenz festgelegt. Kopieren, Weitergabe und kommerzielle Nutzung sind deshalb erst nach ausdrücklicher Freigabe erlaubt.
