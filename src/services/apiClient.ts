@@ -11,14 +11,33 @@ export class ApiError extends Error {
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? import.meta.env.BASE_URL.replace(/\/$/, '') + '/api/v1';
 let csrfToken: string | null = null;
+const retryableStatuses = new Set([500, 502, 503, 504]);
 
 export function setCsrfToken(token: string | null): void {
   csrfToken = token;
 }
 
+async function requestWithRetry(url: string, init: RequestInit, method: string): Promise<Response> {
+  const maxAttempts = ['GET', 'HEAD'].includes(method) ? 3 : 1;
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      const response = await fetch(url, init);
+      if (attempt < maxAttempts && retryableStatuses.has(response.status)) {
+        await new Promise(resolve => window.setTimeout(resolve, attempt * 350));
+        continue;
+      }
+      return response;
+    } catch (error) {
+      if (init.signal?.aborted || attempt === maxAttempts) throw error;
+      await new Promise(resolve => window.setTimeout(resolve, attempt * 350));
+    }
+  }
+  throw new ApiError('NETWORK_ERROR', 'Die Live-API ist vorübergehend nicht erreichbar.', 0);
+}
+
 export async function apiRequest<T>(path: string, method: string, body?: unknown, signal?: AbortSignal): Promise<T> {
   const hasBody = body !== undefined;
-  const response = await fetch(`${apiBaseUrl}${path}`, {
+  const response = await requestWithRetry(`${apiBaseUrl}${path}`, {
     method,
     headers: {
       Accept: 'application/json',
@@ -28,7 +47,7 @@ export async function apiRequest<T>(path: string, method: string, body?: unknown
     body: hasBody ? JSON.stringify(body) : undefined,
     signal,
     credentials: 'include'
-  });
+  }, method);
 
   if (response.status === 204) {
     return undefined as T;

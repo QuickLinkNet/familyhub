@@ -90,7 +90,7 @@ Alle Endpunkte benötigen die Rolle `ADMIN`; Mutationen benötigen zusätzlich C
 - `POST /admin/calendar-sources/{uuid}/sync` – Synchronisation manuell auslösen
 - `DELETE /admin/calendar-sources/{uuid}` – Quelle und lokalen Termin-Cache entfernen
 
-Create akzeptiert `name`, `url`, `color` und `isActive`. Update akzeptiert dieselben Felder; fehlt `url`, bleibt die gespeicherte Adresse erhalten. Zulässig sind ausschließlich direkte HTTPS-Adressen von `calendar.google.com` im iCal-Format. Aktive Quellen werden bei Kalenderabfragen nach 30 Minuten automatisch aktualisiert. Die Integration ist read-only.
+Create akzeptiert `name`, `url`, `color` und `isActive`. Update akzeptiert dieselben Felder; fehlt `url`, bleibt die gespeicherte Adresse erhalten. Zulässig sind ausschließlich direkte HTTPS-Adressen von `calendar.google.com` im iCal-Format. Neue oder ersetzte Adressen werden vor der Persistierung abgerufen und geparst. Bei einem Fehler bleibt eine bestehende Quelle unverändert; beim Anlegen entsteht kein unbrauchbarer Eintrag. Aktive Quellen werden bei Kalenderabfragen nach 30 Minuten automatisch aktualisiert. Die Integration ist read-only.
 
 `from`, `to`, `startsAt` und `endsAt` sind ISO-8601-Zeitpunkte. Schreibzugriffe akzeptieren `calendarId`, `title`, optional `description` und `location` sowie `startsAt`, `endsAt` und `allDay`. Das Ende muss nach dem Beginn liegen. Ein Abfragezeitraum ist auf 370 Tage begrenzt.
 

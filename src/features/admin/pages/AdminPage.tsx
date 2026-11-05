@@ -67,7 +67,7 @@ export function AdminPage() {
       {sources.isLoading && <Stack alignItems="center" py={4}><CircularProgress /></Stack>}
       {sources.isError && <Alert severity="error">{sources.error instanceof ApiError ? sources.error.message : 'Die Kalenderquellen konnten nicht geladen werden.'}</Alert>}
       {!sources.isLoading && !sources.isError && sources.data?.length === 0 && (
-        <EmptyStateCard icon={<AddLinkRounded color="primary" sx={{ fontSize: 56 }} />} title="Noch kein Google-Kalender verbunden" description="Füge Kathrins geheime iCal-Adresse hinzu. Termine erscheinen danach read-only im Familienkalender und Wandmodus." action={<Button variant="contained" sx={{ mt: 2 }} onClick={openCreate}>Erste Verbindung einrichten</Button>} />
+        <EmptyStateCard icon={<AddLinkRounded color="primary" sx={{ fontSize: 56 }} />} title="Noch kein Google-Kalender verbunden" description="Füge die geheime iCal-Adresse eines Familienkalenders hinzu. Termine erscheinen danach nur lesbar im Familienkalender und Wandmodus." action={<Button variant="contained" sx={{ mt: 2 }} onClick={openCreate}>Erste Verbindung einrichten</Button>} />
       )}
       <Stack spacing={1.5}>
         {sources.data?.map(source => <CalendarSourceCard key={source.id} source={source} syncing={syncSource.isPending && syncSource.variables === source.id} deleting={deleteSource.isPending && deleteSource.variables === source.id} onEdit={() => openEdit(source)} onSync={() => syncSource.mutate(source.id)} onDelete={() => remove(source)} />)}

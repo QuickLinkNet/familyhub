@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
-import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Stack, Switch, TextField, Typography } from '@mui/material';
+import { LaunchRounded, LockRounded } from '@mui/icons-material';
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, InputAdornment, Link, Stack, Switch, TextField, Typography } from '@mui/material';
 import { memberColors } from '../../../theme/memberPalette';
 import type { CalendarSource, CalendarSourceInput } from '../types/calendarSource';
 
@@ -12,7 +13,7 @@ interface CalendarSourceDialogProps {
 }
 
 export function CalendarSourceDialog({ source, pending, error, onClose, onSave }: CalendarSourceDialogProps) {
-  const [name, setName] = useState(source?.name ?? 'Kathrins Google Kalender');
+  const [name, setName] = useState(source?.name ?? 'Google Kalender');
   const [url, setUrl] = useState('');
   const [color, setColor] = useState(source?.color ?? '#6C8AB8');
   const [isActive, setIsActive] = useState(source?.isActive ?? true);
@@ -20,6 +21,7 @@ export function CalendarSourceDialog({ source, pending, error, onClose, onSave }
     event.preventDefault();
     await onSave({ name, color, isActive, ...(url.trim() === '' ? {} : { url: url.trim() }) });
   };
+  const publicAddressDetected = url.includes('/public/basic.ics');
 
   return (
     <Dialog open onClose={pending ? undefined : onClose} fullWidth maxWidth="sm" PaperProps={{ component: 'form', onSubmit: submit }}>
@@ -28,19 +30,22 @@ export function CalendarSourceDialog({ source, pending, error, onClose, onSave }
         <Stack spacing={2.5} pt={1}>
           {error && <Alert severity="error">{error}</Alert>}
           <Alert severity="info">
-            In Google Kalender am Computer: Einstellungen → gewünschten Kalender → „Kalender integrieren“ → „Geheime Adresse im iCal-Format“ kopieren.
+            In Google Kalender am Computer: Einstellungen → gewünschten Kalender → „Kalender integrieren“ → <strong>„Geheime Adresse im iCal-Format“</strong> kopieren.{' '}
+            <Link href="https://support.google.com/calendar/answer/37648?hl=de" target="_blank" rel="noreferrer" underline="hover">Google-Anleitung <LaunchRounded sx={{ fontSize: 14, verticalAlign: 'middle' }} /></Link>
           </Alert>
           <TextField required autoFocus label="Anzeigename" value={name} onChange={event => setName(event.target.value)} inputProps={{ maxLength: 80 }} />
           <TextField
             required={!source}
             label={source ? 'Neue iCal-Adresse (optional)' : 'Geheime iCal-Adresse'}
-            type="password"
+            type="url"
             value={url}
             onChange={event => setUrl(event.target.value)}
             placeholder="https://calendar.google.com/calendar/ical/…/basic.ics"
-            helperText={source ? 'Leer lassen, um die sicher gespeicherte Adresse beizubehalten.' : 'Der Link wird verschlüsselt gespeichert und nie wieder vollständig angezeigt.'}
-            autoComplete="off"
+            helperText={source ? 'Leer lassen, um die sicher gespeicherte Adresse beizubehalten.' : 'FamilyHub prüft den Link zuerst. Erst bei Erfolg wird er verschlüsselt gespeichert.'}
+            autoComplete="url"
+            slotProps={{ input: { startAdornment: <InputAdornment position="start"><LockRounded fontSize="small" /></InputAdornment> } }}
           />
+          {publicAddressDetected && <Alert severity="warning">Das ist die öffentliche iCal-Adresse. Sie funktioniert nur bei öffentlich freigegebenen Kalendern. Empfohlen ist die private beziehungsweise geheime Adresse direkt darunter.</Alert>}
           <Box>
             <Typography variant="subtitle2" mb={1}>Kalenderfarbe</Typography>
             <Stack direction="row" gap={1} flexWrap="wrap">
@@ -55,7 +60,7 @@ export function CalendarSourceDialog({ source, pending, error, onClose, onSave }
       </DialogContent>
       <DialogActions sx={{ p: 2.5, pt: 1.5 }}>
         <Button onClick={onClose} disabled={pending}>Abbrechen</Button>
-        <Button type="submit" variant="contained" disabled={pending}>{pending ? 'Verbindet …' : source ? 'Änderungen speichern' : 'Speichern & synchronisieren'}</Button>
+        <Button type="submit" variant="contained" disabled={pending}>{pending ? 'Prüft Verbindung …' : source ? (url.trim() === '' ? 'Änderungen speichern' : 'Prüfen & aktualisieren') : 'Prüfen & verbinden'}</Button>
       </DialogActions>
     </Dialog>
   );

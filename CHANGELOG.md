@@ -9,6 +9,27 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 - Aufgabenfreigabe und wiederkehrende Aufgaben
 - Routinen für Morgen und Abend
 
+## [0.6.1] - 2026-11-05
+
+### Geändert
+
+- neue und geänderte Google-iCal-Adressen werden vollständig geprüft, bevor FamilyHub sie speichert
+- der Verbindungsdialog verlinkt die offizielle Google-Anleitung und warnt direkt vor öffentlichen statt geheimen iCal-Adressen
+- die Linkeingabe löst keinen Passwortmanager mehr aus
+- der Wandmodus zeigt bei zeitgebundenen Terminen Start- und Endzeit
+- neutrale Kalendertexte ersetzen personenbezogene Beispieltexte und eignen sich damit für allgemeine Self-Hosting-Installationen
+- lesende API-Aufrufe überbrücken kurze Netzwerk- und Hosting-Aussetzer mit begrenzten Wiederholungen
+
+### Behoben
+
+- ein ungültiger Ersatzlink kann eine funktionierende Kalenderquelle nicht mehr überschreiben
+- Google-Ablehnungen, Zeitüberschreitungen und öffentliche Links liefern unterscheidbare Hilfetexte
+
+### Geprüft
+
+- bestehender Google-Kalender mit echten Terminen in Wochenkalender, Adminbereich und Wandmodus
+- Dialogzustände für geheime und öffentliche iCal-Adressen ohne Speicherung von Testdaten
+
 ## [0.6.0] - 2026-11-05
 
 ### Hinzugefügt

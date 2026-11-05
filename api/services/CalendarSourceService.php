@@ -28,6 +28,7 @@ final class CalendarSourceService
     public function create(array $input, array $actor): array
     {
         $validated = $this->validate($input);
+        $prepared = $this->prepareSync((string) $validated['url']);
         $now = gmdate('c');
         $source = $this->repository->create([
             'uuid' => $this->uuid(),
@@ -41,7 +42,13 @@ final class CalendarSourceService
             'created_at' => $now,
             'updated_at' => $now,
         ]);
-        return $this->synchronize($source['uuid']);
+        try {
+            $this->storePreparedSync((string) $source['uuid'], $prepared);
+        } catch (\Throwable) {
+            $this->repository->delete((string) $source['uuid']);
+            throw new AppException('CALENDAR_SYNC_FAILED', 'Die Kalenderverbindung konnte nicht sicher gespeichert werden.', 500);
+        }
+        return $this->present($this->requireSource((string) $source['uuid']));
     }
 
     /** @param array<string, mixed> $input */
@@ -49,6 +56,7 @@ final class CalendarSourceService
     {
         $existing = $this->requireSource($uuid);
         $validated = $this->validate($input, $existing);
+        $prepared = $validated['url'] === null ? null : $this->prepareSync($validated['url']);
         $source = $this->repository->update($uuid, [
             'name' => $validated['name'],
             'source_url_encrypted' => $validated['url'] === null ? $existing['source_url_encrypted'] : $this->cipher->encrypt($validated['url']),
@@ -56,7 +64,11 @@ final class CalendarSourceService
             'is_active' => $validated['is_active'],
             'updated_at' => gmdate('c'),
         ]);
-        return $validated['url'] === null ? $this->present($source) : $this->synchronize($uuid);
+        if ($prepared !== null) {
+            $this->storePreparedSync($uuid, $prepared);
+            $source = $this->requireSource($uuid);
+        }
+        return $this->present($source);
     }
 
     public function synchronize(string $uuid): array
@@ -64,23 +76,33 @@ final class CalendarSourceService
         $source = $this->requireSource($uuid);
         try {
             $url = $this->cipher->decrypt($source['source_url_encrypted']);
-            $content = $this->fetcher->fetch($url);
-            $timezone = new DateTimeZone($this->repository->householdTimezone());
-            $windowStart = (new DateTimeImmutable('now', $timezone))->modify('-90 days')->setTime(0, 0);
-            $windowEnd = (new DateTimeImmutable('now', $timezone))->modify('+730 days')->setTime(23, 59, 59);
-            $events = $this->parser->parse($content, $windowStart, $windowEnd, $timezone->getName());
-            $this->repository->replaceEvents(
-                $uuid,
-                $events,
-                $windowStart->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z'),
-                $windowEnd->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z')
-            );
+            $this->storePreparedSync($uuid, $this->prepareSync($url));
         } catch (AppException $error) {
             $this->repository->markSyncError($uuid, $error->getMessage());
         } catch (\Throwable) {
             $this->repository->markSyncError($uuid, 'Der Kalender konnte nicht synchronisiert werden.');
         }
         return $this->present($this->requireSource($uuid));
+    }
+
+    /** @return array{events: list<array<string, mixed>>, windowStart: string, windowEnd: string} */
+    private function prepareSync(string $url): array
+    {
+        $content = $this->fetcher->fetch($url);
+        $timezone = new DateTimeZone($this->repository->householdTimezone());
+        $windowStart = (new DateTimeImmutable('now', $timezone))->modify('-90 days')->setTime(0, 0);
+        $windowEnd = (new DateTimeImmutable('now', $timezone))->modify('+730 days')->setTime(23, 59, 59);
+        return [
+            'events' => $this->parser->parse($content, $windowStart, $windowEnd, $timezone->getName()),
+            'windowStart' => $windowStart->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z'),
+            'windowEnd' => $windowEnd->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z'),
+        ];
+    }
+
+    /** @param array{events: list<array<string, mixed>>, windowStart: string, windowEnd: string} $prepared */
+    private function storePreparedSync(string $uuid, array $prepared): void
+    {
+        $this->repository->replaceEvents($uuid, $prepared['events'], $prepared['windowStart'], $prepared['windowEnd']);
     }
 
     public function synchronizeStale(): void
