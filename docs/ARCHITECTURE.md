@@ -42,4 +42,16 @@ Die Einrichtung von Haushalt, Personen und Kalendern läuft in einer einzelnen D
 
 `npm run build` erzeugt die PWA und ein vollständiges `deploy/`-Paket. `npm run deploy` überträgt dieses Paket per FTP/FTPS. Der geschützte `storage/`-Bereich liegt neben API und Frontend, aber außerhalb der statischen Build-Ausgabe.
 
-Externe Kalender, Wetterdienste und Smart-Home-Systeme werden später hinter fachlichen Adapter-Interfaces angebunden, damit der lokale Kern unabhängig bleibt.
+Weitere externe Dienste wie Wetter- und Smart-Home-Systeme werden später hinter fachlichen Adapter-Interfaces angebunden, damit der lokale Kern unabhängig bleibt.
+
+## Externe Kalender
+
+Google-Kalender werden über einen kleinen nativen iCal-Adapter eingebunden:
+
+```text
+Admin-API → URL-Prüfung → verschlüsselte Quelle → iCal-Abruf → Parser → lokaler read-only Cache
+```
+
+Nur direkte HTTPS-iCal-Adressen von `calendar.google.com` werden akzeptiert. DNS-Ziele, Antwortgröße, Redirects und Zeitlimits werden geprüft. Der geheime Link liegt AES-256-GCM-verschlüsselt in SQLite; der zufällige Schlüssel liegt separat im geschützten `storage/`. Das Frontend erhält ausschließlich einen neutralen URL-Hinweis.
+
+Synchronisierte Termine werden für 90 Tage Vergangenheit und 730 Tage Zukunft materialisiert. Gängige tägliche, wöchentliche, monatliche und jährliche Wiederholungen, Ausnahmen und Google-Overrides werden verarbeitet. Kalenderabfragen aktualisieren aktive Quellen frühestens nach 30 Minuten; bei Fehlern bleibt der letzte erfolgreiche Cache verfügbar.

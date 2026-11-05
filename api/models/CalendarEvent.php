@@ -39,6 +39,8 @@ final class CalendarEvent
             'endsAt' => $this->endsAt,
             'allDay' => $this->allDay,
             'createdBy' => ['id' => $this->createdByMemberId, 'name' => $this->createdByMemberName],
+            'source' => 'LOCAL',
+            'editable' => true,
             'createdAt' => $this->createdAt,
             'updatedAt' => $this->updatedAt,
         ];

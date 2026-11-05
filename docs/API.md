@@ -78,6 +78,20 @@ Eine prüfpflichtige Aufgabe wechselt beim Abschluss in `PENDING_VERIFICATION`.
 - `PUT /calendar-events/{uuid}` – Admin oder Elternteil
 - `DELETE /calendar-events/{uuid}` – Admin oder Elternteil
 
+Lokale Termine enthalten `source: "LOCAL"` und `editable: true`. Synchronisierte Google-Termine enthalten `source: "EXTERNAL"`, `editable: false` und können ausschließlich in Google Kalender geändert werden.
+
+### Administration: Google-Kalender
+
+Alle Endpunkte benötigen die Rolle `ADMIN`; Mutationen benötigen zusätzlich CSRF.
+
+- `GET /admin/calendar-sources` – eingerichtete Quellen ohne geheime URL
+- `POST /admin/calendar-sources` – Google-iCal-Quelle anlegen und sofort synchronisieren
+- `PUT /admin/calendar-sources/{uuid}` – Name, Farbe, Aktivstatus oder geheime URL ändern
+- `POST /admin/calendar-sources/{uuid}/sync` – Synchronisation manuell auslösen
+- `DELETE /admin/calendar-sources/{uuid}` – Quelle und lokalen Termin-Cache entfernen
+
+Create akzeptiert `name`, `url`, `color` und `isActive`. Update akzeptiert dieselben Felder; fehlt `url`, bleibt die gespeicherte Adresse erhalten. Zulässig sind ausschließlich direkte HTTPS-Adressen von `calendar.google.com` im iCal-Format. Aktive Quellen werden bei Kalenderabfragen nach 30 Minuten automatisch aktualisiert. Die Integration ist read-only.
+
 `from`, `to`, `startsAt` und `endsAt` sind ISO-8601-Zeitpunkte. Schreibzugriffe akzeptieren `calendarId`, `title`, optional `description` und `location` sowie `startsAt`, `endsAt` und `allDay`. Das Ende muss nach dem Beginn liegen. Ein Abfragezeitraum ist auf 370 Tage begrenzt.
 
 ## Einmalige Einrichtung

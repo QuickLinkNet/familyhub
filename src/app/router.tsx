@@ -11,6 +11,8 @@ import { SetupGate } from '../features/setup/components/SetupGate';
 import { SetupPage } from '../features/setup/pages/SetupPage';
 import { NotFoundPage } from '../features/navigation/pages/NotFoundPage';
 import { ShoppingPage } from '../features/shopping/pages/ShoppingPage';
+import { AdminPage } from '../features/admin/pages/AdminPage';
+import { WallPage } from '../features/wall/pages/WallPage';
 
 const shell = (content: ReactNode) => <AppShell>{content}</AppShell>;
 
@@ -27,6 +29,8 @@ export const appRouter = createBrowserRouter([
           { path: '/family', element: shell(<FamilyPage />) },
           { path: '/calendar', element: shell(<CalendarPage />) },
           { path: '/tasks', element: shell(<TasksPage />) },
+          { path: '/admin', element: shell(<AdminPage />) },
+          { path: '/wall', element: <WallPage /> },
           { path: '/shopping', element: shell(<ShoppingPage />) },
           { path: '*', element: shell(<NotFoundPage />) }
         ]

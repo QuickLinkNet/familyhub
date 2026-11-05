@@ -120,6 +120,11 @@ final class AuthService
         return $this->requireUser(self::ADULT_ROLES);
     }
 
+    public function requireAdmin(): array
+    {
+        return $this->requireUser(['ADMIN']);
+    }
+
     public function requireCsrf(): void
     {
         $expected = $_SESSION['csrf_token'] ?? null;

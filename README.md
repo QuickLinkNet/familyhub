@@ -6,6 +6,9 @@ Familienkompass ist ein touch-optimierter, selbst hostbarer Familienorganizer. D
 
 - responsive PWA für Wanddisplay, Tablet und Mobilgerät
 - gemeinsamer und persönlicher Familienkalender mit Wochen- und Monatsansicht sowie Terminverwaltung
+- read-only Google-Kalender per verschlüsselt gespeicherter geheimer iCal-Adresse
+- eigenständiger Wand- und Präsentationsmodus mit Uhrzeit, Terminen, Aufgaben und Familie
+- geschützter Adminbereich für Kalenderquellen und Synchronisationsstatus
 - Familienmitglieder mit Rollen, Farben, sicherem Elternpasswort und optionalem Kinder-PIN
 - Touch-Anmeldung mit HttpOnly-Session, CSRF-Schutz und serverseitigen Rollenrechten
 - Aufgaben mit Zuweisung, Priorität, Fälligkeit und Elternprüfung
@@ -37,6 +40,8 @@ npm run deploy
 Der Befehl prüft TypeScript, baut die PWA, erstellt `deploy/` und lädt Frontend sowie API per FTP hoch. Bestehende Laufzeitdaten unter `storage/` werden nicht gelöscht. Zugangsdaten bleiben in der ignorierten Datei `.env.deploy`.
 
 Nach dem ersten Deployment führt `/setup` durch Haushalt, Familienmitglieder und Kalender. Danach melden sich Erwachsene mit Passwort und Kinder mit ihrer optionalen PIN über die Profilauswahl an. Die Installation ist transaktional und kann nur einmal abgeschlossen werden.
+
+Admins können unter `/admin` einen Google-Kalender verbinden. Benötigt wird die **Geheime Adresse im iCal-Format** aus Google Kalender unter „Einstellungen → Kalender integrieren“. Die Adresse wird verschlüsselt gespeichert, nie wieder vollständig an das Frontend übertragen und ausschließlich lesend synchronisiert.
 
 Ausführlich: [Installation](docs/INSTALLATION.md), [Architektur](docs/ARCHITECTURE.md), [API](docs/API.md), [Datenbank](docs/DATABASE.md), [Sicherheit](SECURITY.md).
 
