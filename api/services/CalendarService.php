@@ -9,15 +9,23 @@ use FamilyCompass\Core\AppException;
 use FamilyCompass\Models\Calendar;
 use FamilyCompass\Models\CalendarEvent;
 use FamilyCompass\Repositories\CalendarRepository;
+use FamilyCompass\Repositories\CalendarSourceRepository;
 
 final class CalendarService
 {
-    public function __construct(private CalendarRepository $repository) {}
+    public function __construct(
+        private CalendarRepository $repository,
+        private CalendarSourceRepository $sourceRepository,
+        private CalendarSourceService $sourceService
+    ) {}
 
     /** @return list<array<string, mixed>> */
     public function calendars(): array
     {
-        return array_map(static fn (Calendar $calendar): array => $calendar->toArray(), $this->repository->allCalendars());
+        return array_merge(
+            array_map(static fn (Calendar $calendar): array => $calendar->toArray(), $this->repository->allCalendars()),
+            $this->sourceRepository->activeCalendars()
+        );
     }
 
     /** @return list<array<string, mixed>> */
@@ -28,7 +36,15 @@ final class CalendarService
         if ($toDate <= $fromDate || $toDate->getTimestamp() - $fromDate->getTimestamp() > 370 * 86400) {
             throw new AppException('VALIDATION_ERROR', 'Der Kalenderzeitraum muss positiv und höchstens 370 Tage lang sein.', 422);
         }
-        return array_map(static fn (CalendarEvent $event): array => $event->toArray(), $this->repository->eventsBetween($this->utc($fromDate), $this->utc($toDate)));
+        $this->sourceService->synchronizeStale();
+        $fromUtc = $this->utc($fromDate);
+        $toUtc = $this->utc($toDate);
+        $events = array_merge(
+            array_map(static fn (CalendarEvent $event): array => $event->toArray(), $this->repository->eventsBetween($fromUtc, $toUtc)),
+            $this->sourceRepository->eventsBetween($fromUtc, $toUtc)
+        );
+        usort($events, static fn (array $a, array $b): int => [$a['startsAt'], $a['endsAt'], $a['title']] <=> [$b['startsAt'], $b['endsAt'], $b['title']]);
+        return $events;
     }
 
     /** @param array<string, mixed> $input @param array{id: string, name: string, color: string, role: string} $actor */

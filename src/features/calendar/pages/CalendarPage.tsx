@@ -91,7 +91,7 @@ export function CalendarPage() {
         />
       )}
       {(createDate !== null || selectedEvent !== null) && canManage && (
-        <EventDialog event={selectedEvent} initialDate={createDate ?? new Date()} calendars={calendars.data ?? []} onClose={closeDialog} />
+        <EventDialog event={selectedEvent} initialDate={createDate ?? new Date()} calendars={(calendars.data ?? []).filter(calendar => calendar.type !== 'EXTERNAL')} onClose={closeDialog} />
       )}
     </Stack>
   );

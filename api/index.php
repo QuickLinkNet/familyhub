@@ -4,25 +4,31 @@ declare(strict_types=1);
 use FamilyCompass\Config\Config;
 use FamilyCompass\Controllers\AuthController;
 use FamilyCompass\Controllers\CalendarController;
+use FamilyCompass\Controllers\CalendarSourceController;
 use FamilyCompass\Controllers\FamilyMemberController;
 use FamilyCompass\Controllers\HealthController;
 use FamilyCompass\Controllers\SetupController;
 use FamilyCompass\Controllers\TaskController;
 use FamilyCompass\Core\AppException;
 use FamilyCompass\Core\Bootstrap;
+use FamilyCompass\Core\CalendarSourceCipher;
 use FamilyCompass\Core\Logger;
 use FamilyCompass\Core\Response;
 use FamilyCompass\Core\Router;
 use FamilyCompass\Repositories\AuthRepository;
 use FamilyCompass\Repositories\CalendarRepository;
+use FamilyCompass\Repositories\CalendarSourceRepository;
 use FamilyCompass\Repositories\FamilyMemberRepository;
 use FamilyCompass\Repositories\SetupRepository;
 use FamilyCompass\Repositories\TaskRepository;
 use FamilyCompass\Services\AuthService;
 use FamilyCompass\Services\CalendarService;
+use FamilyCompass\Services\CalendarSourceService;
 use FamilyCompass\Services\FamilyMemberService;
 use FamilyCompass\Services\SetupService;
 use FamilyCompass\Services\TaskService;
+use FamilyCompass\Services\IcalFetcher;
+use FamilyCompass\Services\IcalParser;
 
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
@@ -59,7 +65,15 @@ try {
 
     $authService = new AuthService(new AuthRepository($database));
     $authController = new AuthController($authService);
-    $calendarController = new CalendarController(new CalendarService(new CalendarRepository($database)));
+    $calendarSourceRepository = new CalendarSourceRepository($database);
+    $calendarSourceService = new CalendarSourceService(
+        $calendarSourceRepository,
+        new CalendarSourceCipher($config),
+        new IcalFetcher(),
+        new IcalParser()
+    );
+    $calendarController = new CalendarController(new CalendarService(new CalendarRepository($database), $calendarSourceRepository, $calendarSourceService));
+    $calendarSourceController = new CalendarSourceController($calendarSourceService);
     $familyRepository = new FamilyMemberRepository($database);
     $familyController = new FamilyMemberController(new FamilyMemberService($familyRepository));
     $taskController = new TaskController(new TaskService(new TaskRepository($database), $familyRepository));
@@ -160,6 +174,30 @@ try {
         $authService->requireAdult();
         $authService->requireCsrf();
         $calendarController->delete($uuid);
+    });
+    $router->get('/v1/admin/calendar-sources', static function () use ($authService, $calendarSourceController): void {
+        $authService->requireAdmin();
+        $calendarSourceController->index();
+    });
+    $router->post('/v1/admin/calendar-sources', static function () use ($authService, $calendarSourceController): void {
+        $actor = $authService->requireAdmin();
+        $authService->requireCsrf();
+        $calendarSourceController->create($actor);
+    });
+    $router->put('/v1/admin/calendar-sources/{uuid}', static function (string $uuid) use ($authService, $calendarSourceController): void {
+        $authService->requireAdmin();
+        $authService->requireCsrf();
+        $calendarSourceController->update($uuid);
+    });
+    $router->post('/v1/admin/calendar-sources/{uuid}/sync', static function (string $uuid) use ($authService, $calendarSourceController): void {
+        $authService->requireAdmin();
+        $authService->requireCsrf();
+        $calendarSourceController->synchronize($uuid);
+    });
+    $router->delete('/v1/admin/calendar-sources/{uuid}', static function (string $uuid) use ($authService, $calendarSourceController): void {
+        $authService->requireAdmin();
+        $authService->requireCsrf();
+        $calendarSourceController->delete($uuid);
     });
 
     $router->dispatch($_SERVER['REQUEST_METHOD'] ?? 'GET', $_SERVER['REQUEST_URI'] ?? '/');

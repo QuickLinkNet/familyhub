@@ -23,7 +23,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   return <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', pb: { xs: 9, md: 0 } }}>
     <AppHeader user={user} signingOut={logout.isPending} onOpenNavigation={() => setDrawerOpen(true)} onSignOut={() => logout.mutate()} />
     <Drawer variant={isDesktop ? 'permanent' : 'temporary'} open={isDesktop || drawerOpen} onClose={() => setDrawerOpen(false)} ModalProps={{ keepMounted: true }} sx={{ '& .MuiDrawer-paper': { width: drawerWidth, boxSizing: 'border-box', borderRight: '1px solid', borderColor: 'divider' } }}>
-      <AppNavigation currentPath={location.pathname} systemReady={health.isSuccess} onNavigate={() => setDrawerOpen(false)} />
+      <AppNavigation currentPath={location.pathname} systemReady={health.isSuccess} userRole={user?.role ?? null} onNavigate={() => setDrawerOpen(false)} />
     </Drawer>
     <Box component="main" sx={{ ml: { md: `${drawerWidth}px` }, px: { xs: 2, sm: 3, lg: 5 }, py: { xs: 3, md: 4 }, maxWidth: { xl: 1760 } }}>{children}</Box>
     <AppBottomNavigation currentPath={location.pathname} zIndex={theme.zIndex.appBar} />

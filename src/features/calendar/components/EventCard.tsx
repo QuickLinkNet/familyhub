@@ -27,7 +27,7 @@ export function EventCard({ event, canManage, onOpen, compact = false }: EventCa
     </Box>
   );
 
-  return canManage
+  return canManage && event.editable !== false
     ? <CardActionArea onClick={onOpen} sx={{ borderRadius: 2, p: 0.5, minHeight: compact ? 44 : undefined }}>{content}</CardActionArea>
     : content;
 }

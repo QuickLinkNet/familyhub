@@ -14,6 +14,7 @@ Aktuelle Entwicklung:
 4. Haushalt, Erwachsenenpasswörter und Kalender
 5. Login-Sperren und Authentifizierungsgrundlage
 6. Kalendertermine und Zeitraumindizes
+7. verschlüsselte externe Kalenderquellen und synchronisierte read-only Termine
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -27,6 +28,8 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 - `households` – Haushalt, Locale, Zeitzone und Setup-Zeitpunkt
 - calendars – gemeinsamer sowie persönliche Kalender
 - `calendar_events` – Termine, Zeiträume, Orte und Ersteller
+- `calendar_sources` – verschlüsselte Google-iCal-Verbindungen und Synchronisationsstatus
+- `external_calendar_events` – lokal zwischengespeicherte read-only Termine externer Quellen
 - `auth_login_attempts` – begrenzte Fehlversuche und zeitweilige Login-Sperren
 - `schema_migrations` – angewendete Migrationen
 

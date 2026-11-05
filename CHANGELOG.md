@@ -9,6 +9,32 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 - Aufgabenfreigabe und wiederkehrende Aufgaben
 - Routinen für Morgen und Abend
 
+## [0.6.0] - 2026-11-05
+
+### Hinzugefügt
+
+- geschützter Adminbereich für externe Kalenderquellen
+- read-only Google-Kalender über die geheime iCal-Adresse mit manueller und automatischer Synchronisation
+- AES-256-GCM-verschlüsselte Linkablage mit separatem Schlüssel im geschützten Storage
+- nativer iCal-Parser für Termine, Ganztagstermine, Ausnahmen und gängige Wiederholungen
+- eigenständiger responsiver Wandmodus mit Uhr, nächsten Terminen, offenen Aufgaben und Familienprofilen
+- direkte Einstiege für Wandmodus und Google-Kalender auf dem Dashboard
+
+### Geändert
+
+- unfertige Module werden in der normalen Präsentationsoberfläche nicht mehr als Hauptnavigation beworben
+- externe Termine werden klar als read-only behandelt und bleiben ausschließlich in Google bearbeitbar
+
+### Sicherheit
+
+- Google-Feeds sind auf direkte HTTPS-iCal-Ziele bei `calendar.google.com` begrenzt
+- DNS-Ziele, Redirects, Downloadgröße und Zeitlimits werden serverseitig kontrolliert
+
+### Geprüft
+
+- iCal-Parser-Smoke-Test und wiederholbarer Migrationslauf
+- Admin-, Rollen-, Kalender- und Wandmodus-Regression auf Desktop und Mobil
+
 ## [0.5.1] - 2026-11-05
 
 ### Geändert

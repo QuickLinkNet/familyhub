@@ -1,13 +1,14 @@
-import { RestaurantRounded, SchoolRounded, ShoppingBasketRounded } from '@mui/icons-material';
 import { Box, Stack } from '@mui/material';
 import { PageHeader } from '../../../components/molecules/PageHeader';
+import { useAuthSession } from '../../auth/hooks/useAuth';
 import { useCalendarEvents } from '../../calendar/hooks/useCalendar';
 import { useFamilyMembers } from '../../family/hooks/useFamilyMembers';
 import { useTasks } from '../../tasks/hooks/useTasks';
-import { ComingSoonCard } from '../components/ComingSoonCard';
+import { AdminSetupCard } from '../components/AdminSetupCard';
 import { FamilySummaryCard } from '../components/FamilySummaryCard';
 import { TasksSummaryCard } from '../components/TasksSummaryCard';
 import { TodayCard } from '../components/TodayCard';
+import { WallModeCard } from '../components/WallModeCard';
 
 const now = new Date();
 const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -19,6 +20,7 @@ export function DashboardPage() {
   const events = useCalendarEvents(todayStart.toISOString(), tomorrowStart.toISOString());
   const tasks = useTasks();
   const family = useFamilyMembers();
+  const session = useAuthSession();
   const todayEvents = events.data ?? [];
   const openTasks = (tasks.data ?? []).filter(task => task.status === 'OPEN');
   const completedTasks = (tasks.data ?? []).filter(task => task.status !== 'OPEN');
@@ -31,9 +33,8 @@ export function DashboardPage() {
         <TodayCard events={todayEvents} loading={events.isLoading} error={events.isError} />
         <TasksSummaryCard openCount={openTasks.length} completedCount={completedTasks.length} totalCount={(tasks.data ?? []).length} loading={tasks.isLoading} error={tasks.isError} />
         <FamilySummaryCard members={activeFamily} loading={family.isLoading} error={family.isError} />
-        <ComingSoonCard title="Einkauf" icon={<ShoppingBasketRounded color="secondary" />} accent="#e0ad45" text="Gemeinsame Listen und schnelles Abhaken kommen als Nächstes." />
-        <ComingSoonCard title="Essen" icon={<RestaurantRounded color="secondary" />} accent="#bd7558" text="Wochenplan und Familienrezepte sind auf der Roadmap." />
-        <ComingSoonCard title="Schule & Routinen" icon={<SchoolRounded color="primary" />} accent="#6c8ab8" text="Stundenpläne, Routinen und Belohnungen folgen schrittweise." />
+        <WallModeCard />
+        {session.data?.user?.role === 'ADMIN' && <AdminSetupCard />}
       </Box>
     </Stack>
   );

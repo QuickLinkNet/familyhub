@@ -18,6 +18,9 @@ Bitte Sicherheitslücken nicht als öffentliches Issue veröffentlichen. Nutze e
 - Öffentliche Datensätze verwenden UUIDs.
 - `storage/` ist unter Apache vor direktem HTTP-Zugriff geschützt.
 - Deployment-Secrets liegen in ignorierten lokalen Umgebungsdateien.
+- geheime Google-iCal-Adressen werden AES-256-GCM-verschlüsselt gespeichert; der Schlüssel liegt separat im geschützten Storage
+- externe Kalenderabrufe erlauben ausschließlich validierte HTTPS-Ziele bei `calendar.google.com`, ohne Redirects und mit Größen- sowie Zeitlimits
+- Kalenderquellen können ausschließlich von Admins verwaltet werden und werden nie vollständig an das Frontend zurückgegeben
 
 Die öffentliche Profilauswahl liefert Namen, Farbe, Rolle und die Information, ob ein Geheimnis erforderlich ist. Das ist für ein gemeinsames Familien-Touchdisplay beabsichtigt. Öffentlich aus dem Internet erreichbare Installationen sollten zusätzlich durch Firewall, VPN oder Webserver-Zugriffsschutz begrenzt werden.
 

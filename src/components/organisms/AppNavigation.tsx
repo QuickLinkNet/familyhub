@@ -1,14 +1,16 @@
 import { Box, Chip, Divider, List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { navigationItems } from '../../app/navigation';
+import type { AuthRole } from '../../features/auth/types/auth';
 
 interface AppNavigationProps {
   currentPath: string;
   systemReady: boolean;
   onNavigate: () => void;
+  userRole: AuthRole | null;
 }
 
-export function AppNavigation({ currentPath, systemReady, onNavigate }: AppNavigationProps) {
+export function AppNavigation({ currentPath, systemReady, onNavigate, userRole }: AppNavigationProps) {
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: 'background.paper' }}>
       <Box sx={{ p: 3 }}>
@@ -17,7 +19,7 @@ export function AppNavigation({ currentPath, systemReady, onNavigate }: AppNavig
       </Box>
       <Divider />
       <List sx={{ p: 1.5 }}>
-        {navigationItems.map(item => (
+        {navigationItems.filter(item => item.roles === undefined || (userRole !== null && item.roles.includes(userRole))).map(item => (
           <ListItemButton
             key={item.path}
             component={Link}
