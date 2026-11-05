@@ -27,7 +27,7 @@ export function WeekCalendar({ days, events, canManage, onCreate, onOpen }: Week
               </Stack>
               <Stack spacing={1}>
                 {dayEvents.length === 0 && <Typography variant="body2" color="text.secondary" sx={{ py: 1 }}>Keine Termine</Typography>}
-                {dayEvents.map(event => <EventCard key={event.id} event={event} canManage={canManage} onOpen={() => onOpen(event)} />)}
+                {dayEvents.map(event => <EventCard key={event.id} event={event} day={day} canManage={canManage} onOpen={() => onOpen(event)} />)}
               </Stack>
             </CardContent>
           </Card>

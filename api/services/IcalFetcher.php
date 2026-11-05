@@ -39,18 +39,20 @@ final class IcalFetcher
         }
         $context = stream_context_create(['http' => [
             'method' => 'GET',
-            'header' => "Accept: text/calendar\r\nUser-Agent: FamilyHub/0.6\r\n",
+            'header' => "Accept: text/calendar\r\nUser-Agent: FamilyHub/0.6.1\r\n",
             'timeout' => 15,
             'follow_location' => 0,
             'ignore_errors' => true,
         ]]);
         $content = @file_get_contents($url, false, $context, 0, self::MAX_BYTES + 1);
+        $statusLine = $http_response_header[0] ?? '';
+        preg_match('/\s(\d{3})\s/', $statusLine, $statusMatch);
+        $status = isset($statusMatch[1]) ? (int) $statusMatch[1] : 0;
+        if ($status !== 200) {
+            throw $this->fetchException($url, $status, $content === false);
+        }
         if ($content === false || strlen($content) > self::MAX_BYTES) {
             throw new AppException('CALENDAR_SYNC_FAILED', 'Der Google-Kalender konnte nicht sicher geladen werden.', 502);
-        }
-        $status = $http_response_header[0] ?? '';
-        if (preg_match('/\s200\s/', $status) !== 1) {
-            throw new AppException('CALENDAR_SYNC_FAILED', 'Google hat den Kalenderlink abgelehnt. Bitte die iCal-Adresse prüfen.', 502);
         }
         return $this->validateCalendar($content);
     }
@@ -68,7 +70,7 @@ final class IcalFetcher
             CURLOPT_TIMEOUT => 15,
             CURLOPT_PROTOCOLS => CURLPROTO_HTTPS,
             CURLOPT_HTTPHEADER => ['Accept: text/calendar'],
-            CURLOPT_USERAGENT => 'FamilyHub/0.6',
+            CURLOPT_USERAGENT => 'FamilyHub/0.6.1',
             CURLOPT_WRITEFUNCTION => static function ($curl, string $chunk) use (&$content): int {
                 if (strlen($content) + strlen($chunk) > self::MAX_BYTES) { return 0; }
                 $content .= $chunk;
@@ -77,11 +79,33 @@ final class IcalFetcher
         ]);
         $success = curl_exec($handle);
         $status = (int) curl_getinfo($handle, CURLINFO_RESPONSE_CODE);
+        $curlError = curl_errno($handle);
         curl_close($handle);
         if ($success === false || $status !== 200) {
-            throw new AppException('CALENDAR_SYNC_FAILED', 'Google hat den Kalenderlink abgelehnt oder nicht rechtzeitig geantwortet.', 502);
+            throw $this->fetchException($url, $status, $curlError !== 0);
         }
         return $this->validateCalendar($content);
+    }
+
+    private function fetchException(string $url, int $status, bool $connectionFailed): AppException
+    {
+        if (str_contains((string) parse_url($url, PHP_URL_PATH), '/public/basic.ics')) {
+            return new AppException(
+                'PUBLIC_CALENDAR_NOT_ACCESSIBLE',
+                'Diese öffentliche iCal-Adresse funktioniert nur bei einem öffentlich freigegebenen Kalender. Nutze stattdessen die private beziehungsweise geheime iCal-Adresse direkt darunter.',
+                422
+            );
+        }
+        if (in_array($status, [401, 403, 404, 410], true)) {
+            return new AppException('CALENDAR_LINK_REJECTED', 'Google hat die geheime iCal-Adresse abgelehnt. Bitte kopiere sie in Google Kalender unter „Kalender integrieren“ erneut.', 422);
+        }
+        if ($status === 429) {
+            return new AppException('CALENDAR_RATE_LIMITED', 'Google begrenzt die Kalenderabfrage gerade. Bitte versuche es in einigen Minuten erneut.', 503);
+        }
+        if ($connectionFailed) {
+            return new AppException('CALENDAR_SYNC_FAILED', 'Google hat nicht rechtzeitig geantwortet. Die bestehende Kalenderverbindung bleibt unverändert.', 502);
+        }
+        return new AppException('CALENDAR_SYNC_FAILED', 'Google konnte den Kalender gerade nicht bereitstellen. Bitte versuche es später erneut.', 502);
     }
 
     private function validateCalendar(string $content): string

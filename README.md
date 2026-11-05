@@ -41,7 +41,7 @@ Der Befehl prüft TypeScript, baut die PWA, erstellt `deploy/` und lädt Fronten
 
 Nach dem ersten Deployment führt `/setup` durch Haushalt, Familienmitglieder und Kalender. Danach melden sich Erwachsene mit Passwort und Kinder mit ihrer optionalen PIN über die Profilauswahl an. Die Installation ist transaktional und kann nur einmal abgeschlossen werden.
 
-Admins können unter `/admin` einen Google-Kalender verbinden. Benötigt wird die **Geheime Adresse im iCal-Format** aus Google Kalender unter „Einstellungen → Kalender integrieren“. Die Adresse wird verschlüsselt gespeichert, nie wieder vollständig an das Frontend übertragen und ausschließlich lesend synchronisiert.
+Admins können unter `/admin` einen Google-Kalender verbinden. Benötigt wird die **Geheime Adresse im iCal-Format** aus Google Kalender unter „Einstellungen → Kalender integrieren“. FamilyHub prüft und liest die Adresse vollständig ein, bevor sie verschlüsselt gespeichert wird. Sie wird nie wieder vollständig an das Frontend übertragen und ausschließlich lesend synchronisiert.
 
 Ausführlich: [Installation](docs/INSTALLATION.md), [Architektur](docs/ARCHITECTURE.md), [API](docs/API.md), [Datenbank](docs/DATABASE.md), [Sicherheit](SECURITY.md).
 

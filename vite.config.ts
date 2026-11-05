@@ -25,6 +25,7 @@ export default defineConfig(({ mode }) => {
         '/api/v1': {
           target: liveApiOrigin,
           changeOrigin: true,
+          headers: { Connection: 'close' },
           secure: true,
           cookieDomainRewrite: '',
           cookiePathRewrite: '/',

@@ -45,7 +45,7 @@ function DesktopMonthGrid({ days, month, events, canManage, onCreate, onOpen }: 
                 {canManage && <IconButton size="small" aria-label={`Termin am ${dayFormatter.format(day)} hinzufügen`} onClick={() => onCreate(day)}><AddRounded fontSize="small" /></IconButton>}
               </Stack>
               <Stack spacing={0.5}>
-                {dayEvents.slice(0, 3).map(event => <EventCard key={event.id} event={event} canManage={canManage} compact onOpen={() => onOpen(event)} />)}
+                {dayEvents.slice(0, 3).map(event => <EventCard key={event.id} event={event} day={day} canManage={canManage} compact onOpen={() => onOpen(event)} />)}
                 {dayEvents.length > 3 && <Typography variant="caption" color="text.secondary">+{dayEvents.length - 3} weitere</Typography>}
               </Stack>
             </CardContent>
@@ -91,7 +91,7 @@ function MobileMonthGrid({ days, month, events, selectedDay, selectedEvents, can
           </Stack>
           <Stack spacing={1}>
             {selectedEvents.length === 0 && <Typography color="text.secondary">Keine Termine an diesem Tag.</Typography>}
-            {selectedEvents.map(event => <EventCard key={event.id} event={event} canManage={canManage} onOpen={() => onOpen(event)} />)}
+            {selectedEvents.map(event => <EventCard key={event.id} event={event} day={selectedDay} canManage={canManage} onOpen={() => onOpen(event)} />)}
           </Stack>
         </CardContent>
       </Card>
