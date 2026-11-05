@@ -8,7 +8,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 
 | Referenzfunktion | Familienkompass-Ziel | Status |
 | --- | --- | --- |
-| zentraler Familienkalender | gemeinsamer Kalender plus persönlicher Kalender je Person | Wochenansicht und Termin-CRUD fertig |
+| zentraler Familienkalender | gemeinsamer Kalender plus persönlicher Kalender je Person | Wochen- und Monatsansicht sowie Termin-CRUD fertig |
 | farbige Personen und Termine | feste Personenfarben in Kalender, Aufgaben und Dashboard | fertig |
 | Kinder haken Aufgaben selbst ab | Touch-große Aufgaben, Kinder-PIN und optionaler Eltern-Check | Aufgaben-Grundlage fertig |
 | Google-, Apple- oder Outlook-Anbindung | Adapter für Google Calendar, Microsoft Graph und CalDAV | geplant |
@@ -27,7 +27,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Identität & Rechte | Admin-/Elternpasswort, Kinder-PIN, Sessions, CSRF, Rollenrechte | fertig | Profilbearbeitung und feinere Modulrechte |
 | Aufgaben | Zuweisung, Fälligkeit, Priorität, Abschluss, Eltern-Check | fertig | Bearbeiten, Freigabe, Wiederholung, Historie |
 | Belohnungen | Punkte, Sterne oder Münzen mit nachvollziehbarem Ledger | geplant | Punkte für geprüfte Aufgaben |
-| Kalender | Tag/Woche/Monat, Wiederholungen, Geburtstage, Ferien | MVP fertig | Monatsansicht, Wiederholungen und Import |
+| Kalender | Tag/Woche/Monat, Wiederholungen, Geburtstage, Ferien | Woche und Monat fertig | Tagesansicht, Wiederholungen und Import |
 | Routinen | Morgen-/Abendroutine, Schritte, Wochentage, Fortschritt | geplant | Routine-Builder und Kinderansicht |
 | Einkauf | mehrere Listen, Kategorien, Mengen, schnelles Abhaken | geplant | gemeinsame Standardliste |
 | Mahlzeiten & Rezepte | Wochenplan, Rezepte, Zutatenübernahme | geplant | Abendessen-Wochenplan |
@@ -43,7 +43,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 
 ## Empfohlene Produktreihenfolge
 
-1. **Kalender ausbauen** – Monatsansicht, Wiederholungen, Geburtstage und externe Importe.
+1. **Kalender ausbauen** – Tagesansicht, Wiederholungen, Geburtstage und externe Importe.
 2. **Aufgaben vervollständigen** – Bearbeitung, Elternfreigabe, Wiederholung und Punkte.
 3. **Routinen** – starker täglicher Nutzen für Kinder und Wanddisplay.
 4. **Einkauf und Essensplanung** – gemeinsamer Haushaltsnutzen.
