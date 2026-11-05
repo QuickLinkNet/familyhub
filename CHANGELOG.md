@@ -9,6 +9,19 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 - Aufgabenfreigabe und wiederkehrende Aufgaben
 - Routinen für Morgen und Abend
 
+## [0.5.0] - 2026-11-05
+
+### Hinzugefügt
+
+- umschaltbare Wochen- und Monatsansicht im Familienkalender
+- vollständiges Monatsraster mit Kalenderfarben und kompakten Terminübersichten auf Desktopbreite
+- touchoptimierte Monatsauswahl mit Tagesagenda auf Smartphone und Tablet
+
+### Geprüft
+
+- Monatswechsel, Tagesauswahl, Heute-Rücksprung und Rückwechsel zur Wochenansicht
+- Desktop- und Mobilbreite sowie schreibgeschützte Kinderansicht
+
 ## [0.4.1] - 2026-11-05
 
 ### Behoben
