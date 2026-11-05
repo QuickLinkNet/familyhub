@@ -9,6 +9,18 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 - Aufgabenfreigabe und wiederkehrende Aufgaben
 - Routinen für Morgen und Abend
 
+## [0.4.1] - 2026-11-05
+
+### Behoben
+
+- vollständige Familiennamen bleiben auf schmalen Mobilansichten lesbar
+- unbekannte URLs zeigen eine klare Nicht-gefunden-Seite statt eines Modul-Platzhalters
+
+### Geprüft
+
+- Desktop- und Mobilansichten für Dashboard, Familie, Aufgaben und Kalender
+- Kalender-Wochenwechsel sowie getrennte Admin- und Kinderrechte
+
 ## [0.4.0] - 2026-11-04
 
 ### Hinzugefügt
