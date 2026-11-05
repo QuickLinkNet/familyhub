@@ -1,16 +1,11 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
-import { FamilyRestroomRounded, LockRounded, LoginRounded } from '@mui/icons-material';
-import { Alert, Avatar, Box, Button, Card, CardActionArea, CardContent, CircularProgress, Container, InputAdornment, Stack, TextField, Typography } from '@mui/material';
+import { FamilyRestroomRounded } from '@mui/icons-material';
+import { Alert, Avatar, Box, CircularProgress, Container, Stack, Typography } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ApiError } from '../../../services/apiClient';
+import { LoginCard } from '../components/LoginCard';
+import { ProfileSelector } from '../components/ProfileSelector';
 import { useAuthProfiles, useLogin } from '../hooks/useAuth';
-import type { AuthRole } from '../types/auth';
-
-const roleLabels: Record<AuthRole, string> = {
-  ADMIN: 'Admin',
-  PARENT: 'Elternteil',
-  CHILD: 'Kind'
-};
 
 export function LoginPage() {
   const profiles = useAuthProfiles();
@@ -57,34 +52,8 @@ export function LoginPage() {
         {profiles.isError && <Alert severity="error">Die Familienprofile konnten nicht geladen werden.</Alert>}
         {profiles.data?.length === 0 && <Alert severity="warning">Es wurden noch keine aktiven Familienprofile gefunden.</Alert>}
 
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, minmax(0, 1fr))', sm: 'repeat(3, minmax(0, 1fr))' }, gap: 2 }}>
-          {profiles.data?.map(profile => {
-            const active = selectedId === profile.id;
-            return <Card key={profile.id} variant={active ? 'elevation' : 'outlined'} sx={{ border: active ? '3px solid' : undefined, borderColor: active ? profile.color : undefined }}>
-              <CardActionArea onClick={() => { setSelectedId(profile.id); setSecret(''); setError(null); }} sx={{ minHeight: 154 }}>
-                <CardContent sx={{ textAlign: 'center' }}>
-                  <Avatar sx={{ width: 64, height: 64, mx: 'auto', mb: 1.25, bgcolor: profile.color, fontSize: '1.4rem' }}>{profile.name.charAt(0).toUpperCase()}</Avatar>
-                  <Typography fontWeight={750} noWrap>{profile.name}</Typography>
-                  <Typography variant="body2" color="text.secondary">{roleLabels[profile.role]}</Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>;
-          })}
-        </Box>
-
-        {selected && <Card component="form" onSubmit={submit}>
-          <CardContent sx={{ p: { xs: 2.5, sm: 4 }, '&:last-child': { pb: { xs: 2.5, sm: 4 } } }}>
-            <Stack spacing={2.5}>
-              <Stack direction="row" spacing={1.5} alignItems="center">
-                <Avatar sx={{ bgcolor: selected.color }}>{selected.name.charAt(0).toUpperCase()}</Avatar>
-                <Box><Typography variant="h6">{selected.name}</Typography><Typography variant="body2" color="text.secondary">{selected.requiresSecret ? 'Zugang bestätigen' : 'Direkt starten'}</Typography></Box>
-              </Stack>
-              {error && <Alert severity="error">{error}</Alert>}
-              {selected.requiresSecret && <TextField autoFocus fullWidth required label={selected.role === 'CHILD' ? 'PIN' : 'Passwort'} type="password" value={secret} onChange={event => setSecret(event.target.value)} autoComplete="current-password" inputProps={selected.role === 'CHILD' ? { inputMode: 'numeric', maxLength: 8 } : { maxLength: 128 }} InputProps={{ startAdornment: <InputAdornment position="start"><LockRounded color="action" /></InputAdornment> }} />}
-              <Button type="submit" variant="contained" size="large" startIcon={<LoginRounded />} disabled={login.isPending} sx={{ minHeight: 54 }}>{login.isPending ? 'Wird geöffnet …' : 'Familienbereich öffnen'}</Button>
-            </Stack>
-          </CardContent>
-        </Card>}
+        <ProfileSelector profiles={profiles.data ?? []} selectedId={selectedId} onSelect={profileId => { setSelectedId(profileId); setSecret(''); setError(null); }} />
+        {selected && <LoginCard profile={selected} secret={secret} error={error} pending={login.isPending} onSecretChange={setSecret} onSubmit={submit} />}
       </Stack>
     </Container>
   </Box>;

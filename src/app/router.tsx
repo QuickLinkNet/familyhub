@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
-import { Box, Button, Stack, Typography } from '@mui/material';
-import { createBrowserRouter, Link } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import { AppShell } from './AppShell';
 import { DashboardPage } from '../features/dashboard/pages/DashboardPage';
 import { CalendarPage } from '../features/calendar/pages/CalendarPage';
@@ -11,16 +10,7 @@ import { LoginPage } from '../features/auth/pages/LoginPage';
 import { SetupGate } from '../features/setup/components/SetupGate';
 import { SetupPage } from '../features/setup/pages/SetupPage';
 import { NotFoundPage } from '../features/navigation/pages/NotFoundPage';
-
-function FutureModule() {
-  return (
-    <Stack spacing={2}>
-      <Typography variant="h3">Einkauf ist in Vorbereitung</Typography>
-      <Typography color="text.secondary">Gemeinsame Listen und schnelles Abhaken folgen in einer der nächsten Ausbaustufen.</Typography>
-      <Box><Button component={Link} to="/" variant="contained">Zur Übersicht</Button></Box>
-    </Stack>
-  );
-}
+import { ShoppingPage } from '../features/shopping/pages/ShoppingPage';
 
 const shell = (content: ReactNode) => <AppShell>{content}</AppShell>;
 
@@ -37,7 +27,7 @@ export const appRouter = createBrowserRouter([
           { path: '/family', element: shell(<FamilyPage />) },
           { path: '/calendar', element: shell(<CalendarPage />) },
           { path: '/tasks', element: shell(<TasksPage />) },
-          { path: '/shopping', element: shell(<FutureModule />) },
+          { path: '/shopping', element: shell(<ShoppingPage />) },
           { path: '*', element: shell(<NotFoundPage />) }
         ]
       }

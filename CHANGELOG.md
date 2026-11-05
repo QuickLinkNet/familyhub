@@ -9,6 +9,20 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 - Aufgabenfreigabe und wiederkehrende Aufgaben
 - Routinen für Morgen und Abend
 
+## [0.5.1] - 2026-11-05
+
+### Geändert
+
+- Frontend konsequent in gemeinsame Atome, Moleküle und Organismen sowie fachlich gekapselte Komponenten gegliedert
+- App-Shell, Dashboard, Kalender, Aufgaben, Familie, Anmeldung und Einrichtung in kleine Komponenten mit klarer Verantwortung zerlegt
+- wiederkehrende Seitenköpfe, Leerzustände und Familienavatare zentral wiederverwendbar gemacht
+- größte Frontenddatei von 280 auf rund 110 Zeilen reduziert; alle TypeScript-Dateien bleiben deutlich unter 500 Zeilen
+
+### Geprüft
+
+- TypeScript-Kompilierung nach jeder Refactoring-Etappe
+- unveränderte Rollenrechte und Formulardialoge ohne Schreibzugriff auf Familiendaten
+
 ## [0.5.0] - 2026-11-05
 
 ### Hinzugefügt

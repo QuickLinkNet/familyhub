@@ -43,13 +43,17 @@ Ausführlich: [Installation](docs/INSTALLATION.md), [Architektur](docs/ARCHITECT
 ## Projektstruktur
 
 - `src/app` – Router, Theme und App-Shell
-- `src/components` – wiederverwendbare UI-Bausteine
-- `src/features` – fachliche Frontend-Module
+- `src/components/atoms` – kleinste wiederverwendbare UI-Grundbausteine
+- `src/components/molecules` – zusammengesetzte, fachlich neutrale UI-Muster
+- `src/components/organisms` – größere wiederverwendbare Bereiche wie Navigation und App-Header
+- `src/features` – fachliche Frontend-Module mit eigenen Komponenten, Hooks, Seiten und Typen
 - `src/services` – zentraler API-Client
 - `api/` – native PHP-API
 - `storage/` – geschützte Laufzeitdaten
 - `scripts/` – Build- und FTP-Deployment
 - `docs/` – Produkt- und Technikdokumentation
+
+Seiten bleiben reine Orchestratoren für Daten, Zustand und fachliche Komponenten. Neue Frontenddateien sollen eine klar abgegrenzte Verantwortung besitzen und möglichst deutlich unter 500 Zeilen bleiben.
 
 ## Mitwirken
 
