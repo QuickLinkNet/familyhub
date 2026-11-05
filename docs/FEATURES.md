@@ -20,7 +20,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 
 | Bereich | Geplanter Funktionsumfang | Status | Nächster Slice |
 | --- | --- | --- | --- |
-| Plattform | React-PWA, PHP-API, SQLite, Migrationen, Backups, Logs, Health | fertig | automatisierte Smoke-Tests |
+| Plattform | React-PWA mit Atomic Design, PHP-API, SQLite, Migrationen, Backups, Logs, Health | fertig | automatisierte Smoke-Tests |
 | Installation | Haushalt, 1–12 Personen, Rollen, sichere Zugangsdaten, Kalender | fertig | Export/Import und Reset-Werkzeug |
 | Touch-/Kiosk-UX | Wanddisplay, Tablet, Mobilnavigation, große Ziele | fertig | Fokus- und Leerlaufmodus |
 | Dashboard | Heute, Aufgaben, Familie, Einkauf, Essen, Wetter | teilweise fertig | Kalender, Aufgaben und Familie live; danach Einkauf |

@@ -7,7 +7,20 @@ Familienkompass besteht aus zwei gemeinsam deploybaren, technisch klar getrennte
 
 ## Frontend
 
-React Router übernimmt Navigation und den konfigurierbaren Hosting-Basispfad. Material UI bildet das Designsystem; TanStack Query verwaltet Serverzustand und Caching. Fachmodule liegen unter `src/features/<modul>/` und enthalten nach Bedarf `api`, `components`, `hooks`, `pages` und `types`.
+React Router übernimmt Navigation und den konfigurierbaren Hosting-Basispfad. Material UI bildet das Designsystem; TanStack Query verwaltet Serverzustand und Caching. Fachmodule liegen unter `src/features/<modul>/` und enthalten nach Bedarf `api`, `components`, `constants`, `hooks`, `pages`, `types` und `utils`.
+
+Die wiederverwendbare UI folgt Atomic Design:
+
+```text
+src/components/
+├── atoms/       kleinste visuelle Bausteine ohne Fachlogik
+├── molecules/   wiederkehrende Kombinationen wie Seitenkopf oder Leerzustand
+└── organisms/   vollständige, wiederverwendbare Bereiche wie App-Navigation
+```
+
+Feature-spezifische Moleküle und Organismen bleiben bewusst beim jeweiligen Modul. Dadurch kennt zum Beispiel der globale Komponentenordner keine Kalender- oder Aufgabenlogik. `pages` laden Daten, verwalten Seitenzustand und komponieren die Bausteine; umfangreiche Darstellung oder Formulare gehören in `components`.
+
+Frontenddateien erhalten genau eine klar erkennbare Verantwortung und sollen möglichst deutlich unter 500 Zeilen bleiben. Ein Split erfolgt entlang fachlicher oder visueller Grenzen, nicht nur um eine Zeilenzahl zu erfüllen.
 
 `src/services/apiClient.ts` ist der zentrale HTTP-Zugang. Das Frontend kommuniziert in Entwicklung und Test ausschließlich mit der konfigurierten Live-API.
 
