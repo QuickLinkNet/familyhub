@@ -10,12 +10,13 @@ import { AuthGate } from '../features/auth/components/AuthGate';
 import { LoginPage } from '../features/auth/pages/LoginPage';
 import { SetupGate } from '../features/setup/components/SetupGate';
 import { SetupPage } from '../features/setup/pages/SetupPage';
+import { NotFoundPage } from '../features/navigation/pages/NotFoundPage';
 
 function FutureModule() {
   return (
     <Stack spacing={2}>
-      <Typography variant="h3">Bald verfügbar</Typography>
-      <Typography color="text.secondary">Dieses Modul ist für die nächste Ausbaustufe vorbereitet.</Typography>
+      <Typography variant="h3">Einkauf ist in Vorbereitung</Typography>
+      <Typography color="text.secondary">Gemeinsame Listen und schnelles Abhaken folgen in einer der nächsten Ausbaustufen.</Typography>
       <Box><Button component={Link} to="/" variant="contained">Zur Übersicht</Button></Box>
     </Stack>
   );
@@ -36,7 +37,8 @@ export const appRouter = createBrowserRouter([
           { path: '/family', element: shell(<FamilyPage />) },
           { path: '/calendar', element: shell(<CalendarPage />) },
           { path: '/tasks', element: shell(<TasksPage />) },
-          { path: '/:module', element: shell(<FutureModule />) }
+          { path: '/shopping', element: shell(<FutureModule />) },
+          { path: '*', element: shell(<NotFoundPage />) }
         ]
       }
     ]
