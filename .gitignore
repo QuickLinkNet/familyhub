@@ -2,6 +2,7 @@ node_modules/
 dist/
 deploy/
 .vite/
+.codex-*.log
 storage/database/*.sqlite
 storage/database/*.sqlite-*
 storage/backups/*.sqlite
