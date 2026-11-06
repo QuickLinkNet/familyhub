@@ -69,9 +69,19 @@ Create und Update akzeptieren `name`, `color`, `role`, `isActive`, optional `ava
 - `POST /tasks/{uuid}/complete` – Erwachsene für jede Aufgabe; Kinder nur für die eigene zugewiesene Aufgabe
 - `POST /tasks/{uuid}/verify` – Admin oder Elternteil bestätigt eine prüfpflichtige Erledigung
 
-Create und Update akzeptieren neben den Aufgabendaten optional `routinePeriod` (`MORNING`, `AFTERNOON`, `EVENING`) und `repeatDays` als eindeutige ISO-Wochentage von 1 bis 7. Eine Routine benötigt mindestens einen Wochentag. Beim endgültigen Abschluss legt die API transaktional die nächste passende offene Ausführung an und überspringt bereits vergangene Wiederholungstage.
+Create und Update akzeptieren neben den Aufgabendaten `rewardPoints` von 0 bis 100 sowie optional `routinePeriod` (`MORNING`, `AFTERNOON`, `EVENING`) und `repeatDays` als eindeutige ISO-Wochentage von 1 bis 7. Aufgaben mit Sternen müssen einer Person zugeordnet sein. Eine Routine benötigt mindestens einen Wochentag. Beim endgültigen Abschluss legt die API transaktional die nächste passende offene Ausführung an und überspringt bereits vergangene Wiederholungstage.
 
 Eine prüfpflichtige Aufgabe wechselt beim Abschluss in `PENDING_VERIFICATION`. Erst die Elternbestätigung schließt sie endgültig ab und erzeugt bei einer Routine die nächste Ausführung.
+
+### Schatzkiste und Sterne
+
+- `GET /rewards` – persönliche Sternenguthaben, aktiver Belohnungskatalog und jüngstes Sternenbuch
+- `POST /rewards` – Admin oder Elternteil legt eine Belohnung an
+- `DELETE /rewards/{uuid}` – Admin oder Elternteil entfernt eine Belohnung aus dem Katalog
+- `POST /rewards/{uuid}/redeem` – Kinder für sich selbst; Erwachsene für das in `memberId` gewählte Familienmitglied
+- `POST /rewards/bonus` – Admin oder Elternteil vergibt mit `memberId`, `points` und `reason` Bonussterne
+
+Guthaben werden nie als überschreibbarer Zähler gespeichert, sondern aus dem append-only `reward_ledger` berechnet. Ein Aufgabenabschluss kann durch die eindeutige Aufgaben-ID höchstens eine Gutschrift erzeugen. Einlösungen werden serverseitig atomar gegen den aktuellen Saldo geprüft und können ihn nicht unter null senken.
 
 ### Kalender
 

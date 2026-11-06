@@ -16,6 +16,7 @@ final class Task
         public string $priority,
         public string $status,
         public bool $requiresVerification,
+        public int $rewardPoints,
         public ?string $routinePeriod,
         /** @var list<int> */
         public array $repeatDays,
@@ -41,6 +42,7 @@ final class Task
             $row['priority'],
             $row['status'],
             (bool) $row['requires_verification'],
+            (int) ($row['reward_points'] ?? 0),
             $row['routine_period'] ?? null,
             is_array($repeatDays) ? array_values(array_map('intval', $repeatDays)) : [],
             $row['series_uuid'] ?? null,
@@ -61,6 +63,7 @@ final class Task
             'priority' => $this->priority,
             'status' => $this->status,
             'requiresVerification' => $this->requiresVerification,
+            'rewardPoints' => $this->rewardPoints,
             'routinePeriod' => $this->routinePeriod,
             'repeatDays' => $this->repeatDays,
             'seriesId' => $this->seriesId,

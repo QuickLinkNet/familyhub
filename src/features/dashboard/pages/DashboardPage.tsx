@@ -10,6 +10,8 @@ import { FamilySummaryCard } from '../components/FamilySummaryCard';
 import { TasksSummaryCard } from '../components/TasksSummaryCard';
 import { TodayCard } from '../components/TodayCard';
 import { WallModeCard } from '../components/WallModeCard';
+import { RewardsSummaryCard } from '../components/RewardsSummaryCard';
+import { useRewards } from '../../rewards/hooks/useRewards';
 
 const now = new Date();
 const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -22,11 +24,13 @@ export function DashboardPage() {
   const tasks = useTasks();
   const family = useFamilyMembers();
   const session = useAuthSession();
+  const rewards = useRewards();
   const todayEvents = events.data ?? [];
   const currentDate = localDate(now);
   const openTasks = (tasks.data ?? []).filter(task => task.status !== 'COMPLETED' && isDueBy(task, currentDate));
   const completedTasks = (tasks.data ?? []).filter(task => task.status === 'COMPLETED' && wasCompletedOn(task, currentDate));
   const activeFamily = (family.data ?? []).filter(member => member.isActive);
+  const ownPoints = rewards.data?.balances.find(balance => balance.member.id === session.data?.user?.id)?.points ?? 0;
 
   return (
     <Stack spacing={{ xs: 2.5, md: 3.5 }}>
@@ -35,6 +39,7 @@ export function DashboardPage() {
         <TodayCard events={todayEvents} loading={events.isLoading} error={events.isError} />
         <TasksSummaryCard openCount={openTasks.length} completedCount={completedTasks.length} totalCount={openTasks.length + completedTasks.length} loading={tasks.isLoading} error={tasks.isError} />
         <FamilySummaryCard members={activeFamily} loading={family.isLoading} error={family.isError} />
+        <RewardsSummaryCard points={ownPoints} loading={rewards.isLoading} error={rewards.isError} />
         <WallModeCard />
         {session.data?.user?.role === 'ADMIN' && <AdminSetupCard />}
       </Box>

@@ -12,6 +12,8 @@ Bitte Sicherheitslücken nicht als öffentliches Issue veröffentlichen. Nutze e
 - Admins und Eltern verwenden Passwort-Hashes; Kinder optional PIN-Hashes.
 - Fünf falsche Loginversuche sperren Client und Profil für fünf Minuten.
 - Kinder können ausschließlich eigene zugewiesene Aufgaben abschließen.
+- Kinder können Belohnungen ausschließlich mit dem eigenen Sternenguthaben einlösen; Bonusvergabe und Katalogverwaltung bleiben Erwachsenen vorbehalten.
+- Sternenguthaben werden aus einem unveränderlichen Journal berechnet; Aufgaben-IDs verhindern doppelte Gutschriften und Einlösungen werden atomar gegen den Saldo geprüft.
 - Kinder können Kalender und Termine lesen; Kalenderänderungen sind Erwachsenen vorbehalten.
 - Das aktuell angemeldete Profil kann sich nicht selbst löschen.
 - SQL-Zugriffe verwenden vorbereitete Statements.

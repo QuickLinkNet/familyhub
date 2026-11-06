@@ -1,4 +1,4 @@
-import { CheckCircleRounded, EventRounded, RepeatRounded } from '@mui/icons-material';
+import { CheckCircleRounded, EventRounded, RepeatRounded, StarRounded } from '@mui/icons-material';
 import { Alert, Box, Button, Card, CardContent, Checkbox, Chip, Stack, Typography } from '@mui/material';
 import { MemberAvatar } from '../../../components/atoms/MemberAvatar';
 import { ApiError } from '../../../services/apiClient';
@@ -43,6 +43,7 @@ export function TaskCard({ task, userId, userRole, canManage }: TaskCardProps) {
               <Stack direction="row" gap={0.75} flexWrap="wrap">
                 <Chip size="small" label={priorityLabels[task.priority]} color={priorityColors[task.priority]} />
                 {task.status === 'PENDING_VERIFICATION' && <Chip size="small" color="warning" label="Bitte bestätigen" />}
+                {(task.rewardPoints ?? 0) > 0 && <Chip size="small" icon={<StarRounded />} color="success" label={`+${task.rewardPoints} Sterne`} />}
                 {repeatDays.length > 0 && <Chip size="small" icon={<RepeatRounded />} label={repeatLabel(repeatDays)} />}
               </Stack>
             </Stack>

@@ -15,11 +15,15 @@ foreach ($files as $file) {
 
 $columns = $database->query('PRAGMA table_info(tasks)')->fetchAll(PDO::FETCH_ASSOC);
 $names = array_column($columns, 'name');
-foreach (['routine_period', 'repeat_days', 'series_uuid'] as $required) {
+foreach (['routine_period', 'repeat_days', 'series_uuid', 'reward_points'] as $required) {
     if (!in_array($required, $names, true)) {
         fwrite(STDERR, "Migration column {$required} is missing.\n");
         exit(1);
     }
+}
+foreach (['rewards', 'reward_ledger'] as $table) {
+    $exists = $database->query("SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = '{$table}'")->fetchColumn();
+    if ((int) $exists !== 1) { fwrite(STDERR, "Migration table {$table} is missing.\n"); exit(1); }
 }
 
 echo "In-memory migration smoke test passed.\n";

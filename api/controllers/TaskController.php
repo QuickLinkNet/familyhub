@@ -32,9 +32,10 @@ final class TaskController
         Response::success($this->service->complete($uuid, $actor));
     }
 
-    public function verify(string $uuid): void
+    /** @param array{id: string, name: string, color: string, role: string} $actor */
+    public function verify(string $uuid, array $actor): void
     {
-        Response::success($this->service->verify($uuid));
+        Response::success($this->service->verify($uuid, $actor));
     }
 
     public function delete(string $uuid): void

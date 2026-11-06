@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { PersonRounded } from '@mui/icons-material';
+import { PersonRounded, StarRounded } from '@mui/icons-material';
 import { Alert, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
 import { ApiError } from '../../../services/apiClient';
 import { useFamilyMembers } from '../../family/hooks/useFamilyMembers';
@@ -12,7 +12,7 @@ export type TaskDialogMode = 'TASK' | 'ROUTINE';
 const priorityLabels: Record<TaskPriority, string> = { LOW: 'Niedrig', MEDIUM: 'Mittel', HIGH: 'Hoch' };
 const periodLabels: Record<RoutinePeriod, string> = { MORNING: 'Morgen', AFTERNOON: 'Nachmittag', EVENING: 'Abend' };
 const emptyTask = (mode: TaskDialogMode): CreateTaskInput => ({
-  title: '', description: '', assignedMemberId: null, dueDate: null, priority: 'MEDIUM', requiresVerification: false,
+  title: '', description: '', assignedMemberId: null, dueDate: null, priority: 'MEDIUM', requiresVerification: false, rewardPoints: 0,
   routinePeriod: mode === 'ROUTINE' ? 'MORNING' : null,
   repeatDays: mode === 'ROUTINE' ? [1, 2, 3, 4, 5] : [],
 });
@@ -76,12 +76,20 @@ export function AddTaskDialog({ open, mode, onClose }: AddTaskDialogProps) {
               {(Object.keys(priorityLabels) as TaskPriority[]).map(priority => <MenuItem key={priority} value={priority}>{priorityLabels[priority]}</MenuItem>)}
             </Select>
           </FormControl>
+          <FormControl fullWidth>
+            <InputLabel id="task-points-label">Sterne als Belohnung</InputLabel>
+            <Select labelId="task-points-label" label="Sterne als Belohnung" value={form.rewardPoints} onChange={event => update('rewardPoints', Number(event.target.value))} startAdornment={<StarRounded sx={{ ml: 1, mr: 0.5, color: 'warning.main' }} fontSize="small" />}>
+              <MenuItem value={0}>Keine Sterne</MenuItem>
+              {[1, 2, 3, 5, 10, 15, 20].map(points => <MenuItem key={points} value={points}>+{points} {points === 1 ? 'Stern' : 'Sterne'}</MenuItem>)}
+            </Select>
+          </FormControl>
+          {form.rewardPoints > 0 && !form.assignedMemberId && <Alert severity="info">Wähle eine Person aus, damit die Sterne gutgeschrieben werden können.</Alert>}
           <FormControlLabel control={<Checkbox checked={form.requiresVerification} onChange={event => update('requiresVerification', event.target.checked)} />} label="Erledigung muss von Eltern bestätigt werden" />
         </Stack>
       </DialogContent>
       <DialogActions sx={{ p: 2.5, pt: 1.5 }}>
         <Button onClick={close}>Abbrechen</Button>
-        <Button type="submit" variant="contained" disabled={create.isPending || !form.title.trim() || (isRoutine && (form.repeatDays?.length ?? 0) === 0)}>{create.isPending ? 'Wird gespeichert …' : 'Hinzufügen'}</Button>
+        <Button type="submit" variant="contained" disabled={create.isPending || !form.title.trim() || (form.rewardPoints > 0 && !form.assignedMemberId) || (isRoutine && (form.repeatDays?.length ?? 0) === 0)}>{create.isPending ? 'Wird gespeichert …' : 'Hinzufügen'}</Button>
       </DialogActions>
     </Dialog>
   );

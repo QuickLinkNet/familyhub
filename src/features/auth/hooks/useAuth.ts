@@ -34,6 +34,7 @@ export const useLogin = () => {
       void client.invalidateQueries({ queryKey: ['tasks'] });
       void client.invalidateQueries({ queryKey: ['calendars'] });
       void client.invalidateQueries({ queryKey: ['calendar-events'] });
+      void client.invalidateQueries({ queryKey: ['rewards'] });
     }
   });
 };
@@ -48,6 +49,7 @@ export const useLogout = () => {
       client.removeQueries({ queryKey: ['tasks'] });
       client.removeQueries({ queryKey: ['calendars'] });
       client.removeQueries({ queryKey: ['calendar-events'] });
+      client.removeQueries({ queryKey: ['rewards'] });
     }
   });
 };

@@ -6,8 +6,32 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ### Geplant
 
-- Punkte und Belohnungen für bestätigte Aufgaben
 - gemeinsame Einkaufslisten und Essensplanung
+
+## [0.9.0] - 2026-11-06
+
+### Hinzugefügt
+
+- touch-optimierte Schatzkiste mit persönlichen Sternenguthaben, Wunschregal und Sternenbuch
+- frei konfigurierbare Belohnungen mit Symbol, Farbe, Beschreibung und Sternepreis
+- Aufgabensterne für einmalige und wiederkehrende Aufgaben
+- Bonusvergabe durch Admins und Eltern sowie sichere Einlösung für Kinder und Erwachsene
+- Dashboard-Karte und eigene Hauptnavigation für den schnellen Einstieg
+- isolierter Reward-Smoke-Test für Vergabe, Einlösung und unzureichendes Guthaben
+
+### Sicherheit und Datenintegrität
+
+- append-only Punktejournal statt manipulierbarer Guthabenzähler
+- eindeutige Aufgaben-ID verhindert doppelte Sternegutschriften
+- prüfpflichtige Aufgaben vergeben Sterne erst nach Elternbestätigung
+- Einlösungen werden transaktional gegen den aktuellen Saldo geprüft und können kein negatives Guthaben erzeugen
+- Katalog- und Bonusverwaltung wird serverseitig auf Erwachsene beschränkt
+
+### Geprüft
+
+- Produktionsbuild, vollständiger PHP-Lint und In-Memory-Migrationen
+- Aufgabenpunkte, Elternfreigabe, wiederkehrende Punkte und Belohnungsjournal
+- Schatzkiste und Formulardialoge auf Desktop- und Mobilbreite ohne Änderung echter Familiendaten
 
 ## [0.8.0] - 2026-11-06
 

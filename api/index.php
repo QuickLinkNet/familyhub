@@ -8,6 +8,7 @@ use FamilyCompass\Controllers\CalendarSourceController;
 use FamilyCompass\Controllers\FamilyMemberController;
 use FamilyCompass\Controllers\HealthController;
 use FamilyCompass\Controllers\GoogleCalendarController;
+use FamilyCompass\Controllers\RewardController;
 use FamilyCompass\Controllers\SetupController;
 use FamilyCompass\Controllers\TaskController;
 use FamilyCompass\Core\AppException;
@@ -24,6 +25,7 @@ use FamilyCompass\Repositories\CalendarSourceRepository;
 use FamilyCompass\Repositories\FamilyMemberRepository;
 use FamilyCompass\Repositories\GoogleCalendarRepository;
 use FamilyCompass\Repositories\GoogleOAuthRepository;
+use FamilyCompass\Repositories\RewardRepository;
 use FamilyCompass\Repositories\SetupRepository;
 use FamilyCompass\Repositories\TaskRepository;
 use FamilyCompass\Services\AuthService;
@@ -33,6 +35,7 @@ use FamilyCompass\Services\FamilyMemberService;
 use FamilyCompass\Services\GoogleApiClient;
 use FamilyCompass\Services\GoogleCalendarService;
 use FamilyCompass\Services\GoogleOAuthService;
+use FamilyCompass\Services\RewardService;
 use FamilyCompass\Services\SetupService;
 use FamilyCompass\Services\TaskService;
 use FamilyCompass\Services\IcalFetcher;
@@ -90,6 +93,7 @@ try {
     $familyRepository = new FamilyMemberRepository($database);
     $familyController = new FamilyMemberController(new FamilyMemberService($familyRepository));
     $taskController = new TaskController(new TaskService(new TaskRepository($database), $familyRepository));
+    $rewardController = new RewardController(new RewardService(new RewardRepository($database), $familyRepository));
     $setupController = new SetupController(new SetupService(new SetupRepository($database)), $config->version());
 
     $router = new Router();
@@ -159,9 +163,9 @@ try {
         $taskController->complete($uuid, $user);
     });
     $router->post('/v1/tasks/{uuid}/verify', static function (string $uuid) use ($authService, $taskController): void {
-        $authService->requireAdult();
+        $user = $authService->requireAdult();
         $authService->requireCsrf();
-        $taskController->verify($uuid);
+        $taskController->verify($uuid, $user);
     });
     $router->put('/v1/tasks/{uuid}', static function (string $uuid) use ($authService, $taskController): void {
         $authService->requireAdult();
@@ -172,6 +176,30 @@ try {
         $authService->requireAdult();
         $authService->requireCsrf();
         $taskController->delete($uuid);
+    });
+    $router->get('/v1/rewards', static function () use ($authService, $rewardController): void {
+        $authService->requireUser();
+        $rewardController->index();
+    });
+    $router->post('/v1/rewards', static function () use ($authService, $rewardController): void {
+        $actor = $authService->requireAdult();
+        $authService->requireCsrf();
+        $rewardController->create($actor);
+    });
+    $router->post('/v1/rewards/bonus', static function () use ($authService, $rewardController): void {
+        $actor = $authService->requireAdult();
+        $authService->requireCsrf();
+        $rewardController->bonus($actor);
+    });
+    $router->post('/v1/rewards/{uuid}/redeem', static function (string $uuid) use ($authService, $rewardController): void {
+        $actor = $authService->requireUser();
+        $authService->requireCsrf();
+        $rewardController->redeem($uuid, $actor);
+    });
+    $router->delete('/v1/rewards/{uuid}', static function (string $uuid) use ($authService, $rewardController): void {
+        $authService->requireAdult();
+        $authService->requireCsrf();
+        $rewardController->delete($uuid);
     });
     $router->get('/v1/calendars', static function () use ($authService, $calendarController): void {
         $authService->requireUser();

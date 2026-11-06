@@ -63,17 +63,19 @@ final class TaskService
         }
         $status = $task->requiresVerification ? 'PENDING_VERIFICATION' : 'COMPLETED';
         $nextTask = $status === 'COMPLETED' ? $this->nextOccurrence($task) : null;
-        return ($this->tasks->transition($uuid, 'OPEN', $status, $nextTask)
+        $reward = $status === 'COMPLETED' ? $this->rewardEntry($task, $actor['id']) : null;
+        return ($this->tasks->transition($uuid, 'OPEN', $status, $nextTask, $reward)
             ?? throw new AppException('CONFLICT', 'Die Aufgabe konnte nicht abgeschlossen werden.', 409))->toArray();
     }
 
-    public function verify(string $uuid): array
+    /** @param array{id: string, name: string, color: string, role: string} $actor */
+    public function verify(string $uuid, array $actor): array
     {
         $task = $this->requireTask($uuid);
         if ($task->status !== 'PENDING_VERIFICATION') {
             throw new AppException('CONFLICT', 'Diese Aufgabe wartet nicht auf eine Elternprüfung.', 409);
         }
-        return ($this->tasks->transition($uuid, 'PENDING_VERIFICATION', 'COMPLETED', $this->nextOccurrence($task))
+        return ($this->tasks->transition($uuid, 'PENDING_VERIFICATION', 'COMPLETED', $this->nextOccurrence($task), $this->rewardEntry($task, $actor['id']))
             ?? throw new AppException('CONFLICT', 'Die Aufgabe konnte nicht bestätigt werden.', 409))->toArray();
     }
 
@@ -122,6 +124,14 @@ final class TaskService
             throw new AppException('VALIDATION_ERROR', 'Die Bestätigungs-Einstellung ist ungültig.', 422);
         }
 
+        $rewardPoints = array_key_exists('rewardPoints', $input) ? filter_var($input['rewardPoints'], FILTER_VALIDATE_INT) : ($existing?->rewardPoints ?? 0);
+        if ($rewardPoints === false || $rewardPoints < 0 || $rewardPoints > 100) {
+            throw new AppException('VALIDATION_ERROR', 'Die Aufgabenpunkte müssen zwischen 0 und 100 liegen.', 422);
+        }
+        if ($rewardPoints > 0 && $memberId === null) {
+            throw new AppException('VALIDATION_ERROR', 'Aufgaben mit Punkten müssen einer Person zugeordnet sein.', 422);
+        }
+
         $routinePeriod = array_key_exists('routinePeriod', $input) ? $input['routinePeriod'] : $existing?->routinePeriod;
         $routinePeriod = $routinePeriod === '' ? null : $routinePeriod;
         if ($routinePeriod !== null && (!is_string($routinePeriod) || !in_array($routinePeriod, self::ROUTINE_PERIODS, true))) {
@@ -147,6 +157,7 @@ final class TaskService
             'due_date' => $dueDate,
             'priority' => $priority,
             'requires_verification' => $requiresVerification ? 1 : 0,
+            'reward_points' => $rewardPoints,
             'routine_period' => $routinePeriod,
             'repeat_days' => $repeatDays === [] ? null : json_encode($repeatDays, JSON_THROW_ON_ERROR),
         ];
@@ -187,11 +198,27 @@ final class TaskService
             'priority' => $task->priority,
             'status' => 'OPEN',
             'requires_verification' => $task->requiresVerification ? 1 : 0,
+            'reward_points' => $task->rewardPoints,
             'routine_period' => $task->routinePeriod,
             'repeat_days' => json_encode($task->repeatDays, JSON_THROW_ON_ERROR),
             'series_uuid' => $task->seriesId ?? $task->uuid,
             'created_at' => $now,
             'updated_at' => $now,
+        ];
+    }
+
+    /** @return array<string, mixed>|null */
+    private function rewardEntry(Task $task, string $actorId): ?array
+    {
+        if ($task->rewardPoints <= 0 || $task->assignedMemberId === null) { return null; }
+        return [
+            'uuid' => $this->uuid(),
+            'member_uuid' => $task->assignedMemberId,
+            'task_uuid' => $task->uuid,
+            'points_delta' => $task->rewardPoints,
+            'reason' => 'Aufgabe erledigt: ' . $task->title,
+            'created_by_member_uuid' => $actorId,
+            'created_at' => gmdate('c'),
         ];
     }
 

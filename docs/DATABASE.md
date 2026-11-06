@@ -17,6 +17,7 @@ Aktuelle Entwicklung:
 7. verschlüsselte externe Kalenderquellen und synchronisierte read-only Termine
 8. verschlüsselte Google-OAuth-Verbindung, auswählbare Google-Kalender und lokaler Termincache
 9. wiederkehrende Aufgabenserien und Tageszeit-Gruppen für Routinen
+10. Aufgabensterne, Belohnungskatalog und unveränderliches Punktejournal
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -26,7 +27,9 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 
 - `app_settings` – technische Einstellungen
 - `family_members` – Personen, Rollen, Farben und Login-Hashes
-- `tasks` – Aufgaben, Status, Elternprüfung sowie optionale Routine-Tageszeit, Wiederholungswochentage und Serienkennung
+- `tasks` – Aufgaben, Status, Elternprüfung, Aufgabensterne sowie optionale Routine-Tageszeit, Wiederholungswochentage und Serienkennung
+- `rewards` – aktiver Belohnungskatalog mit Sternepreis, Symbol und Farbe
+- `reward_ledger` – append-only Sternenjournal für Aufgabe, Bonus und Einlösung; Salden werden daraus berechnet
 - `households` – Haushalt, Locale, Zeitzone und Setup-Zeitpunkt
 - calendars – gemeinsamer sowie persönliche Kalender
 - `calendar_events` – Termine, Zeiträume, Orte und Ersteller

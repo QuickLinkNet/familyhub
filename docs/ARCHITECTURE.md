@@ -38,6 +38,8 @@ Bootstrap, Fehlerbehandlung, JSON-Antworten, Migrationen, Backups und Logging si
 
 Die Einrichtung von Haushalt, Personen und Kalendern läuft in einer einzelnen Datenbanktransaktion. Passwörter und PINs werden mit PHP `password_hash` gespeichert.
 
+Das Belohnungssystem verwendet ein append-only Journal statt veränderlicher Punktezähler. Aufgabenabschluss, Folge-Routine und optionale Sternegutschrift laufen in derselben Transaktion. Dadurch bleiben Salden nachvollziehbar, doppelte Aufgabenpunkte ausgeschlossen und Einlösungen revisionsfähig.
+
 ## Deployment
 
 `npm run build` erzeugt die PWA und ein vollständiges `deploy/`-Paket. `npm run deploy` überträgt dieses Paket per FTP/FTPS. Der geschützte `storage/`-Bereich liegt neben API und Frontend, aber außerhalb der statischen Build-Ausgabe.
