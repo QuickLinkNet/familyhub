@@ -6,7 +6,7 @@ Familienkompass ist ein touch-optimierter, selbst hostbarer Familienorganizer. D
 
 - responsive PWA für Wanddisplay, Tablet und Mobilgerät
 - gemeinsamer und persönlicher Familienkalender mit Wochen- und Monatsansicht sowie Terminverwaltung
-- read-only Google-Kalender per verschlüsselt gespeicherter geheimer iCal-Adresse
+- Google-Kalender wahlweise wartungsfrei read-only per iCal oder mit direktem OAuth-Schreibzugriff
 - eigenständiger Wand- und Präsentationsmodus mit Uhrzeit, Terminen, Aufgaben und Familie
 - geschützter Adminbereich für Kalenderquellen und Synchronisationsstatus
 - Familienmitglieder mit Rollen, Farben, sicherem Elternpasswort und optionalem Kinder-PIN
@@ -41,7 +41,10 @@ Der Befehl prüft TypeScript, baut die PWA, erstellt `deploy/` und lädt Fronten
 
 Nach dem ersten Deployment führt `/setup` durch Haushalt, Familienmitglieder und Kalender. Danach melden sich Erwachsene mit Passwort und Kinder mit ihrer optionalen PIN über die Profilauswahl an. Die Installation ist transaktional und kann nur einmal abgeschlossen werden.
 
-Admins können unter `/admin` einen Google-Kalender verbinden. Benötigt wird die **Geheime Adresse im iCal-Format** aus Google Kalender unter „Einstellungen → Kalender integrieren“. FamilyHub prüft und liest die Adresse vollständig ein, bevor sie verschlüsselt gespeichert wird. Sie wird nie wieder vollständig an das Frontend übertragen und ausschließlich lesend synchronisiert.
+Admins können unter `/admin` Google Kalender auf zwei Arten verbinden:
+
+- Die **Geheime Adresse im iCal-Format** ist der einfache read-only Weg. FamilyHub prüft sie vor dem Speichern, legt sie verschlüsselt ab und überträgt sie nie wieder vollständig an das Frontend.
+- Die optionale OAuth-Verbindung erlaubt, Google-Termine direkt am Familienboard zu erstellen, zu bearbeiten und zu löschen. Ein integrierter Assistent erklärt die einmalige Einrichtung eines Google-Webclients und zeigt die exakt benötigte Rücksprungadresse. Client-Secret, Refresh- und Access-Token werden verschlüsselt gespeichert; im Git-Repository liegen keinerlei Zugangsdaten.
 
 Ausführlich: [Installation](docs/INSTALLATION.md), [Architektur](docs/ARCHITECTURE.md), [API](docs/API.md), [Datenbank](docs/DATABASE.md), [Sicherheit](SECURITY.md).
 

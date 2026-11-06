@@ -11,7 +11,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | zentraler Familienkalender | gemeinsamer Kalender plus persönlicher Kalender je Person | Wochen- und Monatsansicht sowie Termin-CRUD fertig |
 | farbige Personen und Termine | feste Personenfarben in Kalender, Aufgaben und Dashboard | fertig |
 | Kinder haken Aufgaben selbst ab | Touch-große Aufgaben, Kinder-PIN und optionaler Eltern-Check | Aufgaben-Grundlage fertig |
-| Google-, Apple- oder Outlook-Anbindung | Adapter für Google Calendar, Microsoft Graph und CalDAV | Google iCal read-only fertig; OAuth/CalDAV geplant |
+| Google-, Apple- oder Outlook-Anbindung | Adapter für Google Calendar, Microsoft Graph und CalDAV | Google iCal read-only und Google OAuth-Schreibzugriff fertig; CalDAV geplant |
 | Wanddisplay plus mobile Nutzung | responsive installierbare PWA für Display, Tablet und Smartphone | fertig |
 | schnelle Ersteinrichtung | Assistent für Haushalt, Rollen, Passwörter und Kalender | fertig |
 | laufende Produktupdates | Migrationen, Backups und reproduzierbares Deployment | fertig |
@@ -37,7 +37,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Wetter | aktuelle Lage und Vorschau über austauschbaren Anbieter | geplant | datenschutzfreundlicher Adapter |
 | Foto-/Idle-Modus | Diashow, Uhrzeit, Wetter und nächster Termin | geplant | Inaktivitäts-Timer |
 | Benachrichtigungen | In-App, Browser und später Web Push | geplant | In-App-Erinnerungen |
-| Integrationen | Google, Microsoft, CalDAV, Home Assistant | Google iCal read-only fertig | Google OAuth oder CalDAV mit Schreibzugriff |
+| Integrationen | Google, Microsoft, CalDAV, Home Assistant | Google iCal read-only und OAuth-Schreibzugriff fertig | CalDAV oder Microsoft Graph |
 | Datenhoheit | lokaler Export, Import, Backups und Self-Hosting | teilweise fertig | nutzerfreundlicher Export/Restore |
 | Barrierefreiheit | Tastatur, Kontrast, Screenreader, reduzierte Bewegung | in Arbeit | automatisierte und manuelle Prüfung |
 

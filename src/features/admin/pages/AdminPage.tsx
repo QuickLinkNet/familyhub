@@ -1,27 +1,40 @@
 import { useState } from 'react';
 import { AddLinkRounded, AdminPanelSettingsRounded, TvRounded } from '@mui/icons-material';
 import { Alert, Button, Card, CardContent, CircularProgress, Stack, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { EmptyStateCard } from '../../../components/molecules/EmptyStateCard';
 import { PageHeader } from '../../../components/molecules/PageHeader';
 import { ApiError } from '../../../services/apiClient';
 import { useAuthSession } from '../../auth/hooks/useAuth';
 import { CalendarSourceCard } from '../components/CalendarSourceCard';
 import { CalendarSourceDialog } from '../components/CalendarSourceDialog';
+import { GoogleConnectionCard } from '../components/GoogleConnectionCard';
+import { GoogleSetupDialog } from '../components/GoogleSetupDialog';
 import { useCalendarSources, useCreateCalendarSource, useDeleteCalendarSource, useSyncCalendarSource, useUpdateCalendarSource } from '../hooks/useCalendarSources';
+import { useAuthorizeGoogle, useConfigureGoogle, useDisconnectGoogle, useGoogleConnection, useSyncGoogleCalendar, useToggleGoogleCalendar } from '../hooks/useGoogleCalendar';
 import type { CalendarSource, CalendarSourceInput } from '../types/calendarSource';
+import type { GoogleOAuthConfigInput } from '../types/googleCalendar';
 
 export function AdminPage() {
   const session = useAuthSession();
+  const [searchParams] = useSearchParams();
   const isAdmin = session.data?.user?.role === 'ADMIN';
   const sources = useCalendarSources(isAdmin);
   const createSource = useCreateCalendarSource();
   const updateSource = useUpdateCalendarSource();
   const syncSource = useSyncCalendarSource();
   const deleteSource = useDeleteCalendarSource();
+  const google = useGoogleConnection(isAdmin);
+  const configureGoogle = useConfigureGoogle();
+  const authorizeGoogle = useAuthorizeGoogle();
+  const toggleGoogle = useToggleGoogleCalendar();
+  const syncGoogle = useSyncGoogleCalendar();
+  const disconnectGoogle = useDisconnectGoogle();
   const [dialogSource, setDialogSource] = useState<CalendarSource | null | undefined>(undefined);
+  const [googleSetupOpen, setGoogleSetupOpen] = useState(false);
   const mutationError = createSource.error ?? updateSource.error;
   const actionError = syncSource.error ?? deleteSource.error;
+  const googleError = configureGoogle.error ?? authorizeGoogle.error ?? toggleGoogle.error ?? syncGoogle.error ?? disconnectGoogle.error;
 
   if (!isAdmin) {
     return <Alert severity="warning">Dieser Bereich ist ausschließlich für Administratoren freigeschaltet.</Alert>;
@@ -47,10 +60,25 @@ export function AdminPage() {
     updateSource.reset();
     setDialogSource(source);
   };
+  const saveGoogle = async (input: GoogleOAuthConfigInput) => {
+    await configureGoogle.mutateAsync(input);
+    setGoogleSetupOpen(false);
+  };
+  const authorize = async () => {
+    try {
+      const result = await authorizeGoogle.mutateAsync();
+      window.location.assign(result.authorizationUrl);
+    } catch { /* Mutation state renders the safe API error. */ }
+  };
+  const disconnect = () => {
+    if (window.confirm('Google-Verbindung wirklich trennen? Die Termine in Google bleiben unverändert.')) disconnectGoogle.mutate();
+  };
 
   return (
     <Stack spacing={{ xs: 2.5, md: 3.5 }}>
-      <PageHeader title="Administration" description="Verbindungen und Präsentationsoptionen für euren Familienkompass." actions={<Button variant="contained" startIcon={<AddLinkRounded />} onClick={openCreate}>Google-Kalender verbinden</Button>} />
+      <PageHeader title="Administration" description="Verbindungen und Präsentationsoptionen für euren Familienkompass." actions={<Button variant="contained" startIcon={<AddLinkRounded />} onClick={openCreate}>iCal-Link hinzufügen</Button>} />
+      {searchParams.get('google') === 'connected' && <Alert severity="success">Google Kalender ist verbunden. Der primäre Kalender wurde automatisch aktiviert.</Alert>}
+      {searchParams.get('google') === 'error' && <Alert severity="error">Die Google-Anmeldung konnte nicht abgeschlossen werden. Bitte starte sie erneut.</Alert>}
       <Card>
         <CardContent sx={{ p: { xs: 2.5, md: 3 }, '&:last-child': { pb: { xs: 2.5, md: 3 } } }}>
           <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'stretch', md: 'center' }} gap={2}>
@@ -62,7 +90,25 @@ export function AdminPage() {
           </Stack>
         </CardContent>
       </Card>
-      <Stack direction="row" alignItems="center" gap={1}><AdminPanelSettingsRounded color="primary" /><Typography variant="h5">Kalenderquellen</Typography></Stack>
+      <Stack direction="row" alignItems="center" gap={1}><AdminPanelSettingsRounded color="primary" /><Typography variant="h5">Direkte Google-Verbindung</Typography></Stack>
+      {googleError && <Alert severity="error">{googleError instanceof ApiError ? googleError.message : 'Die Google-Verbindung konnte nicht aktualisiert werden.'}</Alert>}
+      {google.isLoading && <Stack alignItems="center" py={3}><CircularProgress /></Stack>}
+      {google.isError && <Alert severity="error">{google.error instanceof ApiError ? google.error.message : 'Der Google-Status konnte nicht geladen werden.'}</Alert>}
+      {google.data && (
+        <GoogleConnectionCard
+          connection={google.data}
+          authorizing={authorizeGoogle.isPending}
+          disconnecting={disconnectGoogle.isPending}
+          togglingId={toggleGoogle.isPending ? toggleGoogle.variables?.id : undefined}
+          syncingId={syncGoogle.isPending ? syncGoogle.variables : undefined}
+          onSetup={() => { configureGoogle.reset(); setGoogleSetupOpen(true); }}
+          onAuthorize={() => { authorizeGoogle.reset(); void authorize(); }}
+          onDisconnect={disconnect}
+          onToggle={(source, isActive) => toggleGoogle.mutate({ id: source.id, isActive })}
+          onSync={source => syncGoogle.mutate(source.id)}
+        />
+      )}
+      <Stack direction="row" alignItems="center" gap={1}><AddLinkRounded color="primary" /><Typography variant="h5">iCal-Kalender · nur lesen</Typography></Stack>
       {actionError && <Alert severity="error">{actionError instanceof ApiError ? actionError.message : 'Die Kalenderaktion ist fehlgeschlagen.'}</Alert>}
       {sources.isLoading && <Stack alignItems="center" py={4}><CircularProgress /></Stack>}
       {sources.isError && <Alert severity="error">{sources.error instanceof ApiError ? sources.error.message : 'Die Kalenderquellen konnten nicht geladen werden.'}</Alert>}
@@ -79,6 +125,15 @@ export function AdminPage() {
           error={mutationError instanceof ApiError ? mutationError.message : mutationError ? 'Die Kalenderquelle konnte nicht gespeichert werden.' : null}
           onClose={() => { createSource.reset(); updateSource.reset(); setDialogSource(undefined); }}
           onSave={save}
+        />
+      )}
+      {googleSetupOpen && google.data && (
+        <GoogleSetupDialog
+          callbackUrl={google.data.callbackUrl}
+          pending={configureGoogle.isPending}
+          error={configureGoogle.error instanceof ApiError ? configureGoogle.error.message : configureGoogle.error ? 'Die OAuth-Zugangsdaten konnten nicht gespeichert werden.' : null}
+          onClose={() => { configureGoogle.reset(); setGoogleSetupOpen(false); }}
+          onSave={saveGoogle}
         />
       )}
     </Stack>

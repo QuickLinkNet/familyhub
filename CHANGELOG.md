@@ -9,6 +9,27 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 - Aufgabenfreigabe und wiederkehrende Aufgaben
 - Routinen für Morgen und Abend
 
+## [0.7.0] - 2026-11-06
+
+### Hinzugefügt
+
+- optionale native Google-OAuth-Verbindung ohne Service-Account oder Composer-Abhängigkeit
+- geführte Einrichtung im Adminbereich mit kopierbarer Callback-URL und offiziellen Google-Einstiegen
+- Auswahl der am Familienboard sichtbaren Google-Kalender samt Zugriffsstatus
+- direktes Erstellen, Bearbeiten und Löschen von Terminen in beschreibbaren Google-Kalendern
+- verschlüsselter Speicher für OAuth-Client-Secret, Access- und Refresh-Token mit separatem Schlüssel
+
+### Sicherheit
+
+- kurzlebiger, einmal verwendbarer und nur gehasht gespeicherter OAuth-State schützt den Callback vor CSRF
+- minimale Google-Berechtigungen für Termine und lesenden Zugriff auf die Kalenderliste
+- OAuth-Geheimnisse und externe Kalenderkennungen werden nie an das Frontend oder Repository ausgegeben
+
+### Kompatibilität
+
+- vorhandene iCal-Quellen bleiben unverändert als wartungsfreier read-only Weg verfügbar
+- Installationen ohne Google-OAuth-Konfiguration funktionieren ohne Einschränkung weiter
+
 ## [0.6.1] - 2026-11-05
 
 ### Geändert

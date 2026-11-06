@@ -1,4 +1,4 @@
-export type CalendarType = 'SHARED' | 'PERSONAL' | 'EXTERNAL';
+export type CalendarType = 'SHARED' | 'PERSONAL' | 'EXTERNAL' | 'GOOGLE';
 
 export interface FamilyCalendar {
   id: string;
@@ -7,6 +7,7 @@ export interface FamilyCalendar {
   type: CalendarType;
   ownerMember: { id: string; name: string | null } | null;
   isActive: boolean;
+  writable: boolean;
 }
 
 export interface CalendarEvent {
@@ -21,7 +22,7 @@ export interface CalendarEvent {
   createdBy: { id: string; name: string | null } | null;
   createdAt: string;
   updatedAt: string;
-  source: 'LOCAL' | 'EXTERNAL';
+  source: 'LOCAL' | 'EXTERNAL' | 'GOOGLE';
   editable: boolean;
 }
 

@@ -29,6 +29,7 @@ final class Calendar
             'type' => $this->type,
             'ownerMember' => $this->ownerMemberId === null ? null : ['id' => $this->ownerMemberId, 'name' => $this->ownerMemberName],
             'isActive' => $this->isActive,
+            'writable' => true,
         ];
     }
 }
