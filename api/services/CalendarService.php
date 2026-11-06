@@ -16,7 +16,8 @@ final class CalendarService
     public function __construct(
         private CalendarRepository $repository,
         private CalendarSourceRepository $sourceRepository,
-        private CalendarSourceService $sourceService
+        private CalendarSourceService $sourceService,
+        private GoogleCalendarService $googleService
     ) {}
 
     /** @return list<array<string, mixed>> */
@@ -24,7 +25,8 @@ final class CalendarService
     {
         return array_merge(
             array_map(static fn (Calendar $calendar): array => $calendar->toArray(), $this->repository->allCalendars()),
-            $this->sourceRepository->activeCalendars()
+            $this->sourceRepository->activeCalendars(),
+            $this->googleService->calendars()
         );
     }
 
@@ -37,11 +39,13 @@ final class CalendarService
             throw new AppException('VALIDATION_ERROR', 'Der Kalenderzeitraum muss positiv und höchstens 370 Tage lang sein.', 422);
         }
         $this->sourceService->synchronizeStale();
+        $this->googleService->synchronizeStale();
         $fromUtc = $this->utc($fromDate);
         $toUtc = $this->utc($toDate);
         $events = array_merge(
             array_map(static fn (CalendarEvent $event): array => $event->toArray(), $this->repository->eventsBetween($fromUtc, $toUtc)),
-            $this->sourceRepository->eventsBetween($fromUtc, $toUtc)
+            $this->sourceRepository->eventsBetween($fromUtc, $toUtc),
+            $this->googleService->eventsBetween($fromUtc, $toUtc)
         );
         usort($events, static fn (array $a, array $b): int => [$a['startsAt'], $a['endsAt'], $a['title']] <=> [$b['startsAt'], $b['endsAt'], $b['title']]);
         return $events;
@@ -50,6 +54,10 @@ final class CalendarService
     /** @param array<string, mixed> $input @param array{id: string, name: string, color: string, role: string} $actor */
     public function create(array $input, array $actor): array
     {
+        $calendarId = trim((string) ($input['calendarId'] ?? ''));
+        if ($this->repository->findCalendar($calendarId) === null) {
+            return $this->googleService->createEvent($input);
+        }
         $now = gmdate('c');
         return $this->repository->createEvent($this->validate($input) + [
             'uuid' => $this->uuid(),
@@ -64,16 +72,15 @@ final class CalendarService
     {
         $existing = $this->repository->findEvent($uuid);
         if ($existing === null) {
-            throw new AppException('NOT_FOUND', 'Der Termin wurde nicht gefunden.', 404);
+            return $this->googleService->updateEvent($uuid, $input);
         }
         return $this->repository->updateEvent($uuid, $this->validate($input, $existing) + ['updated_at' => gmdate('c')])->toArray();
     }
 
     public function delete(string $uuid): void
     {
-        if (!$this->repository->softDeleteEvent($uuid)) {
-            throw new AppException('NOT_FOUND', 'Der Termin wurde nicht gefunden.', 404);
-        }
+        if ($this->repository->findEvent($uuid) === null) { $this->googleService->deleteEvent($uuid); return; }
+        $this->repository->softDeleteEvent($uuid);
     }
 
     /** @param array<string, mixed> $input */

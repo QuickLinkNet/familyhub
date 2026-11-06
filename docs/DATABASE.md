@@ -15,6 +15,7 @@ Aktuelle Entwicklung:
 5. Login-Sperren und Authentifizierungsgrundlage
 6. Kalendertermine und Zeitraumindizes
 7. verschlüsselte externe Kalenderquellen und synchronisierte read-only Termine
+8. verschlüsselte Google-OAuth-Verbindung, auswählbare Google-Kalender und lokaler Termincache
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -30,6 +31,9 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 - `calendar_events` – Termine, Zeiträume, Orte und Ersteller
 - `calendar_sources` – verschlüsselte Google-iCal-Verbindungen und Synchronisationsstatus
 - `external_calendar_events` – lokal zwischengespeicherte read-only Termine externer Quellen
+- `google_oauth_connections` – verschlüsselte OAuth-Konfiguration, Tokens und kurzlebiger State
+- `google_calendar_sources` – verfügbare Google-Kalender, Auswahl, Rechte und Synchronisationsstatus
+- `google_calendar_events` – lokal zwischengespeicherte Google-Termine mit externer Kennung
 - `auth_login_attempts` – begrenzte Fehlversuche und zeitweilige Login-Sperren
 - `schema_migrations` – angewendete Migrationen
 

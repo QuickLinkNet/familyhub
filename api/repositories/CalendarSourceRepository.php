@@ -27,6 +27,7 @@ final class CalendarSourceRepository
             'type' => 'EXTERNAL',
             'ownerMember' => null,
             'isActive' => true,
+            'writable' => false,
         ], $rows);
     }
 

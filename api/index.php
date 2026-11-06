@@ -7,24 +7,32 @@ use FamilyCompass\Controllers\CalendarController;
 use FamilyCompass\Controllers\CalendarSourceController;
 use FamilyCompass\Controllers\FamilyMemberController;
 use FamilyCompass\Controllers\HealthController;
+use FamilyCompass\Controllers\GoogleCalendarController;
 use FamilyCompass\Controllers\SetupController;
 use FamilyCompass\Controllers\TaskController;
 use FamilyCompass\Core\AppException;
 use FamilyCompass\Core\Bootstrap;
 use FamilyCompass\Core\CalendarSourceCipher;
 use FamilyCompass\Core\Logger;
+use FamilyCompass\Core\PublicUrl;
 use FamilyCompass\Core\Response;
 use FamilyCompass\Core\Router;
+use FamilyCompass\Core\SecretCipher;
 use FamilyCompass\Repositories\AuthRepository;
 use FamilyCompass\Repositories\CalendarRepository;
 use FamilyCompass\Repositories\CalendarSourceRepository;
 use FamilyCompass\Repositories\FamilyMemberRepository;
+use FamilyCompass\Repositories\GoogleCalendarRepository;
+use FamilyCompass\Repositories\GoogleOAuthRepository;
 use FamilyCompass\Repositories\SetupRepository;
 use FamilyCompass\Repositories\TaskRepository;
 use FamilyCompass\Services\AuthService;
 use FamilyCompass\Services\CalendarService;
 use FamilyCompass\Services\CalendarSourceService;
 use FamilyCompass\Services\FamilyMemberService;
+use FamilyCompass\Services\GoogleApiClient;
+use FamilyCompass\Services\GoogleCalendarService;
+use FamilyCompass\Services\GoogleOAuthService;
 use FamilyCompass\Services\SetupService;
 use FamilyCompass\Services\TaskService;
 use FamilyCompass\Services\IcalFetcher;
@@ -72,8 +80,13 @@ try {
         new IcalFetcher(),
         new IcalParser()
     );
-    $calendarController = new CalendarController(new CalendarService(new CalendarRepository($database), $calendarSourceRepository, $calendarSourceService));
+    $secretCipher = new SecretCipher($config);
+    $googleClient = new GoogleApiClient();
+    $googleOAuthService = new GoogleOAuthService(new GoogleOAuthRepository($database), $secretCipher, $googleClient);
+    $googleCalendarService = new GoogleCalendarService(new GoogleCalendarRepository($database), $googleOAuthService, $googleClient, $secretCipher);
+    $calendarController = new CalendarController(new CalendarService(new CalendarRepository($database), $calendarSourceRepository, $calendarSourceService, $googleCalendarService));
     $calendarSourceController = new CalendarSourceController($calendarSourceService);
+    $googleCalendarController = new GoogleCalendarController($googleOAuthService, $googleCalendarService, new PublicUrl());
     $familyRepository = new FamilyMemberRepository($database);
     $familyController = new FamilyMemberController(new FamilyMemberService($familyRepository));
     $taskController = new TaskController(new TaskService(new TaskRepository($database), $familyRepository));
@@ -103,6 +116,9 @@ try {
         $authService->requireUser();
         $authService->requireCsrf();
         $authController->logout();
+    });
+    $router->get('/v1/google-calendar/oauth/callback', static function () use ($googleCalendarController): void {
+        $googleCalendarController->callback();
     });
 
     $router->get('/v1/family-members', static function () use ($authService, $familyController): void {
@@ -198,6 +214,35 @@ try {
         $authService->requireAdmin();
         $authService->requireCsrf();
         $calendarSourceController->delete($uuid);
+    });
+    $router->get('/v1/admin/google-calendar', static function () use ($authService, $googleCalendarController): void {
+        $authService->requireAdmin();
+        $googleCalendarController->status();
+    });
+    $router->put('/v1/admin/google-calendar/config', static function () use ($authService, $googleCalendarController): void {
+        $authService->requireAdmin();
+        $authService->requireCsrf();
+        $googleCalendarController->configure();
+    });
+    $router->post('/v1/admin/google-calendar/authorize', static function () use ($authService, $googleCalendarController): void {
+        $authService->requireAdmin();
+        $authService->requireCsrf();
+        $googleCalendarController->authorize();
+    });
+    $router->put('/v1/admin/google-calendar/sources/{uuid}', static function (string $uuid) use ($authService, $googleCalendarController): void {
+        $authService->requireAdmin();
+        $authService->requireCsrf();
+        $googleCalendarController->updateSource($uuid);
+    });
+    $router->post('/v1/admin/google-calendar/sources/{uuid}/sync', static function (string $uuid) use ($authService, $googleCalendarController): void {
+        $authService->requireAdmin();
+        $authService->requireCsrf();
+        $googleCalendarController->synchronize($uuid);
+    });
+    $router->delete('/v1/admin/google-calendar', static function () use ($authService, $googleCalendarController): void {
+        $authService->requireAdmin();
+        $authService->requireCsrf();
+        $googleCalendarController->disconnect();
     });
 
     $router->dispatch($_SERVER['REQUEST_METHOD'] ?? 'GET', $_SERVER['REQUEST_URI'] ?? '/');

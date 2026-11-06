@@ -55,3 +55,11 @@ Admin-API → URL-Prüfung → verschlüsselte Quelle → iCal-Abruf → Parser 
 Nur direkte HTTPS-iCal-Adressen von `calendar.google.com` werden akzeptiert. DNS-Ziele, Antwortgröße, Redirects und Zeitlimits werden geprüft. Der geheime Link liegt AES-256-GCM-verschlüsselt in SQLite; der zufällige Schlüssel liegt separat im geschützten `storage/`. Das Frontend erhält ausschließlich einen neutralen URL-Hinweis.
 
 Synchronisierte Termine werden für 90 Tage Vergangenheit und 730 Tage Zukunft materialisiert. Gängige tägliche, wöchentliche, monatliche und jährliche Wiederholungen, Ausnahmen und Google-Overrides werden verarbeitet. Kalenderabfragen aktualisieren aktive Quellen frühestens nach 30 Minuten; bei Fehlern bleibt der letzte erfolgreiche Cache verfügbar.
+
+Für direkten Schreibzugriff ergänzt ein optionaler nativer OAuth-/REST-Adapter den iCal-Weg:
+
+```text
+Admin-Assistent → OAuth-Webflow → verschlüsselte Tokens → Google Calendar REST API → lokaler Cache
+```
+
+Die Anwendung verwendet keine Google-SDK- oder Composer-Laufzeitabhängigkeit. OAuth und Calendar API laufen über feste HTTPS-Endpunkte. Client-Secret, Access-/Refresh-Token und Kalenderkennungen sind AES-256-GCM-verschlüsselt; der `state` liegt nur kurzzeitig und gehasht vor. Der primäre Kalender wird nach der Verbindung automatisch aktiviert, weitere Kalender wählt der Admin einzeln aus. Der Cache deckt 90 Tage Vergangenheit und 730 Tage Zukunft ab und wird frühestens nach 15 Minuten erneut geladen. Lokale und Google-Termine teilen dieselbe öffentliche Kalender-API; der Service routet Mutationen anhand der Kalender- beziehungsweise Termin-ID an den passenden Adapter.

@@ -103,3 +103,18 @@ npm run deploy
 ```
 
 Neue Migrationen werden beim nächsten API-Aufruf automatisch einmalig angewendet. Vor Migrationen legt die API ein SQLite-Backup an und behält standardmäßig die letzten 14 Sicherungen.
+
+## 8. Optional: Google-Termine direkt bearbeiten
+
+Der iCal-Link benötigt keine weitere Infrastruktur und bleibt die empfohlene read-only Grundeinstellung. Für Erstellen, Bearbeiten und Löschen direkt in FamilyHub öffnet ein Admin unter `/admin` den Assistenten „Google direkt verbinden“.
+
+Einmalig erforderlich:
+
+1. in der Google Cloud Console ein Projekt auswählen oder erstellen,
+2. die Google Calendar API aktivieren,
+3. den OAuth-Zustimmungsbildschirm einrichten,
+4. eine OAuth-Client-ID vom Typ „Webanwendung“ erstellen,
+5. die im FamilyHub-Assistenten angezeigte Callback-URL exakt als autorisierte Weiterleitungs-URI eintragen,
+6. Client-ID und Secret in FamilyHub speichern und „Mit Google anmelden“ wählen.
+
+Im Google-Testmodus können Refresh-Tokens nach sieben Tagen ablaufen. Für dauerhaften Betrieb den Zustimmungsbildschirm in den Produktionsstatus versetzen und Googles Hinweise für sensible Kalenderberechtigungen beachten. Self-Hoster verwenden ihren eigenen OAuth-Client; das Repository enthält keine Betreiber-Secrets. Optional kann der Webserver die kanonische Anwendungsadresse über `FAMILYHUB_PUBLIC_URL=https://example.org/apps/familyhub` vorgeben. Ohne Variable erkennt FamilyHub sie aus der HTTPS-Anfrage.

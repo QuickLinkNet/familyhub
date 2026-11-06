@@ -14,7 +14,8 @@ final class Config
     public function backupsPath(): string { return $this->storagePath() . DIRECTORY_SEPARATOR . 'backups'; }
     public function logsPath(): string { return $this->storagePath() . DIRECTORY_SEPARATOR . 'logs'; }
     public function calendarSourceKeyPath(): string { return $this->storagePath() . DIRECTORY_SEPARATOR . 'calendar-source.key'; }
+    public function secretKeyPath(): string { return $this->storagePath() . DIRECTORY_SEPARATOR . 'application-secrets.key'; }
     public function migrationsPath(): string { return $this->apiPath() . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'migrations'; }
-    public function version(): string { return '0.6.1'; }
+    public function version(): string { return '0.7.0'; }
     public function backupLimit(): int { return 14; }
 }

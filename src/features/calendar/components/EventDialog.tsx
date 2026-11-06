@@ -90,7 +90,7 @@ export function EventDialog({ event, initialDate, calendars, onClose }: EventDia
           <TextField autoFocus required label="Titel" value={form.title} onChange={e => change('title', e.target.value)} inputProps={{ maxLength: 140 }} />
           <FormControl required>
             <InputLabel id="event-calendar-label">Kalender</InputLabel>
-            <Select labelId="event-calendar-label" label="Kalender" value={form.calendarId} onChange={e => change('calendarId', e.target.value)}>
+            <Select labelId="event-calendar-label" label="Kalender" value={form.calendarId} disabled={editing} onChange={e => change('calendarId', e.target.value)}>
               {calendars.map(calendar => (
                 <MenuItem key={calendar.id} value={calendar.id}>
                   <Stack direction="row" alignItems="center" gap={1}><Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: calendar.color }} />{calendar.name}</Stack>

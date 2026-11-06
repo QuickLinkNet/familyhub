@@ -78,7 +78,7 @@ Eine prüfpflichtige Aufgabe wechselt beim Abschluss in `PENDING_VERIFICATION`.
 - `PUT /calendar-events/{uuid}` – Admin oder Elternteil
 - `DELETE /calendar-events/{uuid}` – Admin oder Elternteil
 
-Lokale Termine enthalten `source: "LOCAL"` und `editable: true`. Synchronisierte Google-Termine enthalten `source: "EXTERNAL"`, `editable: false` und können ausschließlich in Google Kalender geändert werden.
+Lokale Termine enthalten `source: "LOCAL"` und `editable: true`. iCal-Termine enthalten `source: "EXTERNAL"`, `editable: false`. Direkt verbundene Google-Termine enthalten `source: "GOOGLE"`; `editable` richtet sich nach der von Google gemeldeten Kalenderrolle.
 
 ### Administration: Google-Kalender
 
@@ -91,6 +91,20 @@ Alle Endpunkte benötigen die Rolle `ADMIN`; Mutationen benötigen zusätzlich C
 - `DELETE /admin/calendar-sources/{uuid}` – Quelle und lokalen Termin-Cache entfernen
 
 Create akzeptiert `name`, `url`, `color` und `isActive`. Update akzeptiert dieselben Felder; fehlt `url`, bleibt die gespeicherte Adresse erhalten. Zulässig sind ausschließlich direkte HTTPS-Adressen von `calendar.google.com` im iCal-Format. Neue oder ersetzte Adressen werden vor der Persistierung abgerufen und geparst. Bei einem Fehler bleibt eine bestehende Quelle unverändert; beim Anlegen entsteht kein unbrauchbarer Eintrag. Aktive Quellen werden bei Kalenderabfragen nach 30 Minuten automatisch aktualisiert. Die Integration ist read-only.
+
+### Administration: direkte Google-Verbindung
+
+Alle Admin-Endpunkte benötigen Rolle `ADMIN`; Mutationen zusätzlich CSRF.
+
+- `GET /admin/google-calendar` – Konfigurations-, Verbindungs- und Kalenderstatus ohne Geheimnisse
+- `PUT /admin/google-calendar/config` – OAuth-Client-ID und Client-Secret verschlüsselt speichern
+- `POST /admin/google-calendar/authorize` – kurzlebige Google-Autorisierungsadresse erzeugen
+- `PUT /admin/google-calendar/sources/{uuid}` – einen Google-Kalender am Board aktivieren oder deaktivieren
+- `POST /admin/google-calendar/sources/{uuid}/sync` – aktiven Google-Kalender synchronisieren
+- `DELETE /admin/google-calendar` – Token widerrufen und lokalen Google-Cache entfernen
+- `GET /google-calendar/oauth/callback` – öffentlicher OAuth-Callback mit serverseitiger State-Prüfung
+
+Die Konfiguration akzeptiert `clientId` und `clientSecret`. Der Browser erhält danach nur einen gekürzten Client-ID-Hinweis, die exakt zu registrierende Callback-URL und neutrale Statusdaten. Der Callback tauscht den Autorisierungscode serverseitig gegen Token, importiert die Kalenderliste und aktiviert den primären Kalender. Schreibzugriffe auf `/calendar-events` werden anhand der Kalender-ID entweder lokal oder über die Google Calendar API ausgeführt.
 
 `from`, `to`, `startsAt` und `endsAt` sind ISO-8601-Zeitpunkte. Schreibzugriffe akzeptieren `calendarId`, `title`, optional `description` und `location` sowie `startsAt`, `endsAt` und `allDay`. Das Ende muss nach dem Beginn liegen. Ein Abfragezeitraum ist auf 370 Tage begrenzt.
 
