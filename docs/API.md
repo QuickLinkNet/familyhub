@@ -67,8 +67,11 @@ Create und Update akzeptieren `name`, `color`, `role`, `isActive`, optional `ava
 - `PUT /tasks/{uuid}` – Admin oder Elternteil
 - `DELETE /tasks/{uuid}` – Admin oder Elternteil
 - `POST /tasks/{uuid}/complete` – Erwachsene für jede Aufgabe; Kinder nur für die eigene zugewiesene Aufgabe
+- `POST /tasks/{uuid}/verify` – Admin oder Elternteil bestätigt eine prüfpflichtige Erledigung
 
-Eine prüfpflichtige Aufgabe wechselt beim Abschluss in `PENDING_VERIFICATION`.
+Create und Update akzeptieren neben den Aufgabendaten optional `routinePeriod` (`MORNING`, `AFTERNOON`, `EVENING`) und `repeatDays` als eindeutige ISO-Wochentage von 1 bis 7. Eine Routine benötigt mindestens einen Wochentag. Beim endgültigen Abschluss legt die API transaktional die nächste passende offene Ausführung an und überspringt bereits vergangene Wiederholungstage.
+
+Eine prüfpflichtige Aufgabe wechselt beim Abschluss in `PENDING_VERIFICATION`. Erst die Elternbestätigung schließt sie endgültig ab und erzeugt bei einer Routine die nächste Ausführung.
 
 ### Kalender
 

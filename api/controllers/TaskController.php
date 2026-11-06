@@ -32,6 +32,11 @@ final class TaskController
         Response::success($this->service->complete($uuid, $actor));
     }
 
+    public function verify(string $uuid): void
+    {
+        Response::success($this->service->verify($uuid));
+    }
+
     public function delete(string $uuid): void
     {
         $this->service->delete($uuid);

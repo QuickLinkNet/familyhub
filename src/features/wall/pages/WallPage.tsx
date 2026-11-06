@@ -4,6 +4,7 @@ import { useCalendarEvents } from '../../calendar/hooks/useCalendar';
 import { addDays, startOfDay } from '../../calendar/utils/calendarDates';
 import { useFamilyMembers } from '../../family/hooks/useFamilyMembers';
 import { useTasks } from '../../tasks/hooks/useTasks';
+import { isDueBy, localDate } from '../../tasks/utils/taskDates';
 import { WallEvents } from '../components/WallEvents';
 import { WallFamily } from '../components/WallFamily';
 import { WallHeader } from '../components/WallHeader';
@@ -22,7 +23,7 @@ export function WallPage() {
   const events = useCalendarEvents(range.start.toISOString(), range.end.toISOString());
   const tasks = useTasks();
   const family = useFamilyMembers();
-  const openTasks = (tasks.data ?? []).filter(task => task.status === 'OPEN');
+  const openTasks = (tasks.data ?? []).filter(task => task.status !== 'COMPLETED' && isDueBy(task, localDate(now)));
   const activeFamily = (family.data ?? []).filter(member => member.isActive);
   const upcomingEvents = (events.data ?? []).filter(event => new Date(event.endsAt) > now);
   const loading = events.isLoading || tasks.isLoading || family.isLoading;

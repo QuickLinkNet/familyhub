@@ -1,5 +1,6 @@
 export type TaskPriority = 'LOW' | 'MEDIUM' | 'HIGH';
 export type TaskStatus = 'OPEN' | 'PENDING_VERIFICATION' | 'COMPLETED';
+export type RoutinePeriod = 'MORNING' | 'AFTERNOON' | 'EVENING';
 
 export interface Task {
   id: string;
@@ -10,6 +11,9 @@ export interface Task {
   priority: TaskPriority;
   status: TaskStatus;
   requiresVerification: boolean;
+  routinePeriod: RoutinePeriod | null;
+  repeatDays: number[];
+  seriesId: string | null;
   completedAt: string | null;
   createdAt: string;
   updatedAt: string;
@@ -22,4 +26,6 @@ export interface CreateTaskInput {
   dueDate?: string | null;
   priority: TaskPriority;
   requiresVerification: boolean;
+  routinePeriod?: RoutinePeriod | null;
+  repeatDays?: number[];
 }
