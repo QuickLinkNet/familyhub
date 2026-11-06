@@ -158,6 +158,11 @@ try {
         $authService->requireCsrf();
         $taskController->complete($uuid, $user);
     });
+    $router->post('/v1/tasks/{uuid}/verify', static function (string $uuid) use ($authService, $taskController): void {
+        $authService->requireAdult();
+        $authService->requireCsrf();
+        $taskController->verify($uuid);
+    });
     $router->put('/v1/tasks/{uuid}', static function (string $uuid) use ($authService, $taskController): void {
         $authService->requireAdult();
         $authService->requireCsrf();

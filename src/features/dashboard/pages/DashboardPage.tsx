@@ -4,6 +4,7 @@ import { useAuthSession } from '../../auth/hooks/useAuth';
 import { useCalendarEvents } from '../../calendar/hooks/useCalendar';
 import { useFamilyMembers } from '../../family/hooks/useFamilyMembers';
 import { useTasks } from '../../tasks/hooks/useTasks';
+import { isDueBy, localDate, wasCompletedOn } from '../../tasks/utils/taskDates';
 import { AdminSetupCard } from '../components/AdminSetupCard';
 import { FamilySummaryCard } from '../components/FamilySummaryCard';
 import { TasksSummaryCard } from '../components/TasksSummaryCard';
@@ -22,8 +23,9 @@ export function DashboardPage() {
   const family = useFamilyMembers();
   const session = useAuthSession();
   const todayEvents = events.data ?? [];
-  const openTasks = (tasks.data ?? []).filter(task => task.status === 'OPEN');
-  const completedTasks = (tasks.data ?? []).filter(task => task.status !== 'OPEN');
+  const currentDate = localDate(now);
+  const openTasks = (tasks.data ?? []).filter(task => task.status !== 'COMPLETED' && isDueBy(task, currentDate));
+  const completedTasks = (tasks.data ?? []).filter(task => task.status === 'COMPLETED' && wasCompletedOn(task, currentDate));
   const activeFamily = (family.data ?? []).filter(member => member.isActive);
 
   return (
@@ -31,7 +33,7 @@ export function DashboardPage() {
       <PageHeader title={greeting} description={`${todayLabel} · Alles Wichtige für eure Familie.`} />
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', lg: 'repeat(3, minmax(0, 1fr))' }, gap: { xs: 2, md: 2.5 }, alignItems: 'stretch' }}>
         <TodayCard events={todayEvents} loading={events.isLoading} error={events.isError} />
-        <TasksSummaryCard openCount={openTasks.length} completedCount={completedTasks.length} totalCount={(tasks.data ?? []).length} loading={tasks.isLoading} error={tasks.isError} />
+        <TasksSummaryCard openCount={openTasks.length} completedCount={completedTasks.length} totalCount={openTasks.length + completedTasks.length} loading={tasks.isLoading} error={tasks.isError} />
         <FamilySummaryCard members={activeFamily} loading={family.isLoading} error={family.isError} />
         <WallModeCard />
         {session.data?.user?.role === 'ADMIN' && <AdminSetupCard />}

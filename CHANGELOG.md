@@ -6,8 +6,34 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ### Geplant
 
-- Aufgabenfreigabe und wiederkehrende Aufgaben
-- Routinen für Morgen und Abend
+- Punkte und Belohnungen für bestätigte Aufgaben
+- gemeinsame Einkaufslisten und Essensplanung
+
+## [0.8.0] - 2026-11-06
+
+### Hinzugefügt
+
+- wiederkehrende Aufgaben mit frei wählbaren Wochentagen und automatisch erzeugter nächster Ausführung
+- touch-optimierte Morgen-, Nachmittags- und Abendroutinen mit eigenen Tagesgruppen
+- Schnellwahl für werktägliche und tägliche Wiederholungen
+- Elternbestätigung als vollständiger API- und UI-Ablauf für prüfpflichtige Aufgaben
+- isolierte In-Memory-Smoke-Tests für alle Migrationen sowie den Routine- und Elternprüfungsablauf
+
+### Geändert
+
+- Aufgabenbereich, Dashboard und Wandmodus berücksichtigen nur aktuell fällige Aufgaben und Routinen
+- abgeschlossene Aufgaben werden kompakt als jüngste Historie angezeigt
+- Dashboard-Fortschritt bezieht sich auf den aktuellen Tag statt auf die gesamte Aufgabenhistorie
+
+### Sicherheit und Datenintegrität
+
+- die nächste Routine wird gemeinsam mit dem endgültigen Abschluss in einer SQLite-Transaktion angelegt
+- eine prüfpflichtige Routine erzeugt ihre nächste Ausführung erst nach der Elternbestätigung
+
+### Geprüft
+
+- Routine- und Aufgabendialog auf Desktop und Mobil ohne Speicherung echter Familiendaten
+- Wochentagsauswahl, Pflichtzustände, Migrationsfolge und automatische Folgeausführung
 
 ## [0.7.1] - 2026-11-06
 

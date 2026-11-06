@@ -27,24 +27,44 @@ final class TaskRepository
 
     public function create(array $data): Task
     {
-        $statement = $this->database->prepare('INSERT INTO tasks (uuid, title, description, assigned_member_uuid, due_date, priority, status, requires_verification, created_at, updated_at) VALUES (:uuid, :title, :description, :assigned_member_uuid, :due_date, :priority, :status, :requires_verification, :created_at, :updated_at)');
-        $statement->execute($data);
+        $this->insert($data);
         return $this->find($data['uuid']) ?? throw new \RuntimeException('Created task could not be retrieved.');
     }
 
     public function update(string $uuid, array $data): Task
     {
-        $statement = $this->database->prepare('UPDATE tasks SET title = :title, description = :description, assigned_member_uuid = :assigned_member_uuid, due_date = :due_date, priority = :priority, requires_verification = :requires_verification, updated_at = :updated_at WHERE uuid = :uuid AND deleted_at IS NULL');
+        $statement = $this->database->prepare('UPDATE tasks SET title = :title, description = :description, assigned_member_uuid = :assigned_member_uuid, due_date = :due_date, priority = :priority, requires_verification = :requires_verification, routine_period = :routine_period, repeat_days = :repeat_days, updated_at = :updated_at WHERE uuid = :uuid AND deleted_at IS NULL');
         $statement->execute($data + ['uuid' => $uuid]);
         return $this->find($uuid) ?? throw new \RuntimeException('Updated task could not be retrieved.');
     }
 
-    public function complete(string $uuid, string $status): ?Task
+    /** @param array<string, mixed>|null $nextTask */
+    public function transition(string $uuid, string $fromStatus, string $toStatus, ?array $nextTask = null): ?Task
     {
-        $statement = $this->database->prepare('UPDATE tasks SET status = :status, completed_at = :completed_at, updated_at = :updated_at WHERE uuid = :uuid AND status = \'OPEN\' AND deleted_at IS NULL');
         $now = gmdate('c');
-        $statement->execute(['uuid' => $uuid, 'status' => $status, 'completed_at' => $now, 'updated_at' => $now]);
-        return $statement->rowCount() === 1 ? $this->find($uuid) : null;
+        $this->database->beginTransaction();
+        try {
+            $statement = $this->database->prepare('UPDATE tasks SET status = :to_status, completed_at = :completed_at, updated_at = :updated_at WHERE uuid = :uuid AND status = :from_status AND deleted_at IS NULL');
+            $statement->execute(['uuid' => $uuid, 'from_status' => $fromStatus, 'to_status' => $toStatus, 'completed_at' => $now, 'updated_at' => $now]);
+            if ($statement->rowCount() !== 1) {
+                $this->database->rollBack();
+                return null;
+            }
+            if ($nextTask !== null) {
+                $this->insert($nextTask);
+            }
+            $this->database->commit();
+            return $this->find($uuid);
+        } catch (\Throwable $error) {
+            if ($this->database->inTransaction()) { $this->database->rollBack(); }
+            throw $error;
+        }
+    }
+
+    public function householdTimezone(): string
+    {
+        $timezone = $this->database->query('SELECT timezone FROM households ORDER BY id LIMIT 1')->fetchColumn();
+        return is_string($timezone) && $timezone !== '' ? $timezone : 'Europe/Berlin';
     }
 
     public function softDelete(string $uuid): bool
@@ -58,5 +78,12 @@ final class TaskRepository
     private function selectSql(): string
     {
         return 'SELECT t.*, fm.name AS assigned_member_name, fm.color AS assigned_member_color FROM tasks t LEFT JOIN family_members fm ON fm.uuid = t.assigned_member_uuid';
+    }
+
+    /** @param array<string, mixed> $data */
+    private function insert(array $data): void
+    {
+        $statement = $this->database->prepare('INSERT INTO tasks (uuid, title, description, assigned_member_uuid, due_date, priority, status, requires_verification, routine_period, repeat_days, series_uuid, created_at, updated_at) VALUES (:uuid, :title, :description, :assigned_member_uuid, :due_date, :priority, :status, :requires_verification, :routine_period, :repeat_days, :series_uuid, :created_at, :updated_at)');
+        $statement->execute($data);
     }
 }

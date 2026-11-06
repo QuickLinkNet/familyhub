@@ -16,6 +16,7 @@ Aktuelle Entwicklung:
 6. Kalendertermine und Zeitraumindizes
 7. verschlüsselte externe Kalenderquellen und synchronisierte read-only Termine
 8. verschlüsselte Google-OAuth-Verbindung, auswählbare Google-Kalender und lokaler Termincache
+9. wiederkehrende Aufgabenserien und Tageszeit-Gruppen für Routinen
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -25,7 +26,7 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 
 - `app_settings` – technische Einstellungen
 - `family_members` – Personen, Rollen, Farben und Login-Hashes
-- `tasks` – Aufgaben und Status
+- `tasks` – Aufgaben, Status, Elternprüfung sowie optionale Routine-Tageszeit, Wiederholungswochentage und Serienkennung
 - `households` – Haushalt, Locale, Zeitzone und Setup-Zeitpunkt
 - calendars – gemeinsamer sowie persönliche Kalender
 - `calendar_events` – Termine, Zeiträume, Orte und Ersteller

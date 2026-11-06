@@ -1,23 +1,28 @@
-import { EventRounded } from '@mui/icons-material';
-import { Alert, Box, Card, CardContent, Checkbox, Chip, Stack, Typography } from '@mui/material';
+import { CheckCircleRounded, EventRounded, RepeatRounded } from '@mui/icons-material';
+import { Alert, Box, Button, Card, CardContent, Checkbox, Chip, Stack, Typography } from '@mui/material';
 import { MemberAvatar } from '../../../components/atoms/MemberAvatar';
 import { ApiError } from '../../../services/apiClient';
 import type { AuthRole } from '../../auth/types/auth';
-import { useCompleteTask } from '../hooks/useTasks';
+import { useCompleteTask, useVerifyTask } from '../hooks/useTasks';
 import type { Task, TaskPriority } from '../types/task';
 
 const priorityLabels: Record<TaskPriority, string> = { LOW: 'Niedrig', MEDIUM: 'Mittel', HIGH: 'Hoch' };
 const priorityColors: Record<TaskPriority, 'default' | 'warning' | 'error'> = { LOW: 'default', MEDIUM: 'warning', HIGH: 'error' };
 const dateLabel = (date: string) => new Intl.DateTimeFormat('de-DE', { day: 'numeric', month: 'short' }).format(new Date(`${date}T12:00:00`));
+const dayNames = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+const repeatLabel = (days: number[]) => days.length === 7 ? 'Täglich' : days.join(',') === '1,2,3,4,5' ? 'Werktags' : days.map(day => dayNames[day - 1]).join(' · ');
 
 interface TaskCardProps {
   task: Task;
   userId: string | null;
   userRole: AuthRole | null;
+  canManage: boolean;
 }
 
-export function TaskCard({ task, userId, userRole }: TaskCardProps) {
+export function TaskCard({ task, userId, userRole, canManage }: TaskCardProps) {
   const complete = useCompleteTask();
+  const verify = useVerifyTask();
+  const repeatDays = task.repeatDays ?? [];
   const done = task.status !== 'OPEN';
   const allowed = userRole !== 'CHILD' || task.assignedMember?.id === userId;
   const completeTask = () => {
@@ -38,6 +43,7 @@ export function TaskCard({ task, userId, userRole }: TaskCardProps) {
               <Stack direction="row" gap={0.75} flexWrap="wrap">
                 <Chip size="small" label={priorityLabels[task.priority]} color={priorityColors[task.priority]} />
                 {task.status === 'PENDING_VERIFICATION' && <Chip size="small" color="warning" label="Bitte bestätigen" />}
+                {repeatDays.length > 0 && <Chip size="small" icon={<RepeatRounded />} label={repeatLabel(repeatDays)} />}
               </Stack>
             </Stack>
             <Stack direction="row" gap={1.5} mt={1.5} flexWrap="wrap" color="text.secondary" alignItems="center">
@@ -52,6 +58,12 @@ export function TaskCard({ task, userId, userRole }: TaskCardProps) {
               {!allowed && <Typography variant="body2">Nur von {task.assignedMember?.name ?? 'der zugeordneten Person'} abschließbar</Typography>}
             </Stack>
             {complete.isError && <Alert severity="error" sx={{ mt: 1.5 }}>{complete.error instanceof ApiError ? complete.error.message : 'Die Aufgabe konnte nicht abgeschlossen werden.'}</Alert>}
+            {verify.isError && <Alert severity="error" sx={{ mt: 1.5 }}>{verify.error instanceof ApiError ? verify.error.message : 'Die Aufgabe konnte nicht bestätigt werden.'}</Alert>}
+            {task.status === 'PENDING_VERIFICATION' && canManage && (
+              <Button sx={{ mt: 1.5 }} variant="contained" color="success" startIcon={<CheckCircleRounded />} disabled={verify.isPending} onClick={() => verify.mutate(task.id)}>
+                {verify.isPending ? 'Wird bestätigt …' : 'Als Elternteil bestätigen'}
+              </Button>
+            )}
           </Box>
         </Stack>
       </CardContent>
