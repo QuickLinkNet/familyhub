@@ -51,6 +51,9 @@ CREATE TABLE tasks (
     repeat_days TEXT NULL,
     series_uuid TEXT NULL
 );
+ALTER TABLE tasks ADD COLUMN reward_points INTEGER NOT NULL DEFAULT 0;
+CREATE TABLE rewards (id INTEGER PRIMARY KEY, uuid TEXT NOT NULL UNIQUE, title TEXT NOT NULL, description TEXT NULL, cost_points INTEGER NOT NULL, icon TEXT NOT NULL, color TEXT NOT NULL, is_active INTEGER NOT NULL, created_by_member_uuid TEXT NOT NULL, created_at TEXT NOT NULL, updated_at TEXT NOT NULL, deleted_at TEXT NULL);
+CREATE TABLE reward_ledger (id INTEGER PRIMARY KEY, uuid TEXT NOT NULL UNIQUE, member_uuid TEXT NOT NULL, task_uuid TEXT NULL UNIQUE, reward_uuid TEXT NULL, entry_type TEXT NOT NULL, points_delta INTEGER NOT NULL, reason TEXT NOT NULL, created_by_member_uuid TEXT NOT NULL, created_at TEXT NOT NULL);
 SQL);
 
 $now = gmdate('c');
@@ -67,6 +70,7 @@ $created = $service->create([
     'dueDate' => $today->format('Y-m-d'),
     'priority' => 'MEDIUM',
     'requiresVerification' => true,
+    'rewardPoints' => 3,
     'routinePeriod' => 'MORNING',
     'repeatDays' => [1, 2, 3, 4, 5, 6, 7],
 ]);
@@ -77,11 +81,12 @@ if ($pending['status'] !== 'PENDING_VERIFICATION' || count($service->list()) !==
     exit(1);
 }
 
-$verified = $service->verify($created['id']);
+$verified = $service->verify($created['id'], ['id' => $memberId, 'name' => 'Testkind', 'color' => '#345b48', 'role' => 'CHILD']);
 $all = $service->list();
 $next = array_values(array_filter($all, static fn (array $task): bool => $task['status'] === 'OPEN'))[0] ?? null;
 $expectedDate = $today->modify('+1 day')->format('Y-m-d');
-if ($verified['status'] !== 'COMPLETED' || count($all) !== 2 || $next === null || $next['dueDate'] !== $expectedDate || $next['seriesId'] !== $created['seriesId']) {
+$points = (int) $database->query('SELECT COALESCE(SUM(points_delta), 0) FROM reward_ledger')->fetchColumn();
+if ($verified['status'] !== 'COMPLETED' || count($all) !== 2 || $next === null || $next['dueDate'] !== $expectedDate || $next['seriesId'] !== $created['seriesId'] || $next['rewardPoints'] !== 3 || $points !== 3) {
     fwrite(STDERR, "Routine scheduling smoke test failed.\n");
     exit(1);
 }

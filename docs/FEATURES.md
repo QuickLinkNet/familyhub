@@ -26,7 +26,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Dashboard | Heute, Aufgaben, Familie und direkter Wandmodus | fertig | konfigurierbare Karten und Wetter |
 | Identität & Rechte | Admin-/Elternpasswort, Kinder-PIN, Sessions, CSRF, Rollenrechte | fertig | Profilbearbeitung und feinere Modulrechte |
 | Aufgaben | Zuweisung, Fälligkeit, Priorität, Abschluss, Eltern-Check | Wiederholung und Elternfreigabe fertig | Bearbeiten, Serienverwaltung und Historie |
-| Belohnungen | Punkte, Sterne oder Münzen mit nachvollziehbarem Ledger | geplant | Punkte für geprüfte Aufgaben |
+| Belohnungen | Sterne, persönliche Guthaben, Wunschregal, Bonus und nachvollziehbares Ledger | fertig | Familienziele und optionale Kategorien |
 | Kalender | Tag/Woche/Monat, Wiederholungen, Geburtstage, Ferien | Woche und Monat fertig | Tagesansicht, Wiederholungen und Import |
 | Routinen | Morgen-/Abendroutine, Schritte, Wochentage, Fortschritt | Tageszeit, Wochentage und automatische Folgeausführung fertig | mehrstufige Abläufe und Fortschritt |
 | Einkauf | mehrere Listen, Kategorien, Mengen, schnelles Abhaken | geplant | gemeinsame Standardliste |
@@ -43,12 +43,11 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 
 ## Empfohlene Produktreihenfolge
 
-1. **Belohnungen ergänzen** – Punkte für bestätigte Aufgaben und ein nachvollziehbares Familienkonto.
-2. **Einkauf und Essensplanung** – gemeinsamer Haushaltsnutzen.
-3. **Kalender ausbauen** – Tagesansicht, lokale Wiederholungen, Geburtstage und CalDAV-Anbindung.
-4. **Routinen vertiefen** – mehrstufige Abläufe, Fortschritt und Serienverwaltung.
-5. **Notizen, Schule und Haushalt** – kleine unabhängige Module.
-6. **Idle-Modus, Wetter und Integrationen** – nach stabilem lokalem Kern.
+1. **Einkauf und Essensplanung** – gemeinsamer Haushaltsnutzen.
+2. **Kalender ausbauen** – Tagesansicht, lokale Wiederholungen, Geburtstage und CalDAV-Anbindung.
+3. **Routinen vertiefen** – mehrstufige Abläufe, Fortschritt und Serienverwaltung.
+4. **Notizen, Schule und Haushalt** – kleine unabhängige Module.
+5. **Idle-Modus, Wetter und Integrationen** – nach stabilem lokalem Kern.
 
 ## Qualitätsmaßstab
 

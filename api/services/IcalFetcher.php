@@ -39,7 +39,7 @@ final class IcalFetcher
         }
         $context = stream_context_create(['http' => [
             'method' => 'GET',
-            'header' => "Accept: text/calendar\r\nUser-Agent: FamilyHub/0.8.0\r\n",
+            'header' => "Accept: text/calendar\r\nUser-Agent: FamilyHub/0.9.0\r\n",
             'timeout' => 15,
             'follow_location' => 0,
             'ignore_errors' => true,
@@ -70,7 +70,7 @@ final class IcalFetcher
             CURLOPT_TIMEOUT => 15,
             CURLOPT_PROTOCOLS => CURLPROTO_HTTPS,
             CURLOPT_HTTPHEADER => ['Accept: text/calendar'],
-            CURLOPT_USERAGENT => 'FamilyHub/0.8.0',
+            CURLOPT_USERAGENT => 'FamilyHub/0.9.0',
             CURLOPT_WRITEFUNCTION => static function ($curl, string $chunk) use (&$content): int {
                 if (strlen($content) + strlen($chunk) > self::MAX_BYTES) { return 0; }
                 $content .= $chunk;

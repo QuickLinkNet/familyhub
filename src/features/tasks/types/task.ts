@@ -11,6 +11,7 @@ export interface Task {
   priority: TaskPriority;
   status: TaskStatus;
   requiresVerification: boolean;
+  rewardPoints: number;
   routinePeriod: RoutinePeriod | null;
   repeatDays: number[];
   seriesId: string | null;
@@ -26,6 +27,7 @@ export interface CreateTaskInput {
   dueDate?: string | null;
   priority: TaskPriority;
   requiresVerification: boolean;
+  rewardPoints: number;
   routinePeriod?: RoutinePeriod | null;
   repeatDays?: number[];
 }
