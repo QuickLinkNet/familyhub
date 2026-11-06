@@ -9,6 +9,24 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 - Aufgabenfreigabe und wiederkehrende Aufgaben
 - Routinen für Morgen und Abend
 
+## [0.7.1] - 2026-11-06
+
+### Geändert
+
+- die Google-OAuth-Einrichtung führt jetzt in sechs klaren Schritten durch API-Aktivierung, Branding, Zielgruppe, Berechtigungen, Webclient und Zugangsdaten
+- jeder Schritt verlinkt direkt den passenden Bereich der aktuellen Google Auth Platform
+- Callback-URL und beide benötigten Google-Berechtigungen lassen sich einzeln kopieren
+- Feldbeispiele, Sicherheitshinweise und der abschließende Testablauf erklären die Einrichtung ohne externe Vorkenntnisse
+- der Assistent ist auf schmalen Touchscreens besser lesbar und verhindert das Speichern unvollständiger Zugangsdaten
+
+### Geprüft
+
+- Desktop- und Mobilansicht des Einrichtungsassistenten sowie Kopier- und Formularzustände ohne Änderung echter Google- oder Kalenderdaten
+
+### Behoben
+
+- Produktionsbuilds verwenden unabhängig von lokalen Entwicklungsvariablen zuverlässig die API innerhalb des konfigurierten FamilyHub-Basispfads
+
 ## [0.7.0] - 2026-11-06
 
 ### Hinzugefügt

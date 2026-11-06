@@ -44,7 +44,7 @@ Nach dem ersten Deployment führt `/setup` durch Haushalt, Familienmitglieder un
 Admins können unter `/admin` Google Kalender auf zwei Arten verbinden:
 
 - Die **Geheime Adresse im iCal-Format** ist der einfache read-only Weg. FamilyHub prüft sie vor dem Speichern, legt sie verschlüsselt ab und überträgt sie nie wieder vollständig an das Frontend.
-- Die optionale OAuth-Verbindung erlaubt, Google-Termine direkt am Familienboard zu erstellen, zu bearbeiten und zu löschen. Ein integrierter Assistent erklärt die einmalige Einrichtung eines Google-Webclients und zeigt die exakt benötigte Rücksprungadresse. Client-Secret, Refresh- und Access-Token werden verschlüsselt gespeichert; im Git-Repository liegen keinerlei Zugangsdaten.
+- Die optionale OAuth-Verbindung erlaubt, Google-Termine direkt am Familienboard zu erstellen, zu bearbeiten und zu löschen. Ein integrierter Schritt-für-Schritt-Assistent verlinkt jeden benötigten Bereich der Google Auth Platform, bietet Callback-URL und Berechtigungen kopierbar an und erklärt die erwarteten Zugangsdaten. Client-Secret, Refresh- und Access-Token werden verschlüsselt gespeichert; im Git-Repository liegen keinerlei Zugangsdaten.
 
 Ausführlich: [Installation](docs/INSTALLATION.md), [Architektur](docs/ARCHITECTURE.md), [API](docs/API.md), [Datenbank](docs/DATABASE.md), [Sicherheit](SECURITY.md).
 

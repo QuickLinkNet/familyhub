@@ -9,7 +9,10 @@ export class ApiError extends Error {
   }
 }
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? import.meta.env.BASE_URL.replace(/\/$/, '') + '/api/v1';
+const deployedApiBaseUrl = import.meta.env.BASE_URL.replace(/\/$/, '') + '/api/v1';
+const apiBaseUrl = import.meta.env.DEV
+  ? import.meta.env.VITE_API_BASE_URL ?? deployedApiBaseUrl
+  : deployedApiBaseUrl;
 let csrfToken: string | null = null;
 const retryableStatuses = new Set([500, 502, 503, 504]);
 

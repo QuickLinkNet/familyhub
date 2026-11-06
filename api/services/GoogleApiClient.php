@@ -65,7 +65,7 @@ final class GoogleApiClient
         $options = [
             CURLOPT_CUSTOMREQUEST => $method, CURLOPT_FOLLOWLOCATION => false, CURLOPT_CONNECTTIMEOUT => 7,
             CURLOPT_TIMEOUT => 25, CURLOPT_PROTOCOLS => CURLPROTO_HTTPS, CURLOPT_HTTPHEADER => $headers,
-            CURLOPT_USERAGENT => 'FamilyHub/0.7.0',
+            CURLOPT_USERAGENT => 'FamilyHub/0.7.1',
             CURLOPT_WRITEFUNCTION => static function ($curl, string $chunk) use (&$response): int {
                 if (strlen($response) + strlen($chunk) > self::MAX_BYTES) { return 0; }
                 $response .= $chunk;
@@ -86,7 +86,7 @@ final class GoogleApiClient
     private function streamRequest(string $method, string $url, array $headers, ?string $body): array
     {
         $context = stream_context_create(['http' => [
-            'method' => $method, 'header' => implode("\r\n", array_merge($headers, ['User-Agent: FamilyHub/0.7.0'])),
+            'method' => $method, 'header' => implode("\r\n", array_merge($headers, ['User-Agent: FamilyHub/0.7.1'])),
             'content' => $body ?? '', 'timeout' => 25, 'follow_location' => 0, 'ignore_errors' => true,
         ]]);
         $response = @file_get_contents($url, false, $context, 0, self::MAX_BYTES + 1);
