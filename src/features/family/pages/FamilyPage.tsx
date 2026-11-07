@@ -5,14 +5,16 @@ import { EmptyStateCard } from '../../../components/molecules/EmptyStateCard';
 import { PageHeader } from '../../../components/molecules/PageHeader';
 import { ApiError } from '../../../services/apiClient';
 import { useAuthSession } from '../../auth/hooks/useAuth';
-import { AddMemberDialog } from '../components/AddMemberDialog';
+import { MemberDialog } from '../components/MemberDialog';
 import { FamilyMemberCard } from '../components/FamilyMemberCard';
 import { useFamilyMembers } from '../hooks/useFamilyMembers';
+import type { FamilyMember } from '../types/familyMember';
 
 export function FamilyPage() {
   const family = useFamilyMembers();
   const session = useAuthSession();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedMember, setSelectedMember] = useState<FamilyMember | null>(null);
   const canManage = session.data?.user?.role !== 'CHILD';
   const addButton = canManage ? <Button variant="contained" startIcon={<AddRounded />} onClick={() => setDialogOpen(true)}>Familienmitglied hinzufügen</Button> : undefined;
 
@@ -26,8 +28,8 @@ export function FamilyPage() {
           ? canManage
             ? <EmptyStateCard icon={<PersonAddAlt1Rounded color="primary" sx={{ fontSize: 56 }} />} title="Beginnt mit eurer Familie" description="Lege zuerst die Familienmitglieder an. Ihre Farben werden später in Kalendern, Aufgaben und Routinen wiederverwendet." action={<Button variant="contained" sx={{ mt: 2 }} onClick={() => setDialogOpen(true)}>Erstes Familienmitglied hinzufügen</Button>} />
             : <Alert severity="info">Noch keine Familienprofile vorhanden.</Alert>
-          : <FamilyGrid>{family.data?.map(member => <FamilyMemberCard key={member.id} member={member} />)}</FamilyGrid>}
-      {canManage && <AddMemberDialog open={dialogOpen} onClose={() => setDialogOpen(false)} />}
+          : <FamilyGrid>{family.data?.map(member => <FamilyMemberCard key={member.id} member={member} onEdit={canManage ? () => { setSelectedMember(member); setDialogOpen(true); } : undefined} />)}</FamilyGrid>}
+      {canManage && <MemberDialog open={dialogOpen} member={selectedMember} onClose={() => { setDialogOpen(false); setSelectedMember(null); }} />}
     </Stack>
   );
 }

@@ -115,7 +115,7 @@ Ein Planeintrag enthält `date`, `mealType` (`BREAKFAST`, `LUNCH`, `DINNER`), op
 - `PUT /calendar-events/{uuid}` – Admin oder Elternteil
 - `DELETE /calendar-events/{uuid}` – Admin oder Elternteil
 
-Lokale Termine enthalten `source: "LOCAL"` und `editable: true`. iCal-Termine enthalten `source: "EXTERNAL"`, `editable: false`. Direkt verbundene Google-Termine enthalten `source: "GOOGLE"`; `editable` richtet sich nach der von Google gemeldeten Kalenderrolle.
+Lokale Termine enthalten `source: "LOCAL"` und `editable: true`. Für lokale Serien akzeptieren Create und Update `recurrenceFrequency` (`DAILY`, `WEEKLY`, `MONTHLY`, `YEARLY`), `recurrenceInterval` (1–12) und optional `recurrenceUntil` (`YYYY-MM-DD`). Ausgelieferte Vorkommen tragen eine eindeutige `id` und die zugrunde liegende `seriesId`; Mutationen verwenden die Serien-ID. Virtuelle Geburtstage enthalten `source: "BIRTHDAY"`, `editable: false`. iCal-Termine enthalten `source: "EXTERNAL"`, `editable: false`. Direkt verbundene Google-Termine enthalten `source: "GOOGLE"`; `editable` richtet sich nach der von Google gemeldeten Kalenderrolle.
 
 ### Administration: Google-Kalender
 

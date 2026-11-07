@@ -83,6 +83,15 @@ final class FamilyMemberService
             throw new AppException('VALIDATION_ERROR', 'Die Avatar-URL ist ungültig.', 422);
         }
 
+        $birthDate = array_key_exists('birthDate', $input) ? trim((string) $input['birthDate']) : ($existing?->birthDate ?? null);
+        $birthDate = $birthDate === '' ? null : $birthDate;
+        if ($birthDate !== null) {
+            $parsedBirthDate = \DateTimeImmutable::createFromFormat('!Y-m-d', $birthDate);
+            if ($parsedBirthDate === false || $parsedBirthDate->format('Y-m-d') !== $birthDate || $parsedBirthDate > new \DateTimeImmutable('today')) {
+                throw new AppException('VALIDATION_ERROR', 'Das Geburtsdatum ist ungültig.', 422);
+            }
+        }
+
         $pinHash = null;
         $passwordHash = null;
         $clearPinHash = 0;
@@ -122,6 +131,7 @@ final class FamilyMemberService
             'pin_hash' => $pinHash,
             'password_hash' => $passwordHash,
             'avatar_url' => $avatarUrl,
+            'birth_date' => $birthDate,
             'is_active' => $isActive ? 1 : 0,
         ];
         if (!$creating) {

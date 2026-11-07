@@ -7,6 +7,7 @@ export interface FamilyMember {
   role: FamilyRole;
   isActive: boolean;
   avatarUrl: string | null;
+  birthDate: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -17,4 +18,7 @@ export interface CreateFamilyMemberInput {
   role: FamilyRole;
   password?: string;
   pin?: string;
+  birthDate?: string | null;
 }
+
+export type UpdateFamilyMemberInput = CreateFamilyMemberInput & { isActive?: boolean };

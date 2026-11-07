@@ -34,6 +34,8 @@ use FamilyCompass\Repositories\ShoppingRepository;
 use FamilyCompass\Repositories\TaskRepository;
 use FamilyCompass\Services\AuthService;
 use FamilyCompass\Services\CalendarService;
+use FamilyCompass\Services\CalendarRecurrenceExpander;
+use FamilyCompass\Services\BirthdayEventFactory;
 use FamilyCompass\Services\CalendarSourceService;
 use FamilyCompass\Services\FamilyMemberService;
 use FamilyCompass\Services\GoogleApiClient;
@@ -93,10 +95,18 @@ try {
     $googleClient = new GoogleApiClient();
     $googleOAuthService = new GoogleOAuthService(new GoogleOAuthRepository($database), $secretCipher, $googleClient);
     $googleCalendarService = new GoogleCalendarService(new GoogleCalendarRepository($database), $googleOAuthService, $googleClient, $secretCipher);
-    $calendarController = new CalendarController(new CalendarService(new CalendarRepository($database), $calendarSourceRepository, $calendarSourceService, $googleCalendarService));
+    $familyRepository = new FamilyMemberRepository($database);
+    $calendarController = new CalendarController(new CalendarService(
+        new CalendarRepository($database),
+        $calendarSourceRepository,
+        $calendarSourceService,
+        $googleCalendarService,
+        $familyRepository,
+        new CalendarRecurrenceExpander(),
+        new BirthdayEventFactory()
+    ));
     $calendarSourceController = new CalendarSourceController($calendarSourceService);
     $googleCalendarController = new GoogleCalendarController($googleOAuthService, $googleCalendarService, new PublicUrl());
-    $familyRepository = new FamilyMemberRepository($database);
     $familyController = new FamilyMemberController(new FamilyMemberService($familyRepository));
     $taskController = new TaskController(new TaskService(new TaskRepository($database), $familyRepository));
     $rewardController = new RewardController(new RewardService(new RewardRepository($database), $familyRepository));

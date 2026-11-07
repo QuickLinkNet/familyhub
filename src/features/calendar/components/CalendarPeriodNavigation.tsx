@@ -11,17 +11,20 @@ interface CalendarPeriodNavigationProps {
 }
 
 export function CalendarPeriodNavigation({ view, label, onPrevious, onNext, onToday }: CalendarPeriodNavigationProps) {
-  const previousLabel = view === 'week' ? 'Vorherige Woche' : 'Vorheriger Monat';
-  const nextLabel = view === 'week' ? 'Nächste Woche' : 'Nächster Monat';
+  const labels = view === 'day'
+    ? { previous: 'Vorheriger Tag', next: 'Nächster Tag' }
+    : view === 'week'
+      ? { previous: 'Vorherige Woche', next: 'Nächste Woche' }
+      : { previous: 'Vorheriger Monat', next: 'Nächster Monat' };
 
   return (
     <Card>
       <CardContent sx={{ p: { xs: 1.5, sm: 2 }, '&:last-child': { pb: { xs: 1.5, sm: 2 } } }}>
         <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'stretch', sm: 'center' }} gap={1.5}>
           <Stack direction="row" alignItems="center" justifyContent={{ xs: 'space-between', sm: 'flex-start' }} gap={0.5}>
-            <IconButton aria-label={previousLabel} onClick={onPrevious}><ChevronLeftRounded /></IconButton>
-            <Typography variant="h6" sx={{ minWidth: { sm: 260 }, textAlign: 'center', textTransform: view === 'month' ? 'capitalize' : 'none' }}>{label}</Typography>
-            <IconButton aria-label={nextLabel} onClick={onNext}><ChevronRightRounded /></IconButton>
+            <IconButton aria-label={labels.previous} onClick={onPrevious}><ChevronLeftRounded /></IconButton>
+            <Typography variant="h6" sx={{ minWidth: { sm: 260 }, textAlign: 'center', textTransform: view !== 'week' ? 'capitalize' : 'none' }}>{label}</Typography>
+            <IconButton aria-label={labels.next} onClick={onNext}><ChevronRightRounded /></IconButton>
           </Stack>
           <Button variant="outlined" onClick={onToday}>Heute</Button>
         </Stack>

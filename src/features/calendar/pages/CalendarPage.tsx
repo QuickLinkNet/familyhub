@@ -7,12 +7,13 @@ import { useAuthSession } from '../../auth/hooks/useAuth';
 import { CalendarHeader, type CalendarView } from '../components/CalendarHeader';
 import { CalendarLoadingGrid } from '../components/CalendarLoadingGrid';
 import { CalendarPeriodNavigation } from '../components/CalendarPeriodNavigation';
+import { DayCalendar } from '../components/DayCalendar';
 import { EventDialog } from '../components/EventDialog';
 import { MonthCalendar } from '../components/MonthCalendar';
 import { WeekCalendar } from '../components/WeekCalendar';
 import { useCalendarEvents, useCalendars } from '../hooks/useCalendar';
 import type { CalendarEvent } from '../types/calendar';
-import { addDays, daysBetween, endOfMonth, isSameMonth, monthFormatter, monthTitleFormatter, startOfDay, startOfMonth, startOfWeek } from '../utils/calendarDates';
+import { addDays, daysBetween, endOfMonth, fullDayFormatter, isSameMonth, monthFormatter, monthTitleFormatter, startOfDay, startOfMonth, startOfWeek } from '../utils/calendarDates';
 
 export function CalendarPage() {
   const [view, setView] = useState<CalendarView>('week');
@@ -25,17 +26,19 @@ export function CalendarPage() {
   const monthStart = startOfMonth(cursor);
   const monthGridStart = startOfWeek(monthStart);
   const monthGridEnd = addDays(startOfWeek(endOfMonth(cursor)), 7);
-  const periodStart = view === 'week' ? weekStart : monthGridStart;
-  const periodEnd = view === 'week' ? weekEnd : monthGridEnd;
+  const periodStart = view === 'day' ? cursor : view === 'week' ? weekStart : monthGridStart;
+  const periodEnd = view === 'day' ? addDays(cursor, 1) : view === 'week' ? weekEnd : monthGridEnd;
   const events = useCalendarEvents(periodStart.toISOString(), periodEnd.toISOString());
   const calendars = useCalendars();
   const session = useAuthSession();
   const canManage = session.data?.user?.role !== 'CHILD';
   const days = daysBetween(periodStart, periodEnd);
-  const periodLabel = view === 'week'
-    ? `${monthFormatter.format(weekStart)} – ${monthFormatter.format(addDays(weekEnd, -1))}`
-    : monthTitleFormatter.format(monthStart);
-  const periodNoun = view === 'week' ? 'Woche' : 'Monat';
+  const periodLabel = view === 'day'
+    ? fullDayFormatter.format(cursor)
+    : view === 'week'
+      ? `${monthFormatter.format(weekStart)} – ${monthFormatter.format(addDays(weekEnd, -1))}`
+      : monthTitleFormatter.format(monthStart);
+  const periodNoun = view === 'day' ? 'Tag' : view === 'week' ? 'Woche' : 'Monat';
 
   const openCreate = (day = new Date()) => {
     setSelectedEvent(null);
@@ -55,6 +58,10 @@ export function CalendarPage() {
     setSelectedDay(startOfDay(cursor));
   };
   const changePeriod = (direction: -1 | 1) => {
+    if (view === 'day') {
+      setCursor(current => addDays(current, direction));
+      return;
+    }
     if (view === 'week') {
       setCursor(current => addDays(current, direction * 7));
       return;
@@ -80,9 +87,11 @@ export function CalendarPage() {
       {calendars.isError && <Alert severity="error">{calendars.error instanceof ApiError ? calendars.error.message : 'Die Kalender konnten nicht geladen werden.'}</Alert>}
       {events.isLoading
         ? <CalendarLoadingGrid days={days} view={view} />
-        : view === 'week'
-          ? <WeekCalendar days={days} events={events.data ?? []} canManage={canManage} onCreate={openCreate} onOpen={openEvent} />
-          : <MonthCalendar days={days} month={monthStart} events={events.data ?? []} selectedDay={selectedDay} canManage={canManage} onSelectDay={setSelectedDay} onCreate={openCreate} onOpen={openEvent} />}
+        : view === 'day'
+          ? <DayCalendar day={cursor} events={events.data ?? []} canManage={canManage} onCreate={openCreate} onOpen={openEvent} />
+          : view === 'week'
+            ? <WeekCalendar days={days} events={events.data ?? []} canManage={canManage} onCreate={openCreate} onOpen={openEvent} />
+            : <MonthCalendar days={days} month={monthStart} events={events.data ?? []} selectedDay={selectedDay} canManage={canManage} onSelectDay={setSelectedDay} onCreate={openCreate} onOpen={openEvent} />}
       {!events.isLoading && events.data?.length === 0 && (
         <EmptyStateCard
           icon={<EventAvailableRounded color="primary" sx={{ fontSize: 52 }} />}
