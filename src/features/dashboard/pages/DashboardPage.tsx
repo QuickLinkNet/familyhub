@@ -14,12 +14,16 @@ import { RewardsSummaryCard } from '../components/RewardsSummaryCard';
 import { useRewards } from '../../rewards/hooks/useRewards';
 import { useShoppingLists } from '../../shopping/hooks/useShopping';
 import { ShoppingSummaryCard } from '../components/ShoppingSummaryCard';
+import { MealsSummaryCard } from '../components/MealsSummaryCard';
+import { useMealPlanner } from '../../meals/hooks/useMeals';
+import { addDays, weekStart as mealWeekStart } from '../../meals/utils/mealDates';
 
 const now = new Date();
 const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 const tomorrowStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
 const todayLabel = new Intl.DateTimeFormat('de-DE', { weekday: 'long', day: 'numeric', month: 'long' }).format(now);
 const greeting = now.getHours() < 11 ? 'Guten Morgen' : now.getHours() < 18 ? 'Hallo zusammen' : 'Guten Abend';
+const currentWeekStart = mealWeekStart(now);
 
 export function DashboardPage() {
   const events = useCalendarEvents(todayStart.toISOString(), tomorrowStart.toISOString());
@@ -28,6 +32,7 @@ export function DashboardPage() {
   const session = useAuthSession();
   const rewards = useRewards();
   const shopping = useShoppingLists();
+  const meals = useMealPlanner(localDate(currentWeekStart), localDate(addDays(currentWeekStart, 6)));
   const todayEvents = events.data ?? [];
   const currentDate = localDate(now);
   const openTasks = (tasks.data ?? []).filter(task => task.status !== 'COMPLETED' && isDueBy(task, currentDate));
@@ -35,6 +40,7 @@ export function DashboardPage() {
   const activeFamily = (family.data ?? []).filter(member => member.isActive);
   const ownPoints = rewards.data?.balances.find(balance => balance.member.id === session.data?.user?.id)?.points ?? 0;
   const shoppingOpen = (shopping.data ?? []).reduce((count, list) => count + list.items.filter(item => !item.isChecked).length, 0);
+  const todayMeals = (meals.data?.entries ?? []).filter(entry => entry.date === currentDate);
 
   return (
     <Stack spacing={{ xs: 2.5, md: 3.5 }}>
@@ -45,6 +51,7 @@ export function DashboardPage() {
         <FamilySummaryCard members={activeFamily} loading={family.isLoading} error={family.isError} />
         <RewardsSummaryCard points={ownPoints} loading={rewards.isLoading} error={rewards.isError} />
         <ShoppingSummaryCard openCount={shoppingOpen} listCount={shopping.data?.length ?? 0} loading={shopping.isLoading} error={shopping.isError} />
+        <MealsSummaryCard entries={todayMeals} loading={meals.isLoading} error={meals.isError} />
         <WallModeCard />
         {session.data?.user?.role === 'ADMIN' && <AdminSetupCard />}
       </Box>

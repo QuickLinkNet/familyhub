@@ -14,6 +14,7 @@ Bitte Sicherheitslücken nicht als öffentliches Issue veröffentlichen. Nutze e
 - Kinder können ausschließlich eigene zugewiesene Aufgaben abschließen.
 - Kinder können Belohnungen ausschließlich mit dem eigenen Sternenguthaben einlösen; Bonusvergabe und Katalogverwaltung bleiben Erwachsenen vorbehalten.
 - alle Profile dürfen gemeinsame Einkaufsartikel ergänzen und abhaken; das Anlegen, Leeren und Löschen vollständiger Listen bleibt Erwachsenen vorbehalten.
+- Wochenplan und Lieblingsgerichte dürfen ausschließlich Erwachsene verändern; alle Profile dürfen Zutaten eines vorhandenen Gerichts in eine Einkaufsliste übernehmen.
 - Sternenguthaben werden aus einem unveränderlichen Journal berechnet; Aufgaben-IDs verhindern doppelte Gutschriften und Einlösungen werden atomar gegen den Saldo geprüft.
 - Kinder können Kalender und Termine lesen; Kalenderänderungen sind Erwachsenen vorbehalten.
 - Das aktuell angemeldete Profil kann sich nicht selbst löschen.

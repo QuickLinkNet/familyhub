@@ -42,6 +42,8 @@ Das Belohnungssystem verwendet ein append-only Journal statt veränderlicher Pun
 
 Einkaufslisten sind ein eigener End-to-End-Slice. Die API liefert Listen samt Artikeln in einem für die Touch-Oberfläche optimierten Aggregat; Sortierung nach Status, Dringlichkeit und Ladenbereich erfolgt zentral im Repository. Einzelne Artikel dürfen alle angemeldeten Familienmitglieder bedienen, strukturelle Listenoperationen erzwingt der Router ausschließlich für Erwachsene.
 
+Der Essensplan ergänzt den Einkauf über strukturierte Rezeptzutaten. Plan-Slots sind pro Datum und Mahlzeit eindeutig und werden beim erneuten Planen gezielt ersetzt. Die Übernahme eines Gerichts erzeugt sämtliche Einkaufsartikel in einer Transaktion, damit niemals nur ein Teil der Zutaten in der Liste landet.
+
 ## Deployment
 
 `npm run build` erzeugt die PWA und ein vollständiges `deploy/`-Paket. `npm run deploy` überträgt dieses Paket per FTP/FTPS. Der geschützte `storage/`-Bereich liegt neben API und Frontend, aber außerhalb der statischen Build-Ausgabe.

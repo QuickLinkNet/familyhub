@@ -6,7 +6,31 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ### Geplant
 
-- Essensplanung mit Übernahme in die Einkaufsliste
+- Tageskalender, Geburtstage und lokale Terminwiederholungen
+
+## [0.11.0] - 2026-11-07
+
+### Hinzugefügt
+
+- Wochenplan mit sieben Tagen und eigenen Slots für Frühstück, Mittag- und Abendessen
+- freie Gerichte sowie wiederverwendbare Lieblingsgerichte mit Symbol, Farbe und Zubereitungszeit
+- strukturierte Zutaten mit Menge und passendem Einkaufsbereich
+- direkte, atomare Übernahme sämtlicher Rezeptzutaten in eine gewählte Einkaufsliste
+- Wochenwechsel, Heute-Rücksprung, Dashboard-Karte und eigener Mobilzugang
+- isolierter Meal-Smoke-Test für Rezept, Planung, Einkaufstransfer und Löschung
+
+### Rechte und Datenintegrität
+
+- Wochenplan und Rezeptverwaltung bleiben serverseitig Erwachsenen vorbehalten
+- eindeutige aktive Slots verhindern doppelte Mahlzeiten desselben Typs am selben Tag
+- erneutes Planen ersetzt den vorhandenen Slot kontrolliert
+- der Einkaufstransfer schreibt alle Zutaten gemeinsam oder bei einem Fehler keine
+
+### Geprüft
+
+- Produktionsbuild, vollständiger PHP-Lint und alle In-Memory-Migrationen
+- Rezeptanlage, Wochenplanung, transaktionale Zutatenübernahme und Löschabläufe
+- Wochenplan sowie Rezept- und Planungsdialoge auf Desktop und Mobil ohne Änderung echter Familiendaten
 
 ## [0.10.0] - 2026-11-07
 
