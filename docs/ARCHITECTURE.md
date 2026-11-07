@@ -7,7 +7,7 @@ Familienkompass besteht aus zwei gemeinsam deploybaren, technisch klar getrennte
 
 ## Frontend
 
-React Router übernimmt Navigation und den konfigurierbaren Hosting-Basispfad. Material UI bildet das Designsystem; TanStack Query verwaltet Serverzustand und Caching. Fachmodule liegen unter `src/features/<modul>/` und enthalten nach Bedarf `api`, `components`, `constants`, `hooks`, `pages`, `types` und `utils`.
+React Router übernimmt Navigation und den konfigurierbaren Hosting-Basispfad. Material UI bildet das Designsystem; zentrale Produktwerte für Farben, Radien, Schatten, Oberflächen und Touch-Ziele liegen in `src/theme/designTokens.ts`, die MUI-Komponentenregeln in `src/theme/appTheme.ts`. TanStack Query verwaltet Serverzustand und Caching. Fachmodule liegen unter `src/features/<modul>/` und enthalten nach Bedarf `api`, `components`, `constants`, `hooks`, `pages`, `types` und `utils`.
 
 Die wiederverwendbare UI folgt Atomic Design:
 
@@ -43,6 +43,8 @@ Das Belohnungssystem verwendet ein append-only Journal statt veränderlicher Pun
 Einkaufslisten sind ein eigener End-to-End-Slice. Die API liefert Listen samt Artikeln in einem für die Touch-Oberfläche optimierten Aggregat; Sortierung nach Status, Dringlichkeit und Ladenbereich erfolgt zentral im Repository. Einzelne Artikel dürfen alle angemeldeten Familienmitglieder bedienen, strukturelle Listenoperationen erzwingt der Router ausschließlich für Erwachsene.
 
 Der Essensplan ergänzt den Einkauf über strukturierte Rezeptzutaten. Plan-Slots sind pro Datum und Mahlzeit eindeutig und werden beim erneuten Planen gezielt ersetzt. Die Übernahme eines Gerichts erzeugt sämtliche Einkaufsartikel in einer Transaktion, damit niemals nur ein Teil der Zutaten in der Liste landet.
+
+Lokale Kalenderwiederholungen bleiben als kompakte Serie in `calendar_events` gespeichert. Ein eigener Expander erzeugt nur die im angefragten Zeitraum sichtbaren Vorkommen; eine Serien-ID hält Bearbeiten und Löschen eindeutig. Geburtstage werden aus dem optionalen Geburtsdatum aktiver Familienprofile als schreibgeschützte virtuelle Kalenderereignisse erzeugt.
 
 ## Deployment
 

@@ -8,7 +8,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 
 | Referenzfunktion | Familienkompass-Ziel | Status |
 | --- | --- | --- |
-| zentraler Familienkalender | gemeinsamer Kalender plus persönlicher Kalender je Person | Wochen- und Monatsansicht sowie Termin-CRUD fertig |
+| zentraler Familienkalender | gemeinsamer Kalender plus persönlicher Kalender je Person | Tag, Woche und Monat sowie Termin-CRUD fertig |
 | farbige Personen und Termine | feste Personenfarben in Kalender, Aufgaben und Dashboard | fertig |
 | Kinder haken Aufgaben selbst ab | Touch-große Aufgaben, Kinder-PIN und optionaler Eltern-Check | fertig inklusive wiederkehrender Routinen |
 | Google-, Apple- oder Outlook-Anbindung | Adapter für Google Calendar, Microsoft Graph und CalDAV | Google iCal read-only und Google OAuth-Schreibzugriff fertig; CalDAV geplant |
@@ -24,10 +24,10 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Installation | Haushalt, 1–12 Personen, Rollen, sichere Zugangsdaten, Kalender | fertig | Export/Import und Reset-Werkzeug |
 | Touch-/Kiosk-UX | Wanddisplay, Tablet, Mobilnavigation, große Ziele | Wand- und Präsentationsmodus fertig | Leerlauf- und Fotomodus |
 | Dashboard | Heute, Aufgaben, Familie und direkter Wandmodus | fertig | konfigurierbare Karten und Wetter |
-| Identität & Rechte | Admin-/Elternpasswort, Kinder-PIN, Sessions, CSRF, Rollenrechte | fertig | Profilbearbeitung und feinere Modulrechte |
+| Identität & Rechte | Admin-/Elternpasswort, Kinder-PIN, Sessions, CSRF, Rollenrechte | Profilbearbeitung inklusive Geburtstag fertig | feinere Modulrechte |
 | Aufgaben | Zuweisung, Fälligkeit, Priorität, Abschluss, Eltern-Check | Wiederholung und Elternfreigabe fertig | Bearbeiten, Serienverwaltung und Historie |
 | Belohnungen | Sterne, persönliche Guthaben, Wunschregal, Bonus und nachvollziehbares Ledger | fertig | Familienziele und optionale Kategorien |
-| Kalender | Tag/Woche/Monat, Wiederholungen, Geburtstage, Ferien | Woche und Monat fertig | Tagesansicht, Wiederholungen und Import |
+| Kalender | Tag/Woche/Monat, Wiederholungen, Geburtstage, Ferien | Tag/Woche/Monat, lokale Wiederholungen und Geburtstage fertig | Ferien und Import |
 | Routinen | Morgen-/Abendroutine, Schritte, Wochentage, Fortschritt | Tageszeit, Wochentage und automatische Folgeausführung fertig | mehrstufige Abläufe und Fortschritt |
 | Einkauf | mehrere Listen, Kategorien, Mengen, Dringlichkeit und schnelles Abhaken | fertig | Vorlagen und Spracheingabe |
 | Mahlzeiten & Rezepte | Wochenplan, Lieblingsgerichte, strukturierte Zutatenübernahme | fertig für Frühstück, Mittag und Abend | Vorlagen, Portionen und Rezeptbearbeitung |
@@ -43,11 +43,10 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 
 ## Empfohlene Produktreihenfolge
 
-1. **Kalender ausbauen** – Tagesansicht, lokale Wiederholungen und Geburtstage.
-2. **Routinen vertiefen** – mehrstufige Abläufe, Fortschritt und Serienverwaltung.
-3. **Notizen, Schule und Haushalt** – kleine unabhängige Module.
-4. **Idle-Modus und Wetter** – ruhiger Präsentationsbetrieb mit datenschutzfreundlichem Anbieter.
-5. **Weitere Integrationen** – CalDAV, Microsoft Graph und Home Assistant.
+1. **Routinen vertiefen** – mehrstufige Abläufe, Fortschritt und Serienverwaltung.
+2. **Notizen, Schule und Haushalt** – kleine unabhängige Module.
+3. **Idle-Modus und Wetter** – ruhiger Präsentationsbetrieb mit datenschutzfreundlichem Anbieter.
+4. **Weitere Integrationen** – CalDAV, Microsoft Graph und Home Assistant.
 
 ## Qualitätsmaßstab
 

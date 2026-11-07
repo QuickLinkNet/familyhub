@@ -12,6 +12,9 @@ export interface FamilyCalendar {
 
 export interface CalendarEvent {
   id: string;
+  seriesId: string | null;
+  seriesStartsAt?: string;
+  seriesEndsAt?: string;
   calendar: { id: string; name: string; color: string };
   title: string;
   description: string | null;
@@ -22,8 +25,17 @@ export interface CalendarEvent {
   createdBy: { id: string; name: string | null } | null;
   createdAt: string;
   updatedAt: string;
-  source: 'LOCAL' | 'EXTERNAL' | 'GOOGLE';
+  source: 'LOCAL' | 'EXTERNAL' | 'GOOGLE' | 'BIRTHDAY';
   editable: boolean;
+  recurrence: CalendarRecurrence | null;
+}
+
+export type RecurrenceFrequency = 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
+
+export interface CalendarRecurrence {
+  frequency: RecurrenceFrequency;
+  interval: number;
+  until: string | null;
 }
 
 export interface CalendarEventInput {
@@ -34,4 +46,7 @@ export interface CalendarEventInput {
   startsAt: string;
   endsAt: string;
   allDay: boolean;
+  recurrenceFrequency?: RecurrenceFrequency | null;
+  recurrenceInterval?: number;
+  recurrenceUntil?: string | null;
 }

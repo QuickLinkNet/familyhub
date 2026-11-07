@@ -29,7 +29,7 @@ final class FamilyMemberRepository
     {
         $this->database->beginTransaction();
         try {
-            $statement = $this->database->prepare('INSERT INTO family_members (uuid, name, color, role, pin_hash, password_hash, avatar_url, is_active, created_at, updated_at) VALUES (:uuid, :name, :color, :role, :pin_hash, :password_hash, :avatar_url, :is_active, :created_at, :updated_at)');
+            $statement = $this->database->prepare('INSERT INTO family_members (uuid, name, color, role, pin_hash, password_hash, avatar_url, birth_date, is_active, created_at, updated_at) VALUES (:uuid, :name, :color, :role, :pin_hash, :password_hash, :avatar_url, :birth_date, :is_active, :created_at, :updated_at)');
             $statement->execute($data);
             $householdUuid = $this->database->query('SELECT uuid FROM households ORDER BY id LIMIT 1')->fetchColumn();
             if (!is_string($householdUuid) || $householdUuid === '') {
@@ -63,6 +63,7 @@ final class FamilyMemberRepository
                  pin_hash = CASE WHEN :clear_pin_hash = 1 THEN NULL ELSE COALESCE(:pin_hash, pin_hash) END,
                  password_hash = CASE WHEN :clear_password_hash = 1 THEN NULL ELSE COALESCE(:password_hash, password_hash) END,
                  avatar_url = :avatar_url,
+                 birth_date = :birth_date,
                  is_active = :is_active,
                  updated_at = :updated_at
              WHERE uuid = :uuid AND deleted_at IS NULL'

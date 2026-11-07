@@ -20,6 +20,19 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: mode === 'production' ? appBasePath : '/',
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (!id.includes('node_modules')) return undefined;
+            if (id.includes('@mui') || id.includes('@emotion')) return 'mui-vendor';
+            if (id.includes('@tanstack')) return 'query-vendor';
+            if (id.includes('react')) return 'react-vendor';
+            return 'vendor';
+          }
+        }
+      }
+    },
     server: {
       proxy: {
         '/api/v1': {

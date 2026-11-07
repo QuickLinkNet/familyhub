@@ -6,7 +6,31 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ### Geplant
 
-- Tageskalender, Geburtstage und lokale Terminwiederholungen
+- Mehrstufige Familienroutinen und Serienverwaltung
+
+## [0.12.0] - 2026-11-07
+
+### Hinzugefügt
+
+- ruhige Tagesansicht mit Ganztagsbereich, Zeitachse und direkter Terminanlage
+- tägliche, wöchentliche, monatliche und jährliche Wiederholungen für lokale Termine samt optionalem Enddatum
+- optionale Geburtsdaten in bearbeitbaren Familienprofilen und automatisch erzeugte Geburtstagsereignisse
+- zentrale Design-Tokens für Farben, Radien, Schatten, Oberflächen und Touch-Ziele
+- seitenweises Code-Splitting und getrennte Vendor-Bündel für einen deutlich kleineren initialen App-Download
+- isolierter Kalender-Smoke-Test für Monatsendserien und Geburtstagsereignisse
+
+### Architektur und Datenintegrität
+
+- Serien bleiben als einzelner Datensatz gespeichert und werden nur für den abgefragten Zeitraum expandiert
+- Bearbeiten und Löschen einer Wiederholung wirkt ausdrücklich auf die gesamte lokale Serie
+- Geburtstage sind virtuelle, nicht versehentlich editierbare Kalenderereignisse und benötigen keine duplizierten Jahresdatensätze
+- Frontend-Dateien bleiben entlang von Atomic Design und Fachgrenzen deutlich unter 500 Zeilen
+
+### Geprüft
+
+- Tages-, Wochen- und Monatsansicht sowie Termin- und Familienformulare auf Desktop und Mobil
+- Wiederholungsformular und Geburtstagsfeld ohne Änderung echter Familiendaten
+- Produktionsbuild, vollständiger PHP-Lint, sämtliche Smoke-Tests und Live-API-Health
 
 ## [0.11.0] - 2026-11-07
 

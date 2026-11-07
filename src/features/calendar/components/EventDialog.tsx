@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Alert, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
 import { ApiError } from '../../../services/apiClient';
 import { useCreateCalendarEvent, useDeleteCalendarEvent, useUpdateCalendarEvent } from '../hooks/useCalendar';
-import type { CalendarEvent, CalendarEventInput, FamilyCalendar } from '../types/calendar';
+import type { CalendarEvent, CalendarEventInput, FamilyCalendar, RecurrenceFrequency } from '../types/calendar';
 import { addDays, localDate, localDateTime, parseLocalDate } from '../utils/calendarDates';
 
 interface EventDialogProps {
@@ -20,15 +20,22 @@ interface EventForm {
   start: string;
   end: string;
   allDay: boolean;
+  recurrenceFrequency: RecurrenceFrequency | '';
+  recurrenceInterval: number;
+  recurrenceUntil: string;
 }
+
+const recurrenceLabels: Record<RecurrenceFrequency | '', string> = {
+  '': 'Keine Wiederholung', DAILY: 'Täglich', WEEKLY: 'Wöchentlich', MONTHLY: 'Monatlich', YEARLY: 'Jährlich'
+};
 
 export function EventDialog({ event, initialDate, calendars, onClose }: EventDialogProps) {
   const create = useCreateCalendarEvent();
   const updateEvent = useUpdateCalendarEvent();
   const deleteEvent = useDeleteCalendarEvent();
   const editing = event !== null;
-  const initialStart = event ? new Date(event.startsAt) : new Date(initialDate.getFullYear(), initialDate.getMonth(), initialDate.getDate(), 9, 0);
-  const initialEnd = event ? new Date(event.endsAt) : new Date(initialDate.getFullYear(), initialDate.getMonth(), initialDate.getDate(), 10, 0);
+  const initialStart = event ? new Date(event.seriesStartsAt ?? event.startsAt) : new Date(initialDate.getFullYear(), initialDate.getMonth(), initialDate.getDate(), 9, 0);
+  const initialEnd = event ? new Date(event.seriesEndsAt ?? event.endsAt) : new Date(initialDate.getFullYear(), initialDate.getMonth(), initialDate.getDate(), 10, 0);
   const [form, setForm] = useState<EventForm>(() => ({
     calendarId: event?.calendar.id ?? calendars[0]?.id ?? '',
     title: event?.title ?? '',
@@ -36,10 +43,15 @@ export function EventDialog({ event, initialDate, calendars, onClose }: EventDia
     location: event?.location ?? '',
     start: event?.allDay ? localDate(initialStart) : localDateTime(initialStart),
     end: event?.allDay ? localDate(addDays(initialEnd, -1)) : localDateTime(initialEnd),
-    allDay: event?.allDay ?? false
+    allDay: event?.allDay ?? false,
+    recurrenceFrequency: event?.recurrence?.frequency ?? '',
+    recurrenceInterval: event?.recurrence?.interval ?? 1,
+    recurrenceUntil: event?.recurrence?.until ?? ''
   }));
   const [error, setError] = useState<string | null>(null);
   const pending = create.isPending || updateEvent.isPending || deleteEvent.isPending;
+  const selectedCalendar = calendars.find(calendar => calendar.id === form.calendarId);
+  const supportsRecurrence = selectedCalendar?.type === 'SHARED' || selectedCalendar?.type === 'PERSONAL';
   const change = <K extends keyof EventForm>(key: K, value: EventForm[K]) => setForm(current => ({ ...current, [key]: value }));
 
   const toggleAllDay = (checked: boolean) => setForm(current => ({
@@ -60,9 +72,12 @@ export function EventDialog({ event, initialDate, calendars, onClose }: EventDia
         location: form.location || null,
         startsAt: form.allDay ? parseLocalDate(form.start).toISOString() : new Date(form.start).toISOString(),
         endsAt: form.allDay ? addDays(parseLocalDate(form.end), 1).toISOString() : new Date(form.end).toISOString(),
-        allDay: form.allDay
+        allDay: form.allDay,
+        recurrenceFrequency: supportsRecurrence ? form.recurrenceFrequency || null : null,
+        recurrenceInterval: supportsRecurrence ? form.recurrenceInterval : 1,
+        recurrenceUntil: supportsRecurrence ? form.recurrenceUntil || null : null
       };
-      if (event) await updateEvent.mutateAsync({ id: event.id, input });
+      if (event) await updateEvent.mutateAsync({ id: event.seriesId ?? event.id, input });
       else await create.mutateAsync(input);
       onClose();
     } catch (cause) {
@@ -71,10 +86,11 @@ export function EventDialog({ event, initialDate, calendars, onClose }: EventDia
   };
 
   const remove = async () => {
-    if (!event || !window.confirm(`Termin „${event.title}“ wirklich löschen?`)) return;
+    const seriesHint = event?.seriesId ? ' Die gesamte Serie wird gelöscht.' : '';
+    if (!event || !window.confirm(`Termin „${event.title}“ wirklich löschen?${seriesHint}`)) return;
     setError(null);
     try {
-      await deleteEvent.mutateAsync(event.id);
+      await deleteEvent.mutateAsync(event.seriesId ?? event.id);
       onClose();
     } catch (cause) {
       setError(cause instanceof ApiError ? cause.message : 'Der Termin konnte nicht gelöscht werden.');
@@ -103,6 +119,17 @@ export function EventDialog({ event, initialDate, calendars, onClose }: EventDia
             <TextField required label="Beginn" type={form.allDay ? 'date' : 'datetime-local'} value={form.start} onChange={e => change('start', e.target.value)} slotProps={{ inputLabel: { shrink: true } }} />
             <TextField required label="Ende" type={form.allDay ? 'date' : 'datetime-local'} value={form.end} onChange={e => change('end', e.target.value)} slotProps={{ inputLabel: { shrink: true } }} helperText={form.allDay ? 'Letzter Tag des Termins' : undefined} />
           </Box>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: form.recurrenceFrequency ? '2fr 1fr' : '1fr' }, gap: 2 }}>
+            <FormControl disabled={!supportsRecurrence}>
+              <InputLabel id="event-recurrence-label">Wiederholung (lokal)</InputLabel>
+              <Select labelId="event-recurrence-label" label="Wiederholung (lokal)" value={form.recurrenceFrequency} onChange={e => change('recurrenceFrequency', e.target.value as RecurrenceFrequency | '')}>
+                {(Object.keys(recurrenceLabels) as Array<RecurrenceFrequency | ''>).map(value => <MenuItem key={value || 'none'} value={value}>{recurrenceLabels[value]}</MenuItem>)}
+              </Select>
+            </FormControl>
+            {form.recurrenceFrequency && <TextField label="Alle …" type="number" value={form.recurrenceInterval} onChange={e => change('recurrenceInterval', Math.max(1, Math.min(12, Number(e.target.value))))} inputProps={{ min: 1, max: 12 }} helperText="Intervall" />}
+          </Box>
+          {!supportsRecurrence && <Alert severity="info">Wiederholungen verwaltet ihr für Google-Termine direkt in Google Kalender.</Alert>}
+          {form.recurrenceFrequency && <TextField label="Wiederholen bis (optional)" type="date" value={form.recurrenceUntil} onChange={e => change('recurrenceUntil', e.target.value)} slotProps={{ inputLabel: { shrink: true } }} helperText="Ohne Datum läuft die Serie unbegrenzt." />}
           <TextField label="Ort (optional)" value={form.location} onChange={e => change('location', e.target.value)} inputProps={{ maxLength: 160 }} />
           <TextField label="Beschreibung (optional)" value={form.description} onChange={e => change('description', e.target.value)} multiline minRows={2} inputProps={{ maxLength: 2000 }} />
         </Stack>

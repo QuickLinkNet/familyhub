@@ -20,6 +20,7 @@ Aktuelle Entwicklung:
 10. Aufgabensterne, Belohnungskatalog und unveränderliches Punktejournal
 11. gemeinsame Einkaufslisten, kategorisierte Artikel und Abhakstatus
 12. Lieblingsgerichte, strukturierte Zutaten und Wochenplan-Slots
+13. optionale Geburtstage sowie lokale Kalenderwiederholungen
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -28,7 +29,7 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 ## Zentrale Tabellen
 
 - `app_settings` – technische Einstellungen
-- `family_members` – Personen, Rollen, Farben und Login-Hashes
+- `family_members` – Personen, Rollen, Farben, optionales Geburtsdatum und Login-Hashes
 - `tasks` – Aufgaben, Status, Elternprüfung, Aufgabensterne sowie optionale Routine-Tageszeit, Wiederholungswochentage und Serienkennung
 - `rewards` – aktiver Belohnungskatalog mit Sternepreis, Symbol und Farbe
 - `reward_ledger` – append-only Sternenjournal für Aufgabe, Bonus und Einlösung; Salden werden daraus berechnet
@@ -39,7 +40,7 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 - `meal_plan_entries` – höchstens ein aktiver Eintrag je Datum und Mahlzeit
 - `households` – Haushalt, Locale, Zeitzone und Setup-Zeitpunkt
 - calendars – gemeinsamer sowie persönliche Kalender
-- `calendar_events` – Termine, Zeiträume, Orte und Ersteller
+- `calendar_events` – Termine, Zeiträume, Orte, Ersteller und optionale Wiederholungsregel
 - `calendar_sources` – verschlüsselte Google-iCal-Verbindungen und Synchronisationsstatus
 - `external_calendar_events` – lokal zwischengespeicherte read-only Termine externer Quellen
 - `google_oauth_connections` – verschlüsselte OAuth-Konfiguration, Tokens und kurzlebiger State

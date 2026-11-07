@@ -10,6 +10,7 @@ use FamilyCompass\Models\Calendar;
 use FamilyCompass\Models\CalendarEvent;
 use FamilyCompass\Repositories\CalendarRepository;
 use FamilyCompass\Repositories\CalendarSourceRepository;
+use FamilyCompass\Repositories\FamilyMemberRepository;
 
 final class CalendarService
 {
@@ -17,7 +18,10 @@ final class CalendarService
         private CalendarRepository $repository,
         private CalendarSourceRepository $sourceRepository,
         private CalendarSourceService $sourceService,
-        private GoogleCalendarService $googleService
+        private GoogleCalendarService $googleService,
+        private FamilyMemberRepository $familyRepository,
+        private CalendarRecurrenceExpander $recurrenceExpander,
+        private BirthdayEventFactory $birthdayFactory
     ) {}
 
     /** @return list<array<string, mixed>> */
@@ -42,8 +46,13 @@ final class CalendarService
         $this->googleService->synchronizeStale();
         $fromUtc = $this->utc($fromDate);
         $toUtc = $this->utc($toDate);
+        $localEvents = [];
+        foreach ($this->repository->eventsBetween($fromUtc, $toUtc) as $event) {
+            array_push($localEvents, ...$this->recurrenceExpander->expand($event, $fromDate, $toDate));
+        }
         $events = array_merge(
-            array_map(static fn (CalendarEvent $event): array => $event->toArray(), $this->repository->eventsBetween($fromUtc, $toUtc)),
+            $localEvents,
+            $this->birthdayFactory->between($this->familyRepository->all(), $fromDate, $toDate),
             $this->sourceRepository->eventsBetween($fromUtc, $toUtc),
             $this->googleService->eventsBetween($fromUtc, $toUtc)
         );
@@ -124,6 +133,32 @@ final class CalendarService
             throw new AppException('VALIDATION_ERROR', 'Die Ganztags-Einstellung ist ungültig.', 422);
         }
 
+        $frequency = array_key_exists('recurrenceFrequency', $input)
+            ? strtoupper(trim((string) $input['recurrenceFrequency']))
+            : ($existing?->recurrenceFrequency ?? '');
+        $frequency = $frequency === '' || $frequency === 'NONE' ? null : $frequency;
+        if ($frequency !== null && !in_array($frequency, ['DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'], true)) {
+            throw new AppException('VALIDATION_ERROR', 'Die Wiederholung ist ungültig.', 422);
+        }
+
+        $interval = array_key_exists('recurrenceInterval', $input)
+            ? filter_var($input['recurrenceInterval'], FILTER_VALIDATE_INT)
+            : ($existing?->recurrenceInterval ?? 1);
+        if ($interval === false || $interval < 1 || $interval > 12) {
+            throw new AppException('VALIDATION_ERROR', 'Das Wiederholungsintervall muss zwischen 1 und 12 liegen.', 422);
+        }
+
+        $until = array_key_exists('recurrenceUntil', $input)
+            ? trim((string) ($input['recurrenceUntil'] ?? ''))
+            : ($existing?->recurrenceUntil ?? null);
+        $until = $frequency === null || $until === '' ? null : $until;
+        if ($until !== null) {
+            $untilDate = DateTimeImmutable::createFromFormat('!Y-m-d', $until);
+            if ($untilDate === false || $untilDate->format('Y-m-d') !== $until || $until < $startsAt->format('Y-m-d')) {
+                throw new AppException('VALIDATION_ERROR', 'Das Ende der Wiederholung ist ungültig.', 422);
+            }
+        }
+
         return [
             'calendar_uuid' => $calendarId,
             'title' => $title,
@@ -132,6 +167,9 @@ final class CalendarService
             'starts_at' => $this->utc($startsAt),
             'ends_at' => $this->utc($endsAt),
             'all_day' => $allDay ? 1 : 0,
+            'recurrence_frequency' => $frequency,
+            'recurrence_interval' => $frequency === null ? 1 : $interval,
+            'recurrence_until' => $until,
         ];
     }
 

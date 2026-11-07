@@ -12,6 +12,7 @@ final class FamilyMember
         public string $role,
         public bool $isActive,
         public ?string $avatarUrl,
+        public ?string $birthDate,
         public string $createdAt,
         public string $updatedAt
     ) {}
@@ -25,6 +26,7 @@ final class FamilyMember
             $row['role'],
             (bool) $row['is_active'],
             $row['avatar_url'],
+            $row['birth_date'] ?? null,
             $row['created_at'],
             $row['updated_at']
         );
@@ -39,6 +41,7 @@ final class FamilyMember
             'role' => $this->role,
             'isActive' => $this->isActive,
             'avatarUrl' => $this->avatarUrl,
+            'birthDate' => $this->birthDate,
             'createdAt' => $this->createdAt,
             'updatedAt' => $this->updatedAt,
         ];

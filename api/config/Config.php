@@ -16,6 +16,6 @@ final class Config
     public function calendarSourceKeyPath(): string { return $this->storagePath() . DIRECTORY_SEPARATOR . 'calendar-source.key'; }
     public function secretKeyPath(): string { return $this->storagePath() . DIRECTORY_SEPARATOR . 'application-secrets.key'; }
     public function migrationsPath(): string { return $this->apiPath() . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'migrations'; }
-    public function version(): string { return '0.11.0'; }
+    public function version(): string { return '0.12.0'; }
     public function backupLimit(): int { return 14; }
 }
