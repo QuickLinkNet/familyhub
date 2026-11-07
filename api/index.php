@@ -8,6 +8,7 @@ use FamilyCompass\Controllers\CalendarSourceController;
 use FamilyCompass\Controllers\FamilyMemberController;
 use FamilyCompass\Controllers\HealthController;
 use FamilyCompass\Controllers\GoogleCalendarController;
+use FamilyCompass\Controllers\MealController;
 use FamilyCompass\Controllers\RewardController;
 use FamilyCompass\Controllers\SetupController;
 use FamilyCompass\Controllers\ShoppingController;
@@ -26,6 +27,7 @@ use FamilyCompass\Repositories\CalendarSourceRepository;
 use FamilyCompass\Repositories\FamilyMemberRepository;
 use FamilyCompass\Repositories\GoogleCalendarRepository;
 use FamilyCompass\Repositories\GoogleOAuthRepository;
+use FamilyCompass\Repositories\MealRepository;
 use FamilyCompass\Repositories\RewardRepository;
 use FamilyCompass\Repositories\SetupRepository;
 use FamilyCompass\Repositories\ShoppingRepository;
@@ -37,6 +39,7 @@ use FamilyCompass\Services\FamilyMemberService;
 use FamilyCompass\Services\GoogleApiClient;
 use FamilyCompass\Services\GoogleCalendarService;
 use FamilyCompass\Services\GoogleOAuthService;
+use FamilyCompass\Services\MealService;
 use FamilyCompass\Services\RewardService;
 use FamilyCompass\Services\SetupService;
 use FamilyCompass\Services\ShoppingService;
@@ -97,7 +100,9 @@ try {
     $familyController = new FamilyMemberController(new FamilyMemberService($familyRepository));
     $taskController = new TaskController(new TaskService(new TaskRepository($database), $familyRepository));
     $rewardController = new RewardController(new RewardService(new RewardRepository($database), $familyRepository));
-    $shoppingController = new ShoppingController(new ShoppingService(new ShoppingRepository($database)));
+    $shoppingRepository = new ShoppingRepository($database);
+    $shoppingController = new ShoppingController(new ShoppingService($shoppingRepository));
+    $mealController = new MealController(new MealService(new MealRepository($database), $shoppingRepository));
     $setupController = new SetupController(new SetupService(new SetupRepository($database)), $config->version());
 
     $router = new Router();
@@ -243,6 +248,35 @@ try {
         $authService->requireUser();
         $authService->requireCsrf();
         $shoppingController->deleteItem($uuid);
+    });
+    $router->get('/v1/meal-planner', static function () use ($authService, $mealController): void {
+        $authService->requireUser();
+        $mealController->index();
+    });
+    $router->post('/v1/meal-recipes', static function () use ($authService, $mealController): void {
+        $actor = $authService->requireAdult();
+        $authService->requireCsrf();
+        $mealController->createRecipe($actor);
+    });
+    $router->delete('/v1/meal-recipes/{uuid}', static function (string $uuid) use ($authService, $mealController): void {
+        $authService->requireAdult();
+        $authService->requireCsrf();
+        $mealController->deleteRecipe($uuid);
+    });
+    $router->post('/v1/meal-recipes/{uuid}/add-to-shopping', static function (string $uuid) use ($authService, $mealController): void {
+        $actor = $authService->requireUser();
+        $authService->requireCsrf();
+        $mealController->addToShopping($uuid, $actor);
+    });
+    $router->post('/v1/meal-plan', static function () use ($authService, $mealController): void {
+        $actor = $authService->requireAdult();
+        $authService->requireCsrf();
+        $mealController->plan($actor);
+    });
+    $router->delete('/v1/meal-plan/{uuid}', static function (string $uuid) use ($authService, $mealController): void {
+        $authService->requireAdult();
+        $authService->requireCsrf();
+        $mealController->deleteEntry($uuid);
     });
     $router->get('/v1/calendars', static function () use ($authService, $calendarController): void {
         $authService->requireUser();

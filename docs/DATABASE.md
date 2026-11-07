@@ -19,6 +19,7 @@ Aktuelle Entwicklung:
 9. wiederkehrende Aufgabenserien und Tageszeit-Gruppen für Routinen
 10. Aufgabensterne, Belohnungskatalog und unveränderliches Punktejournal
 11. gemeinsame Einkaufslisten, kategorisierte Artikel und Abhakstatus
+12. Lieblingsgerichte, strukturierte Zutaten und Wochenplan-Slots
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -33,6 +34,9 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 - `reward_ledger` – append-only Sternenjournal für Aufgabe, Bonus und Einlösung; Salden werden daraus berechnet
 - `shopping_lists` – benannte, farbige Einkaufslisten des Haushalts
 - `shopping_items` – Mengen, Ladenbereiche, Dringlichkeit und nachvollziehbarer Abhakstatus
+- `meal_recipes` – Lieblingsgerichte mit Darstellung und Zubereitungszeit
+- `meal_recipe_ingredients` – strukturierte Zutaten samt Menge und Einkaufsbereich
+- `meal_plan_entries` – höchstens ein aktiver Eintrag je Datum und Mahlzeit
 - `households` – Haushalt, Locale, Zeitzone und Setup-Zeitpunkt
 - calendars – gemeinsamer sowie persönliche Kalender
 - `calendar_events` – Termine, Zeiträume, Orte und Ersteller

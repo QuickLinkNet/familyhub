@@ -30,7 +30,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Kalender | Tag/Woche/Monat, Wiederholungen, Geburtstage, Ferien | Woche und Monat fertig | Tagesansicht, Wiederholungen und Import |
 | Routinen | Morgen-/Abendroutine, Schritte, Wochentage, Fortschritt | Tageszeit, Wochentage und automatische Folgeausführung fertig | mehrstufige Abläufe und Fortschritt |
 | Einkauf | mehrere Listen, Kategorien, Mengen, Dringlichkeit und schnelles Abhaken | fertig | Vorlagen und Spracheingabe |
-| Mahlzeiten & Rezepte | Wochenplan, Rezepte, Zutatenübernahme | geplant | Abendessen-Wochenplan |
+| Mahlzeiten & Rezepte | Wochenplan, Lieblingsgerichte, strukturierte Zutatenübernahme | fertig für Frühstück, Mittag und Abend | Vorlagen, Portionen und Rezeptbearbeitung |
 | Notizen | Familiennotizen, Pinnwand und schnelle Hinweise | geplant | Notizliste |
 | Schule | Stundenplan, Hausaufgaben, Tests, Ferien | geplant | Hausaufgaben-Slice |
 | Haushalt | Putzen, Müll, Pflanzen, Wäsche und Tiere | geplant | Putz- oder Müllplan |
@@ -43,11 +43,11 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 
 ## Empfohlene Produktreihenfolge
 
-1. **Essensplanung ergänzen** – Wochenplan, Lieblingsgerichte und Übernahme benötigter Zutaten in den Einkauf.
-2. **Kalender ausbauen** – Tagesansicht, lokale Wiederholungen, Geburtstage und CalDAV-Anbindung.
-3. **Routinen vertiefen** – mehrstufige Abläufe, Fortschritt und Serienverwaltung.
-4. **Notizen, Schule und Haushalt** – kleine unabhängige Module.
-5. **Idle-Modus, Wetter und Integrationen** – nach stabilem lokalem Kern.
+1. **Kalender ausbauen** – Tagesansicht, lokale Wiederholungen und Geburtstage.
+2. **Routinen vertiefen** – mehrstufige Abläufe, Fortschritt und Serienverwaltung.
+3. **Notizen, Schule und Haushalt** – kleine unabhängige Module.
+4. **Idle-Modus und Wetter** – ruhiger Präsentationsbetrieb mit datenschutzfreundlichem Anbieter.
+5. **Weitere Integrationen** – CalDAV, Microsoft Graph und Home Assistant.
 
 ## Qualitätsmaßstab
 

@@ -14,6 +14,7 @@ import { ShoppingPage } from '../features/shopping/pages/ShoppingPage';
 import { AdminPage } from '../features/admin/pages/AdminPage';
 import { WallPage } from '../features/wall/pages/WallPage';
 import { RewardsPage } from '../features/rewards/pages/RewardsPage';
+import { MealsPage } from '../features/meals/pages/MealsPage';
 
 const shell = (content: ReactNode) => <AppShell>{content}</AppShell>;
 
@@ -31,6 +32,7 @@ export const appRouter = createBrowserRouter([
           { path: '/calendar', element: shell(<CalendarPage />) },
           { path: '/tasks', element: shell(<TasksPage />) },
           { path: '/rewards', element: shell(<RewardsPage />) },
+          { path: '/meals', element: shell(<MealsPage />) },
           { path: '/admin', element: shell(<AdminPage />) },
           { path: '/wall', element: <WallPage /> },
           { path: '/shopping', element: shell(<ShoppingPage />) },

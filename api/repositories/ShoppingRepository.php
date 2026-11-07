@@ -60,6 +60,19 @@ final class ShoppingRepository
         $statement->execute($data);
     }
 
+    /** @param list<array<string, mixed>> $items */
+    public function createItems(array $items): void
+    {
+        $this->database->beginTransaction();
+        try {
+            foreach ($items as $item) { $this->createItem($item); }
+            $this->database->commit();
+        } catch (\Throwable $error) {
+            if ($this->database->inTransaction()) { $this->database->rollBack(); }
+            throw $error;
+        }
+    }
+
     /** @param array<string, mixed> $data */
     public function updateItem(string $uuid, array $data): bool
     {

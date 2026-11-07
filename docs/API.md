@@ -96,6 +96,17 @@ Guthaben werden nie als überschreibbarer Zähler gespeichert, sondern aus dem a
 
 Artikel unterstützen `name`, optionale `quantity` und `note`, `isUrgent` sowie einen festen Ladenbereich in `category`. Die API protokolliert, wer einen Artikel ergänzt beziehungsweise abgehakt hat. Gelöschte Datensätze werden weich gelöscht und nicht mehr ausgeliefert.
 
+### Essensplan und Lieblingsgerichte
+
+- `GET /meal-planner?from={datum}&to={datum}` – Wochenplan und alle aktiven Lieblingsgerichte; maximal 31 Tage
+- `POST /meal-recipes` – Admin oder Elternteil legt ein Gericht mit Zutaten an
+- `DELETE /meal-recipes/{uuid}` – Admin oder Elternteil entfernt ein Lieblingsgericht
+- `POST /meal-recipes/{uuid}/add-to-shopping` – jedes Profil überträgt alle Zutaten in `listId`
+- `POST /meal-plan` – Admin oder Elternteil belegt oder ersetzt einen Slot
+- `DELETE /meal-plan/{uuid}` – Admin oder Elternteil entfernt einen Planeintrag
+
+Ein Planeintrag enthält `date`, `mealType` (`BREAKFAST`, `LUNCH`, `DINNER`), optional `recipeId`, andernfalls einen freien `title`, sowie eine optionale `note`. Pro Datum und Mahlzeit existiert höchstens ein aktiver Slot. Rezepte enthalten strukturierte Zutaten mit `name`, `quantity` und derselben `category` wie Einkaufsartikel. Die Zutatenübernahme läuft vollständig in einer SQLite-Transaktion.
+
 ### Kalender
 
 - `GET /calendars` – aktive gemeinsame und persönliche Kalender für alle angemeldeten Rollen
