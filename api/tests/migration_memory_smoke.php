@@ -27,7 +27,7 @@ foreach (['recurrence_frequency', 'recurrence_interval', 'recurrence_until'] as 
 }
 $familyColumns = array_column($database->query('PRAGMA table_info(family_members)')->fetchAll(PDO::FETCH_ASSOC), 'name');
 if (!in_array('birth_date', $familyColumns, true)) { fwrite(STDERR, "Family birth_date migration column is missing.\n"); exit(1); }
-foreach (['rewards', 'reward_ledger', 'shopping_lists', 'shopping_items', 'meal_recipes', 'meal_recipe_ingredients', 'meal_plan_entries'] as $table) {
+foreach (['rewards', 'reward_ledger', 'shopping_lists', 'shopping_items', 'meal_recipes', 'meal_recipe_ingredients', 'meal_plan_entries', 'routine_templates', 'routine_steps', 'routine_runs', 'routine_run_steps'] as $table) {
     $exists = $database->query("SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = '{$table}'")->fetchColumn();
     if ((int) $exists !== 1) { fwrite(STDERR, "Migration table {$table} is missing.\n"); exit(1); }
 }

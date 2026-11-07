@@ -40,6 +40,8 @@ Die Einrichtung von Haushalt, Personen und Kalendern läuft in einer einzelnen D
 
 Das Belohnungssystem verwendet ein append-only Journal statt veränderlicher Punktezähler. Aufgabenabschluss, Folge-Routine und optionale Sternegutschrift laufen in derselben Transaktion. Dadurch bleiben Salden nachvollziehbar, doppelte Aufgabenpunkte ausgeschlossen und Einlösungen revisionsfähig.
 
+Mehrstufige Routinen sind ein eigener Fach-Slice neben Einzelaufgaben. Eine wiederverwendbare Vorlage besitzt geordnete Schritte und Wochentage; pro fälligem Datum entsteht genau ein Tageslauf mit kopierten Schritten. Dadurch bleiben begonnene Abläufe stabil, während Bearbeiten oder Pausieren der Serie nur zukünftige Läufe beeinflusst. Schrittabschluss und finaler Laufstatus werden atomar in einer Transaktion geschrieben.
+
 Einkaufslisten sind ein eigener End-to-End-Slice. Die API liefert Listen samt Artikeln in einem für die Touch-Oberfläche optimierten Aggregat; Sortierung nach Status, Dringlichkeit und Ladenbereich erfolgt zentral im Repository. Einzelne Artikel dürfen alle angemeldeten Familienmitglieder bedienen, strukturelle Listenoperationen erzwingt der Router ausschließlich für Erwachsene.
 
 Der Essensplan ergänzt den Einkauf über strukturierte Rezeptzutaten. Plan-Slots sind pro Datum und Mahlzeit eindeutig und werden beim erneuten Planen gezielt ersetzt. Die Übernahme eines Gerichts erzeugt sämtliche Einkaufsartikel in einer Transaktion, damit niemals nur ein Teil der Zutaten in der Liste landet.
