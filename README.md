@@ -15,6 +15,7 @@ Familienkompass ist ein touch-optimierter, selbst hostbarer Familienorganizer. D
 - motivierende Schatzkiste mit Aufgabensternen, persönlichen Guthaben, Wunschregal, Bonusvergabe und transparentem Sternenbuch
 - gemeinsame Einkaufslisten mit Mengen, Ladenbereichen, Dringlichkeit, Fortschritt und schnellem Touch-Abhaken
 - Essenswochenplan für Frühstück, Mittag und Abend mit Lieblingsgerichten und direkter Zutatenübernahme zum Einkauf
+- gemeinsame Familienpinnwand mit wichtigen Hinweisen, persönlicher Urheberschaft und automatischem Ablaufdatum
 - einmaliger Einrichtungsassistent für Haushalt, Personen und persönliche Kalender
 - selbstinitialisierende PHP-/SQLite-API mit Migrationen, Backups, Logs und Health-Check
 - reproduzierbarer FTP-Deploy per `npm run deploy`

@@ -22,6 +22,7 @@ Aktuelle Entwicklung:
 12. Lieblingsgerichte, strukturierte Zutaten und Wochenplan-Slots
 13. optionale Geburtstage sowie lokale Kalenderwiederholungen
 14. mehrstufige Routinen mit Vorlagen, Tagesläufen und Schrittfortschritt
+15. gemeinsame Familienpinnwand mit Urheberschaft, Priorität und Ablaufdatum
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -43,6 +44,7 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 - `meal_recipes` – Lieblingsgerichte mit Darstellung und Zubereitungszeit
 - `meal_recipe_ingredients` – strukturierte Zutaten samt Menge und Einkaufsbereich
 - `meal_plan_entries` – höchstens ein aktiver Eintrag je Datum und Mahlzeit
+- `family_notes` – farbige Pinnwand-Zettel mit Urheber, Wichtig-Markierung, Ablaufdatum und weichem Löschen
 - `households` – Haushalt, Locale, Zeitzone und Setup-Zeitpunkt
 - calendars – gemeinsamer sowie persönliche Kalender
 - `calendar_events` – Termine, Zeiträume, Orte, Ersteller und optionale Wiederholungsregel

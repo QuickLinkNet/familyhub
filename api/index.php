@@ -6,6 +6,7 @@ use FamilyCompass\Controllers\AuthController;
 use FamilyCompass\Controllers\CalendarController;
 use FamilyCompass\Controllers\CalendarSourceController;
 use FamilyCompass\Controllers\FamilyMemberController;
+use FamilyCompass\Controllers\FamilyNoteController;
 use FamilyCompass\Controllers\HealthController;
 use FamilyCompass\Controllers\GoogleCalendarController;
 use FamilyCompass\Controllers\MealController;
@@ -26,6 +27,7 @@ use FamilyCompass\Repositories\AuthRepository;
 use FamilyCompass\Repositories\CalendarRepository;
 use FamilyCompass\Repositories\CalendarSourceRepository;
 use FamilyCompass\Repositories\FamilyMemberRepository;
+use FamilyCompass\Repositories\FamilyNoteRepository;
 use FamilyCompass\Repositories\GoogleCalendarRepository;
 use FamilyCompass\Repositories\GoogleOAuthRepository;
 use FamilyCompass\Repositories\MealRepository;
@@ -40,6 +42,7 @@ use FamilyCompass\Services\CalendarRecurrenceExpander;
 use FamilyCompass\Services\BirthdayEventFactory;
 use FamilyCompass\Services\CalendarSourceService;
 use FamilyCompass\Services\FamilyMemberService;
+use FamilyCompass\Services\FamilyNoteService;
 use FamilyCompass\Services\GoogleApiClient;
 use FamilyCompass\Services\GoogleCalendarService;
 use FamilyCompass\Services\GoogleOAuthService;
@@ -111,6 +114,7 @@ try {
     $calendarSourceController = new CalendarSourceController($calendarSourceService);
     $googleCalendarController = new GoogleCalendarController($googleOAuthService, $googleCalendarService, new PublicUrl());
     $familyController = new FamilyMemberController(new FamilyMemberService($familyRepository));
+    $familyNoteController = new FamilyNoteController(new FamilyNoteService(new FamilyNoteRepository($database)));
     $taskController = new TaskController(new TaskService(new TaskRepository($database), $familyRepository));
     $routineController = new RoutineController(new RoutineService(new RoutineRepository($database), $familyRepository));
     $rewardController = new RewardController(new RewardService(new RewardRepository($database), $familyRepository));
@@ -169,6 +173,25 @@ try {
             throw new AppException('SELF_DELETE_FORBIDDEN', 'Das aktuell angemeldete Profil kann nicht gelöscht werden.', 409);
         }
         $familyController->delete($uuid);
+    });
+    $router->get('/v1/family-notes', static function () use ($authService, $familyNoteController): void {
+        $authService->requireUser();
+        $familyNoteController->index();
+    });
+    $router->post('/v1/family-notes', static function () use ($authService, $familyNoteController): void {
+        $actor = $authService->requireUser();
+        $authService->requireCsrf();
+        $familyNoteController->create($actor);
+    });
+    $router->put('/v1/family-notes/{uuid}', static function (string $uuid) use ($authService, $familyNoteController): void {
+        $actor = $authService->requireUser();
+        $authService->requireCsrf();
+        $familyNoteController->update($uuid, $actor);
+    });
+    $router->delete('/v1/family-notes/{uuid}', static function (string $uuid) use ($authService, $familyNoteController): void {
+        $actor = $authService->requireUser();
+        $authService->requireCsrf();
+        $familyNoteController->delete($uuid, $actor);
     });
 
     $router->get('/v1/tasks', static function () use ($authService, $taskController): void {

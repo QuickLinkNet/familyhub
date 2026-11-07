@@ -9,6 +9,8 @@ import { WallEvents } from '../components/WallEvents';
 import { WallFamily } from '../components/WallFamily';
 import { WallHeader } from '../components/WallHeader';
 import { WallTasks } from '../components/WallTasks';
+import { useFamilyNotes } from '../../notes/hooks/useFamilyNotes';
+import { WallNotes } from '../components/WallNotes';
 
 export function WallPage() {
   const [now, setNow] = useState(new Date());
@@ -23,17 +25,18 @@ export function WallPage() {
   const events = useCalendarEvents(range.start.toISOString(), range.end.toISOString());
   const tasks = useTasks();
   const family = useFamilyMembers();
+  const notes = useFamilyNotes();
   const openTasks = (tasks.data ?? []).filter(task => task.status !== 'COMPLETED' && isDueBy(task, localDate(now)));
   const activeFamily = (family.data ?? []).filter(member => member.isActive);
   const upcomingEvents = (events.data ?? []).filter(event => new Date(event.endsAt) > now);
-  const loading = events.isLoading || tasks.isLoading || family.isLoading;
+  const loading = events.isLoading || tasks.isLoading || family.isLoading || notes.isLoading;
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', backgroundImage: 'radial-gradient(circle at top right, rgba(214,133,95,0.13), transparent 35%), radial-gradient(circle at bottom left, rgba(52,91,72,0.14), transparent 38%)', py: { xs: 2.5, md: 4 } }}>
       <Container maxWidth="xl">
         <Stack spacing={{ xs: 2.5, md: 3.5 }}>
           <WallHeader now={now} />
-          {(events.isError || tasks.isError || family.isError) && <Alert severity="warning">Einige Familieninformationen konnten gerade nicht geladen werden.</Alert>}
+          {(events.isError || tasks.isError || family.isError || notes.isError) && <Alert severity="warning">Einige Familieninformationen konnten gerade nicht geladen werden.</Alert>}
           {loading
             ? <Stack alignItems="center" py={8}><CircularProgress /></Stack>
             : <>
@@ -41,6 +44,7 @@ export function WallPage() {
                 <WallEvents events={upcomingEvents} />
                 <WallTasks tasks={openTasks} />
               </Box>
+              <WallNotes notes={notes.data ?? []} />
               <WallFamily members={activeFamily} />
             </>}
         </Stack>

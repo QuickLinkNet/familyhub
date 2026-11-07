@@ -23,7 +23,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Plattform | React-PWA mit Atomic Design, PHP-API, SQLite, Migrationen, Backups, Logs, Health | fertig | automatisierte Smoke-Tests |
 | Installation | Haushalt, 1–12 Personen, Rollen, sichere Zugangsdaten, Kalender | fertig | Export/Import und Reset-Werkzeug |
 | Touch-/Kiosk-UX | Wanddisplay, Tablet, Mobilnavigation, große Ziele | Wand- und Präsentationsmodus fertig | Leerlauf- und Fotomodus |
-| Dashboard | Heute, Aufgaben, Familie und direkter Wandmodus | fertig | konfigurierbare Karten und Wetter |
+| Dashboard | Heute, Aufgaben, Familie, Pinnwand und direkter Wandmodus | fertig | konfigurierbare Karten und Wetter |
 | Identität & Rechte | Admin-/Elternpasswort, Kinder-PIN, Sessions, CSRF, Rollenrechte | Profilbearbeitung inklusive Geburtstag fertig | feinere Modulrechte |
 | Aufgaben | Zuweisung, Fälligkeit, Priorität, Abschluss, Eltern-Check | Wiederholung und Elternfreigabe fertig | Bearbeiten und Historie |
 | Belohnungen | Sterne, persönliche Guthaben, Wunschregal, Bonus und nachvollziehbares Ledger | fertig | Familienziele und optionale Kategorien |
@@ -31,7 +31,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Routinen | Morgen-/Abendroutine, Schritte, Wochentage, Fortschritt | mehrstufige Tagesläufe, Fortschritt und Serienverwaltung fertig | Sterne und Routinehistorie |
 | Einkauf | mehrere Listen, Kategorien, Mengen, Dringlichkeit und schnelles Abhaken | fertig | Vorlagen und Spracheingabe |
 | Mahlzeiten & Rezepte | Wochenplan, Lieblingsgerichte, strukturierte Zutatenübernahme | fertig für Frühstück, Mittag und Abend | Vorlagen, Portionen und Rezeptbearbeitung |
-| Notizen | Familiennotizen, Pinnwand und schnelle Hinweise | geplant | Notizliste |
+| Notizen | Familiennotizen, Pinnwand und schnelle Hinweise | fertig inklusive Wichtig-Markierung und Ablaufdatum | Kategorien und Anhänge |
 | Schule | Stundenplan, Hausaufgaben, Tests, Ferien | geplant | Hausaufgaben-Slice |
 | Haushalt | Putzen, Müll, Pflanzen, Wäsche und Tiere | geplant | Putz- oder Müllplan |
 | Wetter | aktuelle Lage und Vorschau über austauschbaren Anbieter | geplant | datenschutzfreundlicher Adapter |
@@ -43,10 +43,9 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 
 ## Empfohlene Produktreihenfolge
 
-1. **Notizen und Pinnwand** – kurze Familieninfos, Merkzettel und wichtige Hinweise.
-2. **Schule und Haushalt** – kleine unabhängige Module für wiederkehrende Alltagsthemen.
-3. **Idle-Modus und Wetter** – ruhiger Präsentationsbetrieb mit datenschutzfreundlichem Anbieter.
-4. **Weitere Integrationen** – CalDAV, Microsoft Graph und Home Assistant.
+1. **Schule und Haushalt** – kleine unabhängige Module für wiederkehrende Alltagsthemen.
+2. **Idle-Modus und Wetter** – ruhiger Präsentationsbetrieb mit datenschutzfreundlichem Anbieter.
+3. **Weitere Integrationen** – CalDAV, Microsoft Graph und Home Assistant.
 
 ## Qualitätsmaßstab
 

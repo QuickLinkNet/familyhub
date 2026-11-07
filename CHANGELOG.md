@@ -6,7 +6,30 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ### Geplant
 
-- Familiennotizen und gemeinsame Pinnwand
+- Schul- und Haushaltsmodule
+
+## [0.14.0] - 2026-11-07
+
+### Hinzugefügt
+
+- gemeinsame Familienpinnwand für kurze Hinweise und liebe Nachrichten
+- frei wählbare Symbole und Farben, Wichtig-Markierung sowie optionales Ablaufdatum
+- eigene Pinnwand-Karte auf dem Dashboard und ruhige Hinweise im Wandmodus
+- automatische Ausblendung abgelaufener Zettel ohne Löschung der Historie
+- isolierter Smoke-Test für Anlage, Erwachsenenmoderation, Kinderrechte und Löschung
+
+### Rechte und Bedienung
+
+- jedes angemeldete Familienmitglied darf einen Zettel anpinnen
+- Kinder bearbeiten und entfernen ausschließlich ihre eigenen Hinweise
+- Admins und Eltern dürfen die gesamte Pinnwand moderieren
+- Leer-, Lade- und Fehlerzustände sowie Touch-Ziele sind für Desktop und Mobil ausgelegt
+
+### Geprüft
+
+- leere Pinnwand, Anlage- und Bearbeitungsdialog ohne Speicherung echter Familiendaten
+- vollständiger Rechteablauf in einer isolierten SQLite-Datenbank
+- Produktionsbuild, vollständiger PHP-Lint, sämtliche Smoke-Tests und Live-API-Health
 
 ## [0.13.0] - 2026-11-07
 

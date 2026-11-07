@@ -60,6 +60,15 @@ Alle Familien- und Aufgabenendpunkte benötigen eine gültige Session.
 
 Create und Update akzeptieren `name`, `color`, `role`, `isActive`, optional `avatarUrl` und `birthDate` sowie rollenabhängig `password` oder `pin`. Geheimnisse werden ausschließlich als Passwort-Hash gespeichert.
 
+### Familienpinnwand
+
+- `GET /family-notes` – alle aktuell sichtbaren Zettel für angemeldete Rollen
+- `POST /family-notes` – jedes angemeldete Profil pinnt einen Zettel an
+- `PUT /family-notes/{uuid}` – Ersteller, Admin oder Elternteil bearbeitet einen Zettel
+- `DELETE /family-notes/{uuid}` – Ersteller, Admin oder Elternteil entfernt einen Zettel weich
+
+Ein Zettel enthält `title`, `body`, ein freigegebenes `icon` und `color`, optional `isImportant` sowie `expiresOn` im Format `YYYY-MM-DD`. Wichtige Hinweise stehen zuerst. Abgelaufene Zettel werden automatisch nicht mehr ausgeliefert. Kinder können fremde Zettel weder verändern noch löschen; Erwachsene dürfen die gesamte Familienpinnwand moderieren.
+
 ### Aufgaben
 
 - `GET /tasks` – alle angemeldeten Rollen
