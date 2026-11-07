@@ -21,6 +21,7 @@ Aktuelle Entwicklung:
 11. gemeinsame Einkaufslisten, kategorisierte Artikel und Abhakstatus
 12. Lieblingsgerichte, strukturierte Zutaten und Wochenplan-Slots
 13. optionale Geburtstage sowie lokale Kalenderwiederholungen
+14. mehrstufige Routinen mit Vorlagen, Tagesläufen und Schrittfortschritt
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -31,6 +32,10 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 - `app_settings` – technische Einstellungen
 - `family_members` – Personen, Rollen, Farben, optionales Geburtsdatum und Login-Hashes
 - `tasks` – Aufgaben, Status, Elternprüfung, Aufgabensterne sowie optionale Routine-Tageszeit, Wiederholungswochentage und Serienkennung
+- `routine_templates` – wiederverwendbare Routinepläne mit Person, Tageszeit und Wochentagen
+- `routine_steps` – geordnete Schritte einer Routinevorlage
+- `routine_runs` – höchstens ein historisch stabiler Tageslauf je Vorlage und Datum
+- `routine_run_steps` – kopierte Tageslaufschritte mit eigenem Abschlussstatus
 - `rewards` – aktiver Belohnungskatalog mit Sternepreis, Symbol und Farbe
 - `reward_ledger` – append-only Sternenjournal für Aufgabe, Bonus und Einlösung; Salden werden daraus berechnet
 - `shopping_lists` – benannte, farbige Einkaufslisten des Haushalts

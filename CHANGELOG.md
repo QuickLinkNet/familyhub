@@ -6,7 +6,30 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ### Geplant
 
-- Mehrstufige Familienroutinen und Serienverwaltung
+- Familiennotizen und gemeinsame Pinnwand
+
+## [0.13.0] - 2026-11-07
+
+### Hinzugefügt
+
+- mehrstufige Routinen mit 2 bis 12 frei sortierbaren Schritten
+- eigener Tageslauf mit Fortschrittsbalken, Schrittstatus und vollständigem Abschluss
+- Serienverwaltung zum Bearbeiten, Pausieren, Fortsetzen und Löschen von Routinen
+- automatische, idempotente Erzeugung genau eines Tageslaufs je Vorlage und geplantem Datum
+- isolierter Workflow-Smoke-Test für Anlage, 50-/100-Prozent-Fortschritt, Serienänderung und Löschung
+
+### Rechte und Datenintegrität
+
+- Kinder dürfen ausschließlich Schritte ihrer eigenen zugewiesenen Routine erledigen
+- Vorlagenänderungen gelten für neue Tagesläufe; ein bereits begonnener Ablauf bleibt historisch stabil
+- gelöschte Vorlagen werden weich gelöscht, vorhandene Tagesläufe und Schrittstände bleiben nachvollziehbar
+- die vier neuen Tabellen trennen Vorlage, Vorlagenschritt, Tageslauf und Tageslaufschritt sauber voneinander
+
+### Geprüft
+
+- Routine- und Verwaltungsdialog auf Desktop und Mobil ohne Änderung echter Familiendaten
+- vollständiger Workflow in SQLite inklusive Rollenprüfung und Fortschrittsberechnung
+- Produktionsbuild, vollständiger PHP-Lint, sämtliche Smoke-Tests und Live-API-Health
 
 ## [0.12.0] - 2026-11-07
 

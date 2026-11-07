@@ -58,7 +58,7 @@ Alle Familien- und Aufgabenendpunkte benötigen eine gültige Session.
 - `PUT /family-members/{uuid}` – Admin oder Elternteil
 - `DELETE /family-members/{uuid}` – Admin oder Elternteil; das eigene aktive Profil ist geschützt
 
-Create und Update akzeptieren `name`, `color`, `role`, `isActive`, optional `avatarUrl` sowie rollenabhängig `password` oder `pin`. Geheimnisse werden ausschließlich als Passwort-Hash gespeichert.
+Create und Update akzeptieren `name`, `color`, `role`, `isActive`, optional `avatarUrl` und `birthDate` sowie rollenabhängig `password` oder `pin`. Geheimnisse werden ausschließlich als Passwort-Hash gespeichert.
 
 ### Aufgaben
 
@@ -72,6 +72,16 @@ Create und Update akzeptieren `name`, `color`, `role`, `isActive`, optional `ava
 Create und Update akzeptieren neben den Aufgabendaten `rewardPoints` von 0 bis 100 sowie optional `routinePeriod` (`MORNING`, `AFTERNOON`, `EVENING`) und `repeatDays` als eindeutige ISO-Wochentage von 1 bis 7. Aufgaben mit Sternen müssen einer Person zugeordnet sein. Eine Routine benötigt mindestens einen Wochentag. Beim endgültigen Abschluss legt die API transaktional die nächste passende offene Ausführung an und überspringt bereits vergangene Wiederholungstage.
 
 Eine prüfpflichtige Aufgabe wechselt beim Abschluss in `PENDING_VERIFICATION`. Erst die Elternbestätigung schließt sie endgültig ab und erzeugt bei einer Routine die nächste Ausführung.
+
+### Mehrstufige Routinen
+
+- `GET /routines` – heutige Tagesläufe und alle Vorlagen für angemeldete Rollen
+- `POST /routines` – Admin oder Elternteil legt eine Vorlage an
+- `PUT /routines/{uuid}` – Admin oder Elternteil bearbeitet oder pausiert eine Vorlage
+- `DELETE /routines/{uuid}` – Admin oder Elternteil löscht eine Vorlage weich
+- `POST /routine-runs/{runUuid}/steps/{stepUuid}/complete` – Erwachsene oder das zugeordnete Kinderprofil erledigt einen Schritt
+
+Eine Vorlage enthält `title`, optional `description`, `assignedMemberId`, `routinePeriod`, ein nicht leeres `repeatDays` sowie 2 bis 12 geordnete `steps`. Pro Vorlage und geplantem Datum entsteht idempotent höchstens ein Tageslauf. Dessen Fortschritt wird aus den unveränderlich kopierten Tageslaufschritten berechnet; spätere Vorlagenänderungen beeinflussen erst neu erzeugte Läufe.
 
 ### Schatzkiste und Sterne
 
