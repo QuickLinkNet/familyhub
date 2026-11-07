@@ -6,7 +6,31 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ### Geplant
 
-- gemeinsame Einkaufslisten und Essensplanung
+- Essensplanung mit Übernahme in die Einkaufsliste
+
+## [0.10.0] - 2026-11-07
+
+### Hinzugefügt
+
+- mehrere gemeinsame Einkaufslisten mit eigenem Namen, Symbol und Farbe
+- touch-optimierte Schnell-Eingabe für Artikel, Mengen, Ladenbereiche und Dringlichkeit
+- automatische Gruppierung in zehn Ladenbereiche sowie eigener „Im Wagen“-Bereich
+- gemeinsames Hinzufügen, Abhaken, Wiederöffnen und Entfernen durch alle Familienprofile
+- Fortschrittsanzeige, Dashboard-Karte und prominenter Mobilzugang
+- isolierter Shopping-Smoke-Test für den vollständigen Listen- und Artikelablauf
+
+### Rechte und Datenintegrität
+
+- Listen anlegen, vollständig leeren oder löschen ist serverseitig Erwachsenen vorbehalten
+- die API protokolliert Hinzufüger und abhakendes Profil
+- Listenlöschung entfernt enthaltene Artikel gemeinsam in einer SQLite-Transaktion
+- sämtliche Listen- und Artikeldatensätze verwenden UUIDs und vorbereitete Statements
+
+### Geprüft
+
+- Produktionsbuild, vollständiger PHP-Lint und alle In-Memory-Migrationen
+- Listenanlage, Artikeländerung, Abhaken, Leeren und Löschen im isolierten Smoke-Test
+- leere Einkaufsansicht und Listendialog auf Desktop- und Mobilbreite ohne Änderung echter Familiendaten
 
 ## [0.9.0] - 2026-11-06
 

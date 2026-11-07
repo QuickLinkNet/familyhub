@@ -12,6 +12,8 @@ import { TodayCard } from '../components/TodayCard';
 import { WallModeCard } from '../components/WallModeCard';
 import { RewardsSummaryCard } from '../components/RewardsSummaryCard';
 import { useRewards } from '../../rewards/hooks/useRewards';
+import { useShoppingLists } from '../../shopping/hooks/useShopping';
+import { ShoppingSummaryCard } from '../components/ShoppingSummaryCard';
 
 const now = new Date();
 const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -25,12 +27,14 @@ export function DashboardPage() {
   const family = useFamilyMembers();
   const session = useAuthSession();
   const rewards = useRewards();
+  const shopping = useShoppingLists();
   const todayEvents = events.data ?? [];
   const currentDate = localDate(now);
   const openTasks = (tasks.data ?? []).filter(task => task.status !== 'COMPLETED' && isDueBy(task, currentDate));
   const completedTasks = (tasks.data ?? []).filter(task => task.status === 'COMPLETED' && wasCompletedOn(task, currentDate));
   const activeFamily = (family.data ?? []).filter(member => member.isActive);
   const ownPoints = rewards.data?.balances.find(balance => balance.member.id === session.data?.user?.id)?.points ?? 0;
+  const shoppingOpen = (shopping.data ?? []).reduce((count, list) => count + list.items.filter(item => !item.isChecked).length, 0);
 
   return (
     <Stack spacing={{ xs: 2.5, md: 3.5 }}>
@@ -40,6 +44,7 @@ export function DashboardPage() {
         <TasksSummaryCard openCount={openTasks.length} completedCount={completedTasks.length} totalCount={openTasks.length + completedTasks.length} loading={tasks.isLoading} error={tasks.isError} />
         <FamilySummaryCard members={activeFamily} loading={family.isLoading} error={family.isError} />
         <RewardsSummaryCard points={ownPoints} loading={rewards.isLoading} error={rewards.isError} />
+        <ShoppingSummaryCard openCount={shoppingOpen} listCount={shopping.data?.length ?? 0} loading={shopping.isLoading} error={shopping.isError} />
         <WallModeCard />
         {session.data?.user?.role === 'ADMIN' && <AdminSetupCard />}
       </Box>

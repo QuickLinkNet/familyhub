@@ -13,6 +13,7 @@ Bitte Sicherheitslücken nicht als öffentliches Issue veröffentlichen. Nutze e
 - Fünf falsche Loginversuche sperren Client und Profil für fünf Minuten.
 - Kinder können ausschließlich eigene zugewiesene Aufgaben abschließen.
 - Kinder können Belohnungen ausschließlich mit dem eigenen Sternenguthaben einlösen; Bonusvergabe und Katalogverwaltung bleiben Erwachsenen vorbehalten.
+- alle Profile dürfen gemeinsame Einkaufsartikel ergänzen und abhaken; das Anlegen, Leeren und Löschen vollständiger Listen bleibt Erwachsenen vorbehalten.
 - Sternenguthaben werden aus einem unveränderlichen Journal berechnet; Aufgaben-IDs verhindern doppelte Gutschriften und Einlösungen werden atomar gegen den Saldo geprüft.
 - Kinder können Kalender und Termine lesen; Kalenderänderungen sind Erwachsenen vorbehalten.
 - Das aktuell angemeldete Profil kann sich nicht selbst löschen.

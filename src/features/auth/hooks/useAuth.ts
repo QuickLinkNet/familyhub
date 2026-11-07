@@ -35,6 +35,7 @@ export const useLogin = () => {
       void client.invalidateQueries({ queryKey: ['calendars'] });
       void client.invalidateQueries({ queryKey: ['calendar-events'] });
       void client.invalidateQueries({ queryKey: ['rewards'] });
+      void client.invalidateQueries({ queryKey: ['shopping-lists'] });
     }
   });
 };
@@ -50,6 +51,7 @@ export const useLogout = () => {
       client.removeQueries({ queryKey: ['calendars'] });
       client.removeQueries({ queryKey: ['calendar-events'] });
       client.removeQueries({ queryKey: ['rewards'] });
+      client.removeQueries({ queryKey: ['shopping-lists'] });
     }
   });
 };

@@ -21,7 +21,7 @@ foreach (['routine_period', 'repeat_days', 'series_uuid', 'reward_points'] as $r
         exit(1);
     }
 }
-foreach (['rewards', 'reward_ledger'] as $table) {
+foreach (['rewards', 'reward_ledger', 'shopping_lists', 'shopping_items'] as $table) {
     $exists = $database->query("SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = '{$table}'")->fetchColumn();
     if ((int) $exists !== 1) { fwrite(STDERR, "Migration table {$table} is missing.\n"); exit(1); }
 }
