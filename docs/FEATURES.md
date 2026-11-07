@@ -29,7 +29,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Belohnungen | Sterne, persönliche Guthaben, Wunschregal, Bonus und nachvollziehbares Ledger | fertig | Familienziele und optionale Kategorien |
 | Kalender | Tag/Woche/Monat, Wiederholungen, Geburtstage, Ferien | Woche und Monat fertig | Tagesansicht, Wiederholungen und Import |
 | Routinen | Morgen-/Abendroutine, Schritte, Wochentage, Fortschritt | Tageszeit, Wochentage und automatische Folgeausführung fertig | mehrstufige Abläufe und Fortschritt |
-| Einkauf | mehrere Listen, Kategorien, Mengen, schnelles Abhaken | geplant | gemeinsame Standardliste |
+| Einkauf | mehrere Listen, Kategorien, Mengen, Dringlichkeit und schnelles Abhaken | fertig | Vorlagen und Spracheingabe |
 | Mahlzeiten & Rezepte | Wochenplan, Rezepte, Zutatenübernahme | geplant | Abendessen-Wochenplan |
 | Notizen | Familiennotizen, Pinnwand und schnelle Hinweise | geplant | Notizliste |
 | Schule | Stundenplan, Hausaufgaben, Tests, Ferien | geplant | Hausaufgaben-Slice |
@@ -43,7 +43,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 
 ## Empfohlene Produktreihenfolge
 
-1. **Einkauf und Essensplanung** – gemeinsamer Haushaltsnutzen.
+1. **Essensplanung ergänzen** – Wochenplan, Lieblingsgerichte und Übernahme benötigter Zutaten in den Einkauf.
 2. **Kalender ausbauen** – Tagesansicht, lokale Wiederholungen, Geburtstage und CalDAV-Anbindung.
 3. **Routinen vertiefen** – mehrstufige Abläufe, Fortschritt und Serienverwaltung.
 4. **Notizen, Schule und Haushalt** – kleine unabhängige Module.

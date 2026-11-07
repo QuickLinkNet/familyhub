@@ -18,6 +18,7 @@ Aktuelle Entwicklung:
 8. verschlüsselte Google-OAuth-Verbindung, auswählbare Google-Kalender und lokaler Termincache
 9. wiederkehrende Aufgabenserien und Tageszeit-Gruppen für Routinen
 10. Aufgabensterne, Belohnungskatalog und unveränderliches Punktejournal
+11. gemeinsame Einkaufslisten, kategorisierte Artikel und Abhakstatus
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -30,6 +31,8 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 - `tasks` – Aufgaben, Status, Elternprüfung, Aufgabensterne sowie optionale Routine-Tageszeit, Wiederholungswochentage und Serienkennung
 - `rewards` – aktiver Belohnungskatalog mit Sternepreis, Symbol und Farbe
 - `reward_ledger` – append-only Sternenjournal für Aufgabe, Bonus und Einlösung; Salden werden daraus berechnet
+- `shopping_lists` – benannte, farbige Einkaufslisten des Haushalts
+- `shopping_items` – Mengen, Ladenbereiche, Dringlichkeit und nachvollziehbarer Abhakstatus
 - `households` – Haushalt, Locale, Zeitzone und Setup-Zeitpunkt
 - calendars – gemeinsamer sowie persönliche Kalender
 - `calendar_events` – Termine, Zeiträume, Orte und Ersteller

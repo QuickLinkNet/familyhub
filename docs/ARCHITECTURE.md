@@ -40,6 +40,8 @@ Die Einrichtung von Haushalt, Personen und Kalendern läuft in einer einzelnen D
 
 Das Belohnungssystem verwendet ein append-only Journal statt veränderlicher Punktezähler. Aufgabenabschluss, Folge-Routine und optionale Sternegutschrift laufen in derselben Transaktion. Dadurch bleiben Salden nachvollziehbar, doppelte Aufgabenpunkte ausgeschlossen und Einlösungen revisionsfähig.
 
+Einkaufslisten sind ein eigener End-to-End-Slice. Die API liefert Listen samt Artikeln in einem für die Touch-Oberfläche optimierten Aggregat; Sortierung nach Status, Dringlichkeit und Ladenbereich erfolgt zentral im Repository. Einzelne Artikel dürfen alle angemeldeten Familienmitglieder bedienen, strukturelle Listenoperationen erzwingt der Router ausschließlich für Erwachsene.
+
 ## Deployment
 
 `npm run build` erzeugt die PWA und ein vollständiges `deploy/`-Paket. `npm run deploy` überträgt dieses Paket per FTP/FTPS. Der geschützte `storage/`-Bereich liegt neben API und Frontend, aber außerhalb der statischen Build-Ausgabe.

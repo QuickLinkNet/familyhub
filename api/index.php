@@ -10,6 +10,7 @@ use FamilyCompass\Controllers\HealthController;
 use FamilyCompass\Controllers\GoogleCalendarController;
 use FamilyCompass\Controllers\RewardController;
 use FamilyCompass\Controllers\SetupController;
+use FamilyCompass\Controllers\ShoppingController;
 use FamilyCompass\Controllers\TaskController;
 use FamilyCompass\Core\AppException;
 use FamilyCompass\Core\Bootstrap;
@@ -27,6 +28,7 @@ use FamilyCompass\Repositories\GoogleCalendarRepository;
 use FamilyCompass\Repositories\GoogleOAuthRepository;
 use FamilyCompass\Repositories\RewardRepository;
 use FamilyCompass\Repositories\SetupRepository;
+use FamilyCompass\Repositories\ShoppingRepository;
 use FamilyCompass\Repositories\TaskRepository;
 use FamilyCompass\Services\AuthService;
 use FamilyCompass\Services\CalendarService;
@@ -37,6 +39,7 @@ use FamilyCompass\Services\GoogleCalendarService;
 use FamilyCompass\Services\GoogleOAuthService;
 use FamilyCompass\Services\RewardService;
 use FamilyCompass\Services\SetupService;
+use FamilyCompass\Services\ShoppingService;
 use FamilyCompass\Services\TaskService;
 use FamilyCompass\Services\IcalFetcher;
 use FamilyCompass\Services\IcalParser;
@@ -94,6 +97,7 @@ try {
     $familyController = new FamilyMemberController(new FamilyMemberService($familyRepository));
     $taskController = new TaskController(new TaskService(new TaskRepository($database), $familyRepository));
     $rewardController = new RewardController(new RewardService(new RewardRepository($database), $familyRepository));
+    $shoppingController = new ShoppingController(new ShoppingService(new ShoppingRepository($database)));
     $setupController = new SetupController(new SetupService(new SetupRepository($database)), $config->version());
 
     $router = new Router();
@@ -200,6 +204,45 @@ try {
         $authService->requireAdult();
         $authService->requireCsrf();
         $rewardController->delete($uuid);
+    });
+    $router->get('/v1/shopping-lists', static function () use ($authService, $shoppingController): void {
+        $authService->requireUser();
+        $shoppingController->index();
+    });
+    $router->post('/v1/shopping-lists', static function () use ($authService, $shoppingController): void {
+        $actor = $authService->requireAdult();
+        $authService->requireCsrf();
+        $shoppingController->createList($actor);
+    });
+    $router->post('/v1/shopping-lists/{uuid}/items', static function (string $uuid) use ($authService, $shoppingController): void {
+        $actor = $authService->requireUser();
+        $authService->requireCsrf();
+        $shoppingController->createItem($uuid, $actor);
+    });
+    $router->post('/v1/shopping-lists/{uuid}/clear-checked', static function (string $uuid) use ($authService, $shoppingController): void {
+        $authService->requireAdult();
+        $authService->requireCsrf();
+        $shoppingController->clearChecked($uuid);
+    });
+    $router->delete('/v1/shopping-lists/{uuid}', static function (string $uuid) use ($authService, $shoppingController): void {
+        $authService->requireAdult();
+        $authService->requireCsrf();
+        $shoppingController->deleteList($uuid);
+    });
+    $router->put('/v1/shopping-items/{uuid}', static function (string $uuid) use ($authService, $shoppingController): void {
+        $authService->requireUser();
+        $authService->requireCsrf();
+        $shoppingController->updateItem($uuid);
+    });
+    $router->post('/v1/shopping-items/{uuid}/toggle', static function (string $uuid) use ($authService, $shoppingController): void {
+        $actor = $authService->requireUser();
+        $authService->requireCsrf();
+        $shoppingController->toggle($uuid, $actor);
+    });
+    $router->delete('/v1/shopping-items/{uuid}', static function (string $uuid) use ($authService, $shoppingController): void {
+        $authService->requireUser();
+        $authService->requireCsrf();
+        $shoppingController->deleteItem($uuid);
     });
     $router->get('/v1/calendars', static function () use ($authService, $calendarController): void {
         $authService->requireUser();

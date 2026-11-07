@@ -83,6 +83,19 @@ Eine prüfpflichtige Aufgabe wechselt beim Abschluss in `PENDING_VERIFICATION`. 
 
 Guthaben werden nie als überschreibbarer Zähler gespeichert, sondern aus dem append-only `reward_ledger` berechnet. Ein Aufgabenabschluss kann durch die eindeutige Aufgaben-ID höchstens eine Gutschrift erzeugen. Einlösungen werden serverseitig atomar gegen den aktuellen Saldo geprüft und können ihn nicht unter null senken.
 
+### Einkaufslisten
+
+- `GET /shopping-lists` – alle gemeinsamen Listen samt aktiven und abgehakten Artikeln
+- `POST /shopping-lists` – Admin oder Elternteil legt eine Liste mit Name, Symbol und Farbe an
+- `DELETE /shopping-lists/{uuid}` – Admin oder Elternteil entfernt eine Liste samt Artikeln
+- `POST /shopping-lists/{uuid}/items` – jedes angemeldete Profil ergänzt einen Artikel
+- `POST /shopping-lists/{uuid}/clear-checked` – Admin oder Elternteil entfernt alle abgehakten Artikel
+- `PUT /shopping-items/{uuid}` – jedes angemeldete Profil bearbeitet einen offenen Artikel
+- `POST /shopping-items/{uuid}/toggle` – jedes angemeldete Profil hakt einen Artikel ab oder öffnet ihn erneut
+- `DELETE /shopping-items/{uuid}` – jedes angemeldete Profil entfernt einen Artikel
+
+Artikel unterstützen `name`, optionale `quantity` und `note`, `isUrgent` sowie einen festen Ladenbereich in `category`. Die API protokolliert, wer einen Artikel ergänzt beziehungsweise abgehakt hat. Gelöschte Datensätze werden weich gelöscht und nicht mehr ausgeliefert.
+
 ### Kalender
 
 - `GET /calendars` – aktive gemeinsame und persönliche Kalender für alle angemeldeten Rollen
