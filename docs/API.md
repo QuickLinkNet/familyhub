@@ -126,6 +126,19 @@ Artikel unterstützen `name`, optionale `quantity` und `note`, `isUrgent` sowie 
 
 Ein Planeintrag enthält `date`, `mealType` (`BREAKFAST`, `LUNCH`, `DINNER`), optional `recipeId`, andernfalls einen freien `title`, sowie eine optionale `note`. Pro Datum und Mahlzeit existiert höchstens ein aktiver Slot. Rezepte enthalten strukturierte Zutaten mit `name`, `quantity` und derselben `category` wie Einkaufsartikel. Die Zutatenübernahme läuft vollständig in einer SQLite-Transaktion.
 
+### Schule
+
+- `GET /school-board?from={datum}&to={datum}` – Wochenstundenplan sowie Hausaufgaben und Tests im Zeitraum; maximal 62 Tage
+- `POST /school-lessons` – Admin oder Elternteil trägt eine wiederkehrende Unterrichtsstunde ein
+- `PUT /school-lessons/{uuid}` – Admin oder Elternteil bearbeitet eine Unterrichtsstunde
+- `DELETE /school-lessons/{uuid}` – Admin oder Elternteil entfernt eine Unterrichtsstunde weich
+- `POST /school-items` – Erwachsene für jedes Profil, Kinder ausschließlich für sich selbst
+- `PUT /school-items/{uuid}` – Erwachsene für jedes Profil, Kinder ausschließlich für sich selbst
+- `POST /school-items/{uuid}/toggle` – einen eigenen beziehungsweise von Erwachsenen verwaltbaren Eintrag abschließen oder wieder öffnen
+- `DELETE /school-items/{uuid}` – Erwachsene für jedes Profil, Kinder ausschließlich für sich selbst
+
+Unterrichtsstunden enthalten `memberId`, `subject`, `weekday` (1–7), `startsAt`, `endsAt`, optional `room` und `teacher` sowie eine freigegebene `color`. Schuleinträge verwenden `itemType` (`HOMEWORK` oder `TEST`), `subject`, `title`, optional `description` und `dueDate`. Überfällige offene Einträge bleiben unabhängig vom gewählten Startdatum sichtbar.
+
 ### Kalender
 
 - `GET /calendars` – aktive gemeinsame und persönliche Kalender für alle angemeldeten Rollen

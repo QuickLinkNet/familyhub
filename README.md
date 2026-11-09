@@ -7,7 +7,7 @@ Familienkompass ist ein touch-optimierter, selbst hostbarer Familienorganizer. D
 - responsive PWA für Wanddisplay, Tablet und Mobilgerät
 - gemeinsamer und persönlicher Familienkalender mit Tag, Woche, Monat, lokalen Wiederholungen, Geburtstagen und Terminverwaltung
 - Google-Kalender wahlweise wartungsfrei read-only per iCal oder mit direktem OAuth-Schreibzugriff
-- eigenständiger Wand- und Präsentationsmodus mit Uhrzeit, Terminen, Aufgaben und Familie
+- eigenständiger Wand- und Präsentationsmodus mit Uhrzeit, Terminen, Aufgaben, Schule und Familie
 - geschützter Adminbereich für Kalenderquellen und Synchronisationsstatus
 - bearbeitbare Familienmitglieder mit Rollen, Farben, optionalem Geburtstag, sicherem Elternpasswort und optionalem Kinder-PIN
 - Touch-Anmeldung mit HttpOnly-Session, CSRF-Schutz und serverseitigen Rollenrechten
@@ -16,6 +16,7 @@ Familienkompass ist ein touch-optimierter, selbst hostbarer Familienorganizer. D
 - gemeinsame Einkaufslisten mit Mengen, Ladenbereichen, Dringlichkeit, Fortschritt und schnellem Touch-Abhaken
 - Essenswochenplan für Frühstück, Mittag und Abend mit Lieblingsgerichten und direkter Zutatenübernahme zum Einkauf
 - gemeinsame Familienpinnwand mit wichtigen Hinweisen, persönlicher Urheberschaft und automatischem Ablaufdatum
+- Schulübersicht mit persönlichem Wochenstundenplan, Hausaufgaben, Tests und kindgerechtem Abhaken
 - einmaliger Einrichtungsassistent für Haushalt, Personen und persönliche Kalender
 - selbstinitialisierende PHP-/SQLite-API mit Migrationen, Backups, Logs und Health-Check
 - reproduzierbarer FTP-Deploy per `npm run deploy`

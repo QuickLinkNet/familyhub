@@ -54,6 +54,14 @@ Der Standard-Basispfad des Frontends ist `/apps/familyhub/`. Andere Installation
 VITE_BASE_PATH=/mein/pfad/
 ```
 
+Für eine eigene Subdomain wie `https://familie.example.org/` sollte deren Document Root direkt auf den FamilyHub-Ordner zeigen. In diesem Fall lautet die lokale Produktionskonfiguration:
+
+```dotenv
+VITE_BASE_PATH=/
+```
+
+Nach aktivem DNS und SSL außerdem `PUBLIC_APP_URL=https://familie.example.org/` setzen und – falls Google OAuth genutzt wird – die im Admin-Assistenten angezeigte Callback-URL zusätzlich im Google-Projekt freigeben. SQLite und `storage/` bleiben im bestehenden FamilyHub-Ordner; es ist keine zweite Installation erforderlich.
+
 ## 4. Bauen und deployen
 
 ```bash

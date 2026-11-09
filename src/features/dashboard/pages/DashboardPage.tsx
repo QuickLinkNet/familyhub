@@ -19,6 +19,8 @@ import { useMealPlanner } from '../../meals/hooks/useMeals';
 import { addDays, weekStart as mealWeekStart } from '../../meals/utils/mealDates';
 import { useFamilyNotes } from '../../notes/hooks/useFamilyNotes';
 import { NotesSummaryCard } from '../components/NotesSummaryCard';
+import { useSchoolBoard } from '../../school/hooks/useSchool';
+import { SchoolSummaryCard } from '../components/SchoolSummaryCard';
 
 const now = new Date();
 const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -36,6 +38,7 @@ export function DashboardPage() {
   const shopping = useShoppingLists();
   const meals = useMealPlanner(localDate(currentWeekStart), localDate(addDays(currentWeekStart, 6)));
   const notes = useFamilyNotes();
+  const school = useSchoolBoard(localDate(now), localDate(addDays(now, 14)));
   const todayEvents = events.data ?? [];
   const currentDate = localDate(now);
   const openTasks = (tasks.data ?? []).filter(task => task.status !== 'COMPLETED' && isDueBy(task, currentDate));
@@ -56,6 +59,7 @@ export function DashboardPage() {
         <ShoppingSummaryCard openCount={shoppingOpen} listCount={shopping.data?.length ?? 0} loading={shopping.isLoading} error={shopping.isError} />
         <MealsSummaryCard entries={todayMeals} loading={meals.isLoading} error={meals.isError} />
         <NotesSummaryCard notes={notes.data ?? []} loading={notes.isLoading} error={notes.isError} />
+        <SchoolSummaryCard board={school.data} loading={school.isLoading} error={school.isError} />
         <WallModeCard />
         {session.data?.user?.role === 'ADMIN' && <AdminSetupCard />}
       </Box>

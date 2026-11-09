@@ -1,0 +1,24 @@
+import { useEffect, useState, type FormEvent } from 'react';
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { ApiError } from '../../../services/apiClient';
+import type { FamilyMember } from '../../family/types/familyMember';
+import { schoolColors, schoolWeekdays } from '../constants/schoolOptions';
+import { useCreateSchoolLesson, useUpdateSchoolLesson } from '../hooks/useSchool';
+import type { SchoolLesson, SchoolLessonInput } from '../types/school';
+
+const blank = (memberId: string, weekday = 1): SchoolLessonInput => ({ memberId, subject: '', weekday, startsAt: '08:00', endsAt: '08:45', room: '', teacher: '', color: '#5B7DB1' });
+
+export function SchoolLessonDialog({ open, lesson, members, memberId, defaultWeekday, onClose, onDelete }: { open: boolean; lesson: SchoolLesson | null; members: FamilyMember[]; memberId: string; defaultWeekday: number; onClose: () => void; onDelete: (lesson: SchoolLesson) => void }) {
+  const create = useCreateSchoolLesson(); const update = useUpdateSchoolLesson(); const [form, setForm] = useState<SchoolLessonInput>(blank(memberId)); const [error, setError] = useState<string | null>(null);
+  useEffect(() => { if (!open) return; setForm(lesson ? { memberId: lesson.member.id, subject: lesson.subject, weekday: lesson.weekday, startsAt: lesson.startsAt, endsAt: lesson.endsAt, room: lesson.room ?? '', teacher: lesson.teacher ?? '', color: lesson.color } : blank(memberId || members[0]?.id || '', defaultWeekday)); setError(null); }, [open, lesson, memberId, defaultWeekday, members]);
+  const submit = async (event: FormEvent) => { event.preventDefault(); setError(null); try { if (lesson) await update.mutateAsync({ id: lesson.id, input: form }); else await create.mutateAsync(form); onClose(); } catch (cause) { setError(cause instanceof ApiError ? cause.message : 'Die Schulstunde konnte nicht gespeichert werden.'); } };
+  const pending = create.isPending || update.isPending;
+  return <Dialog open={open} onClose={pending ? undefined : onClose} fullWidth maxWidth="sm" PaperProps={{ component: 'form', onSubmit: submit }}><DialogTitle>{lesson ? 'Schulstunde bearbeiten' : 'Schulstunde eintragen'}</DialogTitle><DialogContent><Stack spacing={2.25} pt={1}>
+    {error && <Alert severity="error">{error}</Alert>}
+    <TextField select required label="Für wen?" value={form.memberId} onChange={event => setForm({ ...form, memberId: event.target.value })}>{members.map(member => <MenuItem key={member.id} value={member.id}>{member.name}</MenuItem>)}</TextField>
+    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}><TextField required autoFocus label="Fach" value={form.subject} onChange={event => setForm({ ...form, subject: event.target.value })} inputProps={{ maxLength: 60 }} sx={{ flex: 1 }} /><TextField select label="Wochentag" value={form.weekday} onChange={event => setForm({ ...form, weekday: Number(event.target.value) })} sx={{ minWidth: 170 }}>{schoolWeekdays.map(day => <MenuItem key={day.value} value={day.value}>{day.label}</MenuItem>)}</TextField></Stack>
+    <Stack direction="row" spacing={2}><TextField required fullWidth type="time" label="Beginn" value={form.startsAt} onChange={event => setForm({ ...form, startsAt: event.target.value })} slotProps={{ inputLabel: { shrink: true } }} /><TextField required fullWidth type="time" label="Ende" value={form.endsAt} onChange={event => setForm({ ...form, endsAt: event.target.value })} slotProps={{ inputLabel: { shrink: true } }} /></Stack>
+    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}><TextField label="Raum (optional)" value={form.room} onChange={event => setForm({ ...form, room: event.target.value })} inputProps={{ maxLength: 40 }} fullWidth /><TextField label="Lehrkraft (optional)" value={form.teacher} onChange={event => setForm({ ...form, teacher: event.target.value })} inputProps={{ maxLength: 80 }} fullWidth /></Stack>
+    <Box><Typography fontWeight={700} mb={1}>Fachfarbe</Typography><Stack direction="row" gap={1} flexWrap="wrap">{schoolColors.map(color => <Button key={color} aria-label={`Farbe ${color}`} onClick={() => setForm({ ...form, color })} sx={{ minWidth: 48, width: 48, bgcolor: color, border: form.color === color ? '4px solid #203129' : '4px solid transparent', '&:hover': { bgcolor: color } }} />)}</Stack></Box>
+  </Stack></DialogContent><DialogActions sx={{ p: 2.5 }}>{lesson && <Button color="error" onClick={() => onDelete(lesson)} disabled={pending} sx={{ mr: 'auto' }}>Löschen</Button>}<Button onClick={onClose} disabled={pending}>Abbrechen</Button><Button variant="contained" type="submit" disabled={pending || !form.memberId || form.subject.trim().length < 2 || form.startsAt >= form.endsAt}>{pending ? 'Speichert …' : 'Stunde speichern'}</Button></DialogActions></Dialog>;
+}

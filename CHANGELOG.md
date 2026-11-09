@@ -6,7 +6,30 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ### Geplant
 
-- Schul- und Haushaltsmodule
+- Haushaltsmodule sowie Foto-/Idle-Modus
+
+## [0.15.0] - 2026-11-08
+
+### Hinzugefügt
+
+- gemeinsame Schulübersicht mit Wochenstundenplan für jedes aktive Schulkind
+- farbige Unterrichtsstunden mit Fach, Uhrzeit, Raum und optionaler Lehrkraft
+- Hausaufgaben und Tests mit Fach, Termin, Notiz, Personenzuordnung und Abschlussstatus
+- eigene Schulkarten auf Dashboard und Wandmodus für den schnellen Familienüberblick
+- isolierter Smoke-Test für Stundenplan, Kinderrechte, Abschluss, Bearbeitung und Löschung
+
+### Rechte und Bedienung
+
+- Admins und Eltern verwalten den strukturellen Wochenstundenplan
+- Kinder dürfen eigene Hausaufgaben und Tests anlegen, bearbeiten und abhaken
+- Erwachsene verwalten alle Schuleinträge; fremde Kinderprofile bleiben serverseitig geschützt
+- Wochenwechsel, Personenfilter, Leer-, Lade- und Fehlerzustände sind touch- und mobilfreundlich
+
+### Geprüft
+
+- vollständiger Schulworkflow und Rollenprüfung in einer isolierten SQLite-Datenbank
+- Desktop- und 390-Pixel-Mobilansicht, Formulare, Dashboard und Wandmodus ohne Änderung echter Familiendaten
+- Production-Build, PWA, vollständiger PHP-Lint, sämtliche Smoke-Tests, Live-API und Browserkonsole
 
 ## [0.14.0] - 2026-11-07
 

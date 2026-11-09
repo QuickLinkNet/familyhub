@@ -23,7 +23,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Plattform | React-PWA mit Atomic Design, PHP-API, SQLite, Migrationen, Backups, Logs, Health | fertig | automatisierte Smoke-Tests |
 | Installation | Haushalt, 1–12 Personen, Rollen, sichere Zugangsdaten, Kalender | fertig | Export/Import und Reset-Werkzeug |
 | Touch-/Kiosk-UX | Wanddisplay, Tablet, Mobilnavigation, große Ziele | Wand- und Präsentationsmodus fertig | Leerlauf- und Fotomodus |
-| Dashboard | Heute, Aufgaben, Familie, Pinnwand und direkter Wandmodus | fertig | konfigurierbare Karten und Wetter |
+| Dashboard | Heute, Aufgaben, Familie, Pinnwand, Schule und direkter Wandmodus | fertig | konfigurierbare Karten und Wetter |
 | Identität & Rechte | Admin-/Elternpasswort, Kinder-PIN, Sessions, CSRF, Rollenrechte | Profilbearbeitung inklusive Geburtstag fertig | feinere Modulrechte |
 | Aufgaben | Zuweisung, Fälligkeit, Priorität, Abschluss, Eltern-Check | Wiederholung und Elternfreigabe fertig | Bearbeiten und Historie |
 | Belohnungen | Sterne, persönliche Guthaben, Wunschregal, Bonus und nachvollziehbares Ledger | fertig | Familienziele und optionale Kategorien |
@@ -32,7 +32,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Einkauf | mehrere Listen, Kategorien, Mengen, Dringlichkeit und schnelles Abhaken | fertig | Vorlagen und Spracheingabe |
 | Mahlzeiten & Rezepte | Wochenplan, Lieblingsgerichte, strukturierte Zutatenübernahme | fertig für Frühstück, Mittag und Abend | Vorlagen, Portionen und Rezeptbearbeitung |
 | Notizen | Familiennotizen, Pinnwand und schnelle Hinweise | fertig inklusive Wichtig-Markierung und Ablaufdatum | Kategorien und Anhänge |
-| Schule | Stundenplan, Hausaufgaben, Tests, Ferien | geplant | Hausaufgaben-Slice |
+| Schule | Stundenplan, Hausaufgaben, Tests, Ferien | Wochenstundenplan, Hausaufgaben und Tests fertig | Ferien und Schulkalender-Import |
 | Haushalt | Putzen, Müll, Pflanzen, Wäsche und Tiere | geplant | Putz- oder Müllplan |
 | Wetter | aktuelle Lage und Vorschau über austauschbaren Anbieter | geplant | datenschutzfreundlicher Adapter |
 | Foto-/Idle-Modus | Diashow, Uhrzeit, Wetter und nächster Termin | geplant | Inaktivitäts-Timer |
@@ -43,7 +43,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 
 ## Empfohlene Produktreihenfolge
 
-1. **Schule und Haushalt** – kleine unabhängige Module für wiederkehrende Alltagsthemen.
+1. **Haushalt** – kleine unabhängige Pläne für Putzen, Müll, Pflanzen, Wäsche und Tiere.
 2. **Idle-Modus und Wetter** – ruhiger Präsentationsbetrieb mit datenschutzfreundlichem Anbieter.
 3. **Weitere Integrationen** – CalDAV, Microsoft Graph und Home Assistant.
 

@@ -48,6 +48,8 @@ Der Essensplan ergänzt den Einkauf über strukturierte Rezeptzutaten. Plan-Slot
 
 Die Familienpinnwand ist ein eigenständiger End-to-End-Slice. Zettel bleiben ihrem Ersteller zugeordnet, wichtige Hinweise werden zentral priorisiert und optionale Ablaufdaten filtern veraltete Informationen bereits im Repository. Erwachsene moderieren die gesamte Pinnwand; Kinder dürfen ausschließlich eigene Beiträge verändern oder entfernen.
 
+Das Schulmodul trennt den stabilen, wöchentlich wiederkehrenden Stundenplan von datierten Hausaufgaben und Tests. Unterrichtsstunden gehören zu genau einem Familienmitglied und dürfen nur durch Erwachsene strukturell verändert werden. Schuleinträge dürfen Kinder für das eigene Profil pflegen und abschließen; der Service erzwingt diese Grenze unabhängig von der Oberfläche.
+
 Lokale Kalenderwiederholungen bleiben als kompakte Serie in `calendar_events` gespeichert. Ein eigener Expander erzeugt nur die im angefragten Zeitraum sichtbaren Vorkommen; eine Serien-ID hält Bearbeiten und Löschen eindeutig. Geburtstage werden aus dem optionalen Geburtsdatum aktiver Familienprofile als schreibgeschützte virtuelle Kalenderereignisse erzeugt.
 
 ## Deployment

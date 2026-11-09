@@ -12,6 +12,7 @@ use FamilyCompass\Controllers\GoogleCalendarController;
 use FamilyCompass\Controllers\MealController;
 use FamilyCompass\Controllers\RewardController;
 use FamilyCompass\Controllers\RoutineController;
+use FamilyCompass\Controllers\SchoolController;
 use FamilyCompass\Controllers\SetupController;
 use FamilyCompass\Controllers\ShoppingController;
 use FamilyCompass\Controllers\TaskController;
@@ -33,6 +34,7 @@ use FamilyCompass\Repositories\GoogleOAuthRepository;
 use FamilyCompass\Repositories\MealRepository;
 use FamilyCompass\Repositories\RewardRepository;
 use FamilyCompass\Repositories\RoutineRepository;
+use FamilyCompass\Repositories\SchoolRepository;
 use FamilyCompass\Repositories\SetupRepository;
 use FamilyCompass\Repositories\ShoppingRepository;
 use FamilyCompass\Repositories\TaskRepository;
@@ -49,6 +51,7 @@ use FamilyCompass\Services\GoogleOAuthService;
 use FamilyCompass\Services\MealService;
 use FamilyCompass\Services\RewardService;
 use FamilyCompass\Services\RoutineService;
+use FamilyCompass\Services\SchoolService;
 use FamilyCompass\Services\SetupService;
 use FamilyCompass\Services\ShoppingService;
 use FamilyCompass\Services\TaskService;
@@ -121,6 +124,7 @@ try {
     $shoppingRepository = new ShoppingRepository($database);
     $shoppingController = new ShoppingController(new ShoppingService($shoppingRepository));
     $mealController = new MealController(new MealService(new MealRepository($database), $shoppingRepository));
+    $schoolController = new SchoolController(new SchoolService(new SchoolRepository($database), $familyRepository));
     $setupController = new SetupController(new SetupService(new SetupRepository($database)), $config->version());
 
     $router = new Router();
@@ -338,6 +342,45 @@ try {
         $authService->requireAdult();
         $authService->requireCsrf();
         $mealController->deleteEntry($uuid);
+    });
+    $router->get('/v1/school-board', static function () use ($authService, $schoolController): void {
+        $authService->requireUser();
+        $schoolController->index();
+    });
+    $router->post('/v1/school-lessons', static function () use ($authService, $schoolController): void {
+        $actor = $authService->requireAdult();
+        $authService->requireCsrf();
+        $schoolController->createLesson($actor);
+    });
+    $router->put('/v1/school-lessons/{uuid}', static function (string $uuid) use ($authService, $schoolController): void {
+        $actor = $authService->requireAdult();
+        $authService->requireCsrf();
+        $schoolController->updateLesson($uuid, $actor);
+    });
+    $router->delete('/v1/school-lessons/{uuid}', static function (string $uuid) use ($authService, $schoolController): void {
+        $actor = $authService->requireAdult();
+        $authService->requireCsrf();
+        $schoolController->deleteLesson($uuid, $actor);
+    });
+    $router->post('/v1/school-items', static function () use ($authService, $schoolController): void {
+        $actor = $authService->requireUser();
+        $authService->requireCsrf();
+        $schoolController->createItem($actor);
+    });
+    $router->put('/v1/school-items/{uuid}', static function (string $uuid) use ($authService, $schoolController): void {
+        $actor = $authService->requireUser();
+        $authService->requireCsrf();
+        $schoolController->updateItem($uuid, $actor);
+    });
+    $router->post('/v1/school-items/{uuid}/toggle', static function (string $uuid) use ($authService, $schoolController): void {
+        $actor = $authService->requireUser();
+        $authService->requireCsrf();
+        $schoolController->toggleItem($uuid, $actor);
+    });
+    $router->delete('/v1/school-items/{uuid}', static function (string $uuid) use ($authService, $schoolController): void {
+        $actor = $authService->requireUser();
+        $authService->requireCsrf();
+        $schoolController->deleteItem($uuid, $actor);
     });
     $router->get('/v1/calendars', static function () use ($authService, $calendarController): void {
         $authService->requireUser();
