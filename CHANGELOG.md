@@ -8,6 +8,18 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 - Haushaltsmodule sowie Foto-/Idle-Modus
 
+## [0.15.1] - 2026-11-09
+
+### Behoben
+
+- Produktionsbuild standardmäßig auf den Root-Pfad einer eigenen FamilyHub-Subdomain umgestellt
+- fehlerhafte JavaScript- und CSS-Auslieferung durch den bisherigen fest verdrahteten Unterpfad beseitigt
+- Deployment-Beispiele und Betriebsdokumentation auf den Subdomain-Betrieb abgestimmt
+
+### Geprüft
+
+- Production-Build, vollständiger PHP-Lint, alle Smoke-Tests, Live-API, ausgelieferte Frontend-Assets und fehlerfreie Browserkonsole
+
 ## [0.15.0] - 2026-11-08
 
 ### Hinzugefügt

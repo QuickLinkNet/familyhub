@@ -48,13 +48,13 @@ Pflichtfelder:
 
 `.env.deploy` wird durch Git ignoriert. Zugangsdaten dürfen nie committed werden.
 
-Der Standard-Basispfad des Frontends ist `/apps/familyhub/`. Andere Installationen können ihn in einer lokalen `.env.production` setzen:
+Der Standard-Basispfad des Frontends ist `/` und eignet sich für eine eigene (Sub-)Domain, deren Document Root direkt auf den FamilyHub-Ordner zeigt. Installationen in einem Unterpfad können ihn in einer lokalen `.env.production` ändern:
 
 ```dotenv
-VITE_BASE_PATH=/mein/pfad/
+VITE_BASE_PATH=/apps/familyhub/
 ```
 
-Für eine eigene Subdomain wie `https://familie.example.org/` sollte deren Document Root direkt auf den FamilyHub-Ordner zeigen. In diesem Fall lautet die lokale Produktionskonfiguration:
+Für eine eigene Subdomain wie `https://familie.example.org/` lautet die Produktionskonfiguration entsprechend:
 
 ```dotenv
 VITE_BASE_PATH=/
@@ -96,9 +96,9 @@ Die Einrichtung lässt sich über die öffentliche Oberfläche nur einmal abschl
 
 ## 6. Betrieb prüfen
 
-- Anwendung: `https://example.org/apps/familyhub/`
-- Health: `https://example.org/apps/familyhub/api/v1/health`
-- Setup-Status: `https://example.org/apps/familyhub/api/v1/setup/status`
+- Anwendung: `https://familie.example.org/`
+- Health: `https://familie.example.org/api/v1/health`
+- Setup-Status: `https://familie.example.org/api/v1/setup/status`
 
 Eine erfolgreiche Health-Antwort meldet HTTP 200 und `database: "ok"`. Geschützte Fachendpunkte antworten ohne Anmeldung mit HTTP 401. Für die Entwicklung hält der Vite-Proxy Browser und Session auf `localhost:5173`, während alle API-Aufrufe an das konfigurierte Live-System gehen.
 

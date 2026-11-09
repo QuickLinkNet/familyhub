@@ -14,7 +14,7 @@ function normalizePrefix(value: string): string {
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
-  const appBasePath = normalizeBasePath(env.VITE_BASE_PATH || '/apps/familyhub/');
+  const appBasePath = normalizeBasePath(env.VITE_BASE_PATH || '/');
   const liveApiOrigin = env.VITE_DEV_API_ORIGIN || 'https://example.org';
   const liveApiPrefix = normalizePrefix(env.VITE_DEV_API_PREFIX || '/apps/familyhub');
 

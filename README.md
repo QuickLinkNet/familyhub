@@ -44,6 +44,8 @@ npm run deploy
 
 Der Befehl prüft TypeScript, baut die PWA, erstellt `deploy/` und lädt Frontend sowie API per FTP hoch. Bestehende Laufzeitdaten unter `storage/` werden nicht gelöscht. Zugangsdaten bleiben in der ignorierten Datei `.env.deploy`.
 
+Der Produktionsbuild ist standardmäßig für eine eigene (Sub-)Domain konfiguriert, deren Document Root direkt auf den FamilyHub-Ordner zeigt. Für eine Installation in einem Unterpfad wird `VITE_BASE_PATH` in einer lokalen `.env.production` angepasst.
+
 Nach dem ersten Deployment führt `/setup` durch Haushalt, Familienmitglieder und Kalender. Danach melden sich Erwachsene mit Passwort und Kinder mit ihrer optionalen PIN über die Profilauswahl an. Die Installation ist transaktional und kann nur einmal abgeschlossen werden.
 
 Admins können unter `/admin` Google Kalender auf zwei Arten verbinden:
