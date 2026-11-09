@@ -38,7 +38,7 @@ final class CalendarController
         } catch (\JsonException) {
             throw new AppException('VALIDATION_ERROR', 'Es wurde ein gültiger JSON-Request erwartet.', 400);
         }
-        if (!is_array($input) || $input === [] || array_is_list($input)) {
+        if (!is_array($input) || $input === [] || \FamilyCompass\Core\ArrayShape::isList($input)) {
             throw new AppException('VALIDATION_ERROR', 'Es wurde ein JSON-Objekt erwartet.', 400);
         }
         return $input;

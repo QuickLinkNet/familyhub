@@ -8,6 +8,17 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 - Haushaltsmodule sowie Foto-/Idle-Modus
 
+## [0.15.2] - 2026-11-09
+
+### Behoben
+
+- JSON-Objektprüfung von der erst ab PHP 8.1 verfügbaren Funktion `array_is_list()` entkoppelt
+- Login und alle schreibenden API-Controller bleiben damit auch bei einer abweichenden Hosting-Laufzeit kontrolliert erreichbar
+
+### Geprüft
+
+- eigene Listenform-Prüfung, vollständiger PHP-Lint, alle Smoke-Tests und datenfreier Live-Login-Validierungstest
+
 ## [0.15.1] - 2026-11-09
 
 ### Behoben
