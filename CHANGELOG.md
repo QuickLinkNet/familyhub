@@ -4,6 +4,29 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.23.0] - 2026-11-11
+
+### Hinzugefügt
+
+- zentraler Geräte-Assistent „Familienboard einrichten“ im Profilmenü
+- verständlicher PWA-Installationsstatus mit direktem Installationsdialog, sofern der Browser ihn anbietet, und passender manueller Anleitung als Rückfall
+- optionales Bildschirm-Wachhalten im Wandmodus über die standardisierte Screen Wake Lock API
+- Live-Gerätestatus für App-Modus, Browser-Unterstützung und Leerlauf-Automatik
+- direkter Wandmodus-Test mit sicherer Rückkehr an die zuvor geöffnete Stelle
+
+### Robuste Display-Nutzung
+
+- Wake Lock wird beim erneuten Sichtbarwerden des Wandmodus automatisch neu angefordert
+- blockierte Browserfreigaben werden sichtbar und können per bewusster Berührung erneut aktiviert werden
+- nicht unterstützte Browser erhalten eine klare Erklärung statt eines wirkungslosen Schalters
+- alle Display-Optionen bleiben lokal auf dem jeweiligen Gerät und benötigen keine neuen Familiendaten
+
+### Geprüft
+
+- Gerätestatus, Einstellungswechsel, Wandmodus-Test und Rückkehr im echten Browser
+- Desktop- und Mobilansicht sowie blockierter Wake-Lock-Zustand
+- Production-Build, vollständiger PHP-Lint, alle Smoke-Tests und Live-API
+
 ## [0.22.0] - 2026-11-11
 
 ### Hinzugefügt

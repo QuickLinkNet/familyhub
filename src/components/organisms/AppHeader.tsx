@@ -3,7 +3,7 @@ import { LogoutRounded, MenuRounded, MoreHorizRounded, TvRounded } from '@mui/ic
 import { AppBar, Box, Chip, IconButton, ListItemIcon, Menu, MenuItem, Stack, Toolbar } from '@mui/material';
 import { MemberAvatar } from '../atoms/MemberAvatar';
 import { ReminderCenter } from '../../features/reminders/components/ReminderCenter';
-import { IdleWallModeDialog } from '../../features/wall/components/IdleWallModeDialog';
+import { DisplaySetupDialog } from '../../features/wall/components/DisplaySetupDialog';
 
 interface AppHeaderProps {
   user: { name: string; color: string } | null;
@@ -44,14 +44,14 @@ export function AppHeader({ user, signingOut, onOpenNavigation, onSignOut }: App
       <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={closeMenu}>
         <MenuItem onClick={openIdleDialog}>
           <ListItemIcon><TvRounded fontSize="small" /></ListItemIcon>
-          Automatischer Wandmodus
+          Familienboard einrichten
         </MenuItem>
         <MenuItem onClick={signOut} disabled={signingOut}>
           <ListItemIcon><LogoutRounded fontSize="small" /></ListItemIcon>
           Abmelden
         </MenuItem>
       </Menu>
-      <IdleWallModeDialog open={idleDialogOpen} onClose={() => setIdleDialogOpen(false)} />
+      <DisplaySetupDialog open={idleDialogOpen} onClose={() => setIdleDialogOpen(false)} />
     </>
   );
 }

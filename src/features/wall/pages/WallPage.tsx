@@ -21,6 +21,8 @@ import { WallGoal } from '../components/WallGoal';
 import { useReminders } from '../../reminders/hooks/useReminders';
 import { WallReminders } from '../../reminders/components/WallReminders';
 import { IdleWallReturnButton } from '../components/IdleWallReturnButton';
+import { useIdleWallModeSettings } from '../hooks/useIdleWallModeSettings';
+import { useScreenWakeLock } from '../hooks/useScreenWakeLock';
 
 const defaultPresentation: WallPresentation = {
   greeting: 'Schön, dass ihr da seid', weatherEnabled: false, weatherLocation: null,
@@ -29,7 +31,9 @@ const defaultPresentation: WallPresentation = {
 
 export function WallPage() {
   const [searchParams] = useSearchParams();
-  const enteredAfterIdle = searchParams.get('source') === 'idle';
+  const enteredFromDeviceSetup = ['idle', 'setup'].includes(searchParams.get('source') ?? '');
+  const { settings } = useIdleWallModeSettings();
+  const wakeLock = useScreenWakeLock(settings.keepScreenAwake);
   const [now, setNow] = useState(new Date());
   useEffect(() => {
     const timer = window.setInterval(() => setNow(new Date()), 30_000);
@@ -56,7 +60,7 @@ export function WallPage() {
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', backgroundImage: 'radial-gradient(circle at top right, rgba(214,133,95,0.13), transparent 35%), radial-gradient(circle at bottom left, rgba(52,91,72,0.14), transparent 38%)', py: { xs: 2.5, md: 4 } }}>
       <Container maxWidth="xl">
         <Stack spacing={{ xs: 2.5, md: 3.5 }}>
-          <WallHeader now={now} presentation={presentation.data ?? defaultPresentation} />
+          <WallHeader now={now} presentation={presentation.data ?? defaultPresentation} wakeLock={wakeLock} />
           {(events.isError || tasks.isError || family.isError || notes.isError || school.isError || presentation.isError || goals.isError || reminders.isError) && <Alert severity="warning">Einige Familieninformationen konnten gerade nicht geladen werden.</Alert>}
           {loading
             ? <Stack alignItems="center" py={8}><CircularProgress /></Stack>
@@ -73,7 +77,7 @@ export function WallPage() {
             </>}
         </Stack>
       </Container>
-      {enteredAfterIdle && <IdleWallReturnButton />}
+      {enteredFromDeviceSetup && <IdleWallReturnButton />}
     </Box>
   );
 }

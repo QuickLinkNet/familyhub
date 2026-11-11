@@ -1,20 +1,22 @@
-import { FullscreenRounded, HomeRounded } from '@mui/icons-material';
+import { FullscreenRounded, HomeRounded, LightModeRounded } from '@mui/icons-material';
 import { Box, Button, Chip, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { apiAssetUrl } from '../../../services/apiClient';
 import { useRotatingWallPhoto } from '../hooks/useWallPresentation';
 import type { WallPresentation } from '../types/wallPresentation';
 import { WallWeather } from './WallWeather';
+import type { ScreenWakeLockStatus } from '../hooks/useScreenWakeLock';
 
 interface WallHeaderProps {
   now: Date;
   presentation: WallPresentation;
+  wakeLock: { status: ScreenWakeLockStatus; retry: () => Promise<void> };
 }
 
 const dayFormatter = new Intl.DateTimeFormat('de-DE', { weekday: 'long', day: 'numeric', month: 'long' });
 const timeFormatter = new Intl.DateTimeFormat('de-DE', { hour: '2-digit', minute: '2-digit' });
 
-export function WallHeader({ now, presentation }: WallHeaderProps) {
+export function WallHeader({ now, presentation, wakeLock }: WallHeaderProps) {
   const photo = useRotatingWallPhoto(presentation.photos);
   const enterFullscreen = async () => {
     try {
@@ -36,7 +38,9 @@ export function WallHeader({ now, presentation }: WallHeaderProps) {
       <Stack sx={{ position: 'relative', minHeight: 'inherit', p: { xs: 2.5, sm: 3.5, md: 4.5 } }} justifyContent="space-between" gap={3}>
         <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'stretch', sm: 'center' }} gap={1.5}>
           <Chip label="Familienkompass · Wandmodus" sx={{ alignSelf: 'flex-start', color: 'common.white', bgcolor: 'rgba(255,255,255,.14)', fontWeight: 800, backdropFilter: 'blur(12px)' }} />
-          <Stack direction="row" gap={1}>
+          <Stack direction="row" gap={1} flexWrap="wrap">
+            {wakeLock.status === 'active' && <Chip icon={<LightModeRounded />} label="Bildschirm bleibt an" sx={{ color: 'common.white', bgcolor: 'rgba(255,255,255,.14)', '& .MuiChip-icon': { color: 'inherit' } }} />}
+            {wakeLock.status === 'blocked' && <Button variant="outlined" startIcon={<LightModeRounded />} onClick={() => void wakeLock.retry()} sx={glassButton}>Bildschirm aktivieren</Button>}
             <Button component={Link} to="/" variant="outlined" startIcon={<HomeRounded />} sx={{ ...glassButton, flex: { xs: 1, sm: 'initial' } }}>Übersicht</Button>
             <Button variant="contained" startIcon={<FullscreenRounded />} onClick={() => void enterFullscreen()} sx={{ flex: { xs: 1, sm: 'initial' }, bgcolor: 'common.white', color: 'primary.dark', '&:hover': { bgcolor: 'rgba(255,255,255,.88)' } }}>Vollbild</Button>
           </Stack>
