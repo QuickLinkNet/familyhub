@@ -30,6 +30,8 @@ Aktuelle Entwicklung:
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
+Admins können dieselben konsistenten SQLite-Sicherungen unter **Administration → Datensicherung** manuell anlegen, herunterladen und wiederherstellen. Vor dem Einspielen prüft FamilyHub SQLite-Format, Datenbankintegrität und die notwendigen FamilyHub-Tabellen. Der aktuelle Stand wird nochmals automatisch gesichert; danach erfolgt der Austausch atomar vor dem Öffnen der nächsten Datenbankverbindung.
+
 In-App-Erinnerungen werden zur Laufzeit aus Kalender-, Aufgaben-, Schul- und Routinedaten abgeleitet. Dafür ist bewusst keine zusätzliche Tabelle oder Verlaufsspeicherung erforderlich.
 
 Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielsweise `007_recurring_tasks.sql`. Jede Datei muss vollständig transaktional ausführbar sein.
@@ -73,5 +75,7 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 ## Datenschutz und Backups
 
 Die SQLite-Datei und Backups dürfen niemals committed oder direkt über HTTP ausgeliefert werden. `storage/.htaccess` sperrt den Zugriff unter Apache. Bei anderen Webservern muss eine gleichwertige Regel eingerichtet werden.
+
+Der Admin-Download wird ausschließlich über eine authentifizierte API-Route ausgeliefert. Eine Datenbanksicherung enthält auch verschlüsselte Kalenderzugänge, jedoch nicht die Schlüsseldateien `storage/calendar-source.key` und `storage/application-secrets.key`. Für eine Wiederherstellung auf demselben Server genügt die SQLite-Datei. Bei einem vollständigen Serverumzug müssen diese Schlüssel separat und sicher übernommen werden.
 
 Vor einem manuellen Restore Anwendung kurz in den Wartungsmodus versetzen, die aktuelle Datenbank separat sichern und anschließend Health sowie Setup-Status prüfen.

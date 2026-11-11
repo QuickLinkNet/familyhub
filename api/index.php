@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use FamilyCompass\Config\Config;
 use FamilyCompass\Controllers\AuthController;
+use FamilyCompass\Controllers\AdminBackupController;
 use FamilyCompass\Controllers\CalendarController;
 use FamilyCompass\Controllers\CalendarSourceController;
 use FamilyCompass\Controllers\FamilyMemberController;
@@ -21,6 +22,7 @@ use FamilyCompass\Controllers\ShoppingController;
 use FamilyCompass\Controllers\TaskController;
 use FamilyCompass\Controllers\WallPresentationController;
 use FamilyCompass\Core\AppException;
+use FamilyCompass\Core\BackupService;
 use FamilyCompass\Core\Bootstrap;
 use FamilyCompass\Core\CalendarSourceCipher;
 use FamilyCompass\Core\Logger;
@@ -47,6 +49,7 @@ use FamilyCompass\Repositories\TaskRepository;
 use FamilyCompass\Repositories\WallPresentationRepository;
 use FamilyCompass\Routes\AdminRoutes;
 use FamilyCompass\Services\AuthService;
+use FamilyCompass\Services\AdminBackupService;
 use FamilyCompass\Services\CalendarService;
 use FamilyCompass\Services\CalendarRecurrenceExpander;
 use FamilyCompass\Services\BirthdayEventFactory;
@@ -71,8 +74,6 @@ use FamilyCompass\Services\WallPresentationService;
 use FamilyCompass\Services\WeatherService;
 use FamilyCompass\Services\IcalFetcher;
 use FamilyCompass\Services\IcalParser;
-
-
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
     http_response_code(204);
     exit;
@@ -148,8 +149,8 @@ try {
     $reminderController = new ReminderController(new ReminderService($calendarService, $taskService, $routineService, $schoolService, $taskRepository, new ReminderPlanner()));
     $householdChoreController = new HouseholdChoreController(new HouseholdChoreService(new HouseholdChoreRepository($database), $familyRepository));
     $wallPresentationController = new WallPresentationController(new WallPresentationService(new WallPresentationRepository($database), new WeatherService(), $config));
+    $adminBackupController = new AdminBackupController(new AdminBackupService(new BackupService($config, $logger), $database));
     $setupController = new SetupController(new SetupService(new SetupRepository($database)), $config->version());
-
     $router = new Router();
     $router->get('/v1/health', static function () use ($config, $logger): void {
         (new HealthController($config, $logger))->show();
@@ -160,7 +161,6 @@ try {
     $router->post('/v1/setup', static function () use ($setupController): void {
         $setupController->install();
     });
-
     $router->get('/v1/auth/profiles', static function () use ($authController): void {
         $authController->profiles();
     });
@@ -178,7 +178,6 @@ try {
     $router->get('/v1/google-calendar/oauth/callback', static function () use ($googleCalendarController): void {
         $googleCalendarController->callback();
     });
-
     $router->get('/v1/family-members', static function () use ($authService, $familyController): void {
         $authService->requireUser();
         $familyController->index();
@@ -487,7 +486,7 @@ try {
         $authService->requireCsrf();
         $calendarController->delete($uuid);
     });
-    AdminRoutes::register($router, $authService, $wallPresentationController, $calendarSourceController, $googleCalendarController);
+    AdminRoutes::register($router, $authService, $wallPresentationController, $calendarSourceController, $googleCalendarController, $adminBackupController);
 
     $router->dispatch($_SERVER['REQUEST_METHOD'] ?? 'GET', $_SERVER['REQUEST_URI'] ?? '/');
 } catch (AppException $exception) {

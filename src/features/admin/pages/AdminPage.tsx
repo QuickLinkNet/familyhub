@@ -7,6 +7,7 @@ import { PageHeader } from '../../../components/molecules/PageHeader';
 import { ApiError } from '../../../services/apiClient';
 import { useAuthSession } from '../../auth/hooks/useAuth';
 import { CalendarSourceCard } from '../components/CalendarSourceCard';
+import { BackupManagerCard } from '../components/BackupManagerCard';
 import { CalendarSourceDialog } from '../components/CalendarSourceDialog';
 import { GoogleConnectionCard } from '../components/GoogleConnectionCard';
 import { GoogleSetupDialog } from '../components/GoogleSetupDialog';
@@ -81,6 +82,7 @@ export function AdminPage() {
       {searchParams.get('google') === 'connected' && <Alert severity="success">Google Kalender ist verbunden. Der primäre Kalender wurde automatisch aktiviert.</Alert>}
       {searchParams.get('google') === 'error' && <Alert severity="error">Die Google-Anmeldung konnte nicht abgeschlossen werden. Bitte starte sie erneut.</Alert>}
       <WallPresentationCard enabled={isAdmin} />
+      <BackupManagerCard enabled={isAdmin} />
       <Stack direction="row" alignItems="center" gap={1}><AdminPanelSettingsRounded color="primary" /><Typography variant="h5">Direkte Google-Verbindung</Typography></Stack>
       {googleError && <Alert severity="error">{googleError instanceof ApiError ? googleError.message : 'Die Google-Verbindung konnte nicht aktualisiert werden.'}</Alert>}
       {google.isLoading && <Stack alignItems="center" py={3}><CircularProgress /></Stack>}

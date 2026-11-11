@@ -39,14 +39,14 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Foto-/Idle-Modus | Diashow, Uhrzeit, Wetter und nächster Termin | selbst gehostete Foto-Rotation im Wandmodus fertig | Inaktivitäts-Timer |
 | Benachrichtigungen | In-App, Browser und später Web Push | rollenabhängiger In-App-Radar, Glocke und Wandmodus-Hinweise fertig | optionale Browser-Benachrichtigungen |
 | Integrationen | Google, Microsoft, CalDAV, Home Assistant | Google iCal read-only und OAuth-Schreibzugriff fertig | CalDAV oder Microsoft Graph |
-| Datenhoheit | lokaler Export, Import, Backups und Self-Hosting | teilweise fertig | nutzerfreundlicher Export/Restore |
+| Datenhoheit | lokaler Export, Import, Backups und Self-Hosting | SQLite-Sicherung, Download, geprüfter Import und atomarer Restore fertig | vollständiges portables Archiv inklusive Fotos |
 | Barrierefreiheit | Tastatur, Kontrast, Screenreader, reduzierte Bewegung | in Arbeit | automatisierte und manuelle Prüfung |
 
 ## Empfohlene Produktreihenfolge
 
-1. **Datenexport** – nutzerfreundliche Sicherung und Wiederherstellung für Self-Hoster.
+1. **Browser-Benachrichtigungen** – optional und bewusst dosiert auf Basis des Familienradars.
 2. **Weitere Integrationen** – CalDAV, Microsoft Graph und Home Assistant.
-3. **Browser-Benachrichtigungen** – optional und bewusst dosiert auf Basis des Familienradars.
+3. **Portables Familienarchiv** – Datenbank und Familienfotos gemeinsam exportieren.
 
 ## Qualitätsmaßstab
 

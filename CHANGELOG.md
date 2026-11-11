@@ -4,6 +4,28 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.20.0] - 2026-11-11
+
+### Hinzugefügt
+
+- zentrale Datensicherung im Adminbereich mit Übersicht, Zeitstempel, Größe und SHA-256-Prüfsumme
+- manuelle SQLite-Sicherungen sowie geschützter Download für eine externe, selbst verwaltete Kopie
+- kontrollierte Wiederherstellung aus einer vorhandenen oder hochgeladenen `.sqlite`-Datei
+- verständlicher Sicherheitsdialog mit bewusster Texteingabe vor jeder Wiederherstellung
+
+### Datensicherheit
+
+- konsistente Online-Snapshots über SQLite `VACUUM INTO` statt Kopieren einer geöffneten Datenbank
+- Integritäts-, Format- und FamilyHub-Strukturprüfung vor der Annahme einer Sicherung
+- automatische Rückfallsicherung unmittelbar vor jeder Wiederherstellung
+- atomarer Datenbanktausch beim nächsten Request, bevor PHP die SQLite-Verbindung öffnet
+- ausschließlich Adminzugriff, CSRF-Schutz, strikte Dateinamenprüfung und Upload-Limit von 200 MB
+
+### Geprüft
+
+- isolierter Sicherungs-, Auflistungs-, Wiederherstellungs- und Manipulations-Smoke-Test
+- Production-Build, vollständiger PHP-Lint, alle Smoke-Tests, Live-API sowie Desktop- und Mobil-Browser-QA
+
 ## [0.19.0] - 2026-11-11
 
 ### Hinzugefügt

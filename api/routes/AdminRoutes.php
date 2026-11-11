@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace FamilyCompass\Routes;
 
 use FamilyCompass\Controllers\CalendarSourceController;
+use FamilyCompass\Controllers\AdminBackupController;
 use FamilyCompass\Controllers\GoogleCalendarController;
 use FamilyCompass\Controllers\WallPresentationController;
 use FamilyCompass\Core\Router;
@@ -16,8 +17,25 @@ final class AdminRoutes
         AuthService $auth,
         WallPresentationController $wall,
         CalendarSourceController $calendarSources,
-        GoogleCalendarController $googleCalendar
+        GoogleCalendarController $googleCalendar,
+        AdminBackupController $backups
     ): void {
+        $router->get('/v1/admin/backups', static function () use ($auth, $backups): void {
+            $auth->requireAdmin(); $backups->index();
+        });
+        $router->post('/v1/admin/backups', static function () use ($auth, $backups): void {
+            $auth->requireAdmin(); $auth->requireCsrf(); $backups->create();
+        });
+        $router->post('/v1/admin/backups/restore-upload', static function () use ($auth, $backups): void {
+            $auth->requireAdmin(); $auth->requireCsrf(); $backups->restoreUpload();
+        });
+        $router->get('/v1/admin/backups/{id}/download', static function (string $id) use ($auth, $backups): void {
+            $auth->requireAdmin(); $backups->download($id);
+        });
+        $router->post('/v1/admin/backups/{id}/restore', static function (string $id) use ($auth, $backups): void {
+            $auth->requireAdmin(); $auth->requireCsrf(); $backups->restore($id);
+        });
+
         $router->get('/v1/admin/wall-presentation', static function () use ($auth, $wall): void {
             $auth->requireAdmin(); $wall->administration();
         });

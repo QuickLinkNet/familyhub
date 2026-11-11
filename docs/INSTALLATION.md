@@ -112,6 +112,8 @@ npm run deploy
 
 Neue Migrationen werden beim nächsten API-Aufruf automatisch einmalig angewendet. Vor Migrationen legt die API ein SQLite-Backup an und behält standardmäßig die letzten 14 Sicherungen.
 
+Im Adminbereich unter **Datensicherung** lässt sich jederzeit eine zusätzliche Sicherung anlegen und herunterladen. Zum Wiederherstellen kann eine dort gelistete Sicherung oder eine zuvor heruntergeladene `.sqlite`-Datei gewählt werden. FamilyHub prüft die Datei, erstellt eine Rückfallsicherung und verlangt vor der Ausführung die Texteingabe `WIEDERHERSTELLEN`.
+
 ## 8. Optional: Google-Termine direkt bearbeiten
 
 Der iCal-Link benötigt keine weitere Infrastruktur und bleibt die empfohlene read-only Grundeinstellung. Für Erstellen, Bearbeiten und Löschen direkt in FamilyHub öffnet ein Admin unter `/admin` den Assistenten „Google direkt verbinden“.

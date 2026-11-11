@@ -23,8 +23,10 @@ final class Bootstrap
         if (!extension_loaded('pdo_sqlite')) {
             throw new AppException('PDO_SQLITE_UNAVAILABLE', 'Die PHP-Erweiterung pdo_sqlite ist nicht aktiviert.');
         }
+        $backups = new BackupService($this->config, $this->logger);
+        $backups->applyPendingRestore();
         $database = $this->database();
-        (new MigrationRunner($this->config, new BackupService($this->config, $this->logger), $this->logger))->run($database);
+        (new MigrationRunner($this->config, $backups, $this->logger))->run($database);
         $this->configureSession();
     }
 

@@ -18,7 +18,7 @@ final class MigrationRunner
         $executed = $pdo->query('SELECT version FROM schema_migrations')->fetchAll(PDO::FETCH_COLUMN);
         $missing = array_values(array_filter($files, static fn (string $file): bool => !in_array(pathinfo($file, PATHINFO_FILENAME), $executed, true)));
         if ($missing !== []) {
-            $this->backups->create('before-migration');
+            $this->backups->create('before-migration', $pdo);
         }
         foreach ($missing as $file) {
             $version = pathinfo($file, PATHINFO_FILENAME);
