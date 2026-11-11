@@ -25,6 +25,7 @@ Aktuelle Entwicklung:
 15. gemeinsame Familienpinnwand mit Urheberschaft, Priorität und Ablaufdatum
 16. persönliche Wochenstundenpläne sowie datierte Hausaufgaben und Tests
 17. wiederkehrende Haushaltsaufgaben mit Zuständigkeit und Abschlussjournal
+18. konfigurierbarer Wandmodus und Metadaten für geschützte Familienfotos
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -51,6 +52,8 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 - `school_items` – Hausaufgaben und Tests mit Fälligkeit, Abschlussstatus und Personenzuordnung
 - `household_chores` – aktive Haushaltsaufgaben mit Kategorie, Zuständigkeit, Fälligkeit und Wiederholung
 - `household_chore_completions` – unveränderliche Erledigungshistorie mit geplantem Datum und ausführender Person
+- `wall_presentation_settings` – einzelner Datensatz für Familiengruß, Wetteroption und aufgelöste Ortskoordinaten
+- `wall_photos` – Metadaten der geschützten Präsentationsbilder; die Dateien liegen unter `storage/wall-photos`
 - `households` – Haushalt, Locale, Zeitzone und Setup-Zeitpunkt
 - calendars – gemeinsamer sowie persönliche Kalender
 - `calendar_events` – Termine, Zeiträume, Orte, Ersteller und optionale Wiederholungsregel

@@ -149,6 +149,17 @@ Unterrichtsstunden enthalten `memberId`, `subject`, `weekday` (1–7), `startsAt
 
 Eine Aufgabe enthält `title`, optional `description`, `category` (`CLEANING`, `TRASH`, `PLANTS`, `LAUNDRY`, `PETS`, `OTHER`), `assignedMemberId`, `recurrence` (`ONCE`, `DAILY`, `WEEKLY`, `BIWEEKLY`, `MONTHLY`) und `nextDueDate`. Der Abschluss erzeugt einen unveränderlichen Historieneintrag mit planmäßigem Datum und ausführender Person. Wiederkehrende Aufgaben werden atomar weitergeschoben; bei überfälligen Aufgaben beginnt der nächste Zyklus frühestens am Abschlusstag.
 
+### Wandmodus und Präsentation
+
+- `GET /wall-presentation` – Gruß, Wetter, Vorschau und Fotoliste für angemeldete Profile
+- `GET /wall-photos/{uuid}` – geschützte Bildauslieferung für angemeldete Profile
+- `GET /admin/wall-presentation` – Präsentationseinstellungen ohne Wetterabruf; nur Admin
+- `PUT /admin/wall-presentation` – Gruß und Wetterort speichern; nur Admin mit CSRF
+- `POST /admin/wall-photos` – ein JPG-, PNG- oder WebP-Foto als Multipart-Feld `photo` hochladen; nur Admin mit CSRF
+- `DELETE /admin/wall-photos/{uuid}` – ein Präsentationsfoto entfernen; nur Admin mit CSRF
+
+Der Settings-Request akzeptiert `greeting`, `weatherEnabled` und `weatherLocation`. Bei aktiviertem Wetter löst der Server Ort oder Postleitzahl über Open-Meteo auf und speichert die Koordinaten. Pro Installation sind acht Fotos mit jeweils höchstens 8 MB erlaubt. Dateien liegen unter `storage/wall-photos`, sind nicht direkt öffentlich und werden ausschließlich über den authentifizierten API-Endpunkt ausgeliefert.
+
 ### Kalender
 
 - `GET /calendars` – aktive gemeinsame und persönliche Kalender für alle angemeldeten Rollen

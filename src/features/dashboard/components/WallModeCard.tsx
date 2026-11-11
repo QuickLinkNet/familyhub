@@ -6,8 +6,8 @@ import { DashboardCard } from '../../../components/molecules/DashboardCard';
 export function WallModeCard() {
   return (
     <DashboardCard title="Familienboard" icon={<TvRounded color="primary" />} accent="#6c8ab8">
-      <Chip size="small" color="primary" label="Präsentationsmodus" variant="outlined" />
-      <Typography color="text.secondary" mt={1.5}>Uhrzeit, Termine, Aufgaben und Familie in einer ruhigen Vollbildansicht.</Typography>
+      <Chip size="small" color="secondary" label="Wandmodus 2.0" variant="outlined" />
+      <Typography color="text.secondary" mt={1.5}>Uhrzeit, Wetter, Familienfotos und alles Wichtige in einer ruhigen Vollbildansicht.</Typography>
       <Button component={Link} to="/wall" sx={{ mt: 1.5 }} variant="text">Wandmodus öffnen</Button>
     </DashboardCard>
   );

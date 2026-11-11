@@ -10,7 +10,7 @@ export class ApiError extends Error {
 }
 
 const deployedApiBaseUrl = import.meta.env.BASE_URL.replace(/\/$/, '') + '/api/v1';
-const apiBaseUrl = import.meta.env.DEV
+export const apiBaseUrl = import.meta.env.DEV
   ? import.meta.env.VITE_API_BASE_URL ?? deployedApiBaseUrl
   : deployedApiBaseUrl;
 let csrfToken: string | null = null;
@@ -80,3 +80,25 @@ export const apiGet = <T>(path: string, signal?: AbortSignal) => apiRequest<T>(p
 export const apiPost = <T>(path: string, body: unknown) => apiRequest<T>(path, 'POST', body);
 export const apiPut = <T>(path: string, body: unknown) => apiRequest<T>(path, 'PUT', body);
 export const apiDelete = <T>(path: string) => apiRequest<T>(path, 'DELETE');
+
+export async function apiUpload<T>(path: string, formData: FormData): Promise<T> {
+  const response = await requestWithRetry(`${apiBaseUrl}${path}`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      ...(csrfToken !== null ? { 'X-CSRF-Token': csrfToken } : {})
+    },
+    body: formData,
+    credentials: 'include'
+  }, 'POST');
+  let envelope: ApiEnvelope<T>;
+  try { envelope = await response.json() as ApiEnvelope<T>; }
+  catch { throw new ApiError('INVALID_RESPONSE', 'Der Server hat keine gültige Antwort geliefert.', response.status); }
+  if (!response.ok || !envelope.success) {
+    const error = envelope.success ? { code: 'REQUEST_FAILED', message: 'Die Anfrage ist fehlgeschlagen.' } : envelope.error;
+    throw new ApiError(error.code, error.message, response.status);
+  }
+  return envelope.data;
+}
+
+export const apiAssetUrl = (path: string) => `${apiBaseUrl}${path}`;

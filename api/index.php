@@ -17,6 +17,7 @@ use FamilyCompass\Controllers\SchoolController;
 use FamilyCompass\Controllers\SetupController;
 use FamilyCompass\Controllers\ShoppingController;
 use FamilyCompass\Controllers\TaskController;
+use FamilyCompass\Controllers\WallPresentationController;
 use FamilyCompass\Core\AppException;
 use FamilyCompass\Core\Bootstrap;
 use FamilyCompass\Core\CalendarSourceCipher;
@@ -40,6 +41,7 @@ use FamilyCompass\Repositories\SchoolRepository;
 use FamilyCompass\Repositories\SetupRepository;
 use FamilyCompass\Repositories\ShoppingRepository;
 use FamilyCompass\Repositories\TaskRepository;
+use FamilyCompass\Repositories\WallPresentationRepository;
 use FamilyCompass\Services\AuthService;
 use FamilyCompass\Services\CalendarService;
 use FamilyCompass\Services\CalendarRecurrenceExpander;
@@ -58,6 +60,8 @@ use FamilyCompass\Services\SchoolService;
 use FamilyCompass\Services\SetupService;
 use FamilyCompass\Services\ShoppingService;
 use FamilyCompass\Services\TaskService;
+use FamilyCompass\Services\WallPresentationService;
+use FamilyCompass\Services\WeatherService;
 use FamilyCompass\Services\IcalFetcher;
 use FamilyCompass\Services\IcalParser;
 
@@ -129,6 +133,7 @@ try {
     $mealController = new MealController(new MealService(new MealRepository($database), $shoppingRepository));
     $schoolController = new SchoolController(new SchoolService(new SchoolRepository($database), $familyRepository));
     $householdChoreController = new HouseholdChoreController(new HouseholdChoreService(new HouseholdChoreRepository($database), $familyRepository));
+    $wallPresentationController = new WallPresentationController(new WallPresentationService(new WallPresentationRepository($database), new WeatherService(), $config));
     $setupController = new SetupController(new SetupService(new SetupRepository($database)), $config->version());
 
     $router = new Router();
@@ -409,6 +414,33 @@ try {
         $actor = $authService->requireAdult();
         $authService->requireCsrf();
         $householdChoreController->delete($uuid, $actor);
+    });
+    $router->get('/v1/wall-presentation', static function () use ($authService, $wallPresentationController): void {
+        $authService->requireUser();
+        $wallPresentationController->show();
+    });
+    $router->get('/v1/wall-photos/{uuid}', static function (string $uuid) use ($authService, $wallPresentationController): void {
+        $authService->requireUser();
+        $wallPresentationController->photo($uuid);
+    });
+    $router->get('/v1/admin/wall-presentation', static function () use ($authService, $wallPresentationController): void {
+        $authService->requireAdmin();
+        $wallPresentationController->administration();
+    });
+    $router->put('/v1/admin/wall-presentation', static function () use ($authService, $wallPresentationController): void {
+        $authService->requireAdmin();
+        $authService->requireCsrf();
+        $wallPresentationController->update();
+    });
+    $router->post('/v1/admin/wall-photos', static function () use ($authService, $wallPresentationController): void {
+        $actor = $authService->requireAdmin();
+        $authService->requireCsrf();
+        $wallPresentationController->upload($actor);
+    });
+    $router->delete('/v1/admin/wall-photos/{uuid}', static function (string $uuid) use ($authService, $wallPresentationController): void {
+        $authService->requireAdmin();
+        $authService->requireCsrf();
+        $wallPresentationController->delete($uuid);
     });
     $router->get('/v1/calendars', static function () use ($authService, $calendarController): void {
         $authService->requireUser();

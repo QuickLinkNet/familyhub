@@ -6,7 +6,27 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ### Geplant
 
-- Foto-/Idle-Modus und Wetter
+- Familienziele und intelligentere Erinnerungen
+
+## [0.17.0] - 2026-11-11
+
+### Hinzugefügt
+
+- Wandmodus 2.0 mit großem Zeit-/Datumsfokus, persönlichem Familiengruß und hochwertiger Präsentationsfläche
+- aktuelles Wetter sowie Drei-Tage-Vorschau über Open-Meteo ohne API-Schlüssel
+- bis zu acht selbst gehostete Familienfotos mit geschützter Auslieferung und automatischer 15-Sekunden-Rotation
+- zentrale Adminoberfläche für Gruß, Wetterort, Foto-Upload und Fotoverwaltung
+
+### Datenschutz und Robustheit
+
+- Wetter wird nur bei aktivierter Option und nur anhand der gespeicherten Ortskoordinaten abgefragt
+- Fotos liegen im vor direktem HTTP-Zugriff geschützten Storage und werden ausschließlich an angemeldete Profile ausgeliefert
+- bei nicht erreichbarem Wetterdienst bleiben Uhrzeit, Familieninfos und Wandmodus vollständig nutzbar
+
+### Geprüft
+
+- isolierter Settings- und Präsentationsworkflow, Production-Build, vollständiger PHP-Lint und alle Smoke-Tests
+- Desktop- und 390-Pixel-Mobilansicht, Admin-Dialog, Live-API und Browserkonsole ohne Änderung echter Familiendaten
 
 ## [0.16.0] - 2026-11-11
 

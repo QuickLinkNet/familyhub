@@ -13,6 +13,13 @@ import { useFamilyNotes } from '../../notes/hooks/useFamilyNotes';
 import { WallNotes } from '../components/WallNotes';
 import { useSchoolBoard } from '../../school/hooks/useSchool';
 import { WallSchool } from '../components/WallSchool';
+import { useWallPresentation } from '../hooks/useWallPresentation';
+import type { WallPresentation } from '../types/wallPresentation';
+
+const defaultPresentation: WallPresentation = {
+  greeting: 'Schön, dass ihr da seid', weatherEnabled: false, weatherLocation: null,
+  weatherLatitude: null, weatherLongitude: null, photos: [], weather: null
+};
 
 export function WallPage() {
   const [now, setNow] = useState(new Date());
@@ -29,17 +36,18 @@ export function WallPage() {
   const family = useFamilyMembers();
   const notes = useFamilyNotes();
   const school = useSchoolBoard(localDate(now), localDate(addDays(now, 14)));
+  const presentation = useWallPresentation();
   const openTasks = (tasks.data ?? []).filter(task => task.status !== 'COMPLETED' && isDueBy(task, localDate(now)));
   const activeFamily = (family.data ?? []).filter(member => member.isActive);
   const upcomingEvents = (events.data ?? []).filter(event => new Date(event.endsAt) > now);
-  const loading = events.isLoading || tasks.isLoading || family.isLoading || notes.isLoading || school.isLoading;
+  const loading = events.isLoading || tasks.isLoading || family.isLoading || notes.isLoading || school.isLoading || presentation.isLoading;
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', backgroundImage: 'radial-gradient(circle at top right, rgba(214,133,95,0.13), transparent 35%), radial-gradient(circle at bottom left, rgba(52,91,72,0.14), transparent 38%)', py: { xs: 2.5, md: 4 } }}>
       <Container maxWidth="xl">
         <Stack spacing={{ xs: 2.5, md: 3.5 }}>
-          <WallHeader now={now} />
-          {(events.isError || tasks.isError || family.isError || notes.isError || school.isError) && <Alert severity="warning">Einige Familieninformationen konnten gerade nicht geladen werden.</Alert>}
+          <WallHeader now={now} presentation={presentation.data ?? defaultPresentation} />
+          {(events.isError || tasks.isError || family.isError || notes.isError || school.isError || presentation.isError) && <Alert severity="warning">Einige Familieninformationen konnten gerade nicht geladen werden.</Alert>}
           {loading
             ? <Stack alignItems="center" py={8}><CircularProgress /></Stack>
             : <>

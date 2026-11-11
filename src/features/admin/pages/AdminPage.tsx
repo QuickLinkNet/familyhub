@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { AddLinkRounded, AdminPanelSettingsRounded, TvRounded } from '@mui/icons-material';
-import { Alert, Button, Card, CardContent, CircularProgress, Stack, Typography } from '@mui/material';
-import { Link, useSearchParams } from 'react-router-dom';
+import { AddLinkRounded, AdminPanelSettingsRounded } from '@mui/icons-material';
+import { Alert, Button, CircularProgress, Stack, Typography } from '@mui/material';
+import { useSearchParams } from 'react-router-dom';
 import { EmptyStateCard } from '../../../components/molecules/EmptyStateCard';
 import { PageHeader } from '../../../components/molecules/PageHeader';
 import { ApiError } from '../../../services/apiClient';
@@ -10,6 +10,7 @@ import { CalendarSourceCard } from '../components/CalendarSourceCard';
 import { CalendarSourceDialog } from '../components/CalendarSourceDialog';
 import { GoogleConnectionCard } from '../components/GoogleConnectionCard';
 import { GoogleSetupDialog } from '../components/GoogleSetupDialog';
+import { WallPresentationCard } from '../components/WallPresentationCard';
 import { useCalendarSources, useCreateCalendarSource, useDeleteCalendarSource, useSyncCalendarSource, useUpdateCalendarSource } from '../hooks/useCalendarSources';
 import { useAuthorizeGoogle, useConfigureGoogle, useDisconnectGoogle, useGoogleConnection, useSyncGoogleCalendar, useToggleGoogleCalendar } from '../hooks/useGoogleCalendar';
 import type { CalendarSource, CalendarSourceInput } from '../types/calendarSource';
@@ -79,17 +80,7 @@ export function AdminPage() {
       <PageHeader title="Administration" description="Verbindungen und Präsentationsoptionen für euren Familienkompass." actions={<Button variant="contained" startIcon={<AddLinkRounded />} onClick={openCreate}>iCal-Link hinzufügen</Button>} />
       {searchParams.get('google') === 'connected' && <Alert severity="success">Google Kalender ist verbunden. Der primäre Kalender wurde automatisch aktiviert.</Alert>}
       {searchParams.get('google') === 'error' && <Alert severity="error">Die Google-Anmeldung konnte nicht abgeschlossen werden. Bitte starte sie erneut.</Alert>}
-      <Card>
-        <CardContent sx={{ p: { xs: 2.5, md: 3 }, '&:last-child': { pb: { xs: 2.5, md: 3 } } }}>
-          <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'stretch', md: 'center' }} gap={2}>
-            <Stack direction="row" gap={1.5} alignItems="center">
-              <TvRounded color="primary" fontSize="large" />
-              <div><Typography variant="h6">Präsentations- und Wandmodus</Typography><Typography color="text.secondary">Ruhige Vollbildansicht für Touchdisplay, Tablet oder Fernseher.</Typography></div>
-            </Stack>
-            <Button component={Link} to="/wall" variant="outlined">Wandmodus öffnen</Button>
-          </Stack>
-        </CardContent>
-      </Card>
+      <WallPresentationCard enabled={isAdmin} />
       <Stack direction="row" alignItems="center" gap={1}><AdminPanelSettingsRounded color="primary" /><Typography variant="h5">Direkte Google-Verbindung</Typography></Stack>
       {googleError && <Alert severity="error">{googleError instanceof ApiError ? googleError.message : 'Die Google-Verbindung konnte nicht aktualisiert werden.'}</Alert>}
       {google.isLoading && <Stack alignItems="center" py={3}><CircularProgress /></Stack>}

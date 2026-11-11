@@ -38,6 +38,8 @@ export const useLogin = () => {
       void client.invalidateQueries({ queryKey: ['shopping-lists'] });
       void client.invalidateQueries({ queryKey: ['meal-planner'] });
       void client.invalidateQueries({ queryKey: ['household-board'] });
+      void client.invalidateQueries({ queryKey: ['wall-presentation'] });
+      void client.invalidateQueries({ queryKey: ['wall-presentation-settings'] });
     }
   });
 };
@@ -56,6 +58,8 @@ export const useLogout = () => {
       client.removeQueries({ queryKey: ['shopping-lists'] });
       client.removeQueries({ queryKey: ['meal-planner'] });
       client.removeQueries({ queryKey: ['household-board'] });
+      client.removeQueries({ queryKey: ['wall-presentation'] });
+      client.removeQueries({ queryKey: ['wall-presentation-settings'] });
     }
   });
 };
