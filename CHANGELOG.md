@@ -4,6 +4,29 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.24.0] - 2026-11-11
+
+### Hinzugefügt
+
+- optionale lokale Betriebszeiten für jedes Familienboard
+- stark gedimmte Nachtuhr außerhalb der gewählten Tageszeit mit dezenter Positionsverschiebung gegen dauerhaft statische Anzeige
+- automatische Rückkehr zur vollständigen Tagesansicht am Beginn der Betriebszeit
+- vorübergehende Tagesansicht für 30 Minuten per Berührung, ohne den gespeicherten Zeitplan zu verändern
+- sichtbarer Betriebszeit-Status und Zeitfelder direkt im Geräte-Assistenten
+
+### Display-Schutz
+
+- Bildschirm-Wachhalten wird im Nachtmodus automatisch freigegeben und erst in der Tagesansicht wieder angefordert
+- gleiche Start- und Endzeit werden als ungültige Konfiguration verhindert
+- gespeicherte Zeitwerte werden beim Lesen validiert; beschädigte lokale Einstellungen fallen auf sichere Standardwerte zurück
+- Zeitplan, Nachtansicht und temporäre Freigabe bleiben vollständig lokal auf dem jeweiligen Gerät
+
+### Geprüft
+
+- Zeitplan-Konfiguration, Nachtansicht, temporäre Tagesansicht und Rückkehr im echten Browser
+- Desktop- und Mobilansicht der Nachtuhr und des erweiterten Geräte-Assistenten
+- Production-Build, vollständiger PHP-Lint, alle Smoke-Tests und Live-API
+
 ## [0.23.0] - 2026-11-11
 
 ### Hinzugefügt

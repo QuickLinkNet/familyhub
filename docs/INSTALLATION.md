@@ -124,6 +124,8 @@ Nach der gewählten Ruhezeit kann FamilyHub selbstständig zur Familienanzeige w
 
 Die gesamte Konfiguration wird nur in diesem Browser gespeichert und ist deshalb besonders für ein festes Küchen- oder Flurdisplay geeignet. Offene Dialoge und aktive Eingaben unterbrechen die Automatik; den Browser-Vollbildmodus muss eine Person aus Sicherheitsgründen einmal bewusst antippen. Systemeinstellungen für Helligkeit und Energieverwaltung können Browserfunktionen weiterhin überstimmen.
 
+Optional kann im selben Assistenten eine tägliche Betriebszeit festgelegt werden. Außerhalb dieses Fensters reduziert FamilyHub die Anzeige auf eine dunkle Uhr, gibt den Screen Wake Lock frei und schont damit Display und Stromverbrauch. Zum Beginn der Betriebszeit kehrt das geöffnete Board automatisch zur Tagesansicht zurück. Bei Bedarf lässt sich die Tagesansicht nachts für 30 Minuten einblenden; der gespeicherte Zeitplan bleibt dabei unverändert. Eine installierte PWA oder Browserseite muss für automatische Übergänge geöffnet bleiben.
+
 ## 8. Optional: Google-Termine direkt bearbeiten
 
 Der iCal-Link benötigt keine weitere Infrastruktur und bleibt die empfohlene read-only Grundeinstellung. Für Erstellen, Bearbeiten und Löschen direkt in FamilyHub öffnet ein Admin unter `/admin` den Assistenten „Google direkt verbinden“.

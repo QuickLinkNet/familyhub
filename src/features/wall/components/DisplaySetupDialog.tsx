@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import {
   AccessTimeRounded, AddToHomeScreenRounded, InstallDesktopRounded, LightModeRounded,
-  PlayArrowRounded, TimerRounded, TvRounded
+  PlayArrowRounded, ScheduleRounded, TimerRounded, TvRounded
 } from '@mui/icons-material';
 import {
   Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider,
-  FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, Switch, Typography
+  FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, Switch, TextField, Typography
 } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useIdleWallModeSettings } from '../hooks/useIdleWallModeSettings';
@@ -15,6 +15,7 @@ import {
   idleWallModeTimeouts, idleWallReturnPathKey, type IdleWallModeSettings
 } from '../services/idleWallModeStore';
 import { DisplaySetupStatusCard } from './DisplaySetupStatusCard';
+import { displayScheduleLabel } from '../services/displaySchedule';
 
 interface DisplaySetupDialogProps {
   open: boolean;
@@ -29,6 +30,7 @@ export function DisplaySetupDialog({ open, onClose }: DisplaySetupDialogProps) {
   const [installing, setInstalling] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const scheduleValid = !draft.scheduleEnabled || draft.activeFrom !== draft.activeUntil;
 
   useEffect(() => {
     if (open) setDraft(settings);
@@ -60,7 +62,7 @@ export function DisplaySetupDialog({ open, onClose }: DisplaySetupDialogProps) {
             Richte dieses Gerät als ruhiges Familienboard ein. Alle Einstellungen gelten nur für diesen Browser.
           </Typography>
 
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, 1fr)' }, gap: 1.25 }}>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 1.25 }}>
             <DisplaySetupStatusCard
               icon={<InstallDesktopRounded color="primary" />}
               label="App-Modus"
@@ -78,6 +80,12 @@ export function DisplaySetupDialog({ open, onClose }: DisplaySetupDialogProps) {
               label="Automatik"
               value={draft.enabled ? `Nach ${draft.timeoutMinutes} Min.` : 'Ausgeschaltet'}
               tone={draft.enabled ? 'success' : 'info'}
+            />
+            <DisplaySetupStatusCard
+              icon={<ScheduleRounded color="primary" />}
+              label="Betriebszeit"
+              value={displayScheduleLabel(draft)}
+              tone={draft.scheduleEnabled ? 'success' : 'info'}
             />
           </Box>
 
@@ -124,12 +132,43 @@ export function DisplaySetupDialog({ open, onClose }: DisplaySetupDialogProps) {
           <Alert severity="info">
             Vollbild benötigt einmalig eine bewusste Berührung. Offene Dialoge und Eingaben pausieren den automatischen Wechsel.
           </Alert>
+
+          <Divider />
+          <Stack spacing={1.5}>
+            <Typography variant="h6">3. Betriebszeiten und Nachtansicht</Typography>
+            <FormControlLabel
+              control={<Switch checked={draft.scheduleEnabled} onChange={event => setDraft(current => ({ ...current, scheduleEnabled: event.target.checked }))} />}
+              label="Außerhalb der Betriebszeit eine gedimmte Nachtuhr anzeigen"
+            />
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 1.5 }}>
+              <TextField
+                type="time"
+                label="Tagesansicht ab"
+                value={draft.activeFrom}
+                disabled={!draft.scheduleEnabled}
+                slotProps={{ inputLabel: { shrink: true } }}
+                onChange={event => setDraft(current => ({ ...current, activeFrom: event.target.value }))}
+              />
+              <TextField
+                type="time"
+                label="Nachtansicht ab"
+                value={draft.activeUntil}
+                disabled={!draft.scheduleEnabled}
+                slotProps={{ inputLabel: { shrink: true } }}
+                onChange={event => setDraft(current => ({ ...current, activeUntil: event.target.value }))}
+              />
+            </Box>
+            {!scheduleValid && <Alert severity="error">Start und Ende müssen unterschiedlich sein.</Alert>}
+            {draft.scheduleEnabled && scheduleValid && (
+              <Alert severity="info">Außerhalb dieser Zeit wird nur die dunkle Uhr angezeigt und das Bildschirm-Wachhalten pausiert. Zum Start wechselt das Board automatisch zurück.</Alert>
+            )}
+          </Stack>
         </Stack>
       </DialogContent>
       <DialogActions sx={{ px: 3, pb: 2.5, gap: 0.5, flexWrap: 'wrap' }}>
         <Button onClick={onClose}>Abbrechen</Button>
-        <Button startIcon={<PlayArrowRounded />} onClick={testWallMode}>Wandmodus testen</Button>
-        <Button variant="contained" onClick={save}>Auf diesem Gerät speichern</Button>
+        <Button startIcon={<PlayArrowRounded />} disabled={!scheduleValid} onClick={testWallMode}>Wandmodus testen</Button>
+        <Button variant="contained" disabled={!scheduleValid} onClick={save}>Auf diesem Gerät speichern</Button>
       </DialogActions>
     </Dialog>
   );

@@ -23,6 +23,8 @@ import { WallReminders } from '../../reminders/components/WallReminders';
 import { IdleWallReturnButton } from '../components/IdleWallReturnButton';
 import { useIdleWallModeSettings } from '../hooks/useIdleWallModeSettings';
 import { useScreenWakeLock } from '../hooks/useScreenWakeLock';
+import { isDisplayScheduleActive } from '../services/displaySchedule';
+import { WallNightMode } from '../components/WallNightMode';
 
 const defaultPresentation: WallPresentation = {
   greeting: 'Schön, dass ihr da seid', weatherEnabled: false, weatherLocation: null,
@@ -33,8 +35,14 @@ export function WallPage() {
   const [searchParams] = useSearchParams();
   const enteredFromDeviceSetup = ['idle', 'setup'].includes(searchParams.get('source') ?? '');
   const { settings } = useIdleWallModeSettings();
-  const wakeLock = useScreenWakeLock(settings.keepScreenAwake);
   const [now, setNow] = useState(new Date());
+  const [nightOverrideUntil, setNightOverrideUntil] = useState<number | null>(null);
+  const scheduleActive = isDisplayScheduleActive(now, settings);
+  const nightPreview = import.meta.env.DEV && searchParams.get('preview') === 'night';
+  const outsideDisplaySchedule = (settings.scheduleEnabled && !scheduleActive) || nightPreview;
+  const nightOverrideActive = outsideDisplaySchedule && (nightOverrideUntil ?? 0) > now.getTime();
+  const nightMode = outsideDisplaySchedule && !nightOverrideActive;
+  const wakeLock = useScreenWakeLock(settings.keepScreenAwake && !nightMode);
   useEffect(() => {
     const timer = window.setInterval(() => setNow(new Date()), 30_000);
     return () => window.clearInterval(timer);
@@ -56,11 +64,20 @@ export function WallPage() {
   const upcomingEvents = (events.data ?? []).filter(event => new Date(event.endsAt) > now);
   const loading = events.isLoading || tasks.isLoading || family.isLoading || notes.isLoading || school.isLoading || presentation.isLoading || goals.isLoading || reminders.isLoading;
 
+  if (nightMode) {
+    return <WallNightMode now={now} activeFrom={settings.activeFrom} showReturn={enteredFromDeviceSetup} onShowDay={() => setNightOverrideUntil(Date.now() + 30 * 60_000)} />;
+  }
+
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', backgroundImage: 'radial-gradient(circle at top right, rgba(214,133,95,0.13), transparent 35%), radial-gradient(circle at bottom left, rgba(52,91,72,0.14), transparent 38%)', py: { xs: 2.5, md: 4 } }}>
       <Container maxWidth="xl">
         <Stack spacing={{ xs: 2.5, md: 3.5 }}>
-          <WallHeader now={now} presentation={presentation.data ?? defaultPresentation} wakeLock={wakeLock} />
+          <WallHeader
+            now={now}
+            presentation={presentation.data ?? defaultPresentation}
+            wakeLock={wakeLock}
+            onResumeNight={nightOverrideActive ? () => setNightOverrideUntil(null) : undefined}
+          />
           {(events.isError || tasks.isError || family.isError || notes.isError || school.isError || presentation.isError || goals.isError || reminders.isError) && <Alert severity="warning">Einige Familieninformationen konnten gerade nicht geladen werden.</Alert>}
           {loading
             ? <Stack alignItems="center" py={8}><CircularProgress /></Stack>

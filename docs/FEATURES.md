@@ -22,7 +22,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | --- | --- | --- | --- |
 | Plattform | React-PWA mit Atomic Design, PHP-API, SQLite, Migrationen, Backups, Logs, Health | fertig | automatisierte Smoke-Tests |
 | Installation | Haushalt, 1–12 Personen, Rollen, sichere Zugangsdaten, Kalender | fertig | Export/Import und Reset-Werkzeug |
-| Touch-/Kiosk-UX | Wanddisplay, Tablet, Mobilnavigation, große Ziele | Wandmodus 2.0 mit Geräte-Assistent, PWA-Installationshilfe, Wake Lock und Leerlauf-Wechsel fertig | optionale Tageszeiten für die Display-Automatik |
+| Touch-/Kiosk-UX | Wanddisplay, Tablet, Mobilnavigation, große Ziele | Wandmodus 2.0 mit Geräte-Assistent, Wake Lock, Betriebszeiten und Nachtansicht fertig | geführte Ersteinrichtung für dedizierte Displays |
 | Dashboard | Heute, Aufgaben, Familie, Pinnwand, Schule und direkter Wandmodus | fertig inklusive persönlichem Familienradar | konfigurierbare Karten |
 | Identität & Rechte | Admin-/Elternpasswort, Kinder-PIN, Sessions, CSRF, Rollenrechte | Profilbearbeitung inklusive Geburtstag fertig | feinere Modulrechte |
 | Aufgaben | Zuweisung, Fälligkeit, Priorität, Abschluss, Eltern-Check | Wiederholung und Elternfreigabe fertig | Bearbeiten und Historie |
@@ -36,7 +36,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Schule | Stundenplan, Hausaufgaben, Tests, Ferien | Wochenstundenplan, Hausaufgaben und Tests fertig | Ferien und Schulkalender-Import |
 | Haushalt | Putzen, Müll, Pflanzen, Wäsche und Tiere | gemeinsamer Plan mit Zuständigkeit, Fälligkeit, Wiederholung und Historie fertig | Vorlagen und fairer Zuständigkeitswechsel |
 | Wetter | aktuelle Lage und Vorschau über austauschbaren Anbieter | Open-Meteo-Adapter ohne API-Schlüssel fertig | Anbieter austauschbar kapseln |
-| Foto-/Idle-Modus | Diashow, Uhrzeit, Wetter und nächster Termin | Foto-Rotation, Präsentation, Inaktivitäts-Timer und Bildschirm-Wachhalten fertig | optionale Tageszeiten für die Display-Automatik |
+| Foto-/Idle-Modus | Diashow, Uhrzeit, Wetter und nächster Termin | Foto-Rotation, Inaktivitäts-Timer, Wake Lock und zeitgesteuerte Nachtuhr fertig | konfigurierbare Nachtinformationen |
 | Benachrichtigungen | In-App, Browser und später Web Push | rollenabhängiger Radar, Glocke, Wandmodus und lokale Browser-Benachrichtigungen fertig | optionaler echter Web Push bei geschlossener App |
 | Integrationen | Google, Microsoft, CalDAV, Home Assistant | Google iCal read-only und OAuth-Schreibzugriff fertig | CalDAV oder Microsoft Graph |
 | Datenhoheit | lokaler Export, Import, Backups und Self-Hosting | SQLite-Sicherung, Download, geprüfter Import und atomarer Restore fertig | vollständiges portables Archiv inklusive Fotos |
