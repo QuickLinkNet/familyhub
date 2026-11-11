@@ -114,6 +114,8 @@ Neue Migrationen werden beim nächsten API-Aufruf automatisch einmalig angewende
 
 Im Adminbereich unter **Datensicherung** lässt sich jederzeit eine zusätzliche Sicherung anlegen und herunterladen. Zum Wiederherstellen kann eine dort gelistete Sicherung oder eine zuvor heruntergeladene `.sqlite`-Datei gewählt werden. FamilyHub prüft die Datei, erstellt eine Rückfallsicherung und verlangt vor der Ausführung die Texteingabe `WIEDERHERSTELLEN`.
 
+Browser-Benachrichtigungen werden pro Gerät und Familienprofil über die Erinnerungsglocke im Kopfbereich aktiviert. Der Browser fragt einmalig nach Erlaubnis und zeigt direkt eine Testbenachrichtigung. Ohne externen Pushdienst kann FamilyHub neue Hinweise melden, solange die Seite oder installierte PWA geöffnet ist – auch im Hintergrund. Die Einstellung lässt sich dort jederzeit wieder ausschalten.
+
 ## 8. Optional: Google-Termine direkt bearbeiten
 
 Der iCal-Link benötigt keine weitere Infrastruktur und bleibt die empfohlene read-only Grundeinstellung. Für Erstellen, Bearbeiten und Löschen direkt in FamilyHub öffnet ein Admin unter `/admin` den Assistenten „Google direkt verbinden“.

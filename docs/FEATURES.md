@@ -37,16 +37,16 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Haushalt | Putzen, Müll, Pflanzen, Wäsche und Tiere | gemeinsamer Plan mit Zuständigkeit, Fälligkeit, Wiederholung und Historie fertig | Vorlagen und fairer Zuständigkeitswechsel |
 | Wetter | aktuelle Lage und Vorschau über austauschbaren Anbieter | Open-Meteo-Adapter ohne API-Schlüssel fertig | Anbieter austauschbar kapseln |
 | Foto-/Idle-Modus | Diashow, Uhrzeit, Wetter und nächster Termin | selbst gehostete Foto-Rotation im Wandmodus fertig | Inaktivitäts-Timer |
-| Benachrichtigungen | In-App, Browser und später Web Push | rollenabhängiger In-App-Radar, Glocke und Wandmodus-Hinweise fertig | optionale Browser-Benachrichtigungen |
+| Benachrichtigungen | In-App, Browser und später Web Push | rollenabhängiger Radar, Glocke, Wandmodus und lokale Browser-Benachrichtigungen fertig | optionaler echter Web Push bei geschlossener App |
 | Integrationen | Google, Microsoft, CalDAV, Home Assistant | Google iCal read-only und OAuth-Schreibzugriff fertig | CalDAV oder Microsoft Graph |
 | Datenhoheit | lokaler Export, Import, Backups und Self-Hosting | SQLite-Sicherung, Download, geprüfter Import und atomarer Restore fertig | vollständiges portables Archiv inklusive Fotos |
 | Barrierefreiheit | Tastatur, Kontrast, Screenreader, reduzierte Bewegung | in Arbeit | automatisierte und manuelle Prüfung |
 
 ## Empfohlene Produktreihenfolge
 
-1. **Browser-Benachrichtigungen** – optional und bewusst dosiert auf Basis des Familienradars.
-2. **Weitere Integrationen** – CalDAV, Microsoft Graph und Home Assistant.
-3. **Portables Familienarchiv** – Datenbank und Familienfotos gemeinsam exportieren.
+1. **Weitere Integrationen** – CalDAV, Microsoft Graph und Home Assistant.
+2. **Portables Familienarchiv** – Datenbank und Familienfotos gemeinsam exportieren.
+3. **Optionaler Web Push** – nur falls Erinnerungen auch bei vollständig geschlossener App gewünscht sind.
 
 ## Qualitätsmaßstab
 

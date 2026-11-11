@@ -60,7 +60,7 @@ export default defineConfig(({ mode }) => {
       react(),
       VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['favicon.svg', 'icon-192.svg', 'icon-512.svg'],
+        includeAssets: ['favicon.svg', 'icon-192.svg', 'icon-512.svg', 'notification-events.js'],
         manifest: {
           name: 'Familienkompass',
           short_name: 'Familienkompass',
@@ -77,7 +77,8 @@ export default defineConfig(({ mode }) => {
         },
         workbox: {
           navigateFallback: 'index.html',
-          globPatterns: ['**/*.{js,css,html,svg,woff2}']
+          globPatterns: ['**/*.{js,css,html,svg,woff2}'],
+          importScripts: ['notification-events.js']
         }
       })
     ]

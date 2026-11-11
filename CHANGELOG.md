@@ -4,6 +4,27 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.21.0] - 2026-11-11
+
+### Hinzugefügt
+
+- freiwillige Browser-Benachrichtigungen direkt im persönlichen Familienradar
+- verständlicher Berechtigungsdialog mit Status, Testbenachrichtigung und gerätebezogenem Ausschalter
+- Navigation aus einer Systembenachrichtigung direkt zum betroffenen FamilyHub-Modul
+
+### Fokus und Datenschutz
+
+- nur neue kritische oder zeitnahe Hinweise aus dem bereits rollenabhängigen Familienradar werden gemeldet
+- normale Informationen bleiben in der App; nicht kritische Wiederholungen werden für 30 Minuten gebündelt
+- Benachrichtigungsstatus und bereits gemeldete Hinweise bleiben lokal pro Familienprofil auf dem jeweiligen Gerät
+- kein externer Pushanbieter, kein zusätzliches Nutzertracking und keine neue personenbezogene Serverspeicherung
+- Systembenachrichtigungen erscheinen bevorzugt bei geöffneter PWA im Hintergrund, während im Vordergrund die vorhandene Erinnerungsglocke genügt
+
+### Geprüft
+
+- Berechtigungszustände, Sicherheitsdialog, deaktivierte Ausführung sowie Desktop- und Mobilansicht im Browser
+- Production-Build, vollständiger PHP-Lint, alle Smoke-Tests und Live-API
+
 ## [0.20.0] - 2026-11-11
 
 ### Hinzugefügt
