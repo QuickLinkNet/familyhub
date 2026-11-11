@@ -19,6 +19,7 @@ const RewardsPage = lazy(() => import('../features/rewards/pages/RewardsPage').t
 const MealsPage = lazy(() => import('../features/meals/pages/MealsPage').then(module => ({ default: module.MealsPage })));
 const FamilyNotesPage = lazy(() => import('../features/notes/pages/FamilyNotesPage').then(module => ({ default: module.FamilyNotesPage })));
 const SchoolPage = lazy(() => import('../features/school/pages/SchoolPage').then(module => ({ default: module.SchoolPage })));
+const HouseholdPage = lazy(() => import('../features/household/pages/HouseholdPage').then(module => ({ default: module.HouseholdPage })));
 
 const fallback = <Box display="grid" sx={{ minHeight: 240, placeItems: 'center' }}><CircularProgress aria-label="Ansicht wird geladen" /></Box>;
 const deferred = (content: ReactNode) => <Suspense fallback={fallback}>{content}</Suspense>;
@@ -41,6 +42,7 @@ export const appRouter = createBrowserRouter([
           { path: '/meals', element: shell(<MealsPage />) },
           { path: '/notes', element: shell(<FamilyNotesPage />) },
           { path: '/school', element: shell(<SchoolPage />) },
+          { path: '/household', element: shell(<HouseholdPage />) },
           { path: '/admin', element: shell(<AdminPage />) },
           { path: '/wall', element: deferred(<WallPage />) },
           { path: '/shopping', element: shell(<ShoppingPage />) },

@@ -9,6 +9,7 @@ use FamilyCompass\Controllers\FamilyMemberController;
 use FamilyCompass\Controllers\FamilyNoteController;
 use FamilyCompass\Controllers\HealthController;
 use FamilyCompass\Controllers\GoogleCalendarController;
+use FamilyCompass\Controllers\HouseholdChoreController;
 use FamilyCompass\Controllers\MealController;
 use FamilyCompass\Controllers\RewardController;
 use FamilyCompass\Controllers\RoutineController;
@@ -31,6 +32,7 @@ use FamilyCompass\Repositories\FamilyMemberRepository;
 use FamilyCompass\Repositories\FamilyNoteRepository;
 use FamilyCompass\Repositories\GoogleCalendarRepository;
 use FamilyCompass\Repositories\GoogleOAuthRepository;
+use FamilyCompass\Repositories\HouseholdChoreRepository;
 use FamilyCompass\Repositories\MealRepository;
 use FamilyCompass\Repositories\RewardRepository;
 use FamilyCompass\Repositories\RoutineRepository;
@@ -48,6 +50,7 @@ use FamilyCompass\Services\FamilyNoteService;
 use FamilyCompass\Services\GoogleApiClient;
 use FamilyCompass\Services\GoogleCalendarService;
 use FamilyCompass\Services\GoogleOAuthService;
+use FamilyCompass\Services\HouseholdChoreService;
 use FamilyCompass\Services\MealService;
 use FamilyCompass\Services\RewardService;
 use FamilyCompass\Services\RoutineService;
@@ -125,6 +128,7 @@ try {
     $shoppingController = new ShoppingController(new ShoppingService($shoppingRepository));
     $mealController = new MealController(new MealService(new MealRepository($database), $shoppingRepository));
     $schoolController = new SchoolController(new SchoolService(new SchoolRepository($database), $familyRepository));
+    $householdChoreController = new HouseholdChoreController(new HouseholdChoreService(new HouseholdChoreRepository($database), $familyRepository));
     $setupController = new SetupController(new SetupService(new SetupRepository($database)), $config->version());
 
     $router = new Router();
@@ -381,6 +385,30 @@ try {
         $actor = $authService->requireUser();
         $authService->requireCsrf();
         $schoolController->deleteItem($uuid, $actor);
+    });
+    $router->get('/v1/household-chores', static function () use ($authService, $householdChoreController): void {
+        $authService->requireUser();
+        $householdChoreController->index();
+    });
+    $router->post('/v1/household-chores', static function () use ($authService, $householdChoreController): void {
+        $actor = $authService->requireAdult();
+        $authService->requireCsrf();
+        $householdChoreController->create($actor);
+    });
+    $router->put('/v1/household-chores/{uuid}', static function (string $uuid) use ($authService, $householdChoreController): void {
+        $actor = $authService->requireAdult();
+        $authService->requireCsrf();
+        $householdChoreController->update($uuid, $actor);
+    });
+    $router->post('/v1/household-chores/{uuid}/complete', static function (string $uuid) use ($authService, $householdChoreController): void {
+        $actor = $authService->requireUser();
+        $authService->requireCsrf();
+        $householdChoreController->complete($uuid, $actor);
+    });
+    $router->delete('/v1/household-chores/{uuid}', static function (string $uuid) use ($authService, $householdChoreController): void {
+        $actor = $authService->requireAdult();
+        $authService->requireCsrf();
+        $householdChoreController->delete($uuid, $actor);
     });
     $router->get('/v1/calendars', static function () use ($authService, $calendarController): void {
         $authService->requireUser();

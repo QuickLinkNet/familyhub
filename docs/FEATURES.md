@@ -33,7 +33,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Mahlzeiten & Rezepte | Wochenplan, Lieblingsgerichte, strukturierte Zutatenübernahme | fertig für Frühstück, Mittag und Abend | Vorlagen, Portionen und Rezeptbearbeitung |
 | Notizen | Familiennotizen, Pinnwand und schnelle Hinweise | fertig inklusive Wichtig-Markierung und Ablaufdatum | Kategorien und Anhänge |
 | Schule | Stundenplan, Hausaufgaben, Tests, Ferien | Wochenstundenplan, Hausaufgaben und Tests fertig | Ferien und Schulkalender-Import |
-| Haushalt | Putzen, Müll, Pflanzen, Wäsche und Tiere | geplant | Putz- oder Müllplan |
+| Haushalt | Putzen, Müll, Pflanzen, Wäsche und Tiere | gemeinsamer Plan mit Zuständigkeit, Fälligkeit, Wiederholung und Historie fertig | Vorlagen und fairer Zuständigkeitswechsel |
 | Wetter | aktuelle Lage und Vorschau über austauschbaren Anbieter | geplant | datenschutzfreundlicher Adapter |
 | Foto-/Idle-Modus | Diashow, Uhrzeit, Wetter und nächster Termin | geplant | Inaktivitäts-Timer |
 | Benachrichtigungen | In-App, Browser und später Web Push | geplant | In-App-Erinnerungen |
@@ -43,9 +43,9 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 
 ## Empfohlene Produktreihenfolge
 
-1. **Haushalt** – kleine unabhängige Pläne für Putzen, Müll, Pflanzen, Wäsche und Tiere.
-2. **Idle-Modus und Wetter** – ruhiger Präsentationsbetrieb mit datenschutzfreundlichem Anbieter.
-3. **Weitere Integrationen** – CalDAV, Microsoft Graph und Home Assistant.
+1. **Idle-Modus und Wetter** – ruhiger Präsentationsbetrieb mit datenschutzfreundlichem Anbieter.
+2. **Weitere Integrationen** – CalDAV, Microsoft Graph und Home Assistant.
+3. **Datenexport** – nutzerfreundliche Sicherung und Wiederherstellung für Self-Hoster.
 
 ## Qualitätsmaßstab
 

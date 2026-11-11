@@ -139,6 +139,16 @@ Ein Planeintrag enthält `date`, `mealType` (`BREAKFAST`, `LUNCH`, `DINNER`), op
 
 Unterrichtsstunden enthalten `memberId`, `subject`, `weekday` (1–7), `startsAt`, `endsAt`, optional `room` und `teacher` sowie eine freigegebene `color`. Schuleinträge verwenden `itemType` (`HOMEWORK` oder `TEST`), `subject`, `title`, optional `description` und `dueDate`. Überfällige offene Einträge bleiben unabhängig vom gewählten Startdatum sichtbar.
 
+### Haushalt
+
+- `GET /household-chores` – aktiver Haushaltsplan und die zwölf jüngsten Erledigungen
+- `POST /household-chores` – Admin oder Elternteil legt eine Haushaltsaufgabe an
+- `PUT /household-chores/{uuid}` – Admin oder Elternteil bearbeitet und reaktiviert eine Aufgabe
+- `POST /household-chores/{uuid}/complete` – Erwachsene für jede Aufgabe; Kinder nur für die eigene Zuständigkeit
+- `DELETE /household-chores/{uuid}` – Admin oder Elternteil entfernt eine Aufgabe weich
+
+Eine Aufgabe enthält `title`, optional `description`, `category` (`CLEANING`, `TRASH`, `PLANTS`, `LAUNDRY`, `PETS`, `OTHER`), `assignedMemberId`, `recurrence` (`ONCE`, `DAILY`, `WEEKLY`, `BIWEEKLY`, `MONTHLY`) und `nextDueDate`. Der Abschluss erzeugt einen unveränderlichen Historieneintrag mit planmäßigem Datum und ausführender Person. Wiederkehrende Aufgaben werden atomar weitergeschoben; bei überfälligen Aufgaben beginnt der nächste Zyklus frühestens am Abschlusstag.
+
 ### Kalender
 
 - `GET /calendars` – aktive gemeinsame und persönliche Kalender für alle angemeldeten Rollen

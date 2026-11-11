@@ -6,7 +6,27 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ### Geplant
 
-- Haushaltsmodule sowie Foto-/Idle-Modus
+- Foto-/Idle-Modus und Wetter
+
+## [0.16.0] - 2026-11-11
+
+### Hinzugefügt
+
+- gemeinsamer Haushaltsplan für Putzen, Müll, Pflanzen, Wäsche, Tiere und weitere Handgriffe
+- einmalige, tägliche, wöchentliche, zweiwöchentliche und monatliche Wiederholungen
+- klare Zuständigkeit, Fälligkeit, Überfälligkeit und Touch-Abschluss je Aufgabe
+- jüngste Erledigungen mit ausführender Person sowie eigene Haushaltskarte auf dem Dashboard
+
+### Rechte und Datenintegrität
+
+- Admins und Eltern verwalten den Haushaltsplan; Kinder erledigen ausschließlich eigene zugewiesene Aufgaben
+- jeder Abschluss wird historisch protokolliert und verschiebt eine Serie atomar auf die nächste Fälligkeit
+- einmalige Aufgaben verlassen nach dem Abschluss den aktiven Plan, ohne ihre Historie zu verlieren
+
+### Geprüft
+
+- isolierter Workflow für Anlage, Rechte, Wiederholung, Einzelabschluss, Bearbeitung und Löschung
+- Production-Build, vollständiger PHP-Lint, alle Smoke-Tests, Live-API und Browser-QA
 
 ## [0.15.2] - 2026-11-09
 

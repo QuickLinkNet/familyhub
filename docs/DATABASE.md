@@ -24,6 +24,7 @@ Aktuelle Entwicklung:
 14. mehrstufige Routinen mit Vorlagen, Tagesläufen und Schrittfortschritt
 15. gemeinsame Familienpinnwand mit Urheberschaft, Priorität und Ablaufdatum
 16. persönliche Wochenstundenpläne sowie datierte Hausaufgaben und Tests
+17. wiederkehrende Haushaltsaufgaben mit Zuständigkeit und Abschlussjournal
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -48,6 +49,8 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 - `family_notes` – farbige Pinnwand-Zettel mit Urheber, Wichtig-Markierung, Ablaufdatum und weichem Löschen
 - `school_lessons` – wiederkehrende Unterrichtsstunden je Person und Wochentag
 - `school_items` – Hausaufgaben und Tests mit Fälligkeit, Abschlussstatus und Personenzuordnung
+- `household_chores` – aktive Haushaltsaufgaben mit Kategorie, Zuständigkeit, Fälligkeit und Wiederholung
+- `household_chore_completions` – unveränderliche Erledigungshistorie mit geplantem Datum und ausführender Person
 - `households` – Haushalt, Locale, Zeitzone und Setup-Zeitpunkt
 - calendars – gemeinsamer sowie persönliche Kalender
 - `calendar_events` – Termine, Zeiträume, Orte, Ersteller und optionale Wiederholungsregel
