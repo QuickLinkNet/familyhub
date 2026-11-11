@@ -7,10 +7,12 @@ import { AppHeader } from '../components/organisms/AppHeader';
 import { AppNavigation } from '../components/organisms/AppNavigation';
 import { useAuthSession, useLogout } from '../features/auth/hooks/useAuth';
 import { useHealth } from '../features/health/hooks/useHealth';
+import { useIdleWallMode } from '../features/wall/hooks/useIdleWallMode';
 
 const drawerWidth = 264;
 
 export function AppShell({ children }: { children: ReactNode }) {
+  useIdleWallMode();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const [drawerOpen, setDrawerOpen] = useState(false);

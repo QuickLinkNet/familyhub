@@ -1,8 +1,9 @@
 import { useState, type MouseEvent } from 'react';
-import { LogoutRounded, MenuRounded, MoreHorizRounded } from '@mui/icons-material';
+import { LogoutRounded, MenuRounded, MoreHorizRounded, TvRounded } from '@mui/icons-material';
 import { AppBar, Box, Chip, IconButton, ListItemIcon, Menu, MenuItem, Stack, Toolbar } from '@mui/material';
 import { MemberAvatar } from '../atoms/MemberAvatar';
 import { ReminderCenter } from '../../features/reminders/components/ReminderCenter';
+import { IdleWallModeDialog } from '../../features/wall/components/IdleWallModeDialog';
 
 interface AppHeaderProps {
   user: { name: string; color: string } | null;
@@ -13,11 +14,16 @@ interface AppHeaderProps {
 
 export function AppHeader({ user, signingOut, onOpenNavigation, onSignOut }: AppHeaderProps) {
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
+  const [idleDialogOpen, setIdleDialogOpen] = useState(false);
   const openMenu = (event: MouseEvent<HTMLElement>) => setMenuAnchor(event.currentTarget);
   const closeMenu = () => setMenuAnchor(null);
   const signOut = () => {
     closeMenu();
     onSignOut();
+  };
+  const openIdleDialog = () => {
+    closeMenu();
+    setIdleDialogOpen(true);
   };
 
   return (
@@ -36,11 +42,16 @@ export function AppHeader({ user, signingOut, onOpenNavigation, onSignOut }: App
         </Toolbar>
       </AppBar>
       <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={closeMenu}>
+        <MenuItem onClick={openIdleDialog}>
+          <ListItemIcon><TvRounded fontSize="small" /></ListItemIcon>
+          Automatischer Wandmodus
+        </MenuItem>
         <MenuItem onClick={signOut} disabled={signingOut}>
           <ListItemIcon><LogoutRounded fontSize="small" /></ListItemIcon>
           Abmelden
         </MenuItem>
       </Menu>
+      <IdleWallModeDialog open={idleDialogOpen} onClose={() => setIdleDialogOpen(false)} />
     </>
   );
 }

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Alert, Box, CircularProgress, Container, Stack } from '@mui/material';
+import { useSearchParams } from 'react-router-dom';
 import { useCalendarEvents } from '../../calendar/hooks/useCalendar';
 import { addDays, startOfDay } from '../../calendar/utils/calendarDates';
 import { useFamilyMembers } from '../../family/hooks/useFamilyMembers';
@@ -19,6 +20,7 @@ import { useFamilyGoals } from '../../goals/hooks/useFamilyGoals';
 import { WallGoal } from '../components/WallGoal';
 import { useReminders } from '../../reminders/hooks/useReminders';
 import { WallReminders } from '../../reminders/components/WallReminders';
+import { IdleWallReturnButton } from '../components/IdleWallReturnButton';
 
 const defaultPresentation: WallPresentation = {
   greeting: 'Schön, dass ihr da seid', weatherEnabled: false, weatherLocation: null,
@@ -26,6 +28,8 @@ const defaultPresentation: WallPresentation = {
 };
 
 export function WallPage() {
+  const [searchParams] = useSearchParams();
+  const enteredAfterIdle = searchParams.get('source') === 'idle';
   const [now, setNow] = useState(new Date());
   useEffect(() => {
     const timer = window.setInterval(() => setNow(new Date()), 30_000);
@@ -69,6 +73,7 @@ export function WallPage() {
             </>}
         </Stack>
       </Container>
+      {enteredAfterIdle && <IdleWallReturnButton />}
     </Box>
   );
 }

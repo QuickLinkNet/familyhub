@@ -116,6 +116,10 @@ Im Adminbereich unter **Datensicherung** lässt sich jederzeit eine zusätzliche
 
 Browser-Benachrichtigungen werden pro Gerät und Familienprofil über die Erinnerungsglocke im Kopfbereich aktiviert. Der Browser fragt einmalig nach Erlaubnis und zeigt direkt eine Testbenachrichtigung. Ohne externen Pushdienst kann FamilyHub neue Hinweise melden, solange die Seite oder installierte PWA geöffnet ist – auch im Hintergrund. Die Einstellung lässt sich dort jederzeit wieder ausschalten.
 
+### Automatischer Wandmodus
+
+Über das Profilmenü im Kopfbereich lässt sich der automatische Wandmodus für das aktuelle Gerät einschalten. Nach der gewählten Ruhezeit wechselt FamilyHub selbstständig zur Familienanzeige. Ein großer Button führt mit einem Tipp zurück an die zuvor geöffnete Stelle. Die Konfiguration wird nur in diesem Browser gespeichert und ist deshalb besonders für ein festes Küchen- oder Flurdisplay geeignet. Offene Dialoge und aktive Eingaben unterbrechen die Automatik; den Browser-Vollbildmodus muss eine Person aus Sicherheitsgründen einmal bewusst antippen.
+
 ## 8. Optional: Google-Termine direkt bearbeiten
 
 Der iCal-Link benötigt keine weitere Infrastruktur und bleibt die empfohlene read-only Grundeinstellung. Für Erstellen, Bearbeiten und Löschen direkt in FamilyHub öffnet ein Admin unter `/admin` den Assistenten „Google direkt verbinden“.

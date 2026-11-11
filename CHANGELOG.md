@@ -4,6 +4,27 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.22.0] - 2026-11-11
+
+### Hinzugefügt
+
+- gerätebezogener automatischer Wechsel in den Wandmodus nach 1, 2, 5, 10, 15 oder 30 Minuten Ruhezeit
+- leicht erreichbare Display-Automatik im Profilmenü mit verständlicher Erklärung und sicherer Standardkonfiguration
+- große Ein-Tipp-Rückkehr vom automatisch gestarteten Wandmodus an die zuvor geöffnete Stelle
+
+### Bedien- und Datensicherheit
+
+- offene Dialoge, Menüs, Auswahlfelder und aktive Texteingaben verhindern einen unerwarteten Seitenwechsel
+- inaktive Browser-Tabs pausieren den Timer und beginnen erst bei erneuter Sichtbarkeit wieder von vorn
+- die Einstellung bleibt ausschließlich im lokalen Browser des jeweiligen Wanddisplays und verändert keine Familiendaten
+- Rückkehrziele werden auf interne FamilyHub-Pfade beschränkt; ein externer Redirect ist ausgeschlossen
+
+### Geprüft
+
+- automatischer Wechsel, Ein-Tipp-Rückkehr und Dialogschutz im echten Browser
+- Desktop- und Mobilansicht einschließlich schmaler Wandmodus-Rückkehr
+- Production-Build, vollständiger PHP-Lint, alle Smoke-Tests und Live-API
+
 ## [0.21.0] - 2026-11-11
 
 ### Hinzugefügt
