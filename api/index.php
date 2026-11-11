@@ -12,6 +12,7 @@ use FamilyCompass\Controllers\HealthController;
 use FamilyCompass\Controllers\GoogleCalendarController;
 use FamilyCompass\Controllers\HouseholdChoreController;
 use FamilyCompass\Controllers\MealController;
+use FamilyCompass\Controllers\ReminderController;
 use FamilyCompass\Controllers\RewardController;
 use FamilyCompass\Controllers\RoutineController;
 use FamilyCompass\Controllers\SchoolController;
@@ -44,6 +45,7 @@ use FamilyCompass\Repositories\SetupRepository;
 use FamilyCompass\Repositories\ShoppingRepository;
 use FamilyCompass\Repositories\TaskRepository;
 use FamilyCompass\Repositories\WallPresentationRepository;
+use FamilyCompass\Routes\AdminRoutes;
 use FamilyCompass\Services\AuthService;
 use FamilyCompass\Services\CalendarService;
 use FamilyCompass\Services\CalendarRecurrenceExpander;
@@ -57,6 +59,8 @@ use FamilyCompass\Services\GoogleCalendarService;
 use FamilyCompass\Services\GoogleOAuthService;
 use FamilyCompass\Services\HouseholdChoreService;
 use FamilyCompass\Services\MealService;
+use FamilyCompass\Services\ReminderPlanner;
+use FamilyCompass\Services\ReminderService;
 use FamilyCompass\Services\RewardService;
 use FamilyCompass\Services\RoutineService;
 use FamilyCompass\Services\SchoolService;
@@ -115,7 +119,7 @@ try {
     $googleOAuthService = new GoogleOAuthService(new GoogleOAuthRepository($database), $secretCipher, $googleClient);
     $googleCalendarService = new GoogleCalendarService(new GoogleCalendarRepository($database), $googleOAuthService, $googleClient, $secretCipher);
     $familyRepository = new FamilyMemberRepository($database);
-    $calendarController = new CalendarController(new CalendarService(
+    $calendarService = new CalendarService(
         new CalendarRepository($database),
         $calendarSourceRepository,
         $calendarSourceService,
@@ -123,19 +127,25 @@ try {
         $familyRepository,
         new CalendarRecurrenceExpander(),
         new BirthdayEventFactory()
-    ));
+    );
+    $calendarController = new CalendarController($calendarService);
     $calendarSourceController = new CalendarSourceController($calendarSourceService);
     $googleCalendarController = new GoogleCalendarController($googleOAuthService, $googleCalendarService, new PublicUrl());
     $familyController = new FamilyMemberController(new FamilyMemberService($familyRepository));
     $familyGoalController = new FamilyGoalController(new FamilyGoalService(new FamilyGoalRepository($database)));
     $familyNoteController = new FamilyNoteController(new FamilyNoteService(new FamilyNoteRepository($database)));
-    $taskController = new TaskController(new TaskService(new TaskRepository($database), $familyRepository));
-    $routineController = new RoutineController(new RoutineService(new RoutineRepository($database), $familyRepository));
+    $taskRepository = new TaskRepository($database);
+    $taskService = new TaskService($taskRepository, $familyRepository);
+    $taskController = new TaskController($taskService);
+    $routineService = new RoutineService(new RoutineRepository($database), $familyRepository);
+    $routineController = new RoutineController($routineService);
     $rewardController = new RewardController(new RewardService(new RewardRepository($database), $familyRepository));
     $shoppingRepository = new ShoppingRepository($database);
     $shoppingController = new ShoppingController(new ShoppingService($shoppingRepository));
     $mealController = new MealController(new MealService(new MealRepository($database), $shoppingRepository));
-    $schoolController = new SchoolController(new SchoolService(new SchoolRepository($database), $familyRepository));
+    $schoolService = new SchoolService(new SchoolRepository($database), $familyRepository);
+    $schoolController = new SchoolController($schoolService);
+    $reminderController = new ReminderController(new ReminderService($calendarService, $taskService, $routineService, $schoolService, $taskRepository, new ReminderPlanner()));
     $householdChoreController = new HouseholdChoreController(new HouseholdChoreService(new HouseholdChoreRepository($database), $familyRepository));
     $wallPresentationController = new WallPresentationController(new WallPresentationService(new WallPresentationRepository($database), new WeatherService(), $config));
     $setupController = new SetupController(new SetupService(new SetupRepository($database)), $config->version());
@@ -172,6 +182,9 @@ try {
     $router->get('/v1/family-members', static function () use ($authService, $familyController): void {
         $authService->requireUser();
         $familyController->index();
+    });
+    $router->get('/v1/reminders', static function () use ($authService, $reminderController): void {
+        $reminderController->index($authService->requireUser());
     });
     $router->post('/v1/family-members', static function () use ($authService, $familyController): void {
         $authService->requireAdult();
@@ -451,25 +464,6 @@ try {
         $authService->requireUser();
         $wallPresentationController->photo($uuid);
     });
-    $router->get('/v1/admin/wall-presentation', static function () use ($authService, $wallPresentationController): void {
-        $authService->requireAdmin();
-        $wallPresentationController->administration();
-    });
-    $router->put('/v1/admin/wall-presentation', static function () use ($authService, $wallPresentationController): void {
-        $authService->requireAdmin();
-        $authService->requireCsrf();
-        $wallPresentationController->update();
-    });
-    $router->post('/v1/admin/wall-photos', static function () use ($authService, $wallPresentationController): void {
-        $actor = $authService->requireAdmin();
-        $authService->requireCsrf();
-        $wallPresentationController->upload($actor);
-    });
-    $router->delete('/v1/admin/wall-photos/{uuid}', static function (string $uuid) use ($authService, $wallPresentationController): void {
-        $authService->requireAdmin();
-        $authService->requireCsrf();
-        $wallPresentationController->delete($uuid);
-    });
     $router->get('/v1/calendars', static function () use ($authService, $calendarController): void {
         $authService->requireUser();
         $calendarController->calendars();
@@ -493,59 +487,7 @@ try {
         $authService->requireCsrf();
         $calendarController->delete($uuid);
     });
-    $router->get('/v1/admin/calendar-sources', static function () use ($authService, $calendarSourceController): void {
-        $authService->requireAdmin();
-        $calendarSourceController->index();
-    });
-    $router->post('/v1/admin/calendar-sources', static function () use ($authService, $calendarSourceController): void {
-        $actor = $authService->requireAdmin();
-        $authService->requireCsrf();
-        $calendarSourceController->create($actor);
-    });
-    $router->put('/v1/admin/calendar-sources/{uuid}', static function (string $uuid) use ($authService, $calendarSourceController): void {
-        $authService->requireAdmin();
-        $authService->requireCsrf();
-        $calendarSourceController->update($uuid);
-    });
-    $router->post('/v1/admin/calendar-sources/{uuid}/sync', static function (string $uuid) use ($authService, $calendarSourceController): void {
-        $authService->requireAdmin();
-        $authService->requireCsrf();
-        $calendarSourceController->synchronize($uuid);
-    });
-    $router->delete('/v1/admin/calendar-sources/{uuid}', static function (string $uuid) use ($authService, $calendarSourceController): void {
-        $authService->requireAdmin();
-        $authService->requireCsrf();
-        $calendarSourceController->delete($uuid);
-    });
-    $router->get('/v1/admin/google-calendar', static function () use ($authService, $googleCalendarController): void {
-        $authService->requireAdmin();
-        $googleCalendarController->status();
-    });
-    $router->put('/v1/admin/google-calendar/config', static function () use ($authService, $googleCalendarController): void {
-        $authService->requireAdmin();
-        $authService->requireCsrf();
-        $googleCalendarController->configure();
-    });
-    $router->post('/v1/admin/google-calendar/authorize', static function () use ($authService, $googleCalendarController): void {
-        $authService->requireAdmin();
-        $authService->requireCsrf();
-        $googleCalendarController->authorize();
-    });
-    $router->put('/v1/admin/google-calendar/sources/{uuid}', static function (string $uuid) use ($authService, $googleCalendarController): void {
-        $authService->requireAdmin();
-        $authService->requireCsrf();
-        $googleCalendarController->updateSource($uuid);
-    });
-    $router->post('/v1/admin/google-calendar/sources/{uuid}/sync', static function (string $uuid) use ($authService, $googleCalendarController): void {
-        $authService->requireAdmin();
-        $authService->requireCsrf();
-        $googleCalendarController->synchronize($uuid);
-    });
-    $router->delete('/v1/admin/google-calendar', static function () use ($authService, $googleCalendarController): void {
-        $authService->requireAdmin();
-        $authService->requireCsrf();
-        $googleCalendarController->disconnect();
-    });
+    AdminRoutes::register($router, $authService, $wallPresentationController, $calendarSourceController, $googleCalendarController);
 
     $router->dispatch($_SERVER['REQUEST_METHOD'] ?? 'GET', $_SERVER['REQUEST_URI'] ?? '/');
 } catch (AppException $exception) {

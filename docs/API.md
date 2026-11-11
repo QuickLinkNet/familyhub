@@ -51,6 +51,14 @@ Die Antwort enthält das angemeldete Profil und einen CSRF-Token. Die Session-ID
 
 Alle Familien- und Aufgabenendpunkte benötigen eine gültige Session.
 
+### Persönliche Erinnerungen
+
+- `GET /reminders` – aktuell relevante Hinweise für das angemeldete Profil
+
+Die API führt Kalendertermine der nächsten 36 Stunden, fällige oder überfällige Aufgaben, ausstehende Eltern-Checks, offene Schuleinträge der nächsten drei Tage und heutige Routinen zusammen. Kinder erhalten ausschließlich Einträge, die ihrem Profil zugeordnet sind; Erwachsene sehen den relevanten Familienüberblick. Jeder Hinweis enthält Typ, Dringlichkeit, Titel, Kontext, Fälligkeit und ein internes Sprungziel. Die Liste ist priorisiert und auf zwölf Einträge begrenzt.
+
+Der Familienradar ist eine abgeleitete Ansicht. Er legt keine zusätzlichen personenbezogenen Verlaufsdaten an und benötigt keinen externen Benachrichtigungsdienst.
+
 ### Familienmitglieder
 
 - `GET /family-members` – alle angemeldeten Rollen

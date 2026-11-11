@@ -25,6 +25,8 @@ import { useHouseholdBoard } from '../../household/hooks/useHousehold';
 import { HouseholdSummaryCard } from '../components/HouseholdSummaryCard';
 import { useFamilyGoals } from '../../goals/hooks/useFamilyGoals';
 import { FamilyGoalSummaryCard } from '../components/FamilyGoalSummaryCard';
+import { useReminders } from '../../reminders/hooks/useReminders';
+import { ReminderOverview } from '../../reminders/components/ReminderOverview';
 
 const now = new Date();
 const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -45,6 +47,7 @@ export function DashboardPage() {
   const school = useSchoolBoard(localDate(now), localDate(addDays(now, 14)));
   const household = useHouseholdBoard();
   const goals = useFamilyGoals();
+  const reminders = useReminders();
   const todayEvents = events.data ?? [];
   const currentDate = localDate(now);
   const openTasks = (tasks.data ?? []).filter(task => task.status !== 'COMPLETED' && isDueBy(task, currentDate));
@@ -57,6 +60,7 @@ export function DashboardPage() {
   return (
     <Stack spacing={{ xs: 2.5, md: 3.5 }}>
       <PageHeader title={greeting} description={`${todayLabel} · Alles Wichtige für eure Familie.`} />
+      <ReminderOverview board={reminders.data} loading={reminders.isLoading} error={reminders.isError} />
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', lg: 'repeat(3, minmax(0, 1fr))' }, gap: { xs: 2, md: 2.5 }, alignItems: 'stretch' }}>
         <TodayCard events={todayEvents} loading={events.isLoading} error={events.isError} />
         <TasksSummaryCard openCount={openTasks.length} completedCount={completedTasks.length} totalCount={openTasks.length + completedTasks.length} loading={tasks.isLoading} error={tasks.isError} />

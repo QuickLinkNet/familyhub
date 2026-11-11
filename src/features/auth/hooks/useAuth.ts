@@ -41,6 +41,7 @@ export const useLogin = () => {
       void client.invalidateQueries({ queryKey: ['wall-presentation'] });
       void client.invalidateQueries({ queryKey: ['wall-presentation-settings'] });
       void client.invalidateQueries({ queryKey: ['family-goals'] });
+      void client.invalidateQueries({ queryKey: ['reminders'] });
     }
   });
 };
@@ -62,6 +63,7 @@ export const useLogout = () => {
       client.removeQueries({ queryKey: ['wall-presentation'] });
       client.removeQueries({ queryKey: ['wall-presentation-settings'] });
       client.removeQueries({ queryKey: ['family-goals'] });
+      client.removeQueries({ queryKey: ['reminders'] });
     }
   });
 };

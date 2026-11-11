@@ -4,9 +4,30 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
-### Geplant
+## [0.19.0] - 2026-11-11
 
-- intelligente In-App-Erinnerungen
+### Hinzugefügt
+
+- persönlicher Familienradar aus Kalender, Aufgaben, Eltern-Checks, Schule und Tagesroutinen
+- rollenabhängige Hinweise: Kinder sehen nur eigene Pflichten, Erwachsene den relevanten Familienüberblick
+- dauerhaft erreichbare Erinnerungsglocke mit Dringlichkeitszähler und direkten Sprüngen zum jeweiligen Modul
+- großzügiger „Heute wichtig“-Bereich auf dem Dashboard sowie ruhige Kurzfassung im Wandmodus
+
+### Fokus statt Benachrichtigungsflut
+
+- nur überfällige, heute oder sehr zeitnah relevante Einträge werden aufgenommen
+- Dringlichkeit, Fälligkeit und Bedeutung bestimmen die Reihenfolge; die Ausgabe ist auf zwölf Hinweise begrenzt
+- Erinnerungen werden live aus vorhandenen Daten berechnet und benötigen weder Cloud-Dienst noch zusätzliche personenbezogene Speicherung
+
+### Architektur
+
+- zentrale Reminder-Planung mit getrenntem Orchestrierungsservice und isoliert testbarer Entscheidungslogik
+- Admin-Routen aus dem API-Einstiegspunkt in ein eigenes Routenmodul verschoben; `api/index.php` liegt wieder unter 500 Zeilen
+
+### Geprüft
+
+- isolierter Rollen-, Sichtbarkeits- und Dringlichkeits-Smoke-Test
+- Production-Build, vollständiger PHP-Lint, alle Smoke-Tests, Live-API sowie Desktop- und Mobil-Browser-QA
 
 ## [0.18.0] - 2026-11-11
 

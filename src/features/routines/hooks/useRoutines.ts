@@ -5,7 +5,7 @@ import type { RoutineInput } from '../types/routine';
 export const routinesKey = ['routines'] as const;
 export const useRoutines = () => useQuery({ queryKey: routinesKey, queryFn: ({ signal }) => getRoutines(signal) });
 
-const refresh = (client: ReturnType<typeof useQueryClient>) => client.invalidateQueries({ queryKey: routinesKey });
+const refresh = (client: ReturnType<typeof useQueryClient>) => { void client.invalidateQueries({ queryKey: routinesKey }); void client.invalidateQueries({ queryKey: ['reminders'] }); };
 export const useCreateRoutine = () => { const client = useQueryClient(); return useMutation({ mutationFn: (input: RoutineInput) => createRoutine(input), onSuccess: () => refresh(client) }); };
 export const useUpdateRoutine = () => { const client = useQueryClient(); return useMutation({ mutationFn: ({ id, input }: { id: string; input: RoutineInput }) => updateRoutine(id, input), onSuccess: () => refresh(client) }); };
 export const useDeleteRoutine = () => { const client = useQueryClient(); return useMutation({ mutationFn: (id: string) => deleteRoutine(id), onSuccess: () => refresh(client) }); };

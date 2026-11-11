@@ -2,6 +2,7 @@ import { useState, type MouseEvent } from 'react';
 import { LogoutRounded, MenuRounded, MoreHorizRounded } from '@mui/icons-material';
 import { AppBar, Box, Chip, IconButton, ListItemIcon, Menu, MenuItem, Stack, Toolbar } from '@mui/material';
 import { MemberAvatar } from '../atoms/MemberAvatar';
+import { ReminderCenter } from '../../features/reminders/components/ReminderCenter';
 
 interface AppHeaderProps {
   user: { name: string; color: string } | null;
@@ -28,6 +29,7 @@ export function AppHeader({ user, signingOut, onOpenNavigation, onSignOut }: App
           </IconButton>
           <Box sx={{ flex: 1 }} />
           <Stack direction="row" spacing={1} alignItems="center">
+            <ReminderCenter />
             {user && <Chip avatar={<MemberAvatar name={user.name} sx={{ bgcolor: user.color }} />} label={user.name} variant="outlined" />}
             <IconButton aria-label="Profilmenü öffnen" onClick={openMenu}><MoreHorizRounded /></IconButton>
           </Stack>

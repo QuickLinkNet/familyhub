@@ -17,6 +17,8 @@ import { useWallPresentation } from '../hooks/useWallPresentation';
 import type { WallPresentation } from '../types/wallPresentation';
 import { useFamilyGoals } from '../../goals/hooks/useFamilyGoals';
 import { WallGoal } from '../components/WallGoal';
+import { useReminders } from '../../reminders/hooks/useReminders';
+import { WallReminders } from '../../reminders/components/WallReminders';
 
 const defaultPresentation: WallPresentation = {
   greeting: 'Schön, dass ihr da seid', weatherEnabled: false, weatherLocation: null,
@@ -40,17 +42,18 @@ export function WallPage() {
   const school = useSchoolBoard(localDate(now), localDate(addDays(now, 14)));
   const presentation = useWallPresentation();
   const goals = useFamilyGoals();
+  const reminders = useReminders();
   const openTasks = (tasks.data ?? []).filter(task => task.status !== 'COMPLETED' && isDueBy(task, localDate(now)));
   const activeFamily = (family.data ?? []).filter(member => member.isActive);
   const upcomingEvents = (events.data ?? []).filter(event => new Date(event.endsAt) > now);
-  const loading = events.isLoading || tasks.isLoading || family.isLoading || notes.isLoading || school.isLoading || presentation.isLoading || goals.isLoading;
+  const loading = events.isLoading || tasks.isLoading || family.isLoading || notes.isLoading || school.isLoading || presentation.isLoading || goals.isLoading || reminders.isLoading;
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', backgroundImage: 'radial-gradient(circle at top right, rgba(214,133,95,0.13), transparent 35%), radial-gradient(circle at bottom left, rgba(52,91,72,0.14), transparent 38%)', py: { xs: 2.5, md: 4 } }}>
       <Container maxWidth="xl">
         <Stack spacing={{ xs: 2.5, md: 3.5 }}>
           <WallHeader now={now} presentation={presentation.data ?? defaultPresentation} />
-          {(events.isError || tasks.isError || family.isError || notes.isError || school.isError || presentation.isError || goals.isError) && <Alert severity="warning">Einige Familieninformationen konnten gerade nicht geladen werden.</Alert>}
+          {(events.isError || tasks.isError || family.isError || notes.isError || school.isError || presentation.isError || goals.isError || reminders.isError) && <Alert severity="warning">Einige Familieninformationen konnten gerade nicht geladen werden.</Alert>}
           {loading
             ? <Stack alignItems="center" py={8}><CircularProgress /></Stack>
             : <>
@@ -58,6 +61,7 @@ export function WallPage() {
                 <WallEvents events={upcomingEvents} />
                 <WallTasks tasks={openTasks} />
               </Box>
+              <WallReminders board={reminders.data} />
               <WallGoal goal={goals.data?.activeGoals[0]} />
               <WallNotes notes={notes.data ?? []} />
               <WallSchool lessons={school.data?.lessons ?? []} items={school.data?.items ?? []} />

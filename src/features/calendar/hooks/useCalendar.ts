@@ -16,11 +16,16 @@ export const useCalendarEvents = (from: string, to: string) => useQuery({
   queryFn: ({ signal }) => getCalendarEvents(from, to, signal)
 });
 
+const refreshEvents = (client: ReturnType<typeof useQueryClient>) => {
+  void client.invalidateQueries({ queryKey: calendarEventsKey });
+  void client.invalidateQueries({ queryKey: ['reminders'] });
+};
+
 export const useCreateCalendarEvent = () => {
   const client = useQueryClient();
   return useMutation({
     mutationFn: (input: CalendarEventInput) => createCalendarEvent(input),
-    onSuccess: () => client.invalidateQueries({ queryKey: calendarEventsKey })
+    onSuccess: () => refreshEvents(client)
   });
 };
 
@@ -28,7 +33,7 @@ export const useUpdateCalendarEvent = () => {
   const client = useQueryClient();
   return useMutation({
     mutationFn: ({ id, input }: { id: string; input: CalendarEventInput }) => updateCalendarEvent(id, input),
-    onSuccess: () => client.invalidateQueries({ queryKey: calendarEventsKey })
+    onSuccess: () => refreshEvents(client)
   });
 };
 
@@ -36,6 +41,6 @@ export const useDeleteCalendarEvent = () => {
   const client = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => deleteCalendarEvent(id),
-    onSuccess: () => client.invalidateQueries({ queryKey: calendarEventsKey })
+    onSuccess: () => refreshEvents(client)
   });
 };

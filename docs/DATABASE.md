@@ -30,6 +30,8 @@ Aktuelle Entwicklung:
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
+In-App-Erinnerungen werden zur Laufzeit aus Kalender-, Aufgaben-, Schul- und Routinedaten abgeleitet. Dafür ist bewusst keine zusätzliche Tabelle oder Verlaufsspeicherung erforderlich.
+
 Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielsweise `007_recurring_tasks.sql`. Jede Datei muss vollständig transaktional ausführbar sein.
 
 ## Zentrale Tabellen
