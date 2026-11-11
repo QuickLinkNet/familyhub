@@ -149,6 +149,16 @@ Unterrichtsstunden enthalten `memberId`, `subject`, `weekday` (1–7), `startsAt
 
 Eine Aufgabe enthält `title`, optional `description`, `category` (`CLEANING`, `TRASH`, `PLANTS`, `LAUNDRY`, `PETS`, `OTHER`), `assignedMemberId`, `recurrence` (`ONCE`, `DAILY`, `WEEKLY`, `BIWEEKLY`, `MONTHLY`) und `nextDueDate`. Der Abschluss erzeugt einen unveränderlichen Historieneintrag mit planmäßigem Datum und ausführender Person. Wiederkehrende Aufgaben werden atomar weitergeschoben; bei überfälligen Aufgaben beginnt der nächste Zyklus frühestens am Abschlusstag.
 
+### Familienziele
+
+- `GET /family-goals` – aktive Ziele, jüngste Abschlüsse und Beitragsjournal für alle angemeldeten Profile
+- `POST /family-goals` – Admin oder Elternteil legt ein Ziel an
+- `PUT /family-goals/{uuid}` – Admin oder Elternteil bearbeitet ein aktives Ziel
+- `POST /family-goals/{uuid}/contribute` – jedes angemeldete Profil trägt einen Fortschrittsschritt bei
+- `DELETE /family-goals/{uuid}` – Admin oder Elternteil entfernt ein Ziel weich
+
+Ein Ziel enthält `title`, optional `description`, `icon`, `color`, `targetValue` (2–100) und optional `dueDate`. Ein Beitrag akzeptiert `amount` (1–10) und optional `note`. Der Server begrenzt den letzten Beitrag atomar auf den noch fehlenden Wert, setzt den Abschlusszeitpunkt exakt einmal und bewahrt das Beitragsjournal. Höchstens sechs Ziele können gleichzeitig aktiv sein.
+
 ### Wandmodus und Präsentation
 
 - `GET /wall-presentation` – Gruß, Wetter, Vorschau und Fotoliste für angemeldete Profile

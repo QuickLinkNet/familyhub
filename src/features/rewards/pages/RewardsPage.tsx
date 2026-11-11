@@ -23,7 +23,7 @@ export function RewardsPage() {
     <PageHeader title="Schatzkiste" description="Gemeinsam Sterne sammeln, Wünsche erfüllen und kleine Erfolge feiern." actions={canManage ? <Stack direction={{ xs: 'column', sm: 'row' }} gap={1}><Button variant="outlined" startIcon={<AutoAwesomeRounded />} onClick={() => setBonusOpen(true)}>Bonus vergeben</Button><Button variant="contained" startIcon={<AddRounded />} onClick={() => setCreateOpen(true)}>Belohnung</Button></Stack> : undefined} />
     <Box sx={{ p: { xs: 2.5, sm: 3.5 }, borderRadius: 5, color: 'white', background: 'linear-gradient(125deg, #284b3a 0%, #3f7258 55%, #d6855f 140%)', position: 'relative', overflow: 'hidden' }}>
       <Box sx={{ position: 'absolute', right: { xs: -20, sm: 30 }, top: -45, fontSize: 150, opacity: 0.12 }}>🎁</Box>
-      <Typography variant="overline" sx={{ opacity: 0.82, letterSpacing: 1.5 }}>Euer Familienziel</Typography>
+      <Typography variant="overline" sx={{ opacity: 0.82, letterSpacing: 1.5 }}>Eure Schatzkiste</Typography>
       <Typography variant="h4" maxWidth={580}>Jede erledigte Aufgabe bringt euch einem schönen Familienmoment näher.</Typography>
       <Typography mt={1} sx={{ opacity: 0.82 }}>Sterne werden erst nach einer nötigen Elternbestätigung gutgeschrieben.</Typography>
     </Box>

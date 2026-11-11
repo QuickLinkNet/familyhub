@@ -6,7 +6,27 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ### Geplant
 
-- Familienziele und intelligentere Erinnerungen
+- intelligente In-App-Erinnerungen
+
+## [0.18.0] - 2026-11-11
+
+### Hinzugefügt
+
+- gemeinsame Familienziele mit Symbol, Farbe, Beschreibung, Zielgröße und optionalem Wunschtermin
+- Touch-Aktion für kleine Fortschrittsschritte durch jedes angemeldete Familienmitglied
+- motivierende Wochenhighlights mit Beiträgen, beteiligten Profilen und erreichten Zielen
+- eigene Zielseite sowie kompakte Fortschrittskarten auf Dashboard und Wandmodus
+
+### Rechte und Datenintegrität
+
+- Admins und Eltern verwalten Familienziele; Kinder und Erwachsene tragen gleichermaßen Fortschritt bei
+- Beiträge werden unveränderlich mit Person, Zeitpunkt und Schrittzahl protokolliert
+- der letzte benötigte Beitrag wird atomar begrenzt und schließt das Ziel exakt bei 100 Prozent ab
+
+### Geprüft
+
+- isolierter Workflow für Anlage, Beiträge, Begrenzung, Abschluss, Validierung und Löschen
+- Production-Build, vollständiger PHP-Lint, alle Smoke-Tests, Live-API sowie Desktop- und 390-Pixel-Browser-QA
 
 ## [0.17.0] - 2026-11-11
 

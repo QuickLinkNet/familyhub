@@ -26,6 +26,7 @@ Aktuelle Entwicklung:
 16. persönliche Wochenstundenpläne sowie datierte Hausaufgaben und Tests
 17. wiederkehrende Haushaltsaufgaben mit Zuständigkeit und Abschlussjournal
 18. konfigurierbarer Wandmodus und Metadaten für geschützte Familienfotos
+19. gemeinsame Familienziele mit unveränderlichem Beitragsjournal
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -54,6 +55,8 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 - `household_chore_completions` – unveränderliche Erledigungshistorie mit geplantem Datum und ausführender Person
 - `wall_presentation_settings` – einzelner Datensatz für Familiengruß, Wetteroption und aufgelöste Ortskoordinaten
 - `wall_photos` – Metadaten der geschützten Präsentationsbilder; die Dateien liegen unter `storage/wall-photos`
+- `family_goals` – gemeinsame Ziele mit Darstellung, Zielgröße, Termin und Abschlussstatus
+- `family_goal_contributions` – append-only Fortschrittsjournal mit Person, Schrittzahl und Zeitpunkt
 - `households` – Haushalt, Locale, Zeitzone und Setup-Zeitpunkt
 - calendars – gemeinsamer sowie persönliche Kalender
 - `calendar_events` – Termine, Zeiträume, Orte, Ersteller und optionale Wiederholungsregel

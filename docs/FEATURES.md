@@ -26,7 +26,8 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Dashboard | Heute, Aufgaben, Familie, Pinnwand, Schule und direkter Wandmodus | fertig inklusive Präsentationseinstieg | konfigurierbare Karten |
 | Identität & Rechte | Admin-/Elternpasswort, Kinder-PIN, Sessions, CSRF, Rollenrechte | Profilbearbeitung inklusive Geburtstag fertig | feinere Modulrechte |
 | Aufgaben | Zuweisung, Fälligkeit, Priorität, Abschluss, Eltern-Check | Wiederholung und Elternfreigabe fertig | Bearbeiten und Historie |
-| Belohnungen | Sterne, persönliche Guthaben, Wunschregal, Bonus und nachvollziehbares Ledger | fertig | Familienziele und optionale Kategorien |
+| Belohnungen | Sterne, persönliche Guthaben, Wunschregal, Bonus und nachvollziehbares Ledger | fertig | Familienziele sind eigenes Modul; als Nächstes optionale Kategorien |
+| Familienziele | gemeinsame Vorhaben, sichtbarer Fortschritt und Wochenhighlights | Ziele, Beitragsjournal, Dashboard und Wandmodus fertig | Zielvorlagen und automatische Fortschrittsquellen |
 | Kalender | Tag/Woche/Monat, Wiederholungen, Geburtstage, Ferien | Tag/Woche/Monat, lokale Wiederholungen und Geburtstage fertig | Ferien und Import |
 | Routinen | Morgen-/Abendroutine, Schritte, Wochentage, Fortschritt | mehrstufige Tagesläufe, Fortschritt und Serienverwaltung fertig | Sterne und Routinehistorie |
 | Einkauf | mehrere Listen, Kategorien, Mengen, Dringlichkeit und schnelles Abhaken | fertig | Vorlagen und Spracheingabe |
@@ -43,7 +44,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 
 ## Empfohlene Produktreihenfolge
 
-1. **Familienziele und Erinnerungen** – mehr gemeinsame Motivation im Alltag.
+1. **In-App-Erinnerungen** – Wichtiges rechtzeitig und rollenbezogen sichtbar machen.
 2. **Weitere Integrationen** – CalDAV, Microsoft Graph und Home Assistant.
 3. **Datenexport** – nutzerfreundliche Sicherung und Wiederherstellung für Self-Hoster.
 

@@ -23,6 +23,8 @@ import { useSchoolBoard } from '../../school/hooks/useSchool';
 import { SchoolSummaryCard } from '../components/SchoolSummaryCard';
 import { useHouseholdBoard } from '../../household/hooks/useHousehold';
 import { HouseholdSummaryCard } from '../components/HouseholdSummaryCard';
+import { useFamilyGoals } from '../../goals/hooks/useFamilyGoals';
+import { FamilyGoalSummaryCard } from '../components/FamilyGoalSummaryCard';
 
 const now = new Date();
 const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -42,6 +44,7 @@ export function DashboardPage() {
   const notes = useFamilyNotes();
   const school = useSchoolBoard(localDate(now), localDate(addDays(now, 14)));
   const household = useHouseholdBoard();
+  const goals = useFamilyGoals();
   const todayEvents = events.data ?? [];
   const currentDate = localDate(now);
   const openTasks = (tasks.data ?? []).filter(task => task.status !== 'COMPLETED' && isDueBy(task, currentDate));
@@ -64,6 +67,7 @@ export function DashboardPage() {
         <NotesSummaryCard notes={notes.data ?? []} loading={notes.isLoading} error={notes.isError} />
         <SchoolSummaryCard board={school.data} loading={school.isLoading} error={school.isError} />
         <HouseholdSummaryCard board={household.data} loading={household.isLoading} error={household.isError} />
+        <FamilyGoalSummaryCard board={goals.data} loading={goals.isLoading} error={goals.isError} />
         <WallModeCard />
         {session.data?.user?.role === 'ADMIN' && <AdminSetupCard />}
       </Box>
