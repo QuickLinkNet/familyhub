@@ -47,7 +47,7 @@ export function BackupManagerCard({ enabled }: { enabled: boolean }) {
                     <Typography variant="h6">Datensicherung</Typography>
                     <Chip label={`${overview.data?.backups.length ?? 0} Sicherungen`} size="small" variant="outlined" />
                   </Stack>
-                  <Typography color="text.secondary">SQLite-Sicherungen lokal verwalten, herunterladen und kontrolliert wiederherstellen.</Typography>
+                  <Typography color="text.secondary">Technische SQLite-Schnappschüsse lokal verwalten und einen früheren Datenbankstand wiederherstellen.</Typography>
                 </div>
               </Stack>
               <Stack direction={{ xs: 'column', sm: 'row' }} gap={1}>

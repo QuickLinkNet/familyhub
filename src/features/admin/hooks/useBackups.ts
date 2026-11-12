@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createBackup, getBackups, restoreBackup, restoreUploadedBackup } from '../api/backupApi';
+import { createBackup, getBackups, restoreBackup, restoreUploadedArchive, restoreUploadedBackup } from '../api/backupApi';
 
 export const backupsKey = ['admin-backups'] as const;
 
@@ -20,4 +20,8 @@ export const useRestoreBackup = () => useMutation({
 
 export const useRestoreUploadedBackup = () => useMutation({
   mutationFn: (file: File) => restoreUploadedBackup(file)
+});
+
+export const useRestoreUploadedArchive = () => useMutation({
+  mutationFn: (file: File) => restoreUploadedArchive(file)
 });

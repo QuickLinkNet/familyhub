@@ -21,7 +21,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Bereich | Geplanter Funktionsumfang | Status | Nächster Slice |
 | --- | --- | --- | --- |
 | Plattform | React-PWA mit Atomic Design, PHP-API, SQLite, Migrationen, Backups, Logs, Health | fertig | automatisierte Smoke-Tests |
-| Installation | Haushalt, 1–12 Personen, Rollen, sichere Zugangsdaten, Kalender | fertig | Export/Import und Reset-Werkzeug |
+| Installation | Haushalt, 1–12 Personen, Rollen, sichere Zugangsdaten, Kalender | fertig inklusive Komplettarchiv | geschütztes Reset-Werkzeug |
 | Touch-/Kiosk-UX | Wanddisplay, Tablet, Mobilnavigation, große Ziele | Wandmodus 2.0 mit Geräte-Assistent, Wake Lock, Betriebszeiten und Nachtansicht fertig | geführte Ersteinrichtung für dedizierte Displays |
 | Dashboard | Heute, Aufgaben, Familie, Pinnwand, Schule und direkter Wandmodus | fertig inklusive persönlichem Familienradar | konfigurierbare Karten |
 | Identität & Rechte | Admin-/Elternpasswort, Kinder-PIN, Sessions, CSRF, Rollenrechte | Profilbearbeitung inklusive Geburtstag fertig | feinere Modulrechte |
@@ -39,14 +39,14 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Foto-/Idle-Modus | Diashow, Uhrzeit, Wetter und nächster Termin | Foto-Rotation, Inaktivitäts-Timer, Wake Lock und zeitgesteuerte Nachtuhr fertig | konfigurierbare Nachtinformationen |
 | Benachrichtigungen | In-App, Browser und später Web Push | rollenabhängiger Radar, Glocke, Wandmodus und lokale Browser-Benachrichtigungen fertig | optionaler echter Web Push bei geschlossener App |
 | Integrationen | Google, Microsoft, CalDAV, Home Assistant | Google iCal read-only und OAuth-Schreibzugriff fertig | CalDAV oder Microsoft Graph |
-| Datenhoheit | lokaler Export, Import, Backups und Self-Hosting | SQLite-Sicherung, Download, geprüfter Import und atomarer Restore fertig | vollständiges portables Archiv inklusive Fotos |
+| Datenhoheit | lokaler Export, Import, Backups und Self-Hosting | portables Komplettarchiv mit Datenbank, Fotos, Schlüsseln, Prüfsummen und Rollback fertig | optional verschlüsselte Archivdateien |
 | Barrierefreiheit | Tastatur, Kontrast, Screenreader, reduzierte Bewegung | in Arbeit | automatisierte und manuelle Prüfung |
 
 ## Empfohlene Produktreihenfolge
 
 1. **Weitere Integrationen** – CalDAV, Microsoft Graph und Home Assistant.
-2. **Portables Familienarchiv** – Datenbank und Familienfotos gemeinsam exportieren.
-3. **Optionaler Web Push** – nur falls Erinnerungen auch bei vollständig geschlossener App gewünscht sind.
+2. **Optionaler Web Push** – nur falls Erinnerungen auch bei vollständig geschlossener App gewünscht sind.
+3. **Barrierefreiheits-Abnahme** – Tastatur, Screenreader, Kontrast und reduzierte Bewegung systematisch prüfen.
 
 ## Qualitätsmaßstab
 

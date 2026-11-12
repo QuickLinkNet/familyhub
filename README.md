@@ -21,7 +21,7 @@ Familienkompass ist ein touch-optimierter, selbst hostbarer Familienorganizer. D
 - Schulübersicht mit persönlichem Wochenstundenplan, Hausaufgaben, Tests und kindgerechtem Abhaken
 - gemeinsamer Haushaltsplan mit Zuständigkeiten, Wiederholungen, Fälligkeiten und nachvollziehbaren Erledigungen
 - einmaliger Einrichtungsassistent für Haushalt, Personen und persönliche Kalender
-- selbstinitialisierende PHP-/SQLite-API mit Migrationen, Backups, Logs und Health-Check
+- selbstinitialisierende PHP-/SQLite-API mit Migrationen, lokalen Backups, portablem Komplettarchiv, Logs und Health-Check
 - reproduzierbarer FTP-Deploy per `npm run deploy`
 
 Die vollständige Produkt-Roadmap steht in [docs/FEATURES.md](docs/FEATURES.md).

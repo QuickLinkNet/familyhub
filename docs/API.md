@@ -216,6 +216,20 @@ Die Konfiguration akzeptiert `clientId` und `clientSecret`. Der Browser erhält 
 
 `from`, `to`, `startsAt` und `endsAt` sind ISO-8601-Zeitpunkte. Schreibzugriffe akzeptieren `calendarId`, `title`, optional `description` und `location` sowie `startsAt`, `endsAt` und `allDay`. Das Ende muss nach dem Beginn liegen. Ein Abfragezeitraum ist auf 370 Tage begrenzt.
 
+### Administration: Sicherungen und Familienarchiv
+
+Alle Endpunkte benötigen die Rolle `ADMIN`; schreibende Requests zusätzlich CSRF.
+
+- `GET /admin/archive/download` – vollständiges `.familyhub`-Archiv als Download erzeugen
+- `POST /admin/archive/restore-upload` – Multipart-Feld `archive` nach Bestätigung `ARCHIV WIEDERHERSTELLEN` prüfen und zur Aktivierung vormerken
+- `GET /admin/backups` – lokale SQLite-Schnappschüsse und Pending-Status auflisten
+- `POST /admin/backups` – neuen SQLite-Schnappschuss erzeugen
+- `GET /admin/backups/{id}/download` – einzelnen SQLite-Schnappschuss herunterladen
+- `POST /admin/backups/{id}/restore` – lokalen Schnappschuss nach Bestätigung wiederherstellen
+- `POST /admin/backups/restore-upload` – hochgeladene `.sqlite`-Datei prüfen und wiederherstellen
+
+Das Komplettarchiv akzeptiert höchstens 256 MB und ausschließlich die freigegebenen Pfade für Manifest, Datenbank, Wandfotos und Schlüssel. Vor dem Vormerken prüft der Server jede SHA-256-Prüfsumme, die SQLite-Integrität, notwendige FamilyHub-Tabellen und die tatsächlichen Bildtypen. Die Aktivierung erfolgt vor dem Öffnen der nächsten Datenbankverbindung mit automatischem Datenbank-Backup und Rückrollschutz.
+
 ## Einmalige Einrichtung
 
 `POST /setup` erzeugt Haushalt, Personen und Kalender. Beispiel:

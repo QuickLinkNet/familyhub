@@ -4,6 +4,30 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.25.0] - 2026-11-12
+
+### Hinzugefügt
+
+- portables `.familyhub`-Komplettarchiv mit konsistenter SQLite-Kopie, aktiven Wandfotos und vorhandenen Verbindungsschlüsseln
+- Ein-Klick-Download und geführter Archiv-Import direkt in der Administration
+- lesbares Archivmanifest mit Format- und App-Version, Exportzeitpunkt, Dateigrößen und SHA-256-Prüfsummen
+- eigene, klar vom technischen SQLite-Schnappschuss getrennte Oberfläche für Serverumzug und Notfallkopie
+
+### Datensicherheit
+
+- Import akzeptiert ausschließlich freigegebene Archivpfade und begrenzt Dateianzahl, Einzel- und Gesamtgröße
+- SQLite-Integrität, FamilyHub-Pflichttabellen, Fotoreferenzen, Bild-MIME-Typen und jede Manifest-Prüfsumme werden vor der Aktivierung geprüft
+- der aktuelle Datenbankstand wird automatisch gesichert; Datenbank, Fotos und Schlüssel werden erst beim nächsten Request mit Rollback-Schutz gemeinsam aktiviert
+- manipulierte, unvollständige, fremde oder zu große Archive werden vor jeder Änderung abgelehnt
+- die Oberfläche kennzeichnet das Komplettarchiv deutlich als vertrauliche Datei
+
+### Geprüft
+
+- vollständiger Archiv-Roundtrip mit Datenbank, Foto und beiden Schlüsseldateien
+- Ablehnung eines nachträglich manipulierten Archivs
+- bestehender SQLite-Backup-/Restore-Pfad bleibt unverändert funktionsfähig
+- Desktop- und Mobilansicht, Production-Build, vollständiger PHP-Lint, alle Smoke-Tests und Live-API
+
 ## [0.24.0] - 2026-11-11
 
 ### Hinzugefügt

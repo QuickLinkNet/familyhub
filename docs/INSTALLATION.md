@@ -11,7 +11,7 @@ Für die lokale Frontend-Entwicklung:
 Für das Hosting:
 
 - PHP 8.2 oder neuer
-- PHP-Erweiterungen `pdo_sqlite` und `mbstring`
+- PHP-Erweiterungen `pdo_sqlite`, `mbstring`, `fileinfo` und `zip`
 - Apache mit `mod_rewrite`
 - Schreibrechte für `storage/database`, `storage/backups` und `storage/logs`
 - FTP oder FTPS für das mitgelieferte Deployment
@@ -112,7 +112,11 @@ npm run deploy
 
 Neue Migrationen werden beim nächsten API-Aufruf automatisch einmalig angewendet. Vor Migrationen legt die API ein SQLite-Backup an und behält standardmäßig die letzten 14 Sicherungen.
 
-Im Adminbereich unter **Datensicherung** lässt sich jederzeit eine zusätzliche Sicherung anlegen und herunterladen. Zum Wiederherstellen kann eine dort gelistete Sicherung oder eine zuvor heruntergeladene `.sqlite`-Datei gewählt werden. FamilyHub prüft die Datei, erstellt eine Rückfallsicherung und verlangt vor der Ausführung die Texteingabe `WIEDERHERSTELLEN`.
+Im Adminbereich steht das **portable Familienarchiv** für Serverumzug und Notfallkopie bereit. Die Datei mit Endung `.familyhub` enthält eine konsistente SQLite-Kopie, aktive Wandfotos und vorhandene Verbindungsschlüssel. Ein Manifest dokumentiert alle enthaltenen Dateien mit SHA-256-Prüfsummen. Da das Archiv vertrauliche Familien- und Zugangsdaten enthält, muss es wie ein wichtiges Passwort sicher aufbewahrt werden.
+
+Beim Einspielen prüft FamilyHub Dateipfade, Größen, Prüfsummen, SQLite-Integrität und Bildtypen. Erst danach wird die Wiederherstellung für den nächsten Request vorgemerkt. Der aktuelle Datenbankstand wird automatisch gesichert; Datenbank, Fotos und Schlüssel werden gemeinsam mit Rückrollschutz aktiviert. Zur Bestätigung ist die Texteingabe `ARCHIV WIEDERHERSTELLEN` erforderlich.
+
+Die darunterliegende **Datensicherung** bleibt als technisches Werkzeug für lokale SQLite-Schnappschüsse erhalten. Sie enthält weder Fotodateien noch Schlüssel und eignet sich deshalb nicht allein für einen Serverumzug. Für diesen Restore gilt weiterhin die Bestätigung `WIEDERHERSTELLEN`.
 
 Browser-Benachrichtigungen werden pro Gerät und Familienprofil über die Erinnerungsglocke im Kopfbereich aktiviert. Der Browser fragt einmalig nach Erlaubnis und zeigt direkt eine Testbenachrichtigung. Ohne externen Pushdienst kann FamilyHub neue Hinweise melden, solange die Seite oder installierte PWA geöffnet ist – auch im Hintergrund. Die Einstellung lässt sich dort jederzeit wieder ausschalten.
 

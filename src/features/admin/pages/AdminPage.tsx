@@ -11,6 +11,7 @@ import { BackupManagerCard } from '../components/BackupManagerCard';
 import { CalendarSourceDialog } from '../components/CalendarSourceDialog';
 import { GoogleConnectionCard } from '../components/GoogleConnectionCard';
 import { GoogleSetupDialog } from '../components/GoogleSetupDialog';
+import { PortableArchiveCard } from '../components/PortableArchiveCard';
 import { WallPresentationCard } from '../components/WallPresentationCard';
 import { useCalendarSources, useCreateCalendarSource, useDeleteCalendarSource, useSyncCalendarSource, useUpdateCalendarSource } from '../hooks/useCalendarSources';
 import { useAuthorizeGoogle, useConfigureGoogle, useDisconnectGoogle, useGoogleConnection, useSyncGoogleCalendar, useToggleGoogleCalendar } from '../hooks/useGoogleCalendar';
@@ -82,6 +83,7 @@ export function AdminPage() {
       {searchParams.get('google') === 'connected' && <Alert severity="success">Google Kalender ist verbunden. Der primäre Kalender wurde automatisch aktiviert.</Alert>}
       {searchParams.get('google') === 'error' && <Alert severity="error">Die Google-Anmeldung konnte nicht abgeschlossen werden. Bitte starte sie erneut.</Alert>}
       <WallPresentationCard enabled={isAdmin} />
+      <PortableArchiveCard preview={import.meta.env.DEV && searchParams.get('archive') === 'preview'} />
       <BackupManagerCard enabled={isAdmin} />
       <Stack direction="row" alignItems="center" gap={1}><AdminPanelSettingsRounded color="primary" /><Typography variant="h5">Direkte Google-Verbindung</Typography></Stack>
       {googleError && <Alert severity="error">{googleError instanceof ApiError ? googleError.message : 'Die Google-Verbindung konnte nicht aktualisiert werden.'}</Alert>}

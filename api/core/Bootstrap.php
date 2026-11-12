@@ -25,6 +25,7 @@ final class Bootstrap
         }
         $backups = new BackupService($this->config, $this->logger);
         $backups->applyPendingRestore();
+        (new PortableArchiveService($this->config, $this->logger, $backups))->applyPendingRestore();
         $database = $this->database();
         (new MigrationRunner($this->config, $backups, $this->logger))->run($database);
         $this->configureSession();

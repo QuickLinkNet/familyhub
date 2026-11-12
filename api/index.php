@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use FamilyCompass\Config\Config;
 use FamilyCompass\Controllers\AuthController;
+use FamilyCompass\Controllers\AdminArchiveController;
 use FamilyCompass\Controllers\AdminBackupController;
 use FamilyCompass\Controllers\CalendarController;
 use FamilyCompass\Controllers\CalendarSourceController;
@@ -26,6 +27,7 @@ use FamilyCompass\Core\BackupService;
 use FamilyCompass\Core\Bootstrap;
 use FamilyCompass\Core\CalendarSourceCipher;
 use FamilyCompass\Core\Logger;
+use FamilyCompass\Core\PortableArchiveService;
 use FamilyCompass\Core\PublicUrl;
 use FamilyCompass\Core\Response;
 use FamilyCompass\Core\Router;
@@ -49,6 +51,7 @@ use FamilyCompass\Repositories\TaskRepository;
 use FamilyCompass\Repositories\WallPresentationRepository;
 use FamilyCompass\Routes\AdminRoutes;
 use FamilyCompass\Services\AuthService;
+use FamilyCompass\Services\AdminArchiveService;
 use FamilyCompass\Services\AdminBackupService;
 use FamilyCompass\Services\CalendarService;
 use FamilyCompass\Services\CalendarRecurrenceExpander;
@@ -149,7 +152,9 @@ try {
     $reminderController = new ReminderController(new ReminderService($calendarService, $taskService, $routineService, $schoolService, $taskRepository, new ReminderPlanner()));
     $householdChoreController = new HouseholdChoreController(new HouseholdChoreService(new HouseholdChoreRepository($database), $familyRepository));
     $wallPresentationController = new WallPresentationController(new WallPresentationService(new WallPresentationRepository($database), new WeatherService(), $config));
-    $adminBackupController = new AdminBackupController(new AdminBackupService(new BackupService($config, $logger), $database));
+    $backupService = new BackupService($config, $logger);
+    $adminBackupController = new AdminBackupController(new AdminBackupService($backupService, $database));
+    $adminArchiveController = new AdminArchiveController(new AdminArchiveService(new PortableArchiveService($config, $logger, $backupService), $database));
     $setupController = new SetupController(new SetupService(new SetupRepository($database)), $config->version());
     $router = new Router();
     $router->get('/v1/health', static function () use ($config, $logger): void {
@@ -486,7 +491,7 @@ try {
         $authService->requireCsrf();
         $calendarController->delete($uuid);
     });
-    AdminRoutes::register($router, $authService, $wallPresentationController, $calendarSourceController, $googleCalendarController, $adminBackupController);
+    AdminRoutes::register($router, $authService, $wallPresentationController, $calendarSourceController, $googleCalendarController, $adminBackupController, $adminArchiveController);
 
     $router->dispatch($_SERVER['REQUEST_METHOD'] ?? 'GET', $_SERVER['REQUEST_URI'] ?? '/');
 } catch (AppException $exception) {

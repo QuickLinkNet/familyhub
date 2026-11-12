@@ -32,6 +32,8 @@ Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/
 
 Admins können dieselben konsistenten SQLite-Sicherungen unter **Administration → Datensicherung** manuell anlegen, herunterladen und wiederherstellen. Vor dem Einspielen prüft FamilyHub SQLite-Format, Datenbankintegrität und die notwendigen FamilyHub-Tabellen. Der aktuelle Stand wird nochmals automatisch gesichert; danach erfolgt der Austausch atomar vor dem Öffnen der nächsten Datenbankverbindung.
 
+Für einen vollständigen Serverumzug erstellt **Administration → Portables Familienarchiv** eine `.familyhub`-Datei. Das ZIP-basierte Format enthält `manifest.json`, `database/app.sqlite`, aktive Dateien aus `photos/` und vorhandene Schlüssel unter `keys/`. Das Manifest führt Größe, Typ und SHA-256-Prüfsumme jeder Datei auf. Ein Import wird zunächst vollständig in einen geschützten Pending-Bereich extrahiert und erst beim nächsten API-Request gemeinsam aktiviert.
+
 In-App-Erinnerungen werden zur Laufzeit aus Kalender-, Aufgaben-, Schul- und Routinedaten abgeleitet. Dafür ist bewusst keine zusätzliche Tabelle oder Verlaufsspeicherung erforderlich.
 
 Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielsweise `007_recurring_tasks.sql`. Jede Datei muss vollständig transaktional ausführbar sein.
@@ -76,6 +78,8 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 
 Die SQLite-Datei und Backups dürfen niemals committed oder direkt über HTTP ausgeliefert werden. `storage/.htaccess` sperrt den Zugriff unter Apache. Bei anderen Webservern muss eine gleichwertige Regel eingerichtet werden.
 
-Der Admin-Download wird ausschließlich über eine authentifizierte API-Route ausgeliefert. Eine Datenbanksicherung enthält auch verschlüsselte Kalenderzugänge, jedoch nicht die Schlüsseldateien `storage/calendar-source.key` und `storage/application-secrets.key`. Für eine Wiederherstellung auf demselben Server genügt die SQLite-Datei. Bei einem vollständigen Serverumzug müssen diese Schlüssel separat und sicher übernommen werden.
+Admin-Downloads werden ausschließlich über authentifizierte API-Routen ausgeliefert. Eine reine Datenbanksicherung enthält auch verschlüsselte Kalenderzugänge, jedoch nicht die Schlüsseldateien `storage/calendar-source.key` und `storage/application-secrets.key`. Das portable Familienarchiv nimmt vorhandene Schlüssel automatisch auf und ist deshalb die vorgesehene Lösung für einen vollständigen Serverumzug.
+
+Das Komplettarchiv ist nicht zusätzlich verschlüsselt, damit es ohne proprietäre Werkzeuge portabel bleibt. Es enthält vertrauliche Daten und muss lokal verschlüsselt gespeichert oder in einem entsprechend geschützten Backup-Ziel abgelegt werden.
 
 Vor einem manuellen Restore Anwendung kurz in den Wartungsmodus versetzen, die aktuelle Datenbank separat sichern und anschließend Health sowie Setup-Status prüfen.

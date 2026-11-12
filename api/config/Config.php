@@ -13,9 +13,11 @@ final class Config
     public function databasePath(): string { return $this->storagePath() . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'app.sqlite'; }
     public function backupsPath(): string { return $this->storagePath() . DIRECTORY_SEPARATOR . 'backups'; }
     public function logsPath(): string { return $this->storagePath() . DIRECTORY_SEPARATOR . 'logs'; }
+    public function wallPhotosPath(): string { return $this->storagePath() . DIRECTORY_SEPARATOR . 'wall-photos'; }
+    public function archiveRestorePath(): string { return $this->storagePath() . DIRECTORY_SEPARATOR . 'archive-restore.pending'; }
     public function calendarSourceKeyPath(): string { return $this->storagePath() . DIRECTORY_SEPARATOR . 'calendar-source.key'; }
     public function secretKeyPath(): string { return $this->storagePath() . DIRECTORY_SEPARATOR . 'application-secrets.key'; }
     public function migrationsPath(): string { return $this->apiPath() . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'migrations'; }
-    public function version(): string { return '0.24.0'; }
+    public function version(): string { return '0.25.0'; }
     public function backupLimit(): int { return 14; }
 }

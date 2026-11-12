@@ -16,3 +16,12 @@ export type RestoreResult = {
   backup?: BackupFile;
   name?: string;
 };
+
+export type ArchiveRestoreResult = {
+  pendingRestore: boolean;
+  name: string;
+  formatVersion: number;
+  exportedAt: string;
+  photoCount: number;
+  includesSecrets: boolean;
+};

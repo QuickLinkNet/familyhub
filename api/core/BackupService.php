@@ -129,7 +129,7 @@ final class BackupService
         $this->logger->warning('Database restore scheduled', ['source' => basename($source)]);
     }
 
-    private function validateDatabase(string $path): void
+    public function validateDatabase(string $path): void
     {
         $handle = @fopen($path, 'rb');
         $header = $handle === false ? false : fread($handle, 16);

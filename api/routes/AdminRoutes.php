@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace FamilyCompass\Routes;
 
 use FamilyCompass\Controllers\CalendarSourceController;
+use FamilyCompass\Controllers\AdminArchiveController;
 use FamilyCompass\Controllers\AdminBackupController;
 use FamilyCompass\Controllers\GoogleCalendarController;
 use FamilyCompass\Controllers\WallPresentationController;
@@ -18,8 +19,15 @@ final class AdminRoutes
         WallPresentationController $wall,
         CalendarSourceController $calendarSources,
         GoogleCalendarController $googleCalendar,
-        AdminBackupController $backups
+        AdminBackupController $backups,
+        AdminArchiveController $archives
     ): void {
+        $router->get('/v1/admin/archive/download', static function () use ($auth, $archives): void {
+            $auth->requireAdmin(); $archives->download();
+        });
+        $router->post('/v1/admin/archive/restore-upload', static function () use ($auth, $archives): void {
+            $auth->requireAdmin(); $auth->requireCsrf(); $archives->restoreUpload();
+        });
         $router->get('/v1/admin/backups', static function () use ($auth, $backups): void {
             $auth->requireAdmin(); $backups->index();
         });

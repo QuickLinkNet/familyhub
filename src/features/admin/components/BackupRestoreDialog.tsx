@@ -33,7 +33,7 @@ export function BackupRestoreDialog({ open, backup, file, pending, error, onClos
             <Typography fontWeight={700}>{source}</Typography>
           </div>
           <Typography color="text.secondary">
-            Kalender-Verbindungen und verschlüsselte Zugangsdaten funktionieren auf derselben Installation weiter. Für einen Serverumzug müssen die Schlüsseldateien aus dem Speicherbereich zusätzlich sicher übernommen werden.
+            Diese technische Sicherung enthält nur die SQLite-Datenbank. Nutze für einen Serverumzug oder eine vollständige Notfallkopie das portable Familienarchiv mit Fotos und Verbindungsschlüsseln.
           </Typography>
           <TextField
             label="Zur Bestätigung WIEDERHERSTELLEN eingeben"
