@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build && node scripts/prepare-deploy.mjs",
     "preview": "vite preview",
+    "test:deploy-config": "node --test scripts/deploy-config.test.mjs",
     "predeploy": "npm run build",
     "deploy": "node scripts/deploy.mjs"
   },

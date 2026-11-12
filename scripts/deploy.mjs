@@ -1,6 +1,13 @@
 import { Client } from 'basic-ftp';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
+import {
+  normalizeRemoteBaseDir,
+  parseFtpPort,
+  parseFtpSecure,
+  parsePublicAppUrl,
+  requireDeploymentValues,
+} from './deploy-config.mjs';
 
 const root = process.cwd();
 const envPath = join(root, '.env.deploy');
@@ -18,15 +25,21 @@ process.loadEnvFile(envPath);
 const ftpHost = process.env.FTP_HOST ?? '';
 const ftpUser = process.env.FTP_USER ?? '';
 const ftpPassword = process.env.FTP_PASSWORD ?? '';
-const ftpPort = Number(process.env.FTP_PORT ?? '21');
-const ftpSecure = (process.env.FTP_SECURE ?? 'false') === 'true';
-const remoteBaseDir = process.env.REMOTE_BASE_DIR ?? '';
-const publicAppUrl = process.env.PUBLIC_APP_URL ?? '';
 const deployDir = join(root, 'deploy');
 
-if (ftpHost === '' || ftpUser === '' || ftpPassword === '') fail('FTP_HOST, FTP_USER und FTP_PASSWORD müssen gesetzt sein.');
-if (!Number.isInteger(ftpPort) || ftpPort < 1 || ftpPort > 65535) fail('FTP_PORT ist ungültig.');
-if (remoteBaseDir !== '/familyhub') fail('REMOTE_BASE_DIR muss exakt "/familyhub" sein.');
+let ftpPort;
+let ftpSecure;
+let remoteBaseDir;
+let publicAppUrl;
+try {
+  requireDeploymentValues(process.env);
+  ftpPort = parseFtpPort(process.env.FTP_PORT);
+  ftpSecure = parseFtpSecure(process.env.FTP_SECURE);
+  remoteBaseDir = normalizeRemoteBaseDir(process.env.REMOTE_BASE_DIR);
+  publicAppUrl = parsePublicAppUrl(process.env.PUBLIC_APP_URL);
+} catch (error) {
+  fail(error instanceof Error ? error.message : String(error));
+}
 if (!existsSync(join(deployDir, 'index.html')) || !existsSync(join(deployDir, 'api', 'index.php'))) fail('deploy/ ist unvollständig. Führe zuerst npm run build aus.');
 
 console.log(`Ziel: ${ftpHost}:${ftpPort}${remoteBaseDir} (FTPS: ${ftpSecure ? 'ja' : 'nein'})`);

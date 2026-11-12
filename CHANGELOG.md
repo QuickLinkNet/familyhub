@@ -4,6 +4,11 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+### Geändert
+
+- providerneutrales FTP-/FTPS-Deployment mit frei konfigurierbarem, sicher validiertem Zielpfad
+- neutrale Beispielkonfiguration ohne installations- oder anbieterspezifische Infrastrukturwerte
+
 ## [0.26.0] - 2026-11-12
 
 ### Hinzugefügt

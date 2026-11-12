@@ -43,8 +43,9 @@ Pflichtfelder:
 
 - `FTP_HOST`, `FTP_USER`, `FTP_PASSWORD`
 - `FTP_PORT` und `FTP_SECURE`
-- `REMOTE_BASE_DIR=/familyhub`
-- `PUBLIC_APP_URL`
+- `REMOTE_BASE_DIR` entsprechend dem Zielordner des eigenen Hostings, beispielsweise `/familyhub`
+
+`PUBLIC_APP_URL` ist optional und dient ausschließlich einer lesbaren Abschlussmeldung nach dem Upload.
 
 `.env.deploy` wird durch Git ignoriert. Zugangsdaten dürfen nie committed werden.
 
@@ -73,10 +74,12 @@ Dabei werden nacheinander:
 1. TypeScript und Vite gebaut,
 2. PWA-Dateien generiert,
 3. Frontend und PHP-API in `deploy/` zusammengeführt,
-4. der Remote-Pfad bei Bedarf angelegt,
+4. der konfigurierte Remote-Pfad bei Bedarf angelegt,
 5. alle Dateien per FTP/FTPS übertragen.
 
 Der Deploy überschreibt Programmdateien, löscht aber keine vorhandene SQLite-Datenbank, Backups oder Logs.
+
+Der Zielpfad ist nicht an einen Hostinganbieter gebunden. Relative Pfade, das Server-Stammverzeichnis und Pfade mit `..` werden aus Sicherheitsgründen abgelehnt. Wer kein FTP oder FTPS verwendet, kann nach `npm run build` stattdessen den erzeugten Ordner `deploy/` mit dem eigenen Hostingwerkzeug übertragen.
 
 ## 5. Einmalige Einrichtung
 

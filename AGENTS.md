@@ -23,4 +23,4 @@ Dieses Repository ist die maßgebliche FamilyHub-Codebasis. Änderungen werden d
 
 ## Deployment
 
-`npm run deploy` baut Frontend und API und lädt nach `/familyhub`. Bestehende Daten unter `storage/` müssen erhalten bleiben.
+`npm run deploy` baut Frontend und API und lädt in das lokal konfigurierte `REMOTE_BASE_DIR`. Das Server-Stammverzeichnis ist als Ziel gesperrt. Bestehende Daten unter `storage/` müssen erhalten bleiben.
