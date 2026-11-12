@@ -22,6 +22,7 @@ export interface CalendarEvent {
   startsAt: string;
   endsAt: string;
   allDay: boolean;
+  isPrivate: boolean;
   createdBy: { id: string; name: string | null } | null;
   createdAt: string;
   updatedAt: string;
@@ -46,6 +47,7 @@ export interface CalendarEventInput {
   startsAt: string;
   endsAt: string;
   allDay: boolean;
+  isPrivate?: boolean;
   recurrenceFrequency?: RecurrenceFrequency | null;
   recurrenceInterval?: number;
   recurrenceUntil?: string | null;

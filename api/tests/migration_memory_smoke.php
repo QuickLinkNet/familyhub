@@ -22,12 +22,16 @@ foreach (['routine_period', 'repeat_days', 'series_uuid', 'reward_points'] as $r
     }
 }
 $calendarColumns = array_column($database->query('PRAGMA table_info(calendar_events)')->fetchAll(PDO::FETCH_ASSOC), 'name');
-foreach (['recurrence_frequency', 'recurrence_interval', 'recurrence_until'] as $required) {
+foreach (['recurrence_frequency', 'recurrence_interval', 'recurrence_until', 'is_private'] as $required) {
     if (!in_array($required, $calendarColumns, true)) { fwrite(STDERR, "Calendar migration column {$required} is missing.\n"); exit(1); }
 }
 $familyColumns = array_column($database->query('PRAGMA table_info(family_members)')->fetchAll(PDO::FETCH_ASSOC), 'name');
 if (!in_array('birth_date', $familyColumns, true)) { fwrite(STDERR, "Family birth_date migration column is missing.\n"); exit(1); }
-foreach (['rewards', 'reward_ledger', 'shopping_lists', 'shopping_items', 'meal_recipes', 'meal_recipe_ingredients', 'meal_plan_entries', 'routine_templates', 'routine_steps', 'routine_runs', 'routine_run_steps'] as $table) {
+foreach (['external_calendar_events', 'google_calendar_events'] as $table) {
+    $eventColumns = array_column($database->query("PRAGMA table_info({$table})")->fetchAll(PDO::FETCH_ASSOC), 'name');
+    if (!in_array('is_private', $eventColumns, true)) { fwrite(STDERR, "Privacy column on {$table} is missing.\n"); exit(1); }
+}
+foreach (['rewards', 'reward_ledger', 'shopping_lists', 'shopping_items', 'meal_recipes', 'meal_recipe_ingredients', 'meal_plan_entries', 'routine_templates', 'routine_steps', 'routine_runs', 'routine_run_steps', 'push_vapid_keys', 'push_subscriptions', 'push_deliveries'] as $table) {
     $exists = $database->query("SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = '{$table}'")->fetchColumn();
     if ((int) $exists !== 1) { fwrite(STDERR, "Migration table {$table} is missing.\n"); exit(1); }
 }

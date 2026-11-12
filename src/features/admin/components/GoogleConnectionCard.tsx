@@ -1,6 +1,6 @@
-import { Google, LinkOffRounded, RefreshRounded, SettingsRounded } from '@mui/icons-material';
-import { Box, Button, Card, CardContent, Chip, Divider, FormControlLabel, Stack, Switch, Typography } from '@mui/material';
-import type { GoogleCalendarConnection, GoogleCalendarSource } from '../types/googleCalendar';
+import { CheckCircleRounded, Google, LinkOffRounded, RefreshRounded, SettingsRounded, VerifiedRounded } from '@mui/icons-material';
+import { Alert, Box, Button, Card, CardContent, Chip, Divider, FormControlLabel, Stack, Switch, Typography } from '@mui/material';
+import type { GoogleCalendarConnection, GoogleCalendarSource, GoogleVerification } from '../types/googleCalendar';
 
 interface GoogleConnectionCardProps {
   connection: GoogleCalendarConnection;
@@ -8,15 +8,20 @@ interface GoogleConnectionCardProps {
   disconnecting: boolean;
   togglingId?: string;
   syncingId?: string;
+  verifying: boolean;
+  verification?: GoogleVerification;
   onSetup: () => void;
   onAuthorize: () => void;
   onDisconnect: () => void;
   onToggle: (source: GoogleCalendarSource, active: boolean) => void;
   onSync: (source: GoogleCalendarSource) => void;
+  onVerify: () => void;
 }
 
 export function GoogleConnectionCard(props: GoogleConnectionCardProps) {
-  const { connection, authorizing, disconnecting, togglingId, syncingId, onSetup, onAuthorize, onDisconnect, onToggle, onSync } = props;
+  const { connection, authorizing, disconnecting, togglingId, syncingId, verifying, verification, onSetup, onAuthorize, onDisconnect, onToggle, onSync, onVerify } = props;
+  const active = connection.calendars.filter(calendar => calendar.isActive);
+  const writable = active.filter(calendar => calendar.writable);
   return (
     <Card sx={{ borderLeft: '5px solid', borderLeftColor: connection.connected ? 'success.main' : 'primary.main' }}>
       <CardContent sx={{ p: { xs: 2.5, md: 3 }, '&:last-child': { pb: { xs: 2.5, md: 3 } } }}>
@@ -36,10 +41,19 @@ export function GoogleConnectionCard(props: GoogleConnectionCardProps) {
               {!connection.configured && <Button variant="contained" startIcon={<SettingsRounded />} onClick={onSetup}>Einrichten</Button>}
               {connection.configured && !connection.connected && <Button variant="contained" onClick={onAuthorize} disabled={authorizing}>{authorizing ? 'Wird geöffnet …' : 'Mit Google anmelden'}</Button>}
               {connection.configured && <Button variant="outlined" startIcon={<SettingsRounded />} onClick={onSetup}>Zugangsdaten</Button>}
+              {connection.connected && <Button variant="contained" startIcon={<VerifiedRounded />} onClick={onVerify} disabled={verifying}>{verifying ? 'Prüft …' : 'Verbindung prüfen'}</Button>}
               {connection.connected && <Button color="error" startIcon={<LinkOffRounded />} onClick={onDisconnect} disabled={disconnecting}>Trennen</Button>}
             </Stack>
           </Stack>
           {connection.configured && <Typography variant="body2" color="text.secondary">OAuth-Client: {connection.clientIdHint}{connection.accountLabel ? ` · Konto: ${connection.accountLabel}` : ''}</Typography>}
+          {connection.connected && (
+            <Stack direction="row" gap={1} flexWrap="wrap">
+              <Chip icon={<CheckCircleRounded />} color="success" variant="outlined" label="Google angemeldet" />
+              <Chip color={active.length > 0 ? 'success' : 'warning'} variant="outlined" label={`${active.length} Kalender aktiv`} />
+              <Chip color={writable.length > 0 ? 'success' : 'warning'} variant="outlined" label={`${writable.length} davon beschreibbar`} />
+            </Stack>
+          )}
+          {verification && <Alert severity={verification.ready ? 'success' : 'warning'}>{verification.ready ? `Bereit für den Familienalltag: ${verification.synchronizedCalendars} Kalender erfolgreich geprüft.` : 'Die Verbindung besteht, aber mindestens ein aktiver beschreibbarer Kalender fehlt oder konnte nicht synchronisiert werden.'}</Alert>}
           {connection.connected && connection.calendars.length > 0 && (
             <>
               <Divider />

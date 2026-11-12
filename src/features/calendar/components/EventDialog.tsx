@@ -20,6 +20,7 @@ interface EventForm {
   start: string;
   end: string;
   allDay: boolean;
+  isPrivate: boolean;
   recurrenceFrequency: RecurrenceFrequency | '';
   recurrenceInterval: number;
   recurrenceUntil: string;
@@ -44,6 +45,7 @@ export function EventDialog({ event, initialDate, calendars, onClose }: EventDia
     start: event?.allDay ? localDate(initialStart) : localDateTime(initialStart),
     end: event?.allDay ? localDate(addDays(initialEnd, -1)) : localDateTime(initialEnd),
     allDay: event?.allDay ?? false,
+    isPrivate: event?.isPrivate ?? false,
     recurrenceFrequency: event?.recurrence?.frequency ?? '',
     recurrenceInterval: event?.recurrence?.interval ?? 1,
     recurrenceUntil: event?.recurrence?.until ?? ''
@@ -73,6 +75,7 @@ export function EventDialog({ event, initialDate, calendars, onClose }: EventDia
         startsAt: form.allDay ? parseLocalDate(form.start).toISOString() : new Date(form.start).toISOString(),
         endsAt: form.allDay ? addDays(parseLocalDate(form.end), 1).toISOString() : new Date(form.end).toISOString(),
         allDay: form.allDay,
+        isPrivate: form.isPrivate,
         recurrenceFrequency: supportsRecurrence ? form.recurrenceFrequency || null : null,
         recurrenceInterval: supportsRecurrence ? form.recurrenceInterval : 1,
         recurrenceUntil: supportsRecurrence ? form.recurrenceUntil || null : null
@@ -114,7 +117,10 @@ export function EventDialog({ event, initialDate, calendars, onClose }: EventDia
               ))}
             </Select>
           </FormControl>
-          <FormControlLabel control={<Checkbox checked={form.allDay} onChange={e => toggleAllDay(e.target.checked)} />} label="Ganztägig" />
+          <Stack direction={{ xs: 'column', sm: 'row' }} gap={{ xs: 0, sm: 2 }}>
+            <FormControlLabel control={<Checkbox checked={form.allDay} onChange={e => toggleAllDay(e.target.checked)} />} label="Ganztägig" />
+            <FormControlLabel control={<Checkbox checked={form.isPrivate} onChange={e => change('isPrivate', e.target.checked)} />} label="Privat – Kinder sehen nur die belegte Zeit" />
+          </Stack>
           <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
             <TextField required label="Beginn" type={form.allDay ? 'date' : 'datetime-local'} value={form.start} onChange={e => change('start', e.target.value)} slotProps={{ inputLabel: { shrink: true } }} />
             <TextField required label="Ende" type={form.allDay ? 'date' : 'datetime-local'} value={form.end} onChange={e => change('end', e.target.value)} slotProps={{ inputLabel: { shrink: true } }} helperText={form.allDay ? 'Letzter Tag des Termins' : undefined} />

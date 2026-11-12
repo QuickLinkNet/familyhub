@@ -27,7 +27,7 @@ final class ReminderService
 
         return $this->planner->build(
             $actor,
-            $this->calendar->events($this->iso($now->modify('-6 hours')), $this->iso($now->modify('+36 hours'))),
+            $this->calendar->events($this->iso($now->modify('-6 hours')), $this->iso($now->modify('+36 hours')), $actor),
             $this->tasks->list(),
             $this->routines->overview(),
             $this->school->board($today, $now->modify('+3 days')->format('Y-m-d')),

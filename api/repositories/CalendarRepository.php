@@ -44,14 +44,14 @@ final class CalendarRepository
 
     public function createEvent(array $data): CalendarEvent
     {
-        $statement = $this->database->prepare('INSERT INTO calendar_events (uuid, calendar_uuid, title, description, location, starts_at, ends_at, all_day, recurrence_frequency, recurrence_interval, recurrence_until, created_by_member_uuid, created_at, updated_at) VALUES (:uuid, :calendar_uuid, :title, :description, :location, :starts_at, :ends_at, :all_day, :recurrence_frequency, :recurrence_interval, :recurrence_until, :created_by_member_uuid, :created_at, :updated_at)');
+        $statement = $this->database->prepare('INSERT INTO calendar_events (uuid, calendar_uuid, title, description, location, starts_at, ends_at, all_day, is_private, recurrence_frequency, recurrence_interval, recurrence_until, created_by_member_uuid, created_at, updated_at) VALUES (:uuid, :calendar_uuid, :title, :description, :location, :starts_at, :ends_at, :all_day, :is_private, :recurrence_frequency, :recurrence_interval, :recurrence_until, :created_by_member_uuid, :created_at, :updated_at)');
         $statement->execute($data);
         return $this->findEvent($data['uuid']) ?? throw new \RuntimeException('Created calendar event could not be retrieved.');
     }
 
     public function updateEvent(string $uuid, array $data): CalendarEvent
     {
-        $statement = $this->database->prepare('UPDATE calendar_events SET calendar_uuid = :calendar_uuid, title = :title, description = :description, location = :location, starts_at = :starts_at, ends_at = :ends_at, all_day = :all_day, recurrence_frequency = :recurrence_frequency, recurrence_interval = :recurrence_interval, recurrence_until = :recurrence_until, updated_at = :updated_at WHERE uuid = :uuid AND deleted_at IS NULL');
+        $statement = $this->database->prepare('UPDATE calendar_events SET calendar_uuid = :calendar_uuid, title = :title, description = :description, location = :location, starts_at = :starts_at, ends_at = :ends_at, all_day = :all_day, is_private = :is_private, recurrence_frequency = :recurrence_frequency, recurrence_interval = :recurrence_interval, recurrence_until = :recurrence_until, updated_at = :updated_at WHERE uuid = :uuid AND deleted_at IS NULL');
         $statement->execute($data + ['uuid' => $uuid]);
         return $this->findEvent($uuid) ?? throw new \RuntimeException('Updated calendar event could not be retrieved.');
     }

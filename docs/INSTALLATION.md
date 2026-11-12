@@ -11,7 +11,7 @@ Für die lokale Frontend-Entwicklung:
 Für das Hosting:
 
 - PHP 8.2 oder neuer
-- PHP-Erweiterungen `pdo_sqlite`, `mbstring`, `fileinfo` und `zip`
+- PHP-Erweiterungen `pdo_sqlite`, `mbstring`, `fileinfo`, `zip`, `openssl` und `curl`
 - Apache mit `mod_rewrite`
 - Schreibrechte für `storage/database`, `storage/backups` und `storage/logs`
 - FTP oder FTPS für das mitgelieferte Deployment
@@ -118,7 +118,11 @@ Beim Einspielen prüft FamilyHub Dateipfade, Größen, Prüfsummen, SQLite-Integ
 
 Die darunterliegende **Datensicherung** bleibt als technisches Werkzeug für lokale SQLite-Schnappschüsse erhalten. Sie enthält weder Fotodateien noch Schlüssel und eignet sich deshalb nicht allein für einen Serverumzug. Für diesen Restore gilt weiterhin die Bestätigung `WIEDERHERSTELLEN`.
 
-Browser-Benachrichtigungen werden pro Gerät und Familienprofil über die Erinnerungsglocke im Kopfbereich aktiviert. Der Browser fragt einmalig nach Erlaubnis und zeigt direkt eine Testbenachrichtigung. Ohne externen Pushdienst kann FamilyHub neue Hinweise melden, solange die Seite oder installierte PWA geöffnet ist – auch im Hintergrund. Die Einstellung lässt sich dort jederzeit wieder ausschalten.
+Web-Push-Erinnerungen werden pro Gerät und Familienprofil über die Erinnerungsglocke im Kopfbereich aktiviert. Der Browser fragt einmalig nach Erlaubnis und FamilyHub sendet anschließend eine verschlüsselte Testnachricht. Auf iPhone und iPad funktioniert Web Push nur mit einer zum Home-Bildschirm hinzugefügten PWA; Desktop-Browser und Android können die Freigabe direkt erteilen. Die Einstellung lässt sich auf demselben Gerät jederzeit wieder ausschalten.
+
+Damit zeitabhängige Erinnerungen auch ohne offenen Browser ausgelöst werden, zeigt die Administration eine geheime Scheduler-URL. Trage sie im Hosting-Kundenmenü als URL-Cronjob mit einem Intervall von fünf Minuten ein. Ein manueller Durchlauf über **Jetzt prüfen** testet dieselbe Verarbeitung. Die URL enthält einen zufälligen 256-Bit-Schlüssel und muss wie ein Passwort behandelt werden. Sie darf weder in Git noch in öffentliche Monitoring-Dienste eingetragen werden.
+
+FamilyHub erzeugt das VAPID-Schlüsselpaar selbstständig. Push-Endpunkte, Browser-Schlüssel und der private VAPID-Schlüssel werden verschlüsselt gespeichert. Die eigentliche Nachricht ist zusätzlich für den jeweiligen Browser Ende-zu-Ende verschlüsselt. Ein Serverumzug über das portable Familienarchiv übernimmt Datenbank und Anwendungsschlüssel gemeinsam, sodass vorhandene Push-Konfigurationen erhalten bleiben.
 
 ### Automatischer Wandmodus
 
@@ -146,3 +150,5 @@ Einmalig erforderlich; der Assistent verlinkt jeden genannten Google-Bereich dir
 8. Client-ID und Secret in FamilyHub speichern und „Mit Google anmelden“ wählen.
 
 Im Google-Testmodus können Refresh-Tokens nach sieben Tagen ablaufen. Für dauerhaften Betrieb den Zustimmungsbildschirm in den Produktionsstatus versetzen und Googles Hinweise für sensible Kalenderberechtigungen beachten. Self-Hoster verwenden ihren eigenen OAuth-Client; das Repository enthält keine Betreiber-Secrets. Optional kann der Webserver die kanonische Anwendungsadresse über `FAMILYHUB_PUBLIC_URL=https://example.org/apps/familyhub` vorgeben. Ohne Variable erkennt FamilyHub sie aus der HTTPS-Anfrage.
+
+Nach der Verbindung fasst **Verbindung prüfen** den tatsächlichen Betriebszustand zusammen: gültige Google-Anmeldung, Anzahl aktiver Kalender, mindestens ein beschreibbarer Kalender und erfolgreiche Live-Synchronisierung. Der Test liest und aktualisiert ausschließlich den lokalen Kalendercache; er erstellt keinen Termin bei Google.

@@ -52,6 +52,8 @@ final class GoogleCalendarController
 
     public function synchronize(string $uuid): void { Response::success($this->calendars->synchronize($uuid)); }
 
+    public function verify(): void { Response::success($this->calendars->verifyConnection()); }
+
     public function disconnect(): void
     {
         $this->oauth->disconnect();

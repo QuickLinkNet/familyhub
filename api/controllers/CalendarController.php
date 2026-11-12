@@ -13,9 +13,10 @@ final class CalendarController
 
     public function calendars(): void { Response::success($this->service->calendars()); }
 
-    public function events(): void
+    /** @param array{id: string, name: string, color: string, role: string} $actor */
+    public function events(array $actor): void
     {
-        Response::success($this->service->events((string) ($_GET['from'] ?? ''), (string) ($_GET['to'] ?? '')));
+        Response::success($this->service->events((string) ($_GET['from'] ?? ''), (string) ($_GET['to'] ?? ''), $actor));
     }
 
     /** @param array{id: string, name: string, color: string, role: string} $actor */

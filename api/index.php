@@ -14,6 +14,7 @@ use FamilyCompass\Controllers\HealthController;
 use FamilyCompass\Controllers\GoogleCalendarController;
 use FamilyCompass\Controllers\HouseholdChoreController;
 use FamilyCompass\Controllers\MealController;
+use FamilyCompass\Controllers\PushController;
 use FamilyCompass\Controllers\ReminderController;
 use FamilyCompass\Controllers\RewardController;
 use FamilyCompass\Controllers\RoutineController;
@@ -42,6 +43,7 @@ use FamilyCompass\Repositories\GoogleCalendarRepository;
 use FamilyCompass\Repositories\GoogleOAuthRepository;
 use FamilyCompass\Repositories\HouseholdChoreRepository;
 use FamilyCompass\Repositories\MealRepository;
+use FamilyCompass\Repositories\PushRepository;
 use FamilyCompass\Repositories\RewardRepository;
 use FamilyCompass\Repositories\RoutineRepository;
 use FamilyCompass\Repositories\SchoolRepository;
@@ -50,6 +52,8 @@ use FamilyCompass\Repositories\ShoppingRepository;
 use FamilyCompass\Repositories\TaskRepository;
 use FamilyCompass\Repositories\WallPresentationRepository;
 use FamilyCompass\Routes\AdminRoutes;
+use FamilyCompass\Routes\CalendarRoutes;
+use FamilyCompass\Routes\PushRoutes;
 use FamilyCompass\Services\AuthService;
 use FamilyCompass\Services\AdminArchiveService;
 use FamilyCompass\Services\AdminBackupService;
@@ -65,6 +69,7 @@ use FamilyCompass\Services\GoogleCalendarService;
 use FamilyCompass\Services\GoogleOAuthService;
 use FamilyCompass\Services\HouseholdChoreService;
 use FamilyCompass\Services\MealService;
+use FamilyCompass\Services\PushService;
 use FamilyCompass\Services\ReminderPlanner;
 use FamilyCompass\Services\ReminderService;
 use FamilyCompass\Services\RewardService;
@@ -75,6 +80,7 @@ use FamilyCompass\Services\ShoppingService;
 use FamilyCompass\Services\TaskService;
 use FamilyCompass\Services\WallPresentationService;
 use FamilyCompass\Services\WeatherService;
+use FamilyCompass\Services\WebPushCrypto;
 use FamilyCompass\Services\IcalFetcher;
 use FamilyCompass\Services\IcalParser;
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
@@ -149,7 +155,10 @@ try {
     $mealController = new MealController(new MealService(new MealRepository($database), $shoppingRepository));
     $schoolService = new SchoolService(new SchoolRepository($database), $familyRepository);
     $schoolController = new SchoolController($schoolService);
-    $reminderController = new ReminderController(new ReminderService($calendarService, $taskService, $routineService, $schoolService, $taskRepository, new ReminderPlanner()));
+    $reminderService = new ReminderService($calendarService, $taskService, $routineService, $schoolService, $taskRepository, new ReminderPlanner());
+    $reminderController = new ReminderController($reminderService);
+    $pushService = new PushService(new PushRepository($database), $familyRepository, $reminderService, $secretCipher, new WebPushCrypto(), new PublicUrl());
+    $pushController = new PushController($pushService);
     $householdChoreController = new HouseholdChoreController(new HouseholdChoreService(new HouseholdChoreRepository($database), $familyRepository));
     $wallPresentationController = new WallPresentationController(new WallPresentationService(new WallPresentationRepository($database), new WeatherService(), $config));
     $backupService = new BackupService($config, $logger);
@@ -190,6 +199,7 @@ try {
     $router->get('/v1/reminders', static function () use ($authService, $reminderController): void {
         $reminderController->index($authService->requireUser());
     });
+    PushRoutes::register($router, $authService, $pushController);
     $router->post('/v1/family-members', static function () use ($authService, $familyController): void {
         $authService->requireAdult();
         $authService->requireCsrf();
@@ -468,29 +478,7 @@ try {
         $authService->requireUser();
         $wallPresentationController->photo($uuid);
     });
-    $router->get('/v1/calendars', static function () use ($authService, $calendarController): void {
-        $authService->requireUser();
-        $calendarController->calendars();
-    });
-    $router->get('/v1/calendar-events', static function () use ($authService, $calendarController): void {
-        $authService->requireUser();
-        $calendarController->events();
-    });
-    $router->post('/v1/calendar-events', static function () use ($authService, $calendarController): void {
-        $actor = $authService->requireAdult();
-        $authService->requireCsrf();
-        $calendarController->create($actor);
-    });
-    $router->put('/v1/calendar-events/{uuid}', static function (string $uuid) use ($authService, $calendarController): void {
-        $authService->requireAdult();
-        $authService->requireCsrf();
-        $calendarController->update($uuid);
-    });
-    $router->delete('/v1/calendar-events/{uuid}', static function (string $uuid) use ($authService, $calendarController): void {
-        $authService->requireAdult();
-        $authService->requireCsrf();
-        $calendarController->delete($uuid);
-    });
+    CalendarRoutes::register($router, $authService, $calendarController);
     AdminRoutes::register($router, $authService, $wallPresentationController, $calendarSourceController, $googleCalendarController, $adminBackupController, $adminArchiveController);
 
     $router->dispatch($_SERVER['REQUEST_METHOD'] ?? 'GET', $_SERVER['REQUEST_URI'] ?? '/');

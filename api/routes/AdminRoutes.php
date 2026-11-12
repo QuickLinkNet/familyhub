@@ -88,6 +88,9 @@ final class AdminRoutes
         $router->post('/v1/admin/google-calendar/sources/{uuid}/sync', static function (string $uuid) use ($auth, $googleCalendar): void {
             $auth->requireAdmin(); $auth->requireCsrf(); $googleCalendar->synchronize($uuid);
         });
+        $router->post('/v1/admin/google-calendar/verify', static function () use ($auth, $googleCalendar): void {
+            $auth->requireAdmin(); $auth->requireCsrf(); $googleCalendar->verify();
+        });
         $router->delete('/v1/admin/google-calendar', static function () use ($auth, $googleCalendar): void {
             $auth->requireAdmin(); $auth->requireCsrf(); $googleCalendar->disconnect();
         });

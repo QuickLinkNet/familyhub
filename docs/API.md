@@ -54,10 +54,14 @@ Alle Familien- und Aufgabenendpunkte benötigen eine gültige Session.
 ### Persönliche Erinnerungen
 
 - `GET /reminders` – aktuell relevante Hinweise für das angemeldete Profil
+- `GET /push/status` – Web-Push-Fähigkeit, öffentlicher VAPID-Schlüssel und eigene Geräte
+- `POST /push/subscriptions` – Browsergerät mit `endpoint`, `p256dh`, `auth` und optionalem Gerätenamen registrieren
+- `POST /push/unsubscribe` – eigenes Browsergerät abmelden
+- `POST /push/test` – verschlüsselte Testnachricht an das aktuelle Browsergerät senden
 
 Die API führt Kalendertermine der nächsten 36 Stunden, fällige oder überfällige Aufgaben, ausstehende Eltern-Checks, offene Schuleinträge der nächsten drei Tage und heutige Routinen zusammen. Kinder erhalten ausschließlich Einträge, die ihrem Profil zugeordnet sind; Erwachsene sehen den relevanten Familienüberblick. Jeder Hinweis enthält Typ, Dringlichkeit, Titel, Kontext, Fälligkeit und ein internes Sprungziel. Die Liste ist priorisiert und auf zwölf Einträge begrenzt.
 
-Der Familienradar ist eine abgeleitete Ansicht. Er legt keine zusätzlichen personenbezogenen Verlaufsdaten an und benötigt keinen externen Benachrichtigungsdienst.
+Der Familienradar ist eine abgeleitete Ansicht. Er legt keine zusätzlichen personenbezogenen Verlaufsdaten an. Web Push ist optional; Endpunkt und Browser-Schlüssel werden serverseitig verschlüsselt gespeichert, Nutzlasten pro Zielbrowser verschlüsselt und fehlgeschlagene oder abgelaufene Geräte automatisch ausgetragen.
 
 ### Familienmitglieder
 
@@ -186,7 +190,7 @@ Der Settings-Request akzeptiert `greeting`, `weatherEnabled` und `weatherLocatio
 - `PUT /calendar-events/{uuid}` – Admin oder Elternteil
 - `DELETE /calendar-events/{uuid}` – Admin oder Elternteil
 
-Lokale Termine enthalten `source: "LOCAL"` und `editable: true`. Für lokale Serien akzeptieren Create und Update `recurrenceFrequency` (`DAILY`, `WEEKLY`, `MONTHLY`, `YEARLY`), `recurrenceInterval` (1–12) und optional `recurrenceUntil` (`YYYY-MM-DD`). Ausgelieferte Vorkommen tragen eine eindeutige `id` und die zugrunde liegende `seriesId`; Mutationen verwenden die Serien-ID. Virtuelle Geburtstage enthalten `source: "BIRTHDAY"`, `editable: false`. iCal-Termine enthalten `source: "EXTERNAL"`, `editable: false`. Direkt verbundene Google-Termine enthalten `source: "GOOGLE"`; `editable` richtet sich nach der von Google gemeldeten Kalenderrolle.
+Lokale Termine enthalten `source: "LOCAL"` und `editable: true`. Für lokale Serien akzeptieren Create und Update `recurrenceFrequency` (`DAILY`, `WEEKLY`, `MONTHLY`, `YEARLY`), `recurrenceInterval` (1–12) und optional `recurrenceUntil` (`YYYY-MM-DD`). `isPrivate: true` markiert einen privaten Termin; Kinder erhalten dafür ausschließlich belegte Zeit und den neutralen Titel „Privater Termin“. Ausgelieferte Vorkommen tragen eine eindeutige `id` und die zugrunde liegende `seriesId`; Mutationen verwenden die Serien-ID. Virtuelle Geburtstage enthalten `source: "BIRTHDAY"`, `editable: false`. iCal-Termine enthalten `source: "EXTERNAL"`, `editable: false`. Direkt verbundene Google-Termine enthalten `source: "GOOGLE"`; `editable` richtet sich nach der von Google gemeldeten Kalenderrolle.
 
 ### Administration: Google-Kalender
 
@@ -207,6 +211,7 @@ Alle Admin-Endpunkte benötigen Rolle `ADMIN`; Mutationen zusätzlich CSRF.
 - `GET /admin/google-calendar` – Konfigurations-, Verbindungs- und Kalenderstatus ohne Geheimnisse
 - `PUT /admin/google-calendar/config` – OAuth-Client-ID und Client-Secret verschlüsselt speichern
 - `POST /admin/google-calendar/authorize` – kurzlebige Google-Autorisierungsadresse erzeugen
+- `POST /admin/google-calendar/verify` – Token, aktive Quellen, Schreibrechte und Synchronisation ohne Testtermin prüfen
 - `PUT /admin/google-calendar/sources/{uuid}` – einen Google-Kalender am Board aktivieren oder deaktivieren
 - `POST /admin/google-calendar/sources/{uuid}/sync` – aktiven Google-Kalender synchronisieren
 - `DELETE /admin/google-calendar` – Token widerrufen und lokalen Google-Cache entfernen
@@ -214,7 +219,17 @@ Alle Admin-Endpunkte benötigen Rolle `ADMIN`; Mutationen zusätzlich CSRF.
 
 Die Konfiguration akzeptiert `clientId` und `clientSecret`. Der Browser erhält danach nur einen gekürzten Client-ID-Hinweis, die exakt zu registrierende Callback-URL und neutrale Statusdaten. Der Callback tauscht den Autorisierungscode serverseitig gegen Token, importiert die Kalenderliste und aktiviert den primären Kalender. Schreibzugriffe auf `/calendar-events` werden anhand der Kalender-ID entweder lokal oder über die Google Calendar API ausgeführt.
 
-`from`, `to`, `startsAt` und `endsAt` sind ISO-8601-Zeitpunkte. Schreibzugriffe akzeptieren `calendarId`, `title`, optional `description` und `location` sowie `startsAt`, `endsAt` und `allDay`. Das Ende muss nach dem Beginn liegen. Ein Abfragezeitraum ist auf 370 Tage begrenzt.
+`from`, `to`, `startsAt` und `endsAt` sind ISO-8601-Zeitpunkte. Schreibzugriffe akzeptieren `calendarId`, `title`, optional `description` und `location` sowie `startsAt`, `endsAt`, `allDay` und `isPrivate`. Das Ende muss nach dem Beginn liegen. Ein Abfragezeitraum ist auf 370 Tage begrenzt.
+
+### Administration: Web Push
+
+Alle Admin-Endpunkte benötigen Rolle `ADMIN`; die Mutation zusätzlich CSRF.
+
+- `GET /admin/push` – Gerätezahl, öffentlicher VAPID-Schlüssel und geheime Scheduler-URL anzeigen
+- `POST /admin/push/dispatch` – fällige Hinweise sofort prüfen und versenden
+- `GET /push/dispatch?token={secret}` – token-geschützter Scheduler-Endpunkt für einen Hosting-Cronjob
+
+Der Scheduler liefert nur Versandzähler zurück. Er gruppiert fällige Hinweise pro Profil, versendet ausschließlich relevante Dringlichkeiten, verhindert Doppelsendungen und gibt keine Familieninhalte in seiner Antwort aus. Für den geschlossenen-Browser-Betrieb sollte ihn ein vertrauenswürdiger Cronjob ungefähr alle fünf Minuten aufrufen.
 
 ### Administration: Sicherungen und Familienarchiv
 

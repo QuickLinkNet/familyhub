@@ -1,4 +1,4 @@
-import { LocationOnRounded } from '@mui/icons-material';
+import { LocationOnRounded, LockRounded } from '@mui/icons-material';
 import { Box, CardActionArea, Chip, Stack, Typography } from '@mui/material';
 import type { CalendarEvent } from '../types/calendar';
 import { isSameDay, timeFormatter } from '../utils/calendarDates';
@@ -25,7 +25,10 @@ function timeLabel(event: CalendarEvent, day?: Date) {
 export function EventCard({ event, canManage, onOpen, compact = false, day }: EventCardProps) {
   const content = (
     <Box sx={{ borderLeft: `5px solid ${event.calendar.color}`, pl: 1, py: 0.25, textAlign: 'left' }}>
-      <Typography variant="subtitle2" lineHeight={1.25} noWrap={compact}>{event.title}</Typography>
+      <Stack direction="row" alignItems="center" gap={0.5}>
+        {event.isPrivate && <LockRounded aria-label="Privater Termin" sx={{ fontSize: 15 }} color="action" />}
+        <Typography variant="subtitle2" lineHeight={1.25} noWrap={compact}>{event.title}</Typography>
+      </Stack>
       <Typography variant="caption" color="text.secondary" display="block">
         {timeLabel(event, day)}
       </Typography>

@@ -12,9 +12,10 @@ import { CalendarSourceDialog } from '../components/CalendarSourceDialog';
 import { GoogleConnectionCard } from '../components/GoogleConnectionCard';
 import { GoogleSetupDialog } from '../components/GoogleSetupDialog';
 import { PortableArchiveCard } from '../components/PortableArchiveCard';
+import { PushSchedulerCard } from '../components/PushSchedulerCard';
 import { WallPresentationCard } from '../components/WallPresentationCard';
 import { useCalendarSources, useCreateCalendarSource, useDeleteCalendarSource, useSyncCalendarSource, useUpdateCalendarSource } from '../hooks/useCalendarSources';
-import { useAuthorizeGoogle, useConfigureGoogle, useDisconnectGoogle, useGoogleConnection, useSyncGoogleCalendar, useToggleGoogleCalendar } from '../hooks/useGoogleCalendar';
+import { useAuthorizeGoogle, useConfigureGoogle, useDisconnectGoogle, useGoogleConnection, useSyncGoogleCalendar, useToggleGoogleCalendar, useVerifyGoogle } from '../hooks/useGoogleCalendar';
 import type { CalendarSource, CalendarSourceInput } from '../types/calendarSource';
 import type { GoogleOAuthConfigInput } from '../types/googleCalendar';
 
@@ -33,11 +34,12 @@ export function AdminPage() {
   const toggleGoogle = useToggleGoogleCalendar();
   const syncGoogle = useSyncGoogleCalendar();
   const disconnectGoogle = useDisconnectGoogle();
+  const verifyGoogle = useVerifyGoogle();
   const [dialogSource, setDialogSource] = useState<CalendarSource | null | undefined>(undefined);
   const [googleSetupOpen, setGoogleSetupOpen] = useState(false);
   const mutationError = createSource.error ?? updateSource.error;
   const actionError = syncSource.error ?? deleteSource.error;
-  const googleError = configureGoogle.error ?? authorizeGoogle.error ?? toggleGoogle.error ?? syncGoogle.error ?? disconnectGoogle.error;
+  const googleError = configureGoogle.error ?? authorizeGoogle.error ?? toggleGoogle.error ?? syncGoogle.error ?? disconnectGoogle.error ?? verifyGoogle.error;
 
   if (!isAdmin) {
     return <Alert severity="warning">Dieser Bereich ist ausschließlich für Administratoren freigeschaltet.</Alert>;
@@ -83,6 +85,7 @@ export function AdminPage() {
       {searchParams.get('google') === 'connected' && <Alert severity="success">Google Kalender ist verbunden. Der primäre Kalender wurde automatisch aktiviert.</Alert>}
       {searchParams.get('google') === 'error' && <Alert severity="error">Die Google-Anmeldung konnte nicht abgeschlossen werden. Bitte starte sie erneut.</Alert>}
       <WallPresentationCard enabled={isAdmin} />
+      <PushSchedulerCard enabled={isAdmin} preview={import.meta.env.DEV && searchParams.get('push') === 'preview'} />
       <PortableArchiveCard preview={import.meta.env.DEV && searchParams.get('archive') === 'preview'} />
       <BackupManagerCard enabled={isAdmin} />
       <Stack direction="row" alignItems="center" gap={1}><AdminPanelSettingsRounded color="primary" /><Typography variant="h5">Direkte Google-Verbindung</Typography></Stack>
@@ -96,11 +99,14 @@ export function AdminPage() {
           disconnecting={disconnectGoogle.isPending}
           togglingId={toggleGoogle.isPending ? toggleGoogle.variables?.id : undefined}
           syncingId={syncGoogle.isPending ? syncGoogle.variables : undefined}
+          verifying={verifyGoogle.isPending}
+          verification={verifyGoogle.data}
           onSetup={() => { configureGoogle.reset(); setGoogleSetupOpen(true); }}
           onAuthorize={() => { authorizeGoogle.reset(); void authorize(); }}
           onDisconnect={disconnect}
           onToggle={(source, isActive) => toggleGoogle.mutate({ id: source.id, isActive })}
           onSync={source => syncGoogle.mutate(source.id)}
+          onVerify={() => verifyGoogle.mutate()}
         />
       )}
       <Stack direction="row" alignItems="center" gap={1}><AddLinkRounded color="primary" /><Typography variant="h5">iCal-Kalender · nur lesen</Typography></Stack>

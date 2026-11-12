@@ -119,6 +119,27 @@ final class GoogleCalendarService
         return $this->presentSource($this->requireSource($uuid));
     }
 
+    /** @return array<string, mixed> */
+    public function verifyConnection(): array
+    {
+        $token = $this->oauth->accessToken();
+        $sources = $this->repository->activeSources();
+        $synced = 0; $errors = [];
+        foreach ($sources as $source) {
+            try { $this->synchronizeSource($source, $token); $synced++; }
+            catch (AppException $exception) {
+                $this->repository->markSyncError((string) $source['uuid'], $exception->getMessage());
+                $errors[] = ['id' => $source['uuid'], 'name' => $source['name'], 'message' => $exception->getMessage()];
+            }
+        }
+        $writable = count(array_filter($sources, static fn (array $source): bool => in_array($source['access_role'], self::WRITABLE_ROLES, true)));
+        return [
+            'ready' => $sources !== [] && $writable > 0 && $errors === [],
+            'activeCalendars' => count($sources), 'writableCalendars' => $writable,
+            'synchronizedCalendars' => $synced, 'errors' => $errors, 'verifiedAt' => gmdate('c'),
+        ];
+    }
+
     /** @param array<string, mixed> $input @return array<string, mixed> */
     public function createEvent(array $input): array
     {
@@ -207,6 +228,7 @@ final class GoogleCalendarService
             'description' => $this->nullableText($event['description'] ?? null, 2_000),
             'location' => $this->nullableText($event['location'] ?? null, 160),
             'starts_at' => $this->utc($start), 'ends_at' => $this->utc($end), 'all_day' => $allDay ? 1 : 0,
+            'is_private' => in_array(strtolower((string) ($event['visibility'] ?? 'default')), ['private', 'confidential'], true) ? 1 : 0,
             'created_at' => $this->googleTime($event['created'] ?? null, $now),
             'updated_at' => $this->googleTime($event['updated'] ?? null, $now),
         ];
@@ -226,8 +248,10 @@ final class GoogleCalendarService
         } catch (\Throwable) { throw new AppException('VALIDATION_ERROR', 'Beginn oder Ende des Termins ist ungültig.', 422); }
         if ($end <= $start || $end->getTimestamp() - $start->getTimestamp() > 366 * 86400) { throw new AppException('VALIDATION_ERROR', 'Das Terminende ist ungültig.', 422); }
         $allDay = filter_var($input['allDay'] ?? $existing['all_day'] ?? false, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        $isPrivate = filter_var($input['isPrivate'] ?? $existing['is_private'] ?? false, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         if ($calendarId === '' || $allDay === null) { throw new AppException('VALIDATION_ERROR', 'Die Kalenderauswahl ist ungültig.', 422); }
-        return compact('calendarId', 'title', 'description', 'location', 'start', 'end', 'allDay');
+        if ($isPrivate === null) { throw new AppException('VALIDATION_ERROR', 'Die Privat-Einstellung ist ungültig.', 422); }
+        return compact('calendarId', 'title', 'description', 'location', 'start', 'end', 'allDay', 'isPrivate');
     }
 
     /** @param array<string, mixed> $data @return array<string, mixed> */
@@ -241,7 +265,7 @@ final class GoogleCalendarService
             $start = ['dateTime' => $this->utc($data['start'])];
             $end = ['dateTime' => $this->utc($data['end'])];
         }
-        return ['summary' => $data['title'], 'description' => $data['description'] ?? '', 'location' => $data['location'] ?? '', 'start' => $start, 'end' => $end];
+        return ['summary' => $data['title'], 'description' => $data['description'] ?? '', 'location' => $data['location'] ?? '', 'visibility' => $data['isPrivate'] ? 'private' : 'default', 'start' => $start, 'end' => $end];
     }
 
     /** @param array<string, mixed> $source */
@@ -285,6 +309,7 @@ final class GoogleCalendarService
             'id' => $row['uuid'], 'calendar' => ['id' => $row['source_uuid'], 'name' => $row['calendar_name'], 'color' => $row['calendar_color']],
             'title' => $row['title'], 'description' => $row['description'], 'location' => $row['location'],
             'startsAt' => $row['starts_at'], 'endsAt' => $row['ends_at'], 'allDay' => (bool) $row['all_day'],
+            'isPrivate' => (bool) ($row['is_private'] ?? false),
             'createdBy' => null, 'source' => 'GOOGLE', 'editable' => in_array($row['access_role'], self::WRITABLE_ROLES, true),
             'createdAt' => $row['created_at'], 'updatedAt' => $row['updated_at'],
         ];

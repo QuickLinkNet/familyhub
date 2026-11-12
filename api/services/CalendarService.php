@@ -35,7 +35,7 @@ final class CalendarService
     }
 
     /** @return list<array<string, mixed>> */
-    public function events(string $from, string $to): array
+    public function events(string $from, string $to, ?array $actor = null): array
     {
         $fromDate = $this->dateTime($from, 'Der Beginn des Zeitraums ist ungültig.');
         $toDate = $this->dateTime($to, 'Das Ende des Zeitraums ist ungültig.');
@@ -57,6 +57,9 @@ final class CalendarService
             $this->googleService->eventsBetween($fromUtc, $toUtc)
         );
         usort($events, static fn (array $a, array $b): int => [$a['startsAt'], $a['endsAt'], $a['title']] <=> [$b['startsAt'], $b['endsAt'], $b['title']]);
+        if (($actor['role'] ?? null) === 'CHILD') {
+            $events = array_map([$this, 'maskPrivateEvent'], $events);
+        }
         return $events;
     }
 
@@ -133,6 +136,13 @@ final class CalendarService
             throw new AppException('VALIDATION_ERROR', 'Die Ganztags-Einstellung ist ungültig.', 422);
         }
 
+        $isPrivate = array_key_exists('isPrivate', $input)
+            ? filter_var($input['isPrivate'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)
+            : ($existing?->isPrivate ?? false);
+        if ($isPrivate === null) {
+            throw new AppException('VALIDATION_ERROR', 'Die Privat-Einstellung ist ungültig.', 422);
+        }
+
         $frequency = array_key_exists('recurrenceFrequency', $input)
             ? strtoupper(trim((string) $input['recurrenceFrequency']))
             : ($existing?->recurrenceFrequency ?? '');
@@ -167,10 +177,18 @@ final class CalendarService
             'starts_at' => $this->utc($startsAt),
             'ends_at' => $this->utc($endsAt),
             'all_day' => $allDay ? 1 : 0,
+            'is_private' => $isPrivate ? 1 : 0,
             'recurrence_frequency' => $frequency,
             'recurrence_interval' => $frequency === null ? 1 : $interval,
             'recurrence_until' => $until,
         ];
+    }
+
+    /** @param array<string, mixed> $event @return array<string, mixed> */
+    private function maskPrivateEvent(array $event): array
+    {
+        if (!(bool) ($event['isPrivate'] ?? false)) { return $event; }
+        return array_replace($event, ['title' => 'Privater Termin', 'description' => null, 'location' => null, 'editable' => false]);
     }
 
     private function dateTime(string $value, string $message): DateTimeImmutable

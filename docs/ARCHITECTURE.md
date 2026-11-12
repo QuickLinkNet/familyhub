@@ -52,6 +52,18 @@ Das Schulmodul trennt den stabilen, wöchentlich wiederkehrenden Stundenplan von
 
 Lokale Kalenderwiederholungen bleiben als kompakte Serie in `calendar_events` gespeichert. Ein eigener Expander erzeugt nur die im angefragten Zeitraum sichtbaren Vorkommen; eine Serien-ID hält Bearbeiten und Löschen eindeutig. Geburtstage werden aus dem optionalen Geburtsdatum aktiver Familienprofile als schreibgeschützte virtuelle Kalenderereignisse erzeugt.
 
+Private Termine behalten ihre Zeit und Kalenderfarbe, werden für Kinder aber bereits im Backend auf einen neutralen Titel ohne Beschreibung oder Ort reduziert. Dieselbe rollenabhängige Sicht wird für Kalender, Familienradar und Push-Nachrichten verwendet.
+
+## Web Push
+
+Web Push bleibt ohne Drittanbieter und ohne Composer-Abhängigkeit:
+
+```text
+Familienradar → Scheduler → profilbezogene Geräte → verschlüsselte Web-Push-Nutzlast → Service Worker
+```
+
+Der Server erzeugt pro Installation ein P-256-VAPID-Schlüsselpaar. Endpunkte, Browser-Schlüssel, privater Schlüssel und Scheduler-Token liegen AES-256-GCM-verschlüsselt in SQLite; die eigentliche Nachricht wird nach RFC 8291 pro Browser mit ECDH, HKDF und AES-128-GCM verschlüsselt. Eine Versandhistorie verhindert Doppelnachrichten. Abgelaufene Geräte werden bei HTTP 404 oder 410 automatisch widerrufen, während ein optionaler Hosting-Cronjob die Prüfung im Hintergrund anstößt.
+
 ## Deployment
 
 `npm run build` erzeugt die PWA und ein vollständiges `deploy/`-Paket. `npm run deploy` überträgt dieses Paket per FTP/FTPS. Der geschützte `storage/`-Bereich liegt neben API und Frontend, aber außerhalb der statischen Build-Ausgabe.

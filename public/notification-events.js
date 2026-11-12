@@ -1,3 +1,16 @@
+self.addEventListener('push', event => {
+  let payload = {};
+  try { payload = event.data ? event.data.json() : {}; } catch { payload = {}; }
+  const icon = new URL('icon-192.svg', self.registration.scope).href;
+  event.waitUntil(self.registration.showNotification(payload.title || 'FamilyHub', {
+    body: payload.body || 'Es gibt etwas Neues für deine Familie.',
+    icon,
+    badge: icon,
+    tag: payload.tag || 'familyhub-reminders',
+    data: { href: typeof payload.href === 'string' ? payload.href : '/' }
+  }));
+});
+
 self.addEventListener('notificationclick', event => {
   event.notification.close();
   const href = typeof event.notification.data?.href === 'string' ? event.notification.data.href : '/';

@@ -4,6 +4,33 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.26.0] - 2026-11-12
+
+### Hinzugefügt
+
+- privater Terminmodus für lokale, per iCal importierte und direkt verbundene Google-Termine
+- rollenabhängige Kalenderdarstellung: Kinder sehen bei privaten Terminen ausschließlich die belegte Zeit
+- echte, verschlüsselte Web-Push-Erinnerungen auch bei geschlossener PWA oder Browserseite
+- gerätebezogene Push-Aktivierung je Familienprofil mit Testnachricht und sicherem Abmelden
+- Admin-Karte mit kopierbarer Scheduler-URL, Gerätestatus und manuellem Erinnerungsdurchlauf
+- geführter Google-Livecheck für Anmeldung, aktive Kalender, Schreibrechte und erfolgreiche Synchronisierung
+
+### Sicherheit und Betrieb
+
+- Push-Endpunkte und Browser-Schlüssel werden AES-256-GCM-verschlüsselt in SQLite gespeichert
+- selbst erzeugtes VAPID-Schlüsselpaar; der private Schlüssel wird ausschließlich verschlüsselt abgelegt
+- Web-Push-Nutzlasten werden serverseitig per ECDH, HKDF und AES-128-GCM für genau den Zielbrowser verschlüsselt
+- Push-Ziele müssen öffentlich auflösbare HTTPS-Endpunkte auf Port 443 sein; interne Netze und Redirects sind ausgeschlossen
+- Scheduler-Zugriff verwendet einen zufälligen 256-Bit-Schlüssel und liefert ausschließlich Zustellungszähler
+- bereits zugestellte Reminder-Fingerprints verhindern Wiederholungsspam und werden automatisch bereinigt
+
+### Geprüft
+
+- Kalender-Privatmodus einschließlich iCal-Import und Kindermaskierung
+- VAPID-Schlüsselerzeugung, JWT-Signatur und Web-Push-Payload-Verschlüsselung
+- alle Datenbankmigrationen, Production-Typecheck, vollständiger PHP-Lint und alle Smoke-Tests
+- Desktop- und 390×844-Mobilansicht, persönlicher Push-Status, Admin-Scheduler und Live-API 0.26.0
+
 ## [0.25.0] - 2026-11-12
 
 ### Hinzugefügt

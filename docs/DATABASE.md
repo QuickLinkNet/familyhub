@@ -27,6 +27,7 @@ Aktuelle Entwicklung:
 17. wiederkehrende Haushaltsaufgaben mit Zuständigkeit und Abschlussjournal
 18. konfigurierbarer Wandmodus und Metadaten für geschützte Familienfotos
 19. gemeinsame Familienziele mit unveränderlichem Beitragsjournal
+20. private Kalenderkennzeichnung sowie verschlüsselte Push-Abonnements, VAPID-Schlüssel und Zustellungsfingerprints
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -34,7 +35,7 @@ Admins können dieselben konsistenten SQLite-Sicherungen unter **Administration 
 
 Für einen vollständigen Serverumzug erstellt **Administration → Portables Familienarchiv** eine `.familyhub`-Datei. Das ZIP-basierte Format enthält `manifest.json`, `database/app.sqlite`, aktive Dateien aus `photos/` und vorhandene Schlüssel unter `keys/`. Das Manifest führt Größe, Typ und SHA-256-Prüfsumme jeder Datei auf. Ein Import wird zunächst vollständig in einen geschützten Pending-Bereich extrahiert und erst beim nächsten API-Request gemeinsam aktiviert.
 
-In-App-Erinnerungen werden zur Laufzeit aus Kalender-, Aufgaben-, Schul- und Routinedaten abgeleitet. Dafür ist bewusst keine zusätzliche Tabelle oder Verlaufsspeicherung erforderlich.
+Erinnerungen werden zur Laufzeit aus Kalender-, Aufgaben-, Schul- und Routinedaten abgeleitet. Für Web Push speichert FamilyHub nur verbundene Browser, technische Zustellungszustände und kurzlebige Reminder-Fingerprints gegen Wiederholungsspam; es entsteht kein separates Familienaktivitätsprotokoll.
 
 Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielsweise `007_recurring_tasks.sql`. Jede Datei muss vollständig transaktional ausführbar sein.
 
@@ -65,12 +66,15 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 - `family_goal_contributions` – append-only Fortschrittsjournal mit Person, Schrittzahl und Zeitpunkt
 - `households` – Haushalt, Locale, Zeitzone und Setup-Zeitpunkt
 - calendars – gemeinsamer sowie persönliche Kalender
-- `calendar_events` – Termine, Zeiträume, Orte, Ersteller und optionale Wiederholungsregel
+- `calendar_events` – Termine, Zeiträume, Orte, Ersteller, Privatkennzeichnung und optionale Wiederholungsregel
 - `calendar_sources` – verschlüsselte Google-iCal-Verbindungen und Synchronisationsstatus
 - `external_calendar_events` – lokal zwischengespeicherte read-only Termine externer Quellen
 - `google_oauth_connections` – verschlüsselte OAuth-Konfiguration, Tokens und kurzlebiger State
 - `google_calendar_sources` – verfügbare Google-Kalender, Auswahl, Rechte und Synchronisationsstatus
 - `google_calendar_events` – lokal zwischengespeicherte Google-Termine mit externer Kennung
+- `push_vapid_keys` – öffentliches VAPID-Material und verschlüsselter privater Signaturschlüssel
+- `push_subscriptions` – verschlüsselte Browser-Endpunkte und Schlüssel je Familienprofil und Gerät
+- `push_deliveries` – technische, automatisch bereinigte Fingerprints bereits versandter Reminder
 - `auth_login_attempts` – begrenzte Fehlversuche und zeitweilige Login-Sperren
 - `schema_migrations` – angewendete Migrationen
 

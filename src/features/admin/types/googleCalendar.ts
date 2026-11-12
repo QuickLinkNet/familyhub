@@ -27,3 +27,12 @@ export interface GoogleOAuthConfigInput {
   clientId: string;
   clientSecret: string;
 }
+
+export interface GoogleVerification {
+  ready: boolean;
+  activeCalendars: number;
+  writableCalendars: number;
+  synchronizedCalendars: number;
+  errors: Array<{ id: string; name: string; message: string }>;
+  verifiedAt: string;
+}

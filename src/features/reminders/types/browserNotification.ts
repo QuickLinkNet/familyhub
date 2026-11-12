@@ -2,6 +2,8 @@ export type BrowserNotificationStatus = {
   supported: boolean;
   permission: NotificationPermission | 'unsupported';
   enabled: boolean;
+  deviceCount: number;
+  loading: boolean;
 };
 
 export type StoredNotificationState = {

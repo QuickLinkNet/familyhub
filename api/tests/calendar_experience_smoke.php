@@ -15,7 +15,7 @@ spl_autoload_register(static function (string $class) use ($apiPath): void {
 
 $event = new CalendarEvent(
     'event-1', 'calendar-1', 'Familie', '#345B48', 'Monatsplanung', null, null,
-    '2026-01-31T09:00:00Z', '2026-01-31T10:00:00Z', false, 'MONTHLY', 1, '2026-04-30',
+    '2026-01-31T09:00:00Z', '2026-01-31T10:00:00Z', false, false, 'MONTHLY', 1, '2026-04-30',
     'member-1', 'Alex', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z'
 );
 $occurrences = (new CalendarRecurrenceExpander())->expand($event, new DateTimeImmutable('2026-01-01T00:00:00Z'), new DateTimeImmutable('2026-05-01T00:00:00Z'));

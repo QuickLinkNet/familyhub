@@ -77,7 +77,7 @@ final class GoogleCalendarRepository
         try {
             $delete = $this->database->prepare('DELETE FROM google_calendar_events WHERE source_uuid = :source_uuid');
             $delete->execute(['source_uuid' => $sourceUuid]);
-            $insert = $this->database->prepare('INSERT INTO google_calendar_events (uuid, source_uuid, external_event_id, title, description, location, starts_at, ends_at, all_day, created_at, updated_at) VALUES (:uuid, :source_uuid, :external_event_id, :title, :description, :location, :starts_at, :ends_at, :all_day, :created_at, :updated_at)');
+            $insert = $this->database->prepare('INSERT INTO google_calendar_events (uuid, source_uuid, external_event_id, title, description, location, starts_at, ends_at, all_day, is_private, created_at, updated_at) VALUES (:uuid, :source_uuid, :external_event_id, :title, :description, :location, :starts_at, :ends_at, :all_day, :is_private, :created_at, :updated_at)');
             foreach ($events as $event) { $insert->execute($event); }
             $status = $this->database->prepare("UPDATE google_calendar_sources SET last_synced_at = :synced_at, last_sync_status = 'SUCCESS', last_sync_message = :message, updated_at = :updated_at WHERE uuid = :uuid AND deleted_at IS NULL");
             $now = gmdate('c');
@@ -93,11 +93,11 @@ final class GoogleCalendarRepository
     public function upsertEvent(array $event): void
     {
         $statement = $this->database->prepare(
-            'INSERT INTO google_calendar_events (uuid, source_uuid, external_event_id, title, description, location, starts_at, ends_at, all_day, created_at, updated_at)
-             VALUES (:uuid, :source_uuid, :external_event_id, :title, :description, :location, :starts_at, :ends_at, :all_day, :created_at, :updated_at)
+            'INSERT INTO google_calendar_events (uuid, source_uuid, external_event_id, title, description, location, starts_at, ends_at, all_day, is_private, created_at, updated_at)
+             VALUES (:uuid, :source_uuid, :external_event_id, :title, :description, :location, :starts_at, :ends_at, :all_day, :is_private, :created_at, :updated_at)
              ON CONFLICT(source_uuid, external_event_id) DO UPDATE SET title = excluded.title, description = excluded.description,
                 location = excluded.location, starts_at = excluded.starts_at, ends_at = excluded.ends_at,
-                all_day = excluded.all_day, updated_at = excluded.updated_at'
+                all_day = excluded.all_day, is_private = excluded.is_private, updated_at = excluded.updated_at'
         );
         $statement->execute($event);
     }
@@ -160,6 +160,7 @@ final class GoogleCalendarRepository
             'calendar' => ['id' => $row['source_uuid'], 'name' => $row['calendar_name'], 'color' => $row['calendar_color']],
             'title' => $row['title'], 'description' => $row['description'], 'location' => $row['location'],
             'startsAt' => $row['starts_at'], 'endsAt' => $row['ends_at'], 'allDay' => (bool) $row['all_day'],
+            'isPrivate' => (bool) ($row['is_private'] ?? false),
             'createdBy' => null, 'source' => 'GOOGLE', 'editable' => in_array($row['access_role'], ['owner', 'writer'], true),
             'createdAt' => $row['created_at'], 'updatedAt' => $row['updated_at'],
         ];

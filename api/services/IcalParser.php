@@ -103,6 +103,7 @@ final class IcalParser
             'end' => $end,
             'duration' => max(60, $end->getTimestamp() - $start->getTimestamp()),
             'allDay' => $allDay,
+            'isPrivate' => in_array(strtoupper((string) ($properties['CLASS'][0]['value'] ?? 'PUBLIC')), ['PRIVATE', 'CONFIDENTIAL'], true),
             'rrule' => isset($properties['RRULE'][0]) ? $this->rule((string) $properties['RRULE'][0]['value'], $fallbackZone) : null,
             'recurrenceId' => $recurrenceId,
             'exdates' => $exdates,
@@ -205,6 +206,7 @@ final class IcalParser
             'starts_at' => $start->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z'),
             'ends_at' => $end->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z'),
             'all_day' => $item['allDay'] ? 1 : 0,
+            'is_private' => $item['isPrivate'] ? 1 : 0,
         ];
     }
 

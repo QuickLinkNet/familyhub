@@ -28,6 +28,10 @@ Bitte Sicherheitslücken nicht als öffentliches Issue veröffentlichen. Nutze e
 - OAuth-Client-Secret, Access-Token, Refresh-Token und Google-Kalenderkennungen werden mit AES-256-GCM verschlüsselt; ein separater Schlüssel liegt im geschützten Storage
 - der Google-OAuth-Callback akzeptiert ausschließlich einen zufälligen, kurzlebigen und serverseitig gehashten `state`-Wert
 - die direkte Google-Verbindung fordert nur Terminzugriff und lesenden Zugriff auf die Kalenderliste an
+- private Termine werden für Kinder serverseitig auf belegte Zeit ohne Titel, Ort und Beschreibung reduziert
+- Push-Endpunkte, Browser-Schlüssel, Scheduler-Token und privater VAPID-Schlüssel werden AES-256-GCM-verschlüsselt gespeichert
+- jede Web-Push-Nutzlast wird per ECDH/HKDF/AES-128-GCM ausschließlich für den jeweiligen Zielbrowser verschlüsselt
+- Push-Versand erlaubt nur öffentlich auflösbare HTTPS-Ziele auf Port 443; interne Adressen und Redirects werden abgelehnt
 
 Die öffentliche Profilauswahl liefert Namen, Farbe, Rolle und die Information, ob ein Geheimnis erforderlich ist. Das ist für ein gemeinsames Familien-Touchdisplay beabsichtigt. Öffentlich aus dem Internet erreichbare Installationen sollten zusätzlich durch Firewall, VPN oder Webserver-Zugriffsschutz begrenzt werden.
 
@@ -45,3 +49,4 @@ Der lokale Vite-Server proxyt `/api/v1` zur konfigurierten Live-API. Dadurch ble
 - Backups regelmäßig außerhalb des Webroots sichern und Restore testen.
 - Updates zeitnah einspielen.
 - Google-OAuth-Zustimmungsbildschirm und Testnutzer bewusst verwalten; für dauerhaften Betrieb den siebentägigen Token-Ablauf des Testmodus vermeiden.
+- geheime Push-Scheduler-URL ausschließlich im vertrauenswürdigen Hosting-Cronjob hinterlegen und vor Offenlegung schützen.

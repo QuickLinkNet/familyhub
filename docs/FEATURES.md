@@ -28,7 +28,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Aufgaben | Zuweisung, Fälligkeit, Priorität, Abschluss, Eltern-Check | Wiederholung und Elternfreigabe fertig | Bearbeiten und Historie |
 | Belohnungen | Sterne, persönliche Guthaben, Wunschregal, Bonus und nachvollziehbares Ledger | fertig | Familienziele sind eigenes Modul; als Nächstes optionale Kategorien |
 | Familienziele | gemeinsame Vorhaben, sichtbarer Fortschritt und Wochenhighlights | Ziele, Beitragsjournal, Dashboard und Wandmodus fertig | Zielvorlagen und automatische Fortschrittsquellen |
-| Kalender | Tag/Woche/Monat, Wiederholungen, Geburtstage, Ferien | Tag/Woche/Monat, lokale Wiederholungen und Geburtstage fertig | Ferien und Import |
+| Kalender | Tag/Woche/Monat, Wiederholungen, Geburtstage, Ferien | Tag/Woche/Monat, lokale Wiederholungen, Geburtstage und privater Kindermodus fertig | Ferien und Import |
 | Routinen | Morgen-/Abendroutine, Schritte, Wochentage, Fortschritt | mehrstufige Tagesläufe, Fortschritt und Serienverwaltung fertig | Sterne und Routinehistorie |
 | Einkauf | mehrere Listen, Kategorien, Mengen, Dringlichkeit und schnelles Abhaken | fertig | Vorlagen und Spracheingabe |
 | Mahlzeiten & Rezepte | Wochenplan, Lieblingsgerichte, strukturierte Zutatenübernahme | fertig für Frühstück, Mittag und Abend | Vorlagen, Portionen und Rezeptbearbeitung |
@@ -37,7 +37,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Haushalt | Putzen, Müll, Pflanzen, Wäsche und Tiere | gemeinsamer Plan mit Zuständigkeit, Fälligkeit, Wiederholung und Historie fertig | Vorlagen und fairer Zuständigkeitswechsel |
 | Wetter | aktuelle Lage und Vorschau über austauschbaren Anbieter | Open-Meteo-Adapter ohne API-Schlüssel fertig | Anbieter austauschbar kapseln |
 | Foto-/Idle-Modus | Diashow, Uhrzeit, Wetter und nächster Termin | Foto-Rotation, Inaktivitäts-Timer, Wake Lock und zeitgesteuerte Nachtuhr fertig | konfigurierbare Nachtinformationen |
-| Benachrichtigungen | In-App, Browser und später Web Push | rollenabhängiger Radar, Glocke, Wandmodus und lokale Browser-Benachrichtigungen fertig | optionaler echter Web Push bei geschlossener App |
+| Benachrichtigungen | In-App, Browser und Web Push | rollenabhängiger Radar, Glocke, Wandmodus und verschlüsselter Web Push bei geschlossener App fertig | Benachrichtigungszeiten pro Profil |
 | Integrationen | Google, Microsoft, CalDAV, Home Assistant | Google iCal read-only und OAuth-Schreibzugriff fertig | CalDAV oder Microsoft Graph |
 | Datenhoheit | lokaler Export, Import, Backups und Self-Hosting | portables Komplettarchiv mit Datenbank, Fotos, Schlüsseln, Prüfsummen und Rollback fertig | optional verschlüsselte Archivdateien |
 | Barrierefreiheit | Tastatur, Kontrast, Screenreader, reduzierte Bewegung | in Arbeit | automatisierte und manuelle Prüfung |
@@ -45,8 +45,8 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 ## Empfohlene Produktreihenfolge
 
 1. **Weitere Integrationen** – CalDAV, Microsoft Graph und Home Assistant.
-2. **Optionaler Web Push** – nur falls Erinnerungen auch bei vollständig geschlossener App gewünscht sind.
-3. **Barrierefreiheits-Abnahme** – Tastatur, Screenreader, Kontrast und reduzierte Bewegung systematisch prüfen.
+2. **Barrierefreiheits-Abnahme** – Tastatur, Screenreader, Kontrast und reduzierte Bewegung systematisch prüfen.
+3. **Kalenderkomfort** – Ferienimport, Mehrpersonen-Termine und frei wählbare Standardansicht.
 
 ## Qualitätsmaßstab
 

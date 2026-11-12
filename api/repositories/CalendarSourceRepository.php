@@ -71,7 +71,7 @@ final class CalendarSourceRepository
         try {
             $delete = $this->database->prepare('DELETE FROM external_calendar_events WHERE source_uuid = :source_uuid');
             $delete->execute(['source_uuid' => $sourceUuid]);
-            $insert = $this->database->prepare('INSERT INTO external_calendar_events (uuid, source_uuid, external_uid, title, description, location, starts_at, ends_at, all_day, created_at, updated_at) VALUES (:uuid, :source_uuid, :external_uid, :title, :description, :location, :starts_at, :ends_at, :all_day, :created_at, :updated_at)');
+            $insert = $this->database->prepare('INSERT INTO external_calendar_events (uuid, source_uuid, external_uid, title, description, location, starts_at, ends_at, all_day, is_private, created_at, updated_at) VALUES (:uuid, :source_uuid, :external_uid, :title, :description, :location, :starts_at, :ends_at, :all_day, :is_private, :created_at, :updated_at)');
             foreach ($events as $event) {
                 $event['uuid'] = $this->eventUuid($sourceUuid . '|' . $event['uuid']);
                 $insert->execute($event + ['source_uuid' => $sourceUuid, 'created_at' => $now, 'updated_at' => $now]);
@@ -130,6 +130,7 @@ final class CalendarSourceRepository
             'startsAt' => $row['starts_at'],
             'endsAt' => $row['ends_at'],
             'allDay' => (bool) $row['all_day'],
+            'isPrivate' => (bool) ($row['is_private'] ?? false),
             'createdBy' => null,
             'createdAt' => $row['created_at'],
             'updatedAt' => $row['updated_at'],
