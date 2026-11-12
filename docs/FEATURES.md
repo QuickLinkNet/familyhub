@@ -1,5 +1,7 @@
 # Produkt- und Feature-Roadmap
 
+Langfristiges Referenzziel: [vollständige Dæly-Parität](DAELY_PARITY.md).
+
 Status: **fertig** = benutzbarer End-to-End-Slice, **in Arbeit** = aktiv vorbereitet, **vorbereitet** = Navigation oder Architektur vorhanden, **geplant** = noch nicht begonnen.
 
 ## Vergleich zum Daely-Produktbild
@@ -44,9 +46,9 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 
 ## Empfohlene Produktreihenfolge
 
-1. **Weitere Integrationen** – CalDAV, Microsoft Graph und Home Assistant.
-2. **Barrierefreiheits-Abnahme** – Tastatur, Screenreader, Kontrast und reduzierte Bewegung systematisch prüfen.
-3. **Kalenderkomfort** – Ferienimport, Mehrpersonen-Termine und frei wählbare Standardansicht.
+1. **Produktabschluss** – Geräte-Onboarding, kontextbezogene Hilfe, Barrierefreiheit und öffentliche Dokumentation.
+2. **Kalenderkomfort** – Mehrpersonen-Termine, Filter, Wiederholungen und frei wählbare Standardansicht.
+3. **Weitere Integrationen** – Apple/iCloud, Outlook, CalDAV und später Home Assistant.
 
 ## Qualitätsmaßstab
 
