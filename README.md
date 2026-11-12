@@ -2,7 +2,7 @@
 
 Familienkompass ist ein touch-optimierter, selbst hostbarer Familienorganizer. Die React-PWA bündelt Termine, Aufgaben und Personen in einer ruhigen Oberfläche; eine schlanke PHP-/SQLite-API hält Installation und Betrieb bewusst einfach.
 
-**Produktstatus:** erste stabile Produktversion **v0.26.0** · [Live-Installation](https://example.org/) · [Changelog](CHANGELOG.md)
+**Produktstatus:** erste stabile Produktversion **v0.26.0** · [Changelog](CHANGELOG.md)
 
 Der aktuelle Stand ist als eigenständig nutzbares Produkt veröffentlicht. Markenauftritt, Logo und ein späteres visuelles Redesign sind bewusst von der funktionalen Produktentwicklung getrennt.
 

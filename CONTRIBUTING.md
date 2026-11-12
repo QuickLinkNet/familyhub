@@ -8,6 +8,7 @@ Danke, dass du Familienkompass verbessern möchtest.
 - Frontend lokal über `npm run dev` starten.
 - Backend- und Integrationstests ausschließlich gegen eine explizit konfigurierte Live-API durchführen; keinen lokalen PHP-Server voraussetzen.
 - Secrets nur in ignorierten `.env.*`-Dateien ablegen.
+- Keine privaten Domains, echten Familiennamen oder installationsspezifischen Werte eintragen; Dokumentation und Tests verwenden `example.org` und fiktive Personen.
 - Fachcode unter `src/features/<modul>/` beziehungsweise in Controller/Service/Repository-Schichten strukturieren.
 - Datenbankänderungen ausschließlich als neue, fortlaufende Migration hinzufügen.
 - UI für Touch, Tastatur und kleine Displays prüfen.

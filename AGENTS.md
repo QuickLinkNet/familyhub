@@ -15,6 +15,7 @@ Dieses Repository ist die maßgebliche FamilyHub-Codebasis. Änderungen werden d
 
 - Vor Übergabe `npm run build` ausführen.
 - Neue PHP-Dateien mit `php -l` prüfen.
+- Das Repository ist öffentlich: keine privaten Domains, echten Familiennamen, Zugangsdaten oder installationsspezifischen Werte committen; Beispiele verwenden `example.org` und fiktive Personen.
 - Migrationen nur als neue fortlaufende Datei ergänzen.
 - Secrets, Laufzeitdaten, `dist/` und `deploy/` nicht committen.
 - Sichtbare UI-Änderungen mindestens auf Desktop- und Mobilbreite prüfen.
