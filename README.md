@@ -2,7 +2,7 @@
 
 Familienkompass ist ein touch-optimierter, selbst hostbarer Familienorganizer. Die React-PWA bündelt Termine, Aufgaben und Personen in einer ruhigen Oberfläche; eine schlanke PHP-/SQLite-API hält Installation und Betrieb bewusst einfach.
 
-**Produktstatus:** erste stabile Produktversion **v0.26.0** · [Changelog](CHANGELOG.md)
+**Produktstatus:** erste stabile Produktversion **v0.27.0** · [Changelog](CHANGELOG.md)
 
 Der aktuelle Stand ist als eigenständig nutzbares Produkt veröffentlicht. Markenauftritt, Logo und ein späteres visuelles Redesign sind bewusst von der funktionalen Produktentwicklung getrennt.
 
@@ -67,6 +67,7 @@ Ausführlich: [Installation](docs/INSTALLATION.md), [Architektur](docs/ARCHITECT
 ## Projektstruktur
 
 - `src/app` – Router, Theme und App-Shell
+- `src/theme` – austauschbare MUI-Theme-Presets, semantische Tokens und Erscheinungsmodi
 - `src/components/atoms` – kleinste wiederverwendbare UI-Grundbausteine
 - `src/components/molecules` – zusammengesetzte, fachlich neutrale UI-Muster
 - `src/components/organisms` – größere wiederverwendbare Bereiche wie Navigation und App-Header
@@ -76,6 +77,8 @@ Ausführlich: [Installation](docs/INSTALLATION.md), [Architektur](docs/ARCHITECT
 - `storage/` – geschützte Laufzeitdaten
 - `scripts/` – Build- und FTP-Deployment
 - `docs/` – Produkt- und Technikdokumentation
+- `design/` – öffentliche Design-Library und versionierte, freigegebene Screen-Spezifikationen
+- `.agents/skills/` – wiederverwendbare Design- und Implementierungsworkflows für Codex
 
 Seiten bleiben reine Orchestratoren für Daten, Zustand und fachliche Komponenten. Neue Frontenddateien sollen eine klar abgegrenzte Verantwortung besitzen und möglichst deutlich unter 500 Zeilen bleiben.
 

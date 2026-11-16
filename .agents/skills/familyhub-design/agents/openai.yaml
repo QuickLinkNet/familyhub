@@ -1,0 +1,6 @@
+interface:
+  display_name: "FamilyHub Design"
+  short_description: "Versioniert FamilyHub-Screendesigns"
+  default_prompt: "Use $familyhub-design to prepare a versioned design handoff for one FamilyHub screen."
+policy:
+  allow_implicit_invocation: false

@@ -21,6 +21,13 @@ Dieses Repository ist die maßgebliche FamilyHub-Codebasis. Änderungen werden d
 - Sichtbare UI-Änderungen mindestens auf Desktop- und Mobilbreite prüfen.
 - Deutsche Texte in echtem UTF-8 schreiben; keine Ersatzschreibweisen für Umlaute.
 
+## Design-Workflow
+
+- Wiederverwendbare Designwerte ausschließlich unter `src/theme/` pflegen; Feature-Komponenten erhalten keine neuen hart codierten Farben, Schatten, Radien oder Breakpoints.
+- Öffentliche, bereinigte Designartefakte liegen unter `design/`; private Arbeitsentwürfe und Screenshots bleiben im separaten privaten Begleitverzeichnis.
+- Einen Screen erst nach expliziter Benutzerfreigabe seines versionierten Designartefakts implementieren.
+- Für Designaufträge `$familyhub-design` und für die Umsetzung freigegebener Screenversionen `$familyhub-implementation` verwenden.
+
 ## Deployment
 
 `npm run deploy` baut Frontend und API und lädt in das lokal konfigurierte `REMOTE_BASE_DIR`. Das Server-Stammverzeichnis ist als Ziel gesperrt. Bestehende Daten unter `storage/` müssen erhalten bleiben.

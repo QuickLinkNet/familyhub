@@ -1,11 +1,11 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { CssBaseline, ThemeProvider } from '@mui/material';
+import { CssBaseline } from '@mui/material';
 import { RouterProvider } from 'react-router-dom';
 import { registerSW } from 'virtual:pwa-register';
 import { appRouter } from './app/router';
-import { appTheme } from './theme/appTheme';
+import { AppearanceProvider } from './app/providers/AppearanceProvider';
 import './styles.css';
 
 const queryClient = new QueryClient({
@@ -18,11 +18,11 @@ registerSW({ immediate: true });
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider theme={appTheme}>
+    <AppearanceProvider>
       <CssBaseline />
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={appRouter} />
       </QueryClientProvider>
-    </ThemeProvider>
+    </AppearanceProvider>
   </StrictMode>
 );

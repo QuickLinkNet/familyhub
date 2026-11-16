@@ -4,10 +4,26 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.27.0] - 2026-11-16
+
+### Hinzugefügt
+
+- erweiterbare MUI-Theme-Engine mit austauschbaren Presets und typisierten semantischen Design-Tokens
+- getrennte Light-, Dark- und Nachtfarbschemata sowie eigener Präsentationskontext für den Wandmodus
+- öffentliche Design-Library mit versioniertem Screen-Lebenszyklus von Review bis visueller Abnahme
+- repo-lokale, nur explizit aufrufbare Codex-Skills für Designübergaben und die Umsetzung freigegebener Screens
+
 ### Geändert
 
+- bestehendes Erscheinungsbild als kompatibles Standard-Preset erhalten; das neue Preset „Morgenruhe“ ist vorbereitet, aber noch nicht als Redesign aktiviert
 - providerneutrales FTP-/FTPS-Deployment mit frei konfigurierbarem, sicher validiertem Zielpfad
 - neutrale Beispielkonfiguration ohne installations- oder anbieterspezifische Infrastrukturwerte
+
+### Geprüft
+
+- Production-Typecheck und Frontend-Build
+- formale Validierung beider Codex-Skills
+- Desktop- und Mobilansicht sowie Wand- und Nachtmodus im eingebauten Browser
 
 ## [0.26.0] - 2026-11-12
 

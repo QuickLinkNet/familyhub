@@ -25,6 +25,7 @@ import { useIdleWallModeSettings } from '../hooks/useIdleWallModeSettings';
 import { useScreenWakeLock } from '../hooks/useScreenWakeLock';
 import { isDisplayScheduleActive } from '../services/displaySchedule';
 import { WallNightMode } from '../components/WallNightMode';
+import { AppearanceScope } from '../../../app/providers/AppearanceProvider';
 
 const defaultPresentation: WallPresentation = {
   greeting: 'Schön, dass ihr da seid', weatherEnabled: false, weatherLocation: null,
@@ -65,36 +66,42 @@ export function WallPage() {
   const loading = events.isLoading || tasks.isLoading || family.isLoading || notes.isLoading || school.isLoading || presentation.isLoading || goals.isLoading || reminders.isLoading;
 
   if (nightMode) {
-    return <WallNightMode now={now} activeFrom={settings.activeFrom} showReturn={enteredFromDeviceSetup} onShowDay={() => setNightOverrideUntil(Date.now() + 30 * 60_000)} />;
+    return (
+      <AppearanceScope presentation="wall" scheme="night">
+        <WallNightMode now={now} activeFrom={settings.activeFrom} showReturn={enteredFromDeviceSetup} onShowDay={() => setNightOverrideUntil(Date.now() + 30 * 60_000)} />
+      </AppearanceScope>
+    );
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', backgroundImage: 'radial-gradient(circle at top right, rgba(214,133,95,0.13), transparent 35%), radial-gradient(circle at bottom left, rgba(52,91,72,0.14), transparent 38%)', py: { xs: 2.5, md: 4 } }}>
-      <Container maxWidth="xl">
-        <Stack spacing={{ xs: 2.5, md: 3.5 }}>
-          <WallHeader
-            now={now}
-            presentation={presentation.data ?? defaultPresentation}
-            wakeLock={wakeLock}
-            onResumeNight={nightOverrideActive ? () => setNightOverrideUntil(null) : undefined}
-          />
-          {(events.isError || tasks.isError || family.isError || notes.isError || school.isError || presentation.isError || goals.isError || reminders.isError) && <Alert severity="warning">Einige Familieninformationen konnten gerade nicht geladen werden.</Alert>}
-          {loading
-            ? <Stack alignItems="center" py={8}><CircularProgress /></Stack>
-            : <>
-              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '1.35fr 1fr' }, gap: { xs: 2, md: 2.5 }, alignItems: 'stretch' }}>
-                <WallEvents events={upcomingEvents} />
-                <WallTasks tasks={openTasks} />
-              </Box>
-              <WallReminders board={reminders.data} />
-              <WallGoal goal={goals.data?.activeGoals[0]} />
-              <WallNotes notes={notes.data ?? []} />
-              <WallSchool lessons={school.data?.lessons ?? []} items={school.data?.items ?? []} />
-              <WallFamily members={activeFamily} />
-            </>}
-        </Stack>
-      </Container>
-      {enteredFromDeviceSetup && <IdleWallReturnButton />}
-    </Box>
+    <AppearanceScope presentation="wall">
+      <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', backgroundImage: 'radial-gradient(circle at top right, rgba(214,133,95,0.13), transparent 35%), radial-gradient(circle at bottom left, rgba(52,91,72,0.14), transparent 38%)', py: { xs: 2.5, md: 4 } }}>
+        <Container maxWidth="xl">
+          <Stack spacing={{ xs: 2.5, md: 3.5 }}>
+            <WallHeader
+              now={now}
+              presentation={presentation.data ?? defaultPresentation}
+              wakeLock={wakeLock}
+              onResumeNight={nightOverrideActive ? () => setNightOverrideUntil(null) : undefined}
+            />
+            {(events.isError || tasks.isError || family.isError || notes.isError || school.isError || presentation.isError || goals.isError || reminders.isError) && <Alert severity="warning">Einige Familieninformationen konnten gerade nicht geladen werden.</Alert>}
+            {loading
+              ? <Stack alignItems="center" py={8}><CircularProgress /></Stack>
+              : <>
+                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '1.35fr 1fr' }, gap: { xs: 2, md: 2.5 }, alignItems: 'stretch' }}>
+                  <WallEvents events={upcomingEvents} />
+                  <WallTasks tasks={openTasks} />
+                </Box>
+                <WallReminders board={reminders.data} />
+                <WallGoal goal={goals.data?.activeGoals[0]} />
+                <WallNotes notes={notes.data ?? []} />
+                <WallSchool lessons={school.data?.lessons ?? []} items={school.data?.items ?? []} />
+                <WallFamily members={activeFamily} />
+              </>}
+          </Stack>
+        </Container>
+        {enteredFromDeviceSetup && <IdleWallReturnButton />}
+      </Box>
+    </AppearanceScope>
   );
 }

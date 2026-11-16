@@ -1,0 +1,6 @@
+interface:
+  display_name: "FamilyHub Implementation"
+  short_description: "Implementiert freigegebene Screendesigns"
+  default_prompt: "Use $familyhub-implementation to implement one approved FamilyHub screen design."
+policy:
+  allow_implicit_invocation: false

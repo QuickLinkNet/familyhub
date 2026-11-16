@@ -12,6 +12,8 @@ Danke, dass du Familienkompass verbessern möchtest.
 - Fachcode unter `src/features/<modul>/` beziehungsweise in Controller/Service/Repository-Schichten strukturieren.
 - Datenbankänderungen ausschließlich als neue, fortlaufende Migration hinzufügen.
 - UI für Touch, Tastatur und kleine Displays prüfen.
+- Neue Screendesigns unter `design/screens/` versionieren und erst nach expliziter Freigabe implementieren.
+- Designwerte über `src/theme/` beziehen; keine neuen hart codierten Farben, Schatten, Radien oder Breakpoints in Feature-Komponenten einführen.
 
 ## Vor einem Commit
 
