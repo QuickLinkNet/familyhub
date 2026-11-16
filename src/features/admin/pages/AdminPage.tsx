@@ -8,6 +8,7 @@ import { ApiError } from '../../../services/apiClient';
 import { useAuthSession } from '../../auth/hooks/useAuth';
 import { CalendarSourceCard } from '../components/CalendarSourceCard';
 import { BackupManagerCard } from '../components/BackupManagerCard';
+import { AppearanceSettingsCard } from '../components/AppearanceSettingsCard';
 import { CalendarSourceDialog } from '../components/CalendarSourceDialog';
 import { GoogleConnectionCard } from '../components/GoogleConnectionCard';
 import { GoogleSetupDialog } from '../components/GoogleSetupDialog';
@@ -84,6 +85,7 @@ export function AdminPage() {
       <PageHeader title="Administration" description="Verbindungen und Präsentationsoptionen für euren Familienkompass." actions={<Button variant="contained" startIcon={<AddLinkRounded />} onClick={openCreate}>iCal-Link hinzufügen</Button>} />
       {searchParams.get('google') === 'connected' && <Alert severity="success">Google Kalender ist verbunden. Der primäre Kalender wurde automatisch aktiviert.</Alert>}
       {searchParams.get('google') === 'error' && <Alert severity="error">Die Google-Anmeldung konnte nicht abgeschlossen werden. Bitte starte sie erneut.</Alert>}
+      <AppearanceSettingsCard />
       <WallPresentationCard enabled={isAdmin} />
       <PushSchedulerCard enabled={isAdmin} preview={import.meta.env.DEV && searchParams.get('push') === 'preview'} />
       <PortableArchiveCard preview={import.meta.env.DEV && searchParams.get('archive') === 'preview'} />

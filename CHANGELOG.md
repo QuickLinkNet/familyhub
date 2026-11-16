@@ -4,6 +4,18 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.27.1] - 2026-11-16
+
+### Hinzugefügt
+
+- Administrationseinstellung für das gerätebezogene Umschalten zwischen „FamilyHub Classic“ und „Morgenruhe“
+- direkt auswählbare System-, Hell-, Dunkel- und Nachtmodi mit sofortiger Vorschau und lokaler Speicherung
+
+### Geprüft
+
+- Theme-Wechsel sowie Rückkehr zum Ausgangsdesign
+- Desktop- und 390×844-Mobilansicht ohne horizontalen Überlauf oder Konsolenfehler
+
 ## [0.27.0] - 2026-11-16
 
 ### Hinzugefügt
