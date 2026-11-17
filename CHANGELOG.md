@@ -14,7 +14,6 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 - professionelle GitHub-Automation für Frontend-Build, PHP-Lint und Backend-Smoke-Tests
 - strukturierte Vorlagen für Fehlerberichte, Funktionswünsche und Pull Requests
-- monatliche Dependabot-Prüfung für npm- und GitHub-Actions-Abhängigkeiten
 - öffentliches Support-Dokument mit klaren Datenschutz- und Sicherheitswegen
 
 ### Geändert
