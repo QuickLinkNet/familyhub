@@ -4,6 +4,10 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+### Hinzugefügt
+
+- öffentliche README-Galerie mit datenschutzsicheren Screenshots für Dashboard, Kalender, Wandmodus und Mobilansicht
+
 ## [0.28.0] - 2026-11-17
 
 ### Hinzugefügt

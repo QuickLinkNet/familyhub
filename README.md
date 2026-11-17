@@ -19,6 +19,35 @@ FamilyHub bündelt den Familienalltag in einer touch-optimierten React-PWA. Die 
 
 > **Projektstatus:** FamilyHub ist als selbst installierbare Produktversion nutzbar und wird aktiv weiterentwickelt. Aktueller Stand: **v0.28.0**.
 
+## Einblick
+
+<p align="center">
+  <img src="docs/screenshots/dashboard.png" width="100%" alt="FamilyHub Dashboard mit Terminen, Aufgaben, Familie und Einkauf">
+</p>
+
+<table>
+  <tr>
+    <td width="68%" valign="top">
+      <img src="docs/screenshots/calendar.png" width="100%" alt="Monatsansicht des FamilyHub Familienkalenders">
+    </td>
+    <td width="32%" valign="top" align="center">
+      <img src="docs/screenshots/mobile-dashboard.png" width="280" alt="FamilyHub Dashboard auf einem Smartphone">
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Familienkalender</sub></td>
+    <td align="center"><sub>Responsive Mobilansicht</sub></td>
+  </tr>
+</table>
+
+<p align="center">
+  <img src="docs/screenshots/wall-display.png" width="100%" alt="FamilyHub Wandmodus mit Uhrzeit, Wetter, Terminen und Aufgaben">
+  <br>
+  <sub>Touch-optimierter Wandmodus für Tablet, Display oder Familienboard</sub>
+</p>
+
+> Sämtliche Namen, Termine, Orte und Werte in den Screenshots sind fiktive Beispieldaten.
+
 ## Warum FamilyHub?
 
 - **Datenhoheit:** eigene Installation, eigene SQLite-Datenbank und portables Komplettarchiv
