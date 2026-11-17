@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Services;
+namespace FamilyHub\Services;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use FamilyCompass\Core\AppException;
-use FamilyCompass\Models\Task;
-use FamilyCompass\Repositories\FamilyMemberRepository;
-use FamilyCompass\Repositories\TaskRepository;
+use FamilyHub\Core\AppException;
+use FamilyHub\Models\Task;
+use FamilyHub\Repositories\FamilyMemberRepository;
+use FamilyHub\Repositories\TaskRepository;
 
 final class TaskService
 {

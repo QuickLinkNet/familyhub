@@ -1,6 +1,6 @@
 # Architektur
 
-Familienkompass besteht aus zwei gemeinsam deploybaren, technisch klar getrennten Teilen:
+FamilyHub besteht aus zwei gemeinsam deploybaren, technisch klar getrennten Teilen:
 
 - React/Vite erzeugt eine statische, installierbare PWA.
 - Eine native PHP-API liefert JSON unter `/api/v1/` und speichert in SQLite.

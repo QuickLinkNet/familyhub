@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Services;
+namespace FamilyHub\Services;
 
-use FamilyCompass\Core\AppException;
-use FamilyCompass\Models\FamilyMember;
-use FamilyCompass\Repositories\FamilyMemberRepository;
+use FamilyHub\Core\AppException;
+use FamilyHub\Models\FamilyMember;
+use FamilyHub\Repositories\FamilyMemberRepository;
 
 final class FamilyMemberService
 {

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-use FamilyCompass\Config\Config;
-use FamilyCompass\Repositories\WallPresentationRepository;
-use FamilyCompass\Services\WallPresentationService;
-use FamilyCompass\Services\WeatherService;
+use FamilyHub\Config\Config;
+use FamilyHub\Repositories\WallPresentationRepository;
+use FamilyHub\Services\WallPresentationService;
+use FamilyHub\Services\WeatherService;
 
 $apiPath = dirname(__DIR__);
 spl_autoload_register(static function (string $class) use ($apiPath): void {
-    $prefix = 'FamilyCompass\\';
+    $prefix = 'FamilyHub\\';
     if (!str_starts_with($class, $prefix)) { return; }
     $segments = explode('\\', substr($class, strlen($prefix))); $segments[0] = strtolower($segments[0]);
     $path = $apiPath . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $segments) . '.php';

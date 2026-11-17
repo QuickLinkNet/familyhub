@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Services;
+namespace FamilyHub\Services;
 
-use FamilyCompass\Core\AppException;
-use FamilyCompass\Repositories\FamilyMemberRepository;
-use FamilyCompass\Repositories\RewardRepository;
+use FamilyHub\Core\AppException;
+use FamilyHub\Repositories\FamilyMemberRepository;
+use FamilyHub\Repositories\RewardRepository;
 
 final class RewardService
 {

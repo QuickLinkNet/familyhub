@@ -14,7 +14,7 @@ export function AppNavigation({ currentPath, systemReady, onNavigate, userRole }
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: 'background.paper' }}>
       <Box sx={{ p: 3 }}>
-        <Typography variant="h5" color="primary">Familienkompass</Typography>
+        <Typography variant="h5" color="primary">FamilyHub</Typography>
         <Typography variant="body2" color="text.secondary" mt={0.5}>Euer Alltag, gemeinsam.</Typography>
       </Box>
       <Divider />

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-use FamilyCompass\Repositories\MealRepository;
-use FamilyCompass\Repositories\ShoppingRepository;
-use FamilyCompass\Services\MealService;
+use FamilyHub\Repositories\MealRepository;
+use FamilyHub\Repositories\ShoppingRepository;
+use FamilyHub\Services\MealService;
 
 $apiPath = dirname(__DIR__);
 spl_autoload_register(static function (string $class) use ($apiPath): void {
-    $prefix = 'FamilyCompass\\'; if (!str_starts_with($class, $prefix)) { return; }
+    $prefix = 'FamilyHub\\'; if (!str_starts_with($class, $prefix)) { return; }
     $segments = explode('\\', substr($class, strlen($prefix))); $segments[0] = strtolower($segments[0]);
     $path = $apiPath . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $segments) . '.php'; if (is_file($path)) { require $path; }
 });

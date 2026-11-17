@@ -1,0 +1,33 @@
+name: Funktion vorschlagen
+description: Eine konkrete Verbesserung für FamilyHub beschreiben
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Ausgangssituation
+      description: Welches Problem im Familienalltag soll gelöst werden?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Gewünschte Lösung
+      description: Beschreibe das gewünschte Verhalten, nicht nur eine technische Umsetzung.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativen
+      description: Welche Übergangslösung oder andere Variante wurde bereits erwogen?
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Vor dem Absenden
+      options:
+        - label: Ich habe Roadmap und vorhandene Issues geprüft.
+          required: true
+        - label: Der Vorschlag enthält keine privaten Familiendaten.
+          required: true

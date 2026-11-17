@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Routes;
+namespace FamilyHub\Routes;
 
-use FamilyCompass\Controllers\PushController;
-use FamilyCompass\Core\Router;
-use FamilyCompass\Services\AuthService;
+use FamilyHub\Controllers\PushController;
+use FamilyHub\Core\Router;
+use FamilyHub\Services\AuthService;
 
 final class PushRoutes
 {

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Services;
+namespace FamilyHub\Services;
 
 use DateTimeImmutable;
-use FamilyCompass\Core\AppException;
-use FamilyCompass\Repositories\FamilyGoalRepository;
+use FamilyHub\Core\AppException;
+use FamilyHub\Repositories\FamilyGoalRepository;
 
 final class FamilyGoalService
 {

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Services;
+namespace FamilyHub\Services;
 
-use FamilyCompass\Core\AppException;
-use FamilyCompass\Core\PortableArchiveService;
+use FamilyHub\Core\AppException;
+use FamilyHub\Core\PortableArchiveService;
 use PDO;
 
 final class AdminArchiveService

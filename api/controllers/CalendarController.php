@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Controllers;
+namespace FamilyHub\Controllers;
 
-use FamilyCompass\Core\AppException;
-use FamilyCompass\Core\Response;
-use FamilyCompass\Services\CalendarService;
+use FamilyHub\Core\AppException;
+use FamilyHub\Core\Response;
+use FamilyHub\Services\CalendarService;
 
 final class CalendarController
 {
@@ -39,7 +39,7 @@ final class CalendarController
         } catch (\JsonException) {
             throw new AppException('VALIDATION_ERROR', 'Es wurde ein gültiger JSON-Request erwartet.', 400);
         }
-        if (!is_array($input) || $input === [] || \FamilyCompass\Core\ArrayShape::isList($input)) {
+        if (!is_array($input) || $input === [] || \FamilyHub\Core\ArrayShape::isList($input)) {
             throw new AppException('VALIDATION_ERROR', 'Es wurde ein JSON-Objekt erwartet.', 400);
         }
         return $input;

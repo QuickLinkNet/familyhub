@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Services;
+namespace FamilyHub\Services;
 
 use DateTimeImmutable;
-use FamilyCompass\Core\AppException;
-use FamilyCompass\Repositories\MealRepository;
-use FamilyCompass\Repositories\ShoppingRepository;
+use FamilyHub\Core\AppException;
+use FamilyHub\Repositories\MealRepository;
+use FamilyHub\Repositories\ShoppingRepository;
 
 final class MealService
 {

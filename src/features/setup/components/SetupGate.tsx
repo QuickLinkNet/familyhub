@@ -8,7 +8,7 @@ export function SetupGate() {
   const location = useLocation();
 
   if (status.isLoading) {
-    return <Centered><CircularProgress /><Typography color="text.secondary">Familienkompass wird vorbereitet …</Typography></Centered>;
+    return <Centered><CircularProgress /><Typography color="text.secondary">FamilyHub wird vorbereitet …</Typography></Centered>;
   }
 
   if (status.isError) {

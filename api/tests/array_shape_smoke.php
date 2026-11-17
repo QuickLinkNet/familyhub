@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use FamilyCompass\Core\ArrayShape;
+use FamilyHub\Core\ArrayShape;
 
 require dirname(__DIR__) . '/core/ArrayShape.php';
 

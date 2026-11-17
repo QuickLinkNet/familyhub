@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Routes;
+namespace FamilyHub\Routes;
 
-use FamilyCompass\Controllers\CalendarSourceController;
-use FamilyCompass\Controllers\AdminArchiveController;
-use FamilyCompass\Controllers\AdminBackupController;
-use FamilyCompass\Controllers\GoogleCalendarController;
-use FamilyCompass\Controllers\WallPresentationController;
-use FamilyCompass\Core\Router;
-use FamilyCompass\Services\AuthService;
+use FamilyHub\Controllers\CalendarSourceController;
+use FamilyHub\Controllers\AdminArchiveController;
+use FamilyHub\Controllers\AdminBackupController;
+use FamilyHub\Controllers\GoogleCalendarController;
+use FamilyHub\Controllers\WallPresentationController;
+use FamilyHub\Core\Router;
+use FamilyHub\Services\AuthService;
 
 final class AdminRoutes
 {

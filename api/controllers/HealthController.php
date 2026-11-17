@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Controllers;
+namespace FamilyHub\Controllers;
 
-use FamilyCompass\Config\Config;
-use FamilyCompass\Core\Logger;
-use FamilyCompass\Core\Response;
+use FamilyHub\Config\Config;
+use FamilyHub\Core\Logger;
+use FamilyHub\Core\Response;
 use PDO;
 
 final class HealthController

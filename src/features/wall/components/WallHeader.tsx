@@ -38,7 +38,7 @@ export function WallHeader({ now, presentation, wakeLock, onResumeNight }: WallH
     }}>
       <Stack sx={{ position: 'relative', minHeight: 'inherit', p: { xs: 2.5, sm: 3.5, md: 4.5 } }} justifyContent="space-between" gap={3}>
         <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'stretch', sm: 'center' }} gap={1.5}>
-          <Chip label="Familienkompass · Wandmodus" sx={{ alignSelf: 'flex-start', color: 'common.white', bgcolor: 'rgba(255,255,255,.14)', fontWeight: 800, backdropFilter: 'blur(12px)' }} />
+          <Chip label="FamilyHub · Wandmodus" sx={{ alignSelf: 'flex-start', color: 'common.white', bgcolor: 'rgba(255,255,255,.14)', fontWeight: 800, backdropFilter: 'blur(12px)' }} />
           <Stack direction="row" gap={1} flexWrap="wrap">
             {onResumeNight && <Button variant="outlined" startIcon={<BedtimeRounded />} onClick={onResumeNight} sx={glassButton}>Nachtmodus</Button>}
             {wakeLock.status === 'active' && <Chip icon={<LightModeRounded />} label="Bildschirm bleibt an" sx={{ color: 'common.white', bgcolor: 'rgba(255,255,255,.14)', '& .MuiChip-icon': { color: 'inherit' } }} />}

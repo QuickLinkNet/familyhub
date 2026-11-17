@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use FamilyCompass\Repositories\ShoppingRepository;
-use FamilyCompass\Services\ShoppingService;
+use FamilyHub\Repositories\ShoppingRepository;
+use FamilyHub\Services\ShoppingService;
 
 $apiPath = dirname(__DIR__);
 spl_autoload_register(static function (string $class) use ($apiPath): void {
-    $prefix = 'FamilyCompass\\';
+    $prefix = 'FamilyHub\\';
     if (!str_starts_with($class, $prefix)) { return; }
     $segments = explode('\\', substr($class, strlen($prefix)));
     $segments[0] = strtolower($segments[0]);

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Services;
+namespace FamilyHub\Services;
 
-use FamilyCompass\Core\AppException;
-use FamilyCompass\Repositories\AuthRepository;
+use FamilyHub\Core\AppException;
+use FamilyHub\Repositories\AuthRepository;
 
 final class AuthService
 {

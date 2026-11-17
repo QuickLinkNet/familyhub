@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Services;
+namespace FamilyHub\Services;
 
-use FamilyCompass\Core\AppException;
-use FamilyCompass\Repositories\SetupRepository;
+use FamilyHub\Core\AppException;
+use FamilyHub\Repositories\SetupRepository;
 
 final class SetupService
 {

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Repositories;
+namespace FamilyHub\Repositories;
 
 use PDO;
 use Throwable;

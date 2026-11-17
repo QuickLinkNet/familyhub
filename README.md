@@ -1,89 +1,128 @@
-# Familienkompass
+<p align="center">
+  <img src="public/icon-192.svg" width="96" height="96" alt="FamilyHub App-Icon">
+</p>
 
-Familienkompass ist ein touch-optimierter, selbst hostbarer Familienorganizer. Die React-PWA bündelt Termine, Aufgaben und Personen in einer ruhigen Oberfläche; eine schlanke PHP-/SQLite-API hält Installation und Betrieb bewusst einfach.
+<h1 align="center">FamilyHub</h1>
 
-**Produktstatus:** erste stabile Produktversion **v0.27.1** · [Changelog](CHANGELOG.md)
+<p align="center">
+  Der selbst gehostete Familienorganizer für Kalender, Aufgaben, Routinen und das gemeinsame Familienboard.
+</p>
 
-Der aktuelle Stand ist als eigenständig nutzbares Produkt veröffentlicht. Markenauftritt, Logo und ein späteres visuelles Redesign sind bewusst von der funktionalen Produktentwicklung getrennt.
+<p align="center">
+  <a href="https://github.com/QuickLinkNet/familyhub/actions/workflows/quality.yml"><img src="https://github.com/QuickLinkNet/familyhub/actions/workflows/quality.yml/badge.svg" alt="Quality"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.28.0-345b48" alt="Version 0.28.0"></a>
+  <img src="https://img.shields.io/badge/PHP-8.2%2B-777BB4" alt="PHP 8.2 oder neuer">
+  <img src="https://img.shields.io/badge/SQLite-self--hosted-0F80CC" alt="SQLite und Self-Hosting">
+</p>
 
-## Aktueller Stand
+FamilyHub bündelt den Familienalltag in einer touch-optimierten React-PWA. Die native PHP-/SQLite-API läuft auf gewöhnlichem Webhosting, benötigt keine Framework-Laufzeit und hält Familien- und Zugangsdaten unter eigener Kontrolle.
 
-- responsive PWA für Wanddisplay, Tablet und Mobilgerät
-- gemeinsamer und persönlicher Familienkalender mit Tag, Woche, Monat, lokalen Wiederholungen, Geburtstagen, Terminverwaltung und privater Kindersicht
-- Google-Kalender wahlweise wartungsfrei read-only per iCal oder mit direktem OAuth-Schreibzugriff
-- konfigurierbarer Wandmodus 2.0 mit Uhrzeit, Wetter, Familienfotos, Terminen, Aufgaben und Schule sowie Geräte-Assistent, Leerlauf-Wechsel, Bildschirm-Wachhalten und gedimmter Nachtansicht
-- geschützter Adminbereich für Präsentation, Kalenderquellen und Synchronisationsstatus
-- bearbeitbare Familienmitglieder mit Rollen, Farben, optionalem Geburtstag, sicherem Elternpasswort und optionalem Kinder-PIN
-- Touch-Anmeldung mit HttpOnly-Session, CSRF-Schutz und serverseitigen Rollenrechten
-- Aufgaben sowie mehrstufige Morgen-/Abendroutinen mit Wochentagen, Fortschritt, automatischen Tagesläufen und Serienverwaltung
-- motivierende Schatzkiste mit Aufgabensternen, persönlichen Guthaben, Wunschregal, Bonusvergabe und transparentem Sternenbuch
-- gemeinsame Familienziele mit Fortschritt, Wochenhighlights und Beiträgen aller Profile
-- persönlicher Familienradar mit rollenabhängigen In-App- und verschlüsselten Web-Push-Erinnerungen für Termine, Aufgaben, Schule und Routinen
-- gemeinsame Einkaufslisten mit Mengen, Ladenbereichen, Dringlichkeit, Fortschritt und schnellem Touch-Abhaken
-- Essenswochenplan für Frühstück, Mittag und Abend mit Lieblingsgerichten und direkter Zutatenübernahme zum Einkauf
-- gemeinsame Familienpinnwand mit wichtigen Hinweisen, persönlicher Urheberschaft und automatischem Ablaufdatum
-- Schulübersicht mit persönlichem Wochenstundenplan, Hausaufgaben, Tests und kindgerechtem Abhaken
-- gemeinsamer Haushaltsplan mit Zuständigkeiten, Wiederholungen, Fälligkeiten und nachvollziehbaren Erledigungen
-- einmaliger Einrichtungsassistent für Haushalt, Personen und persönliche Kalender
-- selbstinitialisierende PHP-/SQLite-API mit Migrationen, lokalen Backups, portablem Komplettarchiv, Logs und Health-Check
-- reproduzierbarer FTP-Deploy per `npm run deploy`
+> **Projektstatus:** FamilyHub ist als selbst installierbare Produktversion nutzbar und wird aktiv weiterentwickelt. Aktueller Stand: **v0.28.0**.
 
-Die vollständige Produkt-Roadmap steht in [docs/FEATURES.md](docs/FEATURES.md). Das langfristige Referenzziel wird in der [Dæly-Paritätsroadmap](docs/DAELY_PARITY.md) verbindlich verfolgt.
+## Warum FamilyHub?
 
-## Schnellstart für die Entwicklung
+- **Datenhoheit:** eigene Installation, eigene SQLite-Datenbank und portables Komplettarchiv
+- **Für den Familienalltag gebaut:** Wanddisplay, Tablet und Smartphone mit großen Touch-Zielen
+- **Kalender ohne Zwang:** Google Kalender read-only per iCal oder optional mit OAuth-Schreibzugriff
+- **Ein gemeinsamer Ort:** Termine, Aufgaben, Routinen, Einkauf, Essen, Schule und Haushalt
+- **Schlanker Betrieb:** React/TypeScript im Frontend, natives PHP 8.2+ und SQLite im Backend
 
-Voraussetzungen: Node.js 20+ und eine bereits bereitgestellte Live-API.
+## Funktionsumfang
+
+| Bereich | Enthalten |
+| --- | --- |
+| Kalender | Tag, Woche und Monat, lokale Wiederholungen, Geburtstage, private Termine und Google-Synchronisierung |
+| Familienboard | konfigurierbarer Wandmodus mit Uhr, Wetter, Fotos, Terminen, Aufgaben, Schule und Nachtbetrieb |
+| Aufgaben & Routinen | Zuständigkeiten, Serien, Morgen-/Abendroutinen, Fortschritt und Erinnerungen |
+| Organisation | Einkauf, Essensplan, Pinnwand, Schule und Haushaltsplan |
+| Motivation | Schatzkiste, Sternenguthaben, Wünsche und gemeinsame Familienziele |
+| Betrieb | Einrichtungsassistent, Rollenrechte, Backups, Health-Check und portables `.familyhub`-Archiv |
+| Benachrichtigungen | In-App-Hinweise und verschlüsselte Web-Push-Erinnerungen pro Gerät und Profil |
+
+Die vollständige Übersicht steht in [docs/FEATURES.md](docs/FEATURES.md). Das langfristige Referenzziel dokumentiert die [Dæly-Paritätsroadmap](docs/DAELY_PARITY.md).
+
+## Voraussetzungen
+
+### Server
+
+- PHP **8.2 oder neuer** mit `pdo_sqlite`
+- Apache mit `mod_rewrite` oder eine gleichwertige Webserver-Konfiguration
+- HTTPS für Anmeldung, PWA, OAuth und Web Push
+- Schreibrechte für `storage/`
+
+### Build und Entwicklung
+
+- Node.js **20 oder neuer**
+- npm mit `npm ci`
+
+## Installation
 
 ```bash
-npm install
-copy .env.local.example .env.local
+git clone https://github.com/QuickLinkNet/familyhub.git
+cd familyhub
+npm ci
+npm run build
+```
+
+Der Build erzeugt unter `deploy/` ein vollständiges Paket aus Frontend, API und geschützter Storage-Struktur. Lade dessen Inhalt in das Document Root der gewünschten Domain. Beim ersten Aufruf führt `/setup` durch Haushalt, Profile und Kalender.
+
+Die vollständige Anleitung einschließlich Apache, Unterpfadbetrieb, Google OAuth, Backups und Web Push steht in [docs/INSTALLATION.md](docs/INSTALLATION.md).
+
+## Entwicklung
+
+Das Frontend arbeitet bewusst gegen eine explizit konfigurierte FamilyHub-API:
+
+```bash
+npm ci
+cp .env.local.example .env.local
 npm run dev
 ```
 
-Trage in `.env.local` die URL deiner Live-API ein. Der Entwicklungsserver läuft standardmäßig unter [http://localhost:5173](http://localhost:5173). In diesem Projekt wird bewusst kein lokaler PHP-Server verwendet.
+Unter Windows kann statt `cp` `Copy-Item` verwendet werden. Trage in `.env.local` die URL deiner Test- oder Entwicklungsinstallation ein. Vite startet anschließend unter `http://localhost:5173`.
 
-## Deployment
+### Relevante Befehle
 
 ```bash
-copy .env.deploy.example .env.deploy
-npm run deploy
+npm run dev                 # Entwicklungsserver
+npm run build               # Typecheck, Production-Build und deploy/-Paket
+npm run test:deploy-config  # Validierung der Deployment-Konfiguration
+npm run deploy              # Build und FTP/FTPS-Upload
 ```
 
-Der Befehl prüft TypeScript, baut die PWA, erstellt `deploy/` und lädt Frontend sowie API per FTP hoch. Bestehende Laufzeitdaten unter `storage/` werden nicht gelöscht. Zugangsdaten bleiben in der ignorierten Datei `.env.deploy`.
+## Architektur
 
-FTP/FTPS ist nur der mitgelieferte Komfortweg. Der Zielordner wird installationsbezogen über `REMOTE_BASE_DIR` konfiguriert und gegen unsichere Stamm- oder Traversalpfade geprüft. Alternativ kann der erzeugte Ordner `deploy/` mit einem beliebigen Hostingwerkzeug übertragen werden.
+```text
+src/        React, TypeScript, Material UI und Feature-Module
+api/        native PHP-API mit Controller-/Service-/Repository-Schichten
+storage/    geschützte SQLite-Daten, Backups, Schlüssel und Laufzeitlogs
+design/     öffentliche Design-Library und versionierte Screen-Spezifikationen
+docs/       Installation, Architektur, API, Datenbank und Roadmap
+scripts/    reproduzierbarer Build und providerneutrales Deployment
+```
 
-Der Produktionsbuild ist standardmäßig für eine eigene (Sub-)Domain konfiguriert, deren Document Root direkt auf den FamilyHub-Ordner zeigt. Für eine Installation in einem Unterpfad wird `VITE_BASE_PATH` in einer lokalen `.env.production` angepasst.
+Frontend und Backend werden gemeinsam ausgeliefert, bleiben technisch aber klar getrennt. Details erläutert [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-Nach dem ersten Deployment führt `/setup` durch Haushalt, Familienmitglieder und Kalender. Danach melden sich Erwachsene mit Passwort und Kinder mit ihrer optionalen PIN über die Profilauswahl an. Die Installation ist transaktional und kann nur einmal abgeschlossen werden.
+## Sicherheit und Datenschutz
 
-Admins können unter `/admin` Google Kalender auf zwei Arten verbinden:
+FamilyHub verwendet serverseitige Rollenrechte, HttpOnly-Sessions, CSRF-Schutz, Passwort-/PIN-Hashes und verschlüsselt sensible Kalender-, OAuth- und Push-Zugangsdaten. Das Repository enthält weder Betreiber-Secrets noch installationsspezifische Werte.
 
-- Die **Geheime Adresse im iCal-Format** ist der einfache read-only Weg. FamilyHub prüft sie vor dem Speichern, legt sie verschlüsselt ab und überträgt sie nie wieder vollständig an das Frontend.
-- Die optionale OAuth-Verbindung erlaubt, Google-Termine direkt am Familienboard zu erstellen, zu bearbeiten und zu löschen. Ein integrierter Schritt-für-Schritt-Assistent verlinkt jeden benötigten Bereich der Google Auth Platform, bietet Callback-URL und Berechtigungen kopierbar an und erklärt die erwarteten Zugangsdaten. Client-Secret, Refresh- und Access-Token werden verschlüsselt gespeichert; im Git-Repository liegen keinerlei Zugangsdaten.
+Sicherheitslücken bitte **nicht** in öffentlichen Issues melden. Der verantwortliche Meldeweg und das Sicherheitsmodell stehen in [SECURITY.md](SECURITY.md).
 
-Ausführlich: [Installation](docs/INSTALLATION.md), [Architektur](docs/ARCHITECTURE.md), [API](docs/API.md), [Datenbank](docs/DATABASE.md), [Sicherheit](SECURITY.md).
+## Dokumentation
 
-## Projektstruktur
-
-- `src/app` – Router, Theme und App-Shell
-- `src/theme` – austauschbare MUI-Theme-Presets, semantische Tokens und Erscheinungsmodi
-- `src/components/atoms` – kleinste wiederverwendbare UI-Grundbausteine
-- `src/components/molecules` – zusammengesetzte, fachlich neutrale UI-Muster
-- `src/components/organisms` – größere wiederverwendbare Bereiche wie Navigation und App-Header
-- `src/features` – fachliche Frontend-Module mit eigenen Komponenten, Hooks, Seiten und Typen
-- `src/services` – zentraler API-Client
-- `api/` – native PHP-API
-- `storage/` – geschützte Laufzeitdaten
-- `scripts/` – Build- und FTP-Deployment
-- `docs/` – Produkt- und Technikdokumentation
-- `design/` – öffentliche Design-Library und versionierte, freigegebene Screen-Spezifikationen
-- `.agents/skills/` – wiederverwendbare Design- und Implementierungsworkflows für Codex
-
-Seiten bleiben reine Orchestratoren für Daten, Zustand und fachliche Komponenten. Neue Frontenddateien sollen eine klar abgegrenzte Verantwortung besitzen und möglichst deutlich unter 500 Zeilen bleiben.
+| Dokument | Inhalt |
+| --- | --- |
+| [Installation](docs/INSTALLATION.md) | Hosting, Ersteinrichtung, OAuth, PWA und Backups |
+| [Architektur](docs/ARCHITECTURE.md) | Frontend-, Backend- und Deployment-Struktur |
+| [API](docs/API.md) | Endpunkte, Rollen und Antwortformate |
+| [Datenbank](docs/DATABASE.md) | SQLite, Migrationen, Sicherungen und Archive |
+| [Features](docs/FEATURES.md) | aktueller Funktionsumfang und Produktlücken |
+| [Changelog](CHANGELOG.md) | versionierte Änderungen |
 
 ## Mitwirken
 
-Bitte [CONTRIBUTING.md](CONTRIBUTING.md) lesen. Sicherheitsprobleme gehören nicht in öffentliche Issues; Hinweise stehen in [SECURITY.md](SECURITY.md).
+Beiträge sind willkommen. Bitte vor dem ersten Pull Request [CONTRIBUTING.md](CONTRIBUTING.md) sowie die öffentlichen Design- und Datenschutzregeln lesen.
 
-> Hinweis: Für das Repository ist noch keine Open-Source-Lizenz festgelegt. Kopieren, Weitergabe und kommerzielle Nutzung sind deshalb erst nach ausdrücklicher Freigabe erlaubt.
+## Lizenz
+
+Für FamilyHub ist noch keine Open-Source-Lizenz festgelegt. Der Quellcode ist öffentlich einsehbar; Kopieren, Weitergabe und kommerzielle Nutzung benötigen bis zu einer bewussten Lizenzentscheidung die Zustimmung des Rechteinhabers.

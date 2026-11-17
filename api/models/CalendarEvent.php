@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Models;
+namespace FamilyHub\Models;
 
 final class CalendarEvent
 {

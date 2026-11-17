@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Services;
+namespace FamilyHub\Services;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use FamilyCompass\Repositories\TaskRepository;
+use FamilyHub\Repositories\TaskRepository;
 
 final class ReminderService
 {

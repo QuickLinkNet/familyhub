@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Routes;
+namespace FamilyHub\Routes;
 
-use FamilyCompass\Controllers\CalendarController;
-use FamilyCompass\Core\Router;
-use FamilyCompass\Services\AuthService;
+use FamilyHub\Controllers\CalendarController;
+use FamilyHub\Core\Router;
+use FamilyHub\Services\AuthService;
 
 final class CalendarRoutes
 {

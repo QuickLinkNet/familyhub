@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-use FamilyCompass\Repositories\FamilyMemberRepository;
-use FamilyCompass\Repositories\TaskRepository;
-use FamilyCompass\Services\TaskService;
+use FamilyHub\Repositories\FamilyMemberRepository;
+use FamilyHub\Repositories\TaskRepository;
+use FamilyHub\Services\TaskService;
 
 $apiPath = dirname(__DIR__);
 spl_autoload_register(static function (string $class) use ($apiPath): void {
-    $prefix = 'FamilyCompass\\';
+    $prefix = 'FamilyHub\\';
     if (!str_starts_with($class, $prefix)) { return; }
     $segments = explode('\\', substr($class, strlen($prefix)));
     $segments[0] = strtolower($segments[0]);

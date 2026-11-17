@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Controllers;
+namespace FamilyHub\Controllers;
 
-use FamilyCompass\Core\AppException;
-use FamilyCompass\Core\ArrayShape;
-use FamilyCompass\Core\Response;
-use FamilyCompass\Services\WallPresentationService;
+use FamilyHub\Core\AppException;
+use FamilyHub\Core\ArrayShape;
+use FamilyHub\Core\Response;
+use FamilyHub\Services\WallPresentationService;
 
 final class WallPresentationController
 {

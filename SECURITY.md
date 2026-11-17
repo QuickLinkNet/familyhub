@@ -1,8 +1,17 @@
 # Sicherheit
 
+## Unterstützte Versionen
+
+FamilyHub befindet sich vor Version 1.0 in aktiver Entwicklung. Sicherheitskorrekturen werden für die jeweils aktuelle Minor-Version bereitgestellt.
+
+| Version | Unterstützt |
+| --- | --- |
+| 0.28.x | Ja |
+| 0.27.x und älter | Nein |
+
 ## Sicherheitsmeldungen
 
-Bitte Sicherheitslücken nicht als öffentliches Issue veröffentlichen. Nutze einen privaten Security Advisory im GitHub-Repository oder kontaktiere den Repository-Eigentümer direkt. Nenne betroffene Version, reproduzierbare Schritte und mögliche Auswirkungen.
+Bitte Sicherheitslücken nicht als öffentliches Issue veröffentlichen. Nutze einen [privaten GitHub Security Advisory](https://github.com/QuickLinkNet/familyhub/security/advisories/new). Nenne betroffene Version, reproduzierbare Schritte und mögliche Auswirkungen, aber keine echten Familiendaten oder produktiven Zugangsdaten.
 
 ## Sicherheitsmodell ab Version 0.4.0
 

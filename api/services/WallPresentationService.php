@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Services;
+namespace FamilyHub\Services;
 
-use FamilyCompass\Config\Config;
-use FamilyCompass\Core\AppException;
-use FamilyCompass\Repositories\WallPresentationRepository;
+use FamilyHub\Config\Config;
+use FamilyHub\Core\AppException;
+use FamilyHub\Repositories\WallPresentationRepository;
 
 final class WallPresentationService
 {

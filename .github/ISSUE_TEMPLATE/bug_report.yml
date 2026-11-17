@@ -1,0 +1,69 @@
+name: Fehler melden
+description: Reproduzierbares Problem in FamilyHub melden
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke für die Meldung. Bitte keine Passwörter, Tokens, privaten Kalenderlinks oder Familiendaten einfügen.
+  - type: input
+    id: version
+    attributes:
+      label: FamilyHub-Version
+      placeholder: z. B. 0.28.0
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Bereich
+      options:
+        - Oberfläche / PWA
+        - Kalender / Google
+        - Aufgaben / Routinen
+        - Wandmodus
+        - Administration / Backup
+        - Installation / Deployment
+        - API / Datenbank
+        - Anderer Bereich
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Fehlerbeschreibung
+      description: Was ist passiert und was wurde stattdessen erwartet?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduktion
+      placeholder: |
+        1. Seite öffnen …
+        2. Aktion ausführen …
+        3. Fehler erscheint …
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Umgebung
+      placeholder: Browser, Betriebssystem, PHP-Version und Hostingart
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Bereinigte Zusatzinformationen
+      description: Screenshots oder Logs nur nach Entfernung aller privaten Daten und Secrets.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Vor dem Absenden
+      options:
+        - label: Ich habe vorhandene Issues geprüft.
+          required: true
+        - label: Die Meldung enthält keine privaten Daten oder Zugangsdaten.
+          required: true

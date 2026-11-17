@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Services;
+namespace FamilyHub\Services;
 
-use FamilyCompass\Core\AppException;
-use FamilyCompass\Core\PublicUrl;
-use FamilyCompass\Core\SecretCipher;
-use FamilyCompass\Repositories\FamilyMemberRepository;
-use FamilyCompass\Repositories\PushRepository;
+use FamilyHub\Core\AppException;
+use FamilyHub\Core\PublicUrl;
+use FamilyHub\Core\SecretCipher;
+use FamilyHub\Repositories\FamilyMemberRepository;
+use FamilyHub\Repositories\PushRepository;
 
 final class PushService
 {

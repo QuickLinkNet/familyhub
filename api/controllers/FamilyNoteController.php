@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Controllers;
+namespace FamilyHub\Controllers;
 
-use FamilyCompass\Core\AppException;
-use FamilyCompass\Core\Response;
-use FamilyCompass\Services\FamilyNoteService;
+use FamilyHub\Core\AppException;
+use FamilyHub\Core\Response;
+use FamilyHub\Services\FamilyNoteService;
 
 final class FamilyNoteController
 {
@@ -24,7 +24,7 @@ final class FamilyNoteController
         $raw = file_get_contents('php://input');
         try { $input = json_decode($raw === false ? '' : $raw, true, 512, JSON_THROW_ON_ERROR); }
         catch (\JsonException) { throw new AppException('VALIDATION_ERROR', 'Es wurde ein gültiger JSON-Request erwartet.', 400); }
-        if (!is_array($input) || $input === [] || \FamilyCompass\Core\ArrayShape::isList($input)) {
+        if (!is_array($input) || $input === [] || \FamilyHub\Core\ArrayShape::isList($input)) {
             throw new AppException('VALIDATION_ERROR', 'Es wurde ein JSON-Objekt erwartet.', 400);
         }
         return $input;

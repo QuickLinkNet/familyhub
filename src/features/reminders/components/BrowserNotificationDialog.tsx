@@ -26,7 +26,7 @@ export function BrowserNotificationDialog({ open, status, error, onClose, onEnab
             {status.supported && !denied && status.enabled && `Push ist auf diesem Gerät aktiv. Insgesamt sind ${status.deviceCount} Familiengerät${status.deviceCount === 1 ? '' : 'e'} verbunden.`}
             {status.supported && !denied && !status.enabled && 'Benachrichtigungen sind für dieses Familienprofil ausgeschaltet.'}
           </Alert>
-          <Stack direction="row" gap={1.25} alignItems="flex-start"><SecurityRounded color="action" /><Typography variant="body2" color="text.secondary">Die Nachricht wird im eigenen FamilyHub erzeugt, für genau diesen Browser verschlüsselt und über dessen Pushdienst zugestellt. FamilyHub verwendet kein zusätzliches Nutzertracking.</Typography></Stack>
+          <Stack direction="row" gap={1.25} alignItems="flex-start"><SecurityRounded color="action" /><Typography variant="body2" color="text.secondary">Die Nachricht wird in der eigenen FamilyHub-Installation erzeugt, für genau diesen Browser verschlüsselt und über dessen Pushdienst zugestellt. FamilyHub verwendet kein zusätzliches Nutzertracking.</Typography></Stack>
           <Typography variant="body2" color="text.secondary">Auf iPhone und iPad muss FamilyHub zuerst zum Home-Bildschirm hinzugefügt werden. Auf Desktop und Android genügt die Browserfreigabe.</Typography>
           {error && <Alert severity="error">{error}</Alert>}
         </Stack>

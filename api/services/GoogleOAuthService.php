@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Services;
+namespace FamilyHub\Services;
 
-use FamilyCompass\Core\AppException;
-use FamilyCompass\Core\SecretCipher;
-use FamilyCompass\Repositories\GoogleOAuthRepository;
+use FamilyHub\Core\AppException;
+use FamilyHub\Core\SecretCipher;
+use FamilyHub\Repositories\GoogleOAuthRepository;
 
 final class GoogleOAuthService
 {

@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Services;
+namespace FamilyHub\Services;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use FamilyCompass\Core\AppException;
-use FamilyCompass\Models\Calendar;
-use FamilyCompass\Models\CalendarEvent;
-use FamilyCompass\Repositories\CalendarRepository;
-use FamilyCompass\Repositories\CalendarSourceRepository;
-use FamilyCompass\Repositories\FamilyMemberRepository;
+use FamilyHub\Core\AppException;
+use FamilyHub\Models\Calendar;
+use FamilyHub\Models\CalendarEvent;
+use FamilyHub\Repositories\CalendarRepository;
+use FamilyHub\Repositories\CalendarSourceRepository;
+use FamilyHub\Repositories\FamilyMemberRepository;
 
 final class CalendarService
 {

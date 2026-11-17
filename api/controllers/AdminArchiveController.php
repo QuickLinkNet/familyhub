@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Controllers;
+namespace FamilyHub\Controllers;
 
-use FamilyCompass\Core\Response;
-use FamilyCompass\Services\AdminArchiveService;
+use FamilyHub\Core\Response;
+use FamilyHub\Services\AdminArchiveService;
 
 final class AdminArchiveController
 {

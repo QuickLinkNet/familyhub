@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Repositories;
+namespace FamilyHub\Repositories;
 
-use FamilyCompass\Models\FamilyMember;
+use FamilyHub\Models\FamilyMember;
 use PDO;
 
 final class FamilyMemberRepository

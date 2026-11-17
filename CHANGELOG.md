@@ -4,6 +4,29 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.28.0] - 2026-11-17
+
+### Hinzugefügt
+
+- professionelle GitHub-Automation für Frontend-Build, PHP-Lint und Backend-Smoke-Tests
+- strukturierte Vorlagen für Fehlerberichte, Funktionswünsche und Pull Requests
+- monatliche Dependabot-Prüfung für npm- und GitHub-Actions-Abhängigkeiten
+- öffentliches Support-Dokument mit klaren Datenschutz- und Sicherheitswegen
+
+### Geändert
+
+- Produktname in Anwendung, PWA, Dokumentation, Paketmetadaten und PHP-Namespace einheitlich auf **FamilyHub** umgestellt
+- README als kompakte Produkt-, Installations- und Architekturübersicht neu aufgebaut
+- Backend-Version und externe User-Agents zentralisiert, damit veröffentlichte Versionen konsistent bleiben
+- Beitrags- und Sicherheitsdokumentation für ein öffentliches Repository präzisiert
+
+### Geprüft
+
+- Production-Typecheck und Frontend-Build
+- vollständiger PHP-Lint und alle Backend-Smoke-Tests nach Namespace-Umstellung
+- Desktop- und Mobilansicht mit sichtbarem FamilyHub-Branding
+- öffentliche Dateien auf private Domains, Namen, Secrets und Laufzeitdaten
+
 ## [0.27.1] - 2026-11-16
 
 ### Hinzugefügt

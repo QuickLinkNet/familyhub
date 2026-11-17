@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-use FamilyCompass\Config\Config;
-use FamilyCompass\Core\Bootstrap;
-use FamilyCompass\Core\Logger;
-use FamilyCompass\Core\SecretCipher;
-use FamilyCompass\Repositories\GoogleOAuthRepository;
-use FamilyCompass\Services\GoogleApiClient;
-use FamilyCompass\Services\GoogleOAuthService;
+use FamilyHub\Config\Config;
+use FamilyHub\Core\Bootstrap;
+use FamilyHub\Core\Logger;
+use FamilyHub\Core\SecretCipher;
+use FamilyHub\Repositories\GoogleOAuthRepository;
+use FamilyHub\Services\GoogleApiClient;
+use FamilyHub\Services\GoogleOAuthService;
 
 $apiPath = dirname(__DIR__);
 spl_autoload_register(static function (string $class) use ($apiPath): void {
-    $prefix = 'FamilyCompass\\';
+    $prefix = 'FamilyHub\\';
     if (!str_starts_with($class, $prefix)) { return; }
     $segments = explode('\\', substr($class, strlen($prefix)));
     $segments[0] = strtolower($segments[0]);

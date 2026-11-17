@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Repositories;
+namespace FamilyHub\Repositories;
 
-use FamilyCompass\Models\Calendar;
-use FamilyCompass\Models\CalendarEvent;
+use FamilyHub\Models\Calendar;
+use FamilyHub\Models\CalendarEvent;
 use PDO;
 
 final class CalendarRepository

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Repositories;
+namespace FamilyHub\Repositories;
 
-use FamilyCompass\Models\Task;
+use FamilyHub\Models\Task;
 use PDO;
 
 final class TaskRepository

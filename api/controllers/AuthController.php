@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Controllers;
+namespace FamilyHub\Controllers;
 
-use FamilyCompass\Core\AppException;
-use FamilyCompass\Core\Response;
-use FamilyCompass\Services\AuthService;
+use FamilyHub\Core\AppException;
+use FamilyHub\Core\Response;
+use FamilyHub\Services\AuthService;
 
 final class AuthController
 {
@@ -41,7 +41,7 @@ final class AuthController
         } catch (\JsonException $exception) {
             throw new AppException('VALIDATION_ERROR', 'Es wurde ein gültiger JSON-Request erwartet.', 400);
         }
-        if (!is_array($input) || \FamilyCompass\Core\ArrayShape::isList($input)) {
+        if (!is_array($input) || \FamilyHub\Core\ArrayShape::isList($input)) {
             throw new AppException('VALIDATION_ERROR', 'Es wurde ein JSON-Objekt erwartet.', 400);
         }
         return $input;

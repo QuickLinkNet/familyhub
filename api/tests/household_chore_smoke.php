@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-use FamilyCompass\Core\AppException;
-use FamilyCompass\Repositories\FamilyMemberRepository;
-use FamilyCompass\Repositories\HouseholdChoreRepository;
-use FamilyCompass\Services\HouseholdChoreService;
+use FamilyHub\Core\AppException;
+use FamilyHub\Repositories\FamilyMemberRepository;
+use FamilyHub\Repositories\HouseholdChoreRepository;
+use FamilyHub\Services\HouseholdChoreService;
 
 $apiPath = dirname(__DIR__);
 spl_autoload_register(static function (string $class) use ($apiPath): void {
-    $prefix = 'FamilyCompass\\';
+    $prefix = 'FamilyHub\\';
     if (!str_starts_with($class, $prefix)) { return; }
     $segments = explode('\\', substr($class, strlen($prefix))); $segments[0] = strtolower($segments[0]);
     $path = $apiPath . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $segments) . '.php';

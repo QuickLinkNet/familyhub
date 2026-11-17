@@ -6,9 +6,9 @@ Status: **fertig** = benutzbarer End-to-End-Slice, **in Arbeit** = aktiv vorbere
 
 ## Vergleich zum Daely-Produktbild
 
-Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genannten digitalen Familienkalenders. Familienkompass soll nicht nur kopieren, sondern mit Selbsthosting, Datenschutz und frei kombinierbaren Familienmodulen darüber hinausgehen.
+Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genannten digitalen Familienkalenders. FamilyHub soll nicht nur kopieren, sondern mit Selbsthosting, Datenschutz und frei kombinierbaren Familienmodulen darüber hinausgehen.
 
-| Referenzfunktion | Familienkompass-Ziel | Status |
+| Referenzfunktion | FamilyHub-Ziel | Status |
 | --- | --- | --- |
 | zentraler Familienkalender | gemeinsamer Kalender plus persönlicher Kalender je Person | Tag, Woche und Monat sowie Termin-CRUD fertig |
 | farbige Personen und Termine | feste Personenfarben in Kalender, Aufgaben und Dashboard | fertig |
@@ -18,7 +18,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | schnelle Ersteinrichtung | Assistent für Haushalt, Rollen, Passwörter und Kalender | fertig |
 | laufende Produktupdates | Migrationen, Backups und reproduzierbares Deployment | fertig |
 
-## Familienkompass-Umfang
+## FamilyHub-Umfang
 
 | Bereich | Geplanter Funktionsumfang | Status | Nächster Slice |
 | --- | --- | --- | --- |

@@ -62,8 +62,8 @@ export default defineConfig(({ mode }) => {
         registerType: 'autoUpdate',
         includeAssets: ['favicon.svg', 'icon-192.svg', 'icon-512.svg', 'notification-events.js'],
         manifest: {
-          name: 'Familienkompass',
-          short_name: 'Familienkompass',
+          name: 'FamilyHub',
+          short_name: 'FamilyHub',
           description: 'Der gemeinsame Familienalltag auf einen Blick.',
           theme_color: '#345b48',
           background_color: '#f7f4ee',

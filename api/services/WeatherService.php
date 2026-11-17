@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Services;
+namespace FamilyHub\Services;
 
-use FamilyCompass\Core\AppException;
+use FamilyHub\Config\Config;
+use FamilyHub\Core\AppException;
 
 final class WeatherService
 {
@@ -74,7 +75,7 @@ final class WeatherService
         if (function_exists('curl_init')) {
             $handle = curl_init($url);
             if ($handle !== false) {
-                curl_setopt_array($handle, [CURLOPT_RETURNTRANSFER => true, CURLOPT_CONNECTTIMEOUT => 4, CURLOPT_TIMEOUT => 6, CURLOPT_USERAGENT => 'FamilyHub/0.17']);
+                curl_setopt_array($handle, [CURLOPT_RETURNTRANSFER => true, CURLOPT_CONNECTTIMEOUT => 4, CURLOPT_TIMEOUT => 6, CURLOPT_USERAGENT => Config::userAgent()]);
                 $json = curl_exec($handle);
                 $status = (int) curl_getinfo($handle, CURLINFO_RESPONSE_CODE);
                 curl_close($handle);
@@ -82,7 +83,7 @@ final class WeatherService
             }
         }
         if ($json === false) {
-            $context = stream_context_create(['http' => ['timeout' => 6, 'user_agent' => 'FamilyHub/0.17']]);
+            $context = stream_context_create(['http' => ['timeout' => 6, 'user_agent' => Config::userAgent()]]);
             $json = @file_get_contents($url, false, $context);
         }
         if ($json === false) { throw new AppException('WEATHER_UNAVAILABLE', 'Der Wetterdienst ist gerade nicht erreichbar.', 503); }

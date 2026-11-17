@@ -1,6 +1,6 @@
 # Datenbank
 
-Familienkompass speichert Laufzeitdaten in `storage/database/app.sqlite`. Die Datei wird beim ersten API-Aufruf angelegt, sofern PHP Schreibrechte besitzt und `pdo_sqlite` aktiv ist.
+FamilyHub speichert Laufzeitdaten in `storage/database/app.sqlite`. Die Datei wird beim ersten API-Aufruf angelegt, sofern PHP Schreibrechte besitzt und `pdo_sqlite` aktiv ist.
 
 ## Migrationen
 

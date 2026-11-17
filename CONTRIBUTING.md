@@ -1,43 +1,77 @@
-# Beitragen
+# Zu FamilyHub beitragen
 
-Danke, dass du Familienkompass verbessern möchtest.
+Danke für dein Interesse an FamilyHub. Beiträge sollen klein, nachvollziehbar und ohne private Installationsdaten bleiben.
 
-## Entwicklungsregeln
+## Vor dem Start
 
-- Node.js 20+ verwenden und Abhängigkeiten mit `npm install` installieren.
-- Frontend lokal über `npm run dev` starten.
-- Backend- und Integrationstests ausschließlich gegen eine explizit konfigurierte Live-API durchführen; keinen lokalen PHP-Server voraussetzen.
-- Secrets nur in ignorierten `.env.*`-Dateien ablegen.
-- Keine privaten Domains, echten Familiennamen oder installationsspezifischen Werte eintragen; Dokumentation und Tests verwenden `example.org` und fiktive Personen.
-- Fachcode unter `src/features/<modul>/` beziehungsweise in Controller/Service/Repository-Schichten strukturieren.
-- Datenbankänderungen ausschließlich als neue, fortlaufende Migration hinzufügen.
-- UI für Touch, Tastatur und kleine Displays prüfen.
-- Neue Screendesigns unter `design/screens/` versionieren und erst nach expliziter Freigabe implementieren.
-- Designwerte über `src/theme/` beziehen; keine neuen hart codierten Farben, Schatten, Radien oder Breakpoints in Feature-Komponenten einführen.
+1. Prüfe vorhandene Issues und die [Feature-Roadmap](docs/FEATURES.md).
+2. Beschreibe größere Funktions- oder Architekturänderungen zuerst in einem Issue.
+3. Verwende für einen Pull Request einen eigenen Branch mit klarer Aufgabe.
 
-## Vor einem Commit
+## Lokale Entwicklung
+
+Voraussetzungen sind Node.js 20+ und eine explizit konfigurierte FamilyHub-Test-API.
 
 ```bash
+npm ci
+cp .env.local.example .env.local
+npm run dev
+```
+
+Secrets gehören ausschließlich in ignorierte `.env.*`-Dateien. Starte für dieses Repository keinen improvisierten PHP-Entwicklungsserver mit produktionsnahen Familiendaten.
+
+## Architekturregeln
+
+- Frontend-Fachcode liegt unter `src/features/<modul>/`.
+- Wiederverwendbare UI folgt Atomic Design unter `src/components/`.
+- Designwerte kommen aus `src/theme/`; Feature-Komponenten erhalten keine neuen hart codierten Farben, Schatten, Radien oder Breakpoints.
+- PHP bleibt frameworkfrei und folgt den vorhandenen Controller-/Service-/Repository-Schichten.
+- Datenbankänderungen werden ausschließlich als neue, fortlaufende Migration ergänzt.
+- Dateien erhalten eine klar abgegrenzte Verantwortung und bleiben möglichst deutlich unter 500 Zeilen.
+
+## Datenschutz
+
+Das Repository ist öffentlich. Verwende ausschließlich `example.org`, fiktive Personen und bereinigte Screenshots. Niemals committen:
+
+- private Domains oder Installationspfade,
+- echte Namen oder Kalenderinhalte,
+- Passwörter, Tokens, OAuth-Secrets oder iCal-Adressen,
+- SQLite-Dateien, Archive, Laufzeitlogs oder Backups.
+
+## Designänderungen
+
+Neue Screendesigns werden unter `design/screens/` versioniert. Eine Implementierung beginnt erst nach expliziter Freigabe der jeweiligen Version. Private Entwürfe und Screenshots bleiben außerhalb des öffentlichen Repositories.
+
+## Prüfung
+
+Vor einem Pull Request mindestens:
+
+```bash
+npm run test:deploy-config
 npm run build
 ```
 
-Zusätzlich:
+Zusätzlich abhängig von der Änderung:
 
-- neue PHP-Dateien mit `php -l` prüfen,
-- API-Smoke-Tests gegen eine Testinstallation ausführen,
-- sichtbare Änderungen im eingebauten Browser auf Desktop- und Mobilbreite prüfen,
+- geänderte PHP-Dateien mit `php -l` prüfen,
+- relevante Smoke-Tests unter `api/tests/` ausführen,
+- sichtbare Änderungen auf Desktop- und Mobilbreite testen,
 - Dokumentation und Changelog aktualisieren.
 
-## Commits
+Die GitHub-Actions-Pipeline wiederholt Production-Build, PHP-Lint und Smoke-Tests automatisch.
 
-Kurze, fachliche Conventional-Commit-Nachrichten sind erwünscht, zum Beispiel:
+## Commits und Pull Requests
+
+Verwende kurze Conventional-Commit-Nachrichten, zum Beispiel:
 
 ```text
 feat: add calendar week view
 fix: preserve storage during ftp deploy
-docs: explain setup recovery
+docs: clarify oauth setup
 ```
 
-## Pull Requests
+Ein Pull Request beschreibt Ziel, Änderungen, Prüfung und mögliche Migrations- oder Konfigurationsfolgen. Vermische keine unabhängigen Refactorings mit einem Feature oder Fix.
 
-Beschreibe Problem, Lösung, Testweg und mögliche Migrationsfolgen. Screenshots helfen bei sichtbaren Änderungen. Vermische keine unabhängigen Refactorings mit einem Feature-Fix.
+## Sicherheit
+
+Sicherheitslücken gehören nicht in öffentliche Issues. Nutze den vertraulichen Meldeweg aus [SECURITY.md](SECURITY.md).

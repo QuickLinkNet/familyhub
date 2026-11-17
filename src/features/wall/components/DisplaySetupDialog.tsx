@@ -92,11 +92,11 @@ export function DisplaySetupDialog({ open, onClose }: DisplaySetupDialogProps) {
           <Stack spacing={1.25}>
             <Typography variant="h6">1. Wie eine App öffnen</Typography>
             {pwa.installed
-              ? <Alert severity="success">Familienkompass läuft bereits im installierten App-Modus.</Alert>
+              ? <Alert severity="success">FamilyHub läuft bereits im installierten App-Modus.</Alert>
               : <Alert severity="info" icon={<AddToHomeScreenRounded />}>{pwa.hint}</Alert>}
             {pwa.canInstall && !pwa.installed && (
               <Button variant="outlined" startIcon={<InstallDesktopRounded />} disabled={installing} onClick={() => void install()} sx={{ alignSelf: 'flex-start' }}>
-                {installing ? 'Installation wird geöffnet …' : 'Familienkompass installieren'}
+                {installing ? 'Installation wird geöffnet …' : 'FamilyHub installieren'}
               </Button>
             )}
           </Stack>

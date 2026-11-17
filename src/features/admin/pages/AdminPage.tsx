@@ -82,7 +82,7 @@ export function AdminPage() {
 
   return (
     <Stack spacing={{ xs: 2.5, md: 3.5 }}>
-      <PageHeader title="Administration" description="Verbindungen und Präsentationsoptionen für euren Familienkompass." actions={<Button variant="contained" startIcon={<AddLinkRounded />} onClick={openCreate}>iCal-Link hinzufügen</Button>} />
+      <PageHeader title="Administration" description="Verbindungen und Präsentationsoptionen für eure FamilyHub-Installation." actions={<Button variant="contained" startIcon={<AddLinkRounded />} onClick={openCreate}>iCal-Link hinzufügen</Button>} />
       {searchParams.get('google') === 'connected' && <Alert severity="success">Google Kalender ist verbunden. Der primäre Kalender wurde automatisch aktiviert.</Alert>}
       {searchParams.get('google') === 'error' && <Alert severity="error">Die Google-Anmeldung konnte nicht abgeschlossen werden. Bitte starte sie erneut.</Alert>}
       <AppearanceSettingsCard />

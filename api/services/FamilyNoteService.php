@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Services;
+namespace FamilyHub\Services;
 
 use DateTimeImmutable;
-use FamilyCompass\Core\AppException;
-use FamilyCompass\Repositories\FamilyNoteRepository;
+use FamilyHub\Core\AppException;
+use FamilyHub\Repositories\FamilyNoteRepository;
 
 final class FamilyNoteService
 {

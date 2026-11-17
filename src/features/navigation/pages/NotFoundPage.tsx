@@ -11,7 +11,7 @@ export function NotFoundPage() {
           Seite nicht gefunden
         </Typography>
         <Typography color="text.secondary" sx={{ mt: 1.5 }}>
-          Diese Adresse gehört nicht zum Familienkompass oder ist nicht mehr verfügbar.
+          Diese Adresse gehört nicht zu FamilyHub oder ist nicht mehr verfügbar.
         </Typography>
         <Box sx={{ mt: 3 }}>
           <Button component={Link} to="/" variant="contained" startIcon={<ArrowBackRounded />}>

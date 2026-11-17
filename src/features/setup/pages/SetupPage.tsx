@@ -53,7 +53,7 @@ export function SetupPage() {
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: { xs: 2, md: 5 } }}>
       <Container maxWidth="md">
         <Stack spacing={{ xs: 2.5, md: 4 }}>
-          <Box textAlign="center"><Typography variant="h4" color="primary">Familienkompass</Typography><Typography color="text.secondary" mt={0.5}>Einmal gemeinsam einrichten – danach gehört das System euch.</Typography></Box>
+          <Box textAlign="center"><Typography variant="h4" color="primary">FamilyHub</Typography><Typography color="text.secondary" mt={0.5}>Einmal gemeinsam einrichten – danach gehört das System euch.</Typography></Box>
           <Stepper activeStep={step} alternativeLabel>{steps.map(label => <Step key={label}><StepLabel>{label}</StepLabel></Step>)}</Stepper>
           <Card>
             <CardContent sx={{ p: { xs: 2.5, sm: 4 }, '&:last-child': { pb: { xs: 2.5, sm: 4 } } }}>
@@ -65,7 +65,7 @@ export function SetupPage() {
                 <Button onClick={() => { setError(null); setStep(current => Math.max(0, current - 1)); }} disabled={step === 0 || install.isPending}>Zurück</Button>
                 {step < steps.length - 1
                   ? <Button variant="contained" onClick={next}>Weiter</Button>
-                  : <Button variant="contained" size="large" startIcon={<CheckCircleRounded />} disabled={install.isPending} onClick={finish}>{install.isPending ? 'Wird eingerichtet …' : 'Familienkompass starten'}</Button>}
+                  : <Button variant="contained" size="large" startIcon={<CheckCircleRounded />} disabled={install.isPending} onClick={finish}>{install.isPending ? 'Wird eingerichtet …' : 'FamilyHub starten'}</Button>}
               </Stack>
             </CardContent>
           </Card>

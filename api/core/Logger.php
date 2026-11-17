@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Core;
+namespace FamilyHub\Core;
 
-use FamilyCompass\Config\Config;
+use FamilyHub\Config\Config;
 
 final class Logger
 {

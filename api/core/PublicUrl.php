@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace FamilyCompass\Core;
+namespace FamilyHub\Core;
 
 final class PublicUrl
 {
