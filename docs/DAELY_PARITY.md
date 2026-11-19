@@ -79,7 +79,7 @@ Prioritäten: **P0** Präsentations- und Alltagsreife, **P1** direkte Funktionsp
 | individuelle Ruhezeiten je Profil | offen | P1 | Push und Board respektieren Ruhefenster |
 | Rollen, Elternpasswort und Kinder-PIN | erfüllt | – | Rechte serverseitig erzwungen |
 | granulare Modul- und Bearbeitungsrechte | offen | P2 | pro Rolle und Modul administrierbar |
-| geführte Geräte- und PWA-Einrichtung | offen | P0 | ein nichttechnischer Haushalt kommt ohne Hilfe zum Ziel |
+| geführte Geräte- und PWA-Einrichtung | erfüllt | – | QR-Freigabe, Gerätename, App-Installation und Push-Test sind geführt |
 | integrierte kontextbezogene Hilfe | teilweise | P0 | kurze Anleitungen direkt an schwierigen Stellen |
 | vollständige Barrierefreiheitsabnahme | offen | P0 | Tastatur, Screenreader, Kontrast und reduzierte Bewegung |
 
@@ -96,7 +96,7 @@ Prioritäten: **P0** Präsentations- und Alltagsreife, **P1** direkte Funktionsp
 
 ## Empfohlene Reihenfolge
 
-1. **P0 Produktabschluss:** Geräte-Onboarding, kontextbezogene Hilfe, Barrierefreiheit und öffentliche Dokumentation.
+1. **P0 Produktabschluss:** kontextbezogene Hilfe, Barrierefreiheit und öffentliche Dokumentation.
 2. **P1 Kalenderkomfort:** Mehrpersonen-Termine, Filter, Standardansicht, Wiederholungen und individuelle Erinnerungen.
 3. **P1 Alltagskomfort:** allgemeine/private Listen, vollständige Rezeptpflege, Widgets und Ruhezeiten.
 4. **P1 Integrationen:** Apple/iCloud, Outlook und CalDAV.

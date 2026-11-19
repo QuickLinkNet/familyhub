@@ -32,6 +32,33 @@ final class AuthController
         Response::noContent();
     }
 
+    /** @param array{id: string, name: string, color: string, role: string} $actor */
+    public function createInvitation(array $actor): void
+    {
+        Response::success($this->service->createInvitation($actor, $this->input()), 201);
+    }
+
+    public function invitation(string $token): void
+    {
+        Response::success($this->service->invitation($token));
+    }
+
+    public function redeemInvitation(string $token): void
+    {
+        Response::success($this->service->redeemInvitation($token, $this->input()));
+    }
+
+    public function devices(): void
+    {
+        Response::success($this->service->devices());
+    }
+
+    public function revokeDevice(string $uuid): void
+    {
+        $this->service->revokeDevice($uuid);
+        Response::noContent();
+    }
+
     /** @return array<string, mixed> */
     private function input(): array
     {

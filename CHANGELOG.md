@@ -4,9 +4,26 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.29.0] - 2026-11-19
+
 ### Hinzugefügt
 
 - öffentliche README-Galerie mit datenschutzsicheren Screenshots für Dashboard, Kalender, Wandmodus und Mobilansicht
+- kurzlebige, einmalig verwendbare QR-/Freigabelinks für einzelne Familienprofile
+- geführte Handy-Einrichtung mit PWA-Installation und verschlüsseltem Push-Test
+- Adminübersicht für aktive Familiengeräte mit gezieltem Sitzungswiderruf
+- serverseitige Gerätebindung für reguläre und per Einladung gestartete Anmeldungen
+
+### Sicherheit
+
+- Freigabeschlüssel werden mit 256 Bit Entropie erzeugt und ausschließlich als SHA-256-Hash gespeichert
+- Links laufen nach zehn Minuten ab, werden bei Neuausstellung ersetzt und können nur einmal eingelöst werden
+- widerrufene Geräte verlieren bei der nächsten API-Anfrage unmittelbar ihre Sitzung
+
+### Geprüft
+
+- gezielter Companion-Smoke-Test für Ausstellung, Vorschau, Einlösung und Wiederverwendungsschutz
+- Production-Typecheck, PHP-Lint, Build und responsive Browser-Abnahme
 
 ## [0.28.0] - 2026-11-17
 

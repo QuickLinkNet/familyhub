@@ -131,6 +131,10 @@ FamilyHub erzeugt das VAPID-Schlüsselpaar selbstständig. Push-Endpunkte, Brows
 
 Über **Familienboard einrichten** im Profilmenü werden Installation und Display-Verhalten des aktuellen Geräts gemeinsam konfiguriert. Der Assistent erkennt, ob FamilyHub bereits im App-Modus läuft, bietet die native PWA-Installation an oder zeigt eine zum Browser passende manuelle Anleitung.
 
+### Ein Familienhandy verbinden
+
+Ein Erwachsener öffnet **Familie → Handy verbinden**, wählt das gewünschte Profil und scannt den QR-Code mit dem neuen Gerät. Der Freigabelink ist zehn Minuten gültig, nur einmal verwendbar und meldet ausschließlich das ausgewählte Profil an. Anschließend führt FamilyHub direkt durch App-Installation und Push-Test. Administratoren können verlorene oder nicht mehr verwendete Geräte unter **Administration → Verbundene Geräte** abmelden.
+
 Nach der gewählten Ruhezeit kann FamilyHub selbstständig zur Familienanzeige wechseln. Ein großer Button führt mit einem Tipp zurück an die zuvor geöffnete Stelle. Unterstützte Browser können den Bildschirm im Wandmodus über die Screen Wake Lock API eingeschaltet halten. Wird diese Freigabe blockiert oder nach einem Tabwechsel beendet, zeigt der Wandmodus den tatsächlichen Zustand und bietet eine erneute bewusste Aktivierung an.
 
 Die gesamte Konfiguration wird nur in diesem Browser gespeichert und ist deshalb besonders für ein festes Küchen- oder Flurdisplay geeignet. Offene Dialoge und aktive Eingaben unterbrechen die Automatik; den Browser-Vollbildmodus muss eine Person aus Sicherheitsgründen einmal bewusst antippen. Systemeinstellungen für Helligkeit und Energieverwaltung können Browserfunktionen weiterhin überstimmen.

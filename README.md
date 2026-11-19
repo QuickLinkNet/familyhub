@@ -10,14 +10,14 @@
 
 <p align="center">
   <a href="https://github.com/QuickLinkNet/familyhub/actions/workflows/quality.yml"><img src="https://github.com/QuickLinkNet/familyhub/actions/workflows/quality.yml/badge.svg" alt="Quality"></a>
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.28.0-345b48" alt="Version 0.28.0"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.29.0-345b48" alt="Version 0.29.0"></a>
   <img src="https://img.shields.io/badge/PHP-8.2%2B-777BB4" alt="PHP 8.2 oder neuer">
   <img src="https://img.shields.io/badge/SQLite-self--hosted-0F80CC" alt="SQLite und Self-Hosting">
 </p>
 
 FamilyHub bündelt den Familienalltag in einer touch-optimierten React-PWA. Die native PHP-/SQLite-API läuft auf gewöhnlichem Webhosting, benötigt keine Framework-Laufzeit und hält Familien- und Zugangsdaten unter eigener Kontrolle.
 
-> **Projektstatus:** FamilyHub ist als selbst installierbare Produktversion nutzbar und wird aktiv weiterentwickelt. Aktueller Stand: **v0.28.0**.
+> **Projektstatus:** FamilyHub ist als selbst installierbare Produktversion nutzbar und wird aktiv weiterentwickelt. Aktueller Stand: **v0.29.0**.
 
 ## Einblick
 
@@ -67,6 +67,7 @@ FamilyHub bündelt den Familienalltag in einer touch-optimierten React-PWA. Die 
 | Motivation | Schatzkiste, Sternenguthaben, Wünsche und gemeinsame Familienziele |
 | Betrieb | Einrichtungsassistent, Rollenrechte, Backups, Health-Check und portables `.familyhub`-Archiv |
 | Benachrichtigungen | In-App-Hinweise und verschlüsselte Web-Push-Erinnerungen pro Gerät und Profil |
+| Mobile Companion | Einmalige QR-Freigabe, geführte PWA-/Push-Einrichtung und widerrufbare Gerätesitzungen |
 
 Die vollständige Übersicht steht in [docs/FEATURES.md](docs/FEATURES.md). Das langfristige Referenzziel dokumentiert die [Dæly-Paritätsroadmap](docs/DAELY_PARITY.md).
 

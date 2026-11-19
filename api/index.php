@@ -53,6 +53,7 @@ use FamilyHub\Repositories\TaskRepository;
 use FamilyHub\Repositories\WallPresentationRepository;
 use FamilyHub\Routes\AdminRoutes;
 use FamilyHub\Routes\CalendarRoutes;
+use FamilyHub\Routes\CompanionRoutes;
 use FamilyHub\Routes\PushRoutes;
 use FamilyHub\Services\AuthService;
 use FamilyHub\Services\AdminArchiveService;
@@ -115,7 +116,7 @@ try {
     $bootstrap->run();
     $database = $bootstrap->database();
 
-    $authService = new AuthService(new AuthRepository($database));
+    $authService = new AuthService(new AuthRepository($database), new PublicUrl());
     $authController = new AuthController($authService);
     $calendarSourceRepository = new CalendarSourceRepository($database);
     $calendarSourceService = new CalendarSourceService(
@@ -184,6 +185,7 @@ try {
     $router->post('/v1/auth/login', static function () use ($authController): void {
         $authController->login();
     });
+    CompanionRoutes::register($router, $authService, $authController);
     $router->post('/v1/auth/logout', static function () use ($authService, $authController): void {
         $authService->requireUser();
         $authService->requireCsrf();

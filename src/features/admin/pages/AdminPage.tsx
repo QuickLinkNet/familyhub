@@ -6,6 +6,7 @@ import { EmptyStateCard } from '../../../components/molecules/EmptyStateCard';
 import { PageHeader } from '../../../components/molecules/PageHeader';
 import { ApiError } from '../../../services/apiClient';
 import { useAuthSession } from '../../auth/hooks/useAuth';
+import { DeviceManagerCard } from '../../companion/components/DeviceManagerCard';
 import { CalendarSourceCard } from '../components/CalendarSourceCard';
 import { BackupManagerCard } from '../components/BackupManagerCard';
 import { AppearanceSettingsCard } from '../components/AppearanceSettingsCard';
@@ -86,6 +87,7 @@ export function AdminPage() {
       {searchParams.get('google') === 'connected' && <Alert severity="success">Google Kalender ist verbunden. Der primäre Kalender wurde automatisch aktiviert.</Alert>}
       {searchParams.get('google') === 'error' && <Alert severity="error">Die Google-Anmeldung konnte nicht abgeschlossen werden. Bitte starte sie erneut.</Alert>}
       <AppearanceSettingsCard />
+      <DeviceManagerCard enabled={isAdmin} />
       <WallPresentationCard enabled={isAdmin} />
       <PushSchedulerCard enabled={isAdmin} preview={import.meta.env.DEV && searchParams.get('push') === 'preview'} />
       <PortableArchiveCard preview={import.meta.env.DEV && searchParams.get('archive') === 'preview'} />

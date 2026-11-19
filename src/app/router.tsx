@@ -10,6 +10,7 @@ const CalendarPage = lazy(() => import('../features/calendar/pages/CalendarPage'
 const FamilyPage = lazy(() => import('../features/family/pages/FamilyPage').then(module => ({ default: module.FamilyPage })));
 const TasksPage = lazy(() => import('../features/tasks/pages/TasksPage').then(module => ({ default: module.TasksPage })));
 const LoginPage = lazy(() => import('../features/auth/pages/LoginPage').then(module => ({ default: module.LoginPage })));
+const JoinPage = lazy(() => import('../features/companion/pages/JoinPage').then(module => ({ default: module.JoinPage })));
 const SetupPage = lazy(() => import('../features/setup/pages/SetupPage').then(module => ({ default: module.SetupPage })));
 const NotFoundPage = lazy(() => import('../features/navigation/pages/NotFoundPage').then(module => ({ default: module.NotFoundPage })));
 const ShoppingPage = lazy(() => import('../features/shopping/pages/ShoppingPage').then(module => ({ default: module.ShoppingPage })));
@@ -35,6 +36,7 @@ export const appRouter = createBrowserRouter([
         element: <AuthGate />,
         children: [
           { path: '/login', element: deferred(<LoginPage />) },
+          { path: '/join', element: deferred(<JoinPage />) },
           { path: '/', element: shell(<DashboardPage />) },
           { path: '/family', element: shell(<FamilyPage />) },
           { path: '/calendar', element: shell(<CalendarPage />) },

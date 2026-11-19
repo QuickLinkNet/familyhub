@@ -229,6 +229,16 @@ Alle Admin-Endpunkte benötigen Rolle `ADMIN`; die Mutation zusätzlich CSRF.
 - `POST /admin/push/dispatch` – fällige Hinweise sofort prüfen und versenden
 - `GET /push/dispatch?token={secret}` – token-geschützter Scheduler-Endpunkt für einen Hosting-Cronjob
 
+### Mobile Companion
+
+- `POST /auth/invitations` – als Erwachsener einen zehn Minuten gültigen Einmallink für ein aktives Profil erzeugen
+- `GET /auth/invitations/{token}` – minimale Profilvorschau eines gültigen Einmallinks abrufen
+- `POST /auth/invitations/{token}/redeem` – Einmallink einlösen und das aktuelle Gerät anmelden
+- `GET /admin/devices` – aktive und widerrufene Gerätesitzungen auflisten
+- `DELETE /admin/devices/{uuid}` – eine fremde Gerätesitzung widerrufen
+
+Freigabeschlüssel werden nie im Klartext gespeichert. Ein neuer Link ersetzt offene Links desselben Profils, läuft nach zehn Minuten ab und ist nach erfolgreicher Einlösung verbraucht.
+
 Der Scheduler liefert nur Versandzähler zurück. Er gruppiert fällige Hinweise pro Profil, versendet ausschließlich relevante Dringlichkeiten, verhindert Doppelsendungen und gibt keine Familieninhalte in seiner Antwort aus. Für den geschlossenen-Browser-Betrieb sollte ihn ein vertrauenswürdiger Cronjob ungefähr alle fünf Minuten aufrufen.
 
 ### Administration: Sicherungen und Familienarchiv

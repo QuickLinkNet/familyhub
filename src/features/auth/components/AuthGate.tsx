@@ -7,6 +7,8 @@ export function AuthGate() {
   const session = useAuthSession();
   const location = useLocation();
   const onLoginPage = location.pathname === '/login';
+  const onJoinPage = location.pathname === '/join';
+  const publicPage = onLoginPage || onJoinPage;
 
   if (session.isLoading) {
     return <Centered><CircularProgress /><Typography color="text.secondary">Sicherer Familienbereich wird geöffnet …</Typography></Centered>;
@@ -16,7 +18,7 @@ export function AuthGate() {
     return <Centered><Alert severity="error">Die Anmeldung konnte nicht geprüft werden.</Alert><Button variant="contained" onClick={() => session.refetch()}>Erneut versuchen</Button></Centered>;
   }
 
-  if (!session.data?.authenticated && !onLoginPage) {
+  if (!session.data?.authenticated && !publicPage) {
     return <Navigate to="/login" replace state={{ from: location.pathname }} />;
   }
 

@@ -5,7 +5,7 @@ namespace FamilyHub\Config;
 
 final class Config
 {
-    public const VERSION = '0.28.0';
+    public const VERSION = '0.29.0';
 
     public function __construct(private string $rootPath) {}
 

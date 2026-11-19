@@ -75,6 +75,8 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 - `push_vapid_keys` – öffentliches VAPID-Material und verschlüsselter privater Signaturschlüssel
 - `push_subscriptions` – verschlüsselte Browser-Endpunkte und Schlüssel je Familienprofil und Gerät
 - `push_deliveries` – technische, automatisch bereinigte Fingerprints bereits versandter Reminder
+- `auth_invitations` – kurzlebige, einmalig verwendbare und ausschließlich gehasht gespeicherte Gerätefreigaben
+- `auth_devices` – widerrufbare, profilgebundene Browser- und PWA-Sitzungen
 - `auth_login_attempts` – begrenzte Fehlversuche und zeitweilige Login-Sperren
 - `schema_migrations` – angewendete Migrationen
 

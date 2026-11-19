@@ -24,4 +24,5 @@ export interface AuthSession {
 export interface LoginInput {
   memberId: string;
   secret: string;
+  deviceLabel?: string;
 }
