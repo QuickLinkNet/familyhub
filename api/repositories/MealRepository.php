@@ -41,11 +41,38 @@ final class MealRepository
     {
         $this->database->beginTransaction();
         try {
-            $statement = $this->database->prepare('INSERT INTO meal_recipes (uuid, title, description, icon, color, prep_minutes, created_by_member_uuid, created_at, updated_at) VALUES (:uuid, :title, :description, :icon, :color, :prep_minutes, :created_by_member_uuid, :created_at, :updated_at)');
+            $statement = $this->database->prepare('INSERT INTO meal_recipes (uuid, title, description, icon, color, prep_minutes, servings, category, instructions_json, created_by_member_uuid, created_at, updated_at) VALUES (:uuid, :title, :description, :icon, :color, :prep_minutes, :servings, :category, :instructions_json, :created_by_member_uuid, :created_at, :updated_at)');
             $statement->execute($recipe);
-            $ingredientStatement = $this->database->prepare('INSERT INTO meal_recipe_ingredients (uuid, recipe_uuid, name, quantity, category, sort_order, created_at) VALUES (:uuid, :recipe_uuid, :name, :quantity, :category, :sort_order, :created_at)');
-            foreach ($ingredients as $ingredient) { $ingredientStatement->execute($ingredient); }
+            $this->insertIngredients($ingredients);
             $this->database->commit();
+        } catch (\Throwable $error) {
+            if ($this->database->inTransaction()) { $this->database->rollBack(); }
+            throw $error;
+        }
+    }
+
+    /** @param array<string, mixed> $recipe @param list<array<string, mixed>> $ingredients */
+    public function updateRecipe(string $uuid, array $recipe, array $ingredients): bool
+    {
+        $this->database->beginTransaction();
+        try {
+            $statement = $this->database->prepare(
+                'UPDATE meal_recipes SET title = :title, description = :description, icon = :icon,
+                        color = :color, prep_minutes = :prep_minutes, servings = :servings,
+                        category = :category, instructions_json = :instructions_json, updated_at = :updated_at
+                 WHERE uuid = :uuid AND deleted_at IS NULL'
+            );
+            $statement->execute($recipe + ['uuid' => $uuid]);
+            if ($statement->rowCount() !== 1) { $this->database->rollBack(); return false; }
+            $now = (string) $recipe['updated_at'];
+            $remove = $this->database->prepare(
+                'UPDATE meal_recipe_ingredients SET deleted_at = :now
+                 WHERE recipe_uuid = :uuid AND deleted_at IS NULL'
+            );
+            $remove->execute(['uuid' => $uuid, 'now' => $now]);
+            $this->insertIngredients($ingredients);
+            $this->database->commit();
+            return true;
         } catch (\Throwable $error) {
             if ($this->database->inTransaction()) { $this->database->rollBack(); }
             throw $error;
@@ -96,7 +123,15 @@ final class MealRepository
     /** @param array<string, mixed> $row @param list<array<string, mixed>> $ingredients @return array<string, mixed> */
     private function mapRecipe(array $row, array $ingredients): array
     {
-        return ['id' => $row['uuid'], 'title' => $row['title'], 'description' => $row['description'], 'icon' => $row['icon'], 'color' => $row['color'], 'prepMinutes' => $row['prep_minutes'] === null ? null : (int) $row['prep_minutes'], 'ingredients' => $ingredients, 'createdAt' => $row['created_at'], 'updatedAt' => $row['updated_at']];
+        $instructions = json_decode((string) ($row['instructions_json'] ?? '[]'), true);
+        return [
+            'id' => $row['uuid'], 'title' => $row['title'], 'description' => $row['description'],
+            'icon' => $row['icon'], 'color' => $row['color'],
+            'prepMinutes' => $row['prep_minutes'] === null ? null : (int) $row['prep_minutes'],
+            'servings' => (int) ($row['servings'] ?? 4), 'category' => $row['category'] ?? 'OTHER',
+            'instructions' => is_array($instructions) ? array_values(array_filter($instructions, 'is_string')) : [],
+            'ingredients' => $ingredients, 'createdAt' => $row['created_at'], 'updatedAt' => $row['updated_at'],
+        ];
     }
 
     /** @param array<string, mixed> $row @return array<string, mixed> */
@@ -109,5 +144,17 @@ final class MealRepository
     private function mapEntry(array $row): array
     {
         return ['id' => $row['uuid'], 'date' => $row['planned_date'], 'mealType' => $row['meal_type'], 'recipeId' => $row['recipe_uuid'], 'title' => $row['title'], 'note' => $row['note'], 'createdAt' => $row['created_at'], 'updatedAt' => $row['updated_at']];
+    }
+
+    /** @param list<array<string, mixed>> $ingredients */
+    private function insertIngredients(array $ingredients): void
+    {
+        $statement = $this->database->prepare(
+            'INSERT INTO meal_recipe_ingredients
+                (uuid, recipe_uuid, name, quantity, category, sort_order, created_at)
+             VALUES
+                (:uuid, :recipe_uuid, :name, :quantity, :category, :sort_order, :created_at)'
+        );
+        foreach ($ingredients as $ingredient) { $statement->execute($ingredient); }
     }
 }

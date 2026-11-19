@@ -30,6 +30,7 @@ Aktuelle Entwicklung:
 20. private Kalenderkennzeichnung sowie verschlüsselte Push-Abonnements, VAPID-Schlüssel und Zustellungsfingerprints
 21. kurzlebige Gerätefreigaben und widerrufbare profilgebundene Sitzungen
 22. flexible Familienlisten, Sichtbarkeit, Verantwortlichkeiten und Abschlussstatus
+23. Rezeptportionen, Rezeptkategorien und strukturierte Zubereitungsschritte
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -56,7 +57,7 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 - `shopping_items` – Mengen, Ladenbereiche, Dringlichkeit und nachvollziehbarer Abhakstatus
 - `family_lists` – universelle Listen mit familienweiter, erwachsener oder privater Sichtbarkeit
 - `family_list_items` – Punkte mit Notiz, Zuständigkeit und nachvollziehbarem Abschlussstatus
-- `meal_recipes` – Lieblingsgerichte mit Darstellung und Zubereitungszeit
+- `meal_recipes` – Lieblingsgerichte mit Darstellung, Portionen, Kategorie und geordneten Zubereitungsschritten
 - `meal_recipe_ingredients` – strukturierte Zutaten samt Menge und Einkaufsbereich
 - `meal_plan_entries` – höchstens ein aktiver Eintrag je Datum und Mahlzeit
 - `family_notes` – farbige Pinnwand-Zettel mit Urheber, Wichtig-Markierung, Ablaufdatum und weichem Löschen

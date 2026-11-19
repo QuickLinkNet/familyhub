@@ -36,6 +36,7 @@ await withRetry('Altes Deploy-Paket entfernen', () => rm(deployDir, { recursive:
 await delay(250);
 await withRetry('Deploy-Ordner erstellen', () => mkdir(deployDir, { recursive: true }));
 await withRetry('Frontend kopieren', () => cp(distDir, deployDir, { recursive: true, force: true }));
+await withRetry('Frontend-Routing kopieren', () => cp(join(root, 'scripts', 'frontend.htaccess'), join(deployDir, '.htaccess'), { force: true }));
 await withRetry('API kopieren', () => cp(apiDir, join(deployDir, 'api'), {
   recursive: true,
   force: true,

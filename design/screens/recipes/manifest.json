@@ -1,0 +1,15 @@
+{
+  "screen": "recipes",
+  "title": "Rezeptverwaltung",
+  "currentVersion": "0.31.0",
+  "status": "verified",
+  "approvedByUser": true,
+  "approvedAt": "2026-11-19",
+  "versions": [
+    {
+      "version": "0.31.0",
+      "status": "verified",
+      "path": "versions/0.31.0"
+    }
+  ]
+}

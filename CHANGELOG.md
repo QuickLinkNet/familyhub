@@ -4,6 +4,25 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.31.0] - 2026-11-19
+
+### Hinzugefügt
+
+- vollständige Rezeptpflege mit Portionen, Kategorien und geordneten Zubereitungsschritten
+- Bearbeitung vorhandener Lieblingsgerichte ohne Löschen und Neuanlage
+- portionsbasierte Zutatenübernahme in vorhandene Einkaufslisten
+- erweiterte Rezeptkarten mit Zeit, Portionen, Kategorie, Zutaten- und Schrittzahl
+
+### Geändert
+
+- numerische Mengenangaben werden beim Einkaufsübertrag serverseitig skaliert; freie Angaben bleiben kompatibel erhalten
+- Rezept-Routen sind aus dem zentralen API-Einstieg in ein eigenes Routenmodul verschoben
+
+### Geprüft
+
+- fokussierter Meal-Smoke-Test für Anlage, Bearbeitung, Zubereitungsschritte, Planung und Portionsskalierung
+- Production-Typecheck, PHP-Lint, Build und responsive Browser-Abnahme
+
 ## [0.30.0] - 2026-11-19
 
 ### Hinzugefügt

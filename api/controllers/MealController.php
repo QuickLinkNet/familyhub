@@ -13,6 +13,7 @@ final class MealController
     public function index(): void { Response::success($this->service->planner((string) ($_GET['from'] ?? ''), (string) ($_GET['to'] ?? ''))); }
     /** @param array{id: string} $actor */
     public function createRecipe(array $actor): void { Response::success($this->service->createRecipe($this->input(), $actor), 201); }
+    public function updateRecipe(string $uuid): void { Response::success($this->service->updateRecipe($uuid, $this->input())); }
     public function deleteRecipe(string $uuid): void { $this->service->deleteRecipe($uuid); Response::noContent(); }
     /** @param array{id: string} $actor */
     public function plan(array $actor): void { Response::success($this->service->plan($this->input(), $actor), 201); }

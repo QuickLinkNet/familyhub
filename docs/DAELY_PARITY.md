@@ -56,7 +56,7 @@ Prioritäten: **P0** Präsentations- und Alltagsreife, **P1** direkte Funktionsp
 | --- | --- | --- | --- |
 | Essenswochenplan für drei Mahlzeiten | erfüllt | – | responsive Wochenplanung |
 | Rezepte und Zutatenübernahme zum Einkauf | erfüllt | – | transaktionale Einkaufsübernahme |
-| vollständige Rezeptbearbeitung | offen | P1 | Zubereitung, Portionen, Kategorien und Emojis |
+| vollständige Rezeptbearbeitung | erfüllt | – | Zubereitung, Portionen, Kategorien, Emojis und skalierter Einkauf vorhanden |
 | wiederkehrende Gerichte und Planvorlagen | offen | P2 | Zeitraum und Wochentage wählbar |
 | persönlicher Stundenplan | erfüllt | – | wöchentliche Schulstunden je Kind |
 | Hausaufgaben und Tests | erfüllt | – | kindgerechter Abschluss und Elternsicht |

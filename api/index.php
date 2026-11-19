@@ -57,6 +57,7 @@ use FamilyHub\Routes\AdminRoutes;
 use FamilyHub\Routes\CalendarRoutes;
 use FamilyHub\Routes\CompanionRoutes;
 use FamilyHub\Routes\FamilyListRoutes;
+use FamilyHub\Routes\MealRoutes;
 use FamilyHub\Routes\PushRoutes;
 use FamilyHub\Services\AuthService;
 use FamilyHub\Services\AdminArchiveService;
@@ -385,35 +386,6 @@ try {
         $authService->requireCsrf();
         $shoppingController->deleteItem($uuid);
     });
-    $router->get('/v1/meal-planner', static function () use ($authService, $mealController): void {
-        $authService->requireUser();
-        $mealController->index();
-    });
-    $router->post('/v1/meal-recipes', static function () use ($authService, $mealController): void {
-        $actor = $authService->requireAdult();
-        $authService->requireCsrf();
-        $mealController->createRecipe($actor);
-    });
-    $router->delete('/v1/meal-recipes/{uuid}', static function (string $uuid) use ($authService, $mealController): void {
-        $authService->requireAdult();
-        $authService->requireCsrf();
-        $mealController->deleteRecipe($uuid);
-    });
-    $router->post('/v1/meal-recipes/{uuid}/add-to-shopping', static function (string $uuid) use ($authService, $mealController): void {
-        $actor = $authService->requireUser();
-        $authService->requireCsrf();
-        $mealController->addToShopping($uuid, $actor);
-    });
-    $router->post('/v1/meal-plan', static function () use ($authService, $mealController): void {
-        $actor = $authService->requireAdult();
-        $authService->requireCsrf();
-        $mealController->plan($actor);
-    });
-    $router->delete('/v1/meal-plan/{uuid}', static function (string $uuid) use ($authService, $mealController): void {
-        $authService->requireAdult();
-        $authService->requireCsrf();
-        $mealController->deleteEntry($uuid);
-    });
     $router->get('/v1/school-board', static function () use ($authService, $schoolController): void {
         $authService->requireUser();
         $schoolController->index();
@@ -487,6 +459,7 @@ try {
     });
     CalendarRoutes::register($router, $authService, $calendarController);
     FamilyListRoutes::register($router, $authService, $familyListController);
+    MealRoutes::register($router, $authService, $mealController);
     AdminRoutes::register($router, $authService, $wallPresentationController, $calendarSourceController, $googleCalendarController, $adminBackupController, $adminArchiveController);
 
     $router->dispatch($_SERVER['REQUEST_METHOD'] ?? 'GET', $_SERVER['REQUEST_URI'] ?? '/');

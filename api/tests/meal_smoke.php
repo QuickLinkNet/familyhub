@@ -18,13 +18,14 @@ $now = gmdate('c'); $memberId = '11111111-1111-4111-8111-111111111111'; $listId 
 $database->prepare('INSERT INTO family_members (uuid, name, color, role, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, 1, ?, ?)')->execute([$memberId, 'Testperson', '#345B48', 'PARENT', $now, $now]);
 $database->prepare('INSERT INTO shopping_lists (uuid, name, icon, color, created_by_member_uuid, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)')->execute([$listId, 'Testliste', '🛒', '#345B48', $memberId, $now, $now]);
 $actor = ['id' => $memberId]; $meals = new MealRepository($database); $shopping = new ShoppingRepository($database); $service = new MealService($meals, $shopping);
-$created = $service->createRecipe(['title' => 'Gemüsepasta', 'description' => 'Schnell und bunt', 'icon' => '🍝', 'color' => '#D6855F', 'prepMinutes' => 25, 'ingredients' => [['name' => 'Nudeln', 'quantity' => '500 g', 'category' => 'PANTRY'], ['name' => 'Tomaten', 'quantity' => '6', 'category' => 'PRODUCE']]], $actor);
+$created = $service->createRecipe(['title' => 'Gemüsepasta', 'description' => 'Schnell und bunt', 'icon' => '🍝', 'color' => '#D6855F', 'prepMinutes' => 25, 'servings' => 4, 'category' => 'MAIN', 'instructions' => ['Nudeln kochen', 'Gemüse anbraten'], 'ingredients' => [['name' => 'Nudeln', 'quantity' => '500 g', 'category' => 'PANTRY'], ['name' => 'Tomaten', 'quantity' => '6', 'category' => 'PRODUCE'], ['name' => 'Salz', 'quantity' => '1/2 TL', 'category' => 'PANTRY']]], $actor);
 $recipeId = $created['recipes'][0]['id'] ?? '';
+$updated = $service->updateRecipe($recipeId, ['title' => 'Bunte Gemüsepasta', 'description' => 'Schnell und bunt', 'icon' => '🍝', 'color' => '#D6855F', 'prepMinutes' => 30, 'servings' => 4, 'category' => 'MAIN', 'instructions' => ['Nudeln kochen', 'Gemüse anbraten', 'Alles mischen'], 'ingredients' => [['name' => 'Nudeln', 'quantity' => '500 g', 'category' => 'PANTRY'], ['name' => 'Tomaten', 'quantity' => '6', 'category' => 'PRODUCE'], ['name' => 'Salz', 'quantity' => '1/2 TL', 'category' => 'PANTRY']]]);
 $planned = $service->plan(['date' => '2026-11-07', 'mealType' => 'DINNER', 'recipeId' => $recipeId, 'title' => '', 'note' => 'Alle zusammen'], $actor);
 $entry = $planned['entries'][0] ?? null;
-$result = $service->addToShopping($recipeId, ['listId' => $listId], $actor);
+$result = $service->addToShopping($recipeId, ['listId' => $listId, 'servings' => 8], $actor);
 $items = $shopping->all()[0]['items'] ?? [];
-if ($recipeId === '' || $entry === null || $entry['title'] !== 'Gemüsepasta' || $entry['mealType'] !== 'DINNER' || $result['addedCount'] !== 2 || count($items) !== 2 || $items[0]['note'] !== 'Für Gemüsepasta') {
+if ($recipeId === '' || ($updated['recipes'][0]['instructions'][2] ?? '') !== 'Alles mischen' || $entry === null || $entry['title'] !== 'Bunte Gemüsepasta' || $entry['mealType'] !== 'DINNER' || $result['addedCount'] !== 3 || $result['servings'] !== 8 || count($items) !== 3 || $items[0]['note'] !== 'Für Bunte Gemüsepasta · 8 Portionen' || !in_array('1000 g', array_column($items, 'quantity'), true) || !in_array('12', array_column($items, 'quantity'), true) || !in_array('1 TL', array_column($items, 'quantity'), true)) {
     fwrite(STDERR, "Meal planner smoke test failed.\n"); exit(1);
 }
 $service->deleteEntry($entry['id']); $service->deleteRecipe($recipeId);

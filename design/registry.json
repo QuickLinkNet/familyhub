@@ -8,6 +8,14 @@
       "status": "verified",
       "approvedByUser": true,
       "manifest": "screens/lists/manifest.json"
+    },
+    {
+      "id": "recipes",
+      "title": "Rezeptverwaltung",
+      "currentVersion": "0.31.0",
+      "status": "verified",
+      "approvedByUser": true,
+      "manifest": "screens/recipes/manifest.json"
     }
   ]
 }

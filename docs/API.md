@@ -145,12 +145,13 @@ Artikel unterstützen `name`, optionale `quantity` und `note`, `isUrgent` sowie 
 
 - `GET /meal-planner?from={datum}&to={datum}` – Wochenplan und alle aktiven Lieblingsgerichte; maximal 31 Tage
 - `POST /meal-recipes` – Admin oder Elternteil legt ein Gericht mit Zutaten an
+- `PUT /meal-recipes/{uuid}` – Admin oder Elternteil bearbeitet Stammdaten, Zutaten und Zubereitung vollständig
 - `DELETE /meal-recipes/{uuid}` – Admin oder Elternteil entfernt ein Lieblingsgericht
 - `POST /meal-recipes/{uuid}/add-to-shopping` – jedes Profil überträgt alle Zutaten in `listId`
 - `POST /meal-plan` – Admin oder Elternteil belegt oder ersetzt einen Slot
 - `DELETE /meal-plan/{uuid}` – Admin oder Elternteil entfernt einen Planeintrag
 
-Ein Planeintrag enthält `date`, `mealType` (`BREAKFAST`, `LUNCH`, `DINNER`), optional `recipeId`, andernfalls einen freien `title`, sowie eine optionale `note`. Pro Datum und Mahlzeit existiert höchstens ein aktiver Slot. Rezepte enthalten strukturierte Zutaten mit `name`, `quantity` und derselben `category` wie Einkaufsartikel. Die Zutatenübernahme läuft vollständig in einer SQLite-Transaktion.
+Ein Planeintrag enthält `date`, `mealType` (`BREAKFAST`, `LUNCH`, `DINNER`), optional `recipeId`, andernfalls einen freien `title`, sowie eine optionale `note`. Pro Datum und Mahlzeit existiert höchstens ein aktiver Slot. Rezepte enthalten `servings`, eine Rezeptkategorie, geordnete `instructions` und strukturierte Zutaten mit `name`, `quantity` und derselben `category` wie Einkaufsartikel. Die Einkaufsübernahme akzeptiert `listId` und `servings`, skaliert führende numerische Mengenangaben und läuft vollständig in einer SQLite-Transaktion.
 
 ### Schule
 
