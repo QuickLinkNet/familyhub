@@ -12,6 +12,7 @@ final class ProfilePreferenceService
 {
     private const DASHBOARD_CARDS = ['REMINDERS', 'TODAY', 'TASKS', 'FAMILY', 'REWARDS', 'SHOPPING', 'MEALS', 'NOTES', 'SCHOOL', 'HOUSEHOLD', 'GOALS', 'WALL_MODE', 'ADMIN_SETUP'];
     private const WALL_CARDS = ['EVENTS', 'TASKS', 'REMINDERS', 'GOALS', 'NOTES', 'SCHOOL', 'FAMILY'];
+    private const CALENDAR_VIEWS = ['DAY', 'WEEK', 'MONTH'];
 
     public function __construct(private ProfilePreferenceRepository $repository) {}
 
@@ -34,6 +35,12 @@ final class ProfilePreferenceService
         $start = $this->time($input['quietHoursStart'] ?? $current['quietHoursStart'], 'Beginn');
         $end = $this->time($input['quietHoursEnd'] ?? $current['quietHoursEnd'], 'Ende');
         if ($start === $end) { throw new AppException('VALIDATION_ERROR', 'Beginn und Ende der Ruhezeit müssen unterschiedlich sein.', 422); }
+        $calendarView = strtoupper(trim((string) ($input['calendarView'] ?? $current['calendarView'])));
+        if (!in_array($calendarView, self::CALENDAR_VIEWS, true)) {
+            throw new AppException('VALIDATION_ERROR', 'Die Standardansicht des Kalenders ist ungültig.', 422);
+        }
+        $calendarMemberIds = $this->filterIds($input['calendarMemberIds'] ?? $current['calendarMemberIds'], 12, 'Personenfilter');
+        $calendarIds = $this->filterIds($input['calendarIds'] ?? $current['calendarIds'], 32, 'Kalenderfilter');
         $now = gmdate('c');
         $this->repository->save([
             'member_uuid' => $actor['id'],
@@ -42,6 +49,9 @@ final class ProfilePreferenceService
             'quiet_hours_enabled' => $enabled ? 1 : 0,
             'quiet_hours_start' => $start,
             'quiet_hours_end' => $end,
+            'calendar_view' => $calendarView,
+            'calendar_member_ids_json' => json_encode($calendarMemberIds, JSON_THROW_ON_ERROR),
+            'calendar_ids_json' => json_encode($calendarIds, JSON_THROW_ON_ERROR),
             'created_at' => $now,
             'updated_at' => $now,
         ]);
@@ -80,6 +90,21 @@ final class ProfilePreferenceService
         return $time;
     }
 
+    /** @return list<string> */
+    private function filterIds(mixed $value, int $maximum, string $label): array
+    {
+        if (!is_array($value) || count($value) > $maximum) {
+            throw new AppException('VALIDATION_ERROR', "$label ist ungültig.", 422);
+        }
+        $ids = array_values(array_unique(array_map(static fn (mixed $id): string => trim((string) $id), $value)));
+        foreach ($ids as $id) {
+            if ($id === '' || mb_strlen($id) > 160) {
+                throw new AppException('VALIDATION_ERROR', "$label enthält eine ungültige Kennung.", 422);
+            }
+        }
+        return $ids;
+    }
+
     /** @param array<string, mixed>|null $row @return array<string, mixed> */
     private function map(?array $row): array
     {
@@ -89,6 +114,9 @@ final class ProfilePreferenceService
             'quietHoursEnabled' => (int) ($row['quiet_hours_enabled'] ?? 0) === 1,
             'quietHoursStart' => (string) ($row['quiet_hours_start'] ?? '22:00'),
             'quietHoursEnd' => (string) ($row['quiet_hours_end'] ?? '07:00'),
+            'calendarView' => in_array(($row['calendar_view'] ?? null), self::CALENDAR_VIEWS, true) ? $row['calendar_view'] : 'WEEK',
+            'calendarMemberIds' => $this->storedFilterIds($row['calendar_member_ids_json'] ?? null, 12),
+            'calendarIds' => $this->storedFilterIds($row['calendar_ids_json'] ?? null, 32),
         ];
     }
 
@@ -101,5 +129,15 @@ final class ProfilePreferenceService
         if (!is_array($decoded) || $decoded === []) { return $fallback; }
         $cards = array_values(array_unique(array_filter(array_map('strval', $decoded), static fn (string $card): bool => in_array($card, $fallback, true))));
         return $cards === [] ? $fallback : $cards;
+    }
+
+    /** @return list<string> */
+    private function storedFilterIds(mixed $value, int $maximum): array
+    {
+        if (!is_string($value) || $value === '') { return []; }
+        try { $decoded = json_decode($value, true, 16, JSON_THROW_ON_ERROR); }
+        catch (\JsonException) { return []; }
+        if (!is_array($decoded) || count($decoded) > $maximum) { return []; }
+        return array_values(array_unique(array_filter(array_map('strval', $decoded), static fn (string $id): bool => $id !== '' && mb_strlen($id) <= 160)));
     }
 }

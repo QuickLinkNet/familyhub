@@ -33,6 +33,7 @@ Aktuelle Entwicklung:
 23. Rezeptportionen, Rezeptkategorien und strukturierte Zubereitungsschritte
 24. profilbezogene Kartenreihenfolgen und Benachrichtigungs-Ruhezeiten
 25. geordnete Mehrpersonen-Zuordnung für lokale Kalendertermine
+26. profilbezogene Kalenderstandardansicht und Filter
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -48,7 +49,7 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 
 - `app_settings` – technische Einstellungen
 - `family_members` – Personen, Rollen, Farben, optionales Geburtsdatum und Login-Hashes
-- `profile_preferences` – persönliche Kartenreihenfolgen für Übersicht und Wandmodus sowie Ruhezeit
+- `profile_preferences` – persönliche Kartenreihenfolgen, Kalenderstandard mit Filtern sowie Ruhezeit
 - `tasks` – Aufgaben, Status, Elternprüfung, Aufgabensterne sowie optionale Routine-Tageszeit, Wiederholungswochentage und Serienkennung
 - `routine_templates` – wiederverwendbare Routinepläne mit Person, Tageszeit und Wochentagen
 - `routine_steps` – geordnete Schritte einer Routinevorlage

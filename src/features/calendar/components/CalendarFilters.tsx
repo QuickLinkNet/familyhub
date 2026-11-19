@@ -1,4 +1,4 @@
-import { RestartAltRounded } from '@mui/icons-material';
+import { BookmarkAddedRounded, BookmarkAddRounded, RestartAltRounded } from '@mui/icons-material';
 import { Box, Button, Card, CardContent, Chip, Stack, Typography } from '@mui/material';
 import { MemberAvatar } from '../../../components/atoms/MemberAvatar';
 import type { FamilyMember } from '../../family/types/familyMember';
@@ -16,6 +16,10 @@ interface CalendarFiltersProps {
   calendarIds: string[];
   onMembersChange: (ids: string[]) => void;
   onCalendarsChange: (ids: string[]) => void;
+  defaultSaved: boolean;
+  loadingDefault: boolean;
+  savingDefault: boolean;
+  onSaveDefault: () => void;
 }
 
 function toggle(ids: string[], id: string) {
@@ -23,7 +27,7 @@ function toggle(ids: string[], id: string) {
 }
 
 export function CalendarFilters(props: CalendarFiltersProps) {
-  const { members, calendars, memberIds, calendarIds, onMembersChange, onCalendarsChange } = props;
+  const { members, calendars, memberIds, calendarIds, onMembersChange, onCalendarsChange, defaultSaved, loadingDefault, savingDefault, onSaveDefault } = props;
   const active = memberIds.length + calendarIds.length > 0;
 
   return (
@@ -57,6 +61,17 @@ export function CalendarFilters(props: CalendarFiltersProps) {
             ))}
             {active && <Button size="small" startIcon={<RestartAltRounded />} onClick={() => { onMembersChange([]); onCalendarsChange([]); }}>Zurücksetzen</Button>}
           </FilterRow>
+          <Stack direction="row" justifyContent="flex-end">
+            <Button
+              size="small"
+              variant={defaultSaved ? 'text' : 'outlined'}
+              startIcon={defaultSaved ? <BookmarkAddedRounded /> : <BookmarkAddRounded />}
+              disabled={defaultSaved || loadingDefault || savingDefault}
+              onClick={onSaveDefault}
+            >
+              {loadingDefault ? 'Standard wird geladen …' : savingDefault ? 'Wird gespeichert …' : defaultSaved ? 'Aktueller Standard' : 'Als Standard speichern'}
+            </Button>
+          </Stack>
         </Stack>
       </CardContent>
     </Card>

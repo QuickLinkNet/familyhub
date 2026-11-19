@@ -22,11 +22,13 @@ final class ProfilePreferenceRepository
     public function save(array $data): void
     {
         $statement = $this->database->prepare(
-            'INSERT INTO profile_preferences (member_uuid, dashboard_cards_json, wall_cards_json, quiet_hours_enabled, quiet_hours_start, quiet_hours_end, created_at, updated_at)
-             VALUES (:member_uuid, :dashboard_cards_json, :wall_cards_json, :quiet_hours_enabled, :quiet_hours_start, :quiet_hours_end, :created_at, :updated_at)
+            'INSERT INTO profile_preferences (member_uuid, dashboard_cards_json, wall_cards_json, quiet_hours_enabled, quiet_hours_start, quiet_hours_end, calendar_view, calendar_member_ids_json, calendar_ids_json, created_at, updated_at)
+             VALUES (:member_uuid, :dashboard_cards_json, :wall_cards_json, :quiet_hours_enabled, :quiet_hours_start, :quiet_hours_end, :calendar_view, :calendar_member_ids_json, :calendar_ids_json, :created_at, :updated_at)
              ON CONFLICT(member_uuid) DO UPDATE SET dashboard_cards_json = excluded.dashboard_cards_json,
                 wall_cards_json = excluded.wall_cards_json, quiet_hours_enabled = excluded.quiet_hours_enabled,
                 quiet_hours_start = excluded.quiet_hours_start, quiet_hours_end = excluded.quiet_hours_end,
+                calendar_view = excluded.calendar_view, calendar_member_ids_json = excluded.calendar_member_ids_json,
+                calendar_ids_json = excluded.calendar_ids_json,
                 updated_at = excluded.updated_at'
         );
         $statement->execute($data);

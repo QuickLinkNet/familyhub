@@ -4,6 +4,20 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.34.0] - 2026-11-19
+
+### Hinzugefügt
+
+- profilbezogene Standardansicht für Tag, Woche oder Monat im Familienkalender
+- aktuelle Personen- und Kalenderfilter können bewusst als persönlicher Standard gespeichert werden
+- Kalenderabschnitt im vorhandenen Dialog „Ansicht & Ruhezeiten“
+
+### Qualität
+
+- bestehende Profile erhalten per Migration die Wochenansicht ohne aktive Filter
+- Ansichten und Filterlisten werden serverseitig begrenzt und validiert
+- temporäres Filtern löst keine stillen Schreibzugriffe aus
+
 ## [0.33.0] - 2026-11-19
 
 ### Hinzugefügt

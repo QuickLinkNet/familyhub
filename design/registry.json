@@ -32,6 +32,14 @@
       "status": "verified",
       "approvedByUser": true,
       "manifest": "screens/calendar-collaboration/manifest.json"
+    },
+    {
+      "id": "calendar-defaults",
+      "title": "Persönlicher Kalenderstandard",
+      "currentVersion": "0.34.0",
+      "status": "verified",
+      "approvedByUser": true,
+      "manifest": "screens/calendar-defaults/manifest.json"
     }
   ]
 }

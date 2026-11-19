@@ -23,7 +23,7 @@ Prioritäten: **P0** Präsentations- und Alltagsreife, **P1** direkte Funktionsp
 | --- | --- | --- | --- |
 | Tag-, Wochen- und Monatsansicht | erfüllt | – | touch- und mobil nutzbar |
 | 5-Tages- und Timeline-Ansicht | offen | P1 | zwischen beiden Ansichten ohne Datenverlust wechseln |
-| frei wählbare Standardansicht | offen | P1 | pro Profil oder Gerät gespeichert |
+| frei wählbare Standardansicht | erfüllt | – | pro Profil gespeichert, geräteübergreifend |
 | schneller Profil- und Kalenderfilter | erfüllt | – | einzelne Personen und Quellen kombinierbar |
 | lokale und Google-Termine erstellen, bearbeiten und löschen | erfüllt | – | CRUD live geprüft |
 | Google-Zwei-Wege-Synchronisation | erfüllt | – | OAuth, Schreibrechte und Livecheck vorhanden |
@@ -97,7 +97,7 @@ Prioritäten: **P0** Präsentations- und Alltagsreife, **P1** direkte Funktionsp
 ## Empfohlene Reihenfolge
 
 1. **P0 Produktabschluss:** kontextbezogene Hilfe, Barrierefreiheit und öffentliche Dokumentation.
-2. **P1 Kalenderkomfort:** Standardansicht, erweiterte Wiederholungen und individuelle Erinnerungen.
+2. **P1 Kalenderkomfort:** erweiterte Wiederholungen und individuelle Erinnerungen.
 3. **P1 Alltagskomfort:** allgemeine/private Listen, vollständige Rezeptpflege, Widgets und Ruhezeiten.
 4. **P1 Integrationen:** Apple/iCloud, Outlook und CalDAV.
 5. **P2 Ausbau:** Ferien, Suche, Schulimport, Vorlagen, Zuständigkeitswechsel und optionales App-Paket.

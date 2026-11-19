@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { DashboardCustomizeRounded, NotificationsPausedRounded, TvRounded } from '@mui/icons-material';
-import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControlLabel, Stack, Switch, TextField, Typography } from '@mui/material';
+import { CalendarMonthRounded, DashboardCustomizeRounded, NotificationsPausedRounded, TvRounded } from '@mui/icons-material';
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControlLabel, Stack, Switch, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { dashboardCardOptions, defaultDashboardCards, defaultWallCards, wallCardOptions } from '../constants/profilePreferences';
 import { useProfilePreferences, useUpdateProfilePreferences } from '../hooks/useProfilePreferences';
 import type { ProfilePreferences } from '../types/profilePreferences';
@@ -14,13 +14,16 @@ const defaults: ProfilePreferences = {
   quietHoursEnabled: false,
   quietHoursStart: '22:00',
   quietHoursEnd: '07:00',
+  calendarView: 'WEEK',
+  calendarMemberIds: [],
+  calendarIds: [],
 };
 
 export function PersonalizationDialog({ open, onClose }: Props) {
   const preferences = useProfilePreferences();
   const update = useUpdateProfilePreferences();
   const [draft, setDraft] = useState<ProfilePreferences>(defaults);
-  useEffect(() => { if (open) setDraft(preferences.data ?? defaults); }, [open, preferences.data]);
+  useEffect(() => { if (open) setDraft({ ...defaults, ...preferences.data }); }, [open, preferences.data]);
   const timesValid = draft.quietHoursStart !== draft.quietHoursEnd;
   const save = () => update.mutate(draft, { onSuccess: onClose });
 
@@ -34,6 +37,17 @@ export function PersonalizationDialog({ open, onClose }: Props) {
           <Stack spacing={1.25}>
             <Stack direction="row" gap={1} alignItems="center"><DashboardCustomizeRounded color="action" /><Typography variant="h6">Meine Übersicht</Typography></Stack>
             <PreferenceToggleGrid options={dashboardCardOptions} selected={draft.dashboardCards} onChange={dashboardCards => setDraft(current => ({ ...current, dashboardCards }))} />
+          </Stack>
+          <Divider />
+          <Stack spacing={1.25}>
+            <Stack direction="row" gap={1} alignItems="center"><CalendarMonthRounded color="action" /><Typography variant="h6">Kalender</Typography></Stack>
+            <Typography color="text.secondary" variant="body2">Mit dieser Ansicht öffnet sich dein Kalender auf allen Geräten.</Typography>
+            <ToggleButtonGroup exclusive value={draft.calendarView} onChange={(_event, value) => { if (value) setDraft(current => ({ ...current, calendarView: value })); }} aria-label="Standardansicht des Kalenders">
+              <ToggleButton value="DAY">Tag</ToggleButton>
+              <ToggleButton value="WEEK">Woche</ToggleButton>
+              <ToggleButton value="MONTH">Monat</ToggleButton>
+            </ToggleButtonGroup>
+            <Alert severity="info">Deine bevorzugten Personen- und Kalenderfilter speicherst du direkt im Kalender über „Als Standard speichern“.</Alert>
           </Stack>
           <Divider />
           <Stack spacing={1.25}>

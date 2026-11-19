@@ -1,10 +1,11 @@
-import { useMemo, useState, type MouseEvent } from 'react';
+import { useEffect, useMemo, useState, type MouseEvent } from 'react';
 import { EventAvailableRounded } from '@mui/icons-material';
 import { Alert, Stack } from '@mui/material';
 import { EmptyStateCard } from '../../../components/molecules/EmptyStateCard';
 import { ApiError } from '../../../services/apiClient';
 import { useAuthSession } from '../../auth/hooks/useAuth';
 import { useFamilyMembers } from '../../family/hooks/useFamilyMembers';
+import { useProfilePreferences, useUpdateProfilePreferences } from '../../preferences/hooks/useProfilePreferences';
 import { CalendarFilters } from '../components/CalendarFilters';
 import { CalendarHeader, type CalendarView } from '../components/CalendarHeader';
 import { CalendarLoadingGrid } from '../components/CalendarLoadingGrid';
@@ -17,6 +18,10 @@ import { useCalendarEvents, useCalendars } from '../hooks/useCalendar';
 import type { CalendarEvent } from '../types/calendar';
 import { addDays, daysBetween, endOfMonth, fullDayFormatter, isSameMonth, monthFormatter, monthTitleFormatter, startOfDay, startOfMonth, startOfWeek } from '../utils/calendarDates';
 
+function sameIds(left: string[], right: string[]) {
+  return left.length === right.length && left.every((id, index) => id === right[index]);
+}
+
 export function CalendarPage() {
   const [view, setView] = useState<CalendarView>('week');
   const [cursor, setCursor] = useState(() => startOfDay(new Date()));
@@ -25,6 +30,7 @@ export function CalendarPage() {
   const [createDate, setCreateDate] = useState<Date | null>(null);
   const [memberIds, setMemberIds] = useState<string[]>([]);
   const [calendarIds, setCalendarIds] = useState<string[]>([]);
+  const [preferenceApplied, setPreferenceApplied] = useState(false);
   const weekStart = startOfWeek(cursor);
   const weekEnd = addDays(weekStart, 7);
   const monthStart = startOfMonth(cursor);
@@ -35,6 +41,8 @@ export function CalendarPage() {
   const events = useCalendarEvents(periodStart.toISOString(), periodEnd.toISOString());
   const calendars = useCalendars();
   const family = useFamilyMembers();
+  const preferences = useProfilePreferences();
+  const updatePreferences = useUpdateProfilePreferences();
   const session = useAuthSession();
   const canManage = session.data?.user?.role !== 'CHILD';
   const activeFamily = (family.data ?? []).filter(member => member.isActive);
@@ -50,12 +58,25 @@ export function CalendarPage() {
     && (memberIds.length === 0 || (event.members ?? []).some(member => memberIds.includes(member.id)))
   );
   const filtersActive = memberIds.length > 0 || calendarIds.length > 0;
+  const savedView = (preferences.data?.calendarView ?? 'WEEK').toLowerCase() as CalendarView;
+  const defaultSaved = preferences.data !== undefined
+    && view === savedView
+    && sameIds(memberIds, preferences.data.calendarMemberIds ?? [])
+    && sameIds(calendarIds, preferences.data.calendarIds ?? []);
   const periodLabel = view === 'day'
     ? fullDayFormatter.format(cursor)
     : view === 'week'
       ? `${monthFormatter.format(weekStart)} – ${monthFormatter.format(addDays(weekEnd, -1))}`
       : monthTitleFormatter.format(monthStart);
   const periodNoun = view === 'day' ? 'Tag' : view === 'week' ? 'Woche' : 'Monat';
+
+  useEffect(() => {
+    if (preferenceApplied || preferences.data === undefined) return;
+    setView((preferences.data.calendarView ?? 'WEEK').toLowerCase() as CalendarView);
+    setMemberIds(preferences.data.calendarMemberIds ?? []);
+    setCalendarIds(preferences.data.calendarIds ?? []);
+    setPreferenceApplied(true);
+  }, [preferenceApplied, preferences.data]);
 
   const openCreate = (day = new Date()) => {
     setSelectedEvent(null);
@@ -95,15 +116,33 @@ export function CalendarPage() {
     setCursor(today);
     setSelectedDay(today);
   };
+  const saveDefault = () => updatePreferences.mutate({
+    calendarView: view.toUpperCase() as 'DAY' | 'WEEK' | 'MONTH',
+    calendarMemberIds: memberIds,
+    calendarIds
+  });
 
   return (
     <Stack spacing={{ xs: 2.5, md: 3.5 }}>
       <CalendarHeader view={view} canManage={canManage} onViewChange={changeView} onCreate={() => openCreate()} />
       <CalendarPeriodNavigation view={view} label={periodLabel} onPrevious={() => changePeriod(-1)} onNext={() => changePeriod(1)} onToday={goToday} />
-      <CalendarFilters members={activeFamily} calendars={calendarOptions} memberIds={memberIds} calendarIds={calendarIds} onMembersChange={setMemberIds} onCalendarsChange={setCalendarIds} />
+      <CalendarFilters
+        members={activeFamily}
+        calendars={calendarOptions}
+        memberIds={memberIds}
+        calendarIds={calendarIds}
+        onMembersChange={setMemberIds}
+        onCalendarsChange={setCalendarIds}
+        defaultSaved={defaultSaved}
+        loadingDefault={preferences.isLoading}
+        savingDefault={updatePreferences.isPending}
+        onSaveDefault={saveDefault}
+      />
       {events.isError && <Alert severity="error">{events.error instanceof ApiError ? events.error.message : 'Die Termine konnten nicht geladen werden.'}</Alert>}
       {calendars.isError && <Alert severity="error">{calendars.error instanceof ApiError ? calendars.error.message : 'Die Kalender konnten nicht geladen werden.'}</Alert>}
       {family.isError && <Alert severity="error">Die Familienprofile konnten nicht geladen werden.</Alert>}
+      {preferences.isError && <Alert severity="error">Dein Kalenderstandard konnte nicht geladen werden.</Alert>}
+      {updatePreferences.isError && <Alert severity="error">Dein Kalenderstandard konnte nicht gespeichert werden.</Alert>}
       {events.isLoading
         ? <CalendarLoadingGrid days={days} view={view} />
         : view === 'day'
