@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Alert, Box, CircularProgress, Container, Stack } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
 import { useCalendarEvents } from '../../calendar/hooks/useCalendar';
@@ -26,6 +26,10 @@ import { useScreenWakeLock } from '../hooks/useScreenWakeLock';
 import { isDisplayScheduleActive } from '../services/displaySchedule';
 import { WallNightMode } from '../components/WallNightMode';
 import { AppearanceScope } from '../../../app/providers/AppearanceProvider';
+import { useProfilePreferences } from '../../preferences/hooks/useProfilePreferences';
+import { defaultWallCards } from '../../preferences/constants/profilePreferences';
+import type { WallCardId } from '../../preferences/types/profilePreferences';
+import { isQuietHoursActive } from '../../preferences/utils/quietHours';
 
 const defaultPresentation: WallPresentation = {
   greeting: 'Schön, dass ihr da seid', weatherEnabled: false, weatherLocation: null,
@@ -60,10 +64,39 @@ export function WallPage() {
   const presentation = useWallPresentation();
   const goals = useFamilyGoals();
   const reminders = useReminders();
+  const preferences = useProfilePreferences();
+  const orderedCards = preferences.data?.wallCards ?? defaultWallCards;
+  const visibleCards = new Set(orderedCards);
+  const quietHours = preferences.data ? isQuietHoursActive(preferences.data, now) : false;
   const openTasks = (tasks.data ?? []).filter(task => task.status !== 'COMPLETED' && isDueBy(task, localDate(now)));
   const activeFamily = (family.data ?? []).filter(member => member.isActive);
   const upcomingEvents = (events.data ?? []).filter(event => new Date(event.endsAt) > now);
-  const loading = events.isLoading || tasks.isLoading || family.isLoading || notes.isLoading || school.isLoading || presentation.isLoading || goals.isLoading || reminders.isLoading;
+  const loading = presentation.isLoading
+    || (visibleCards.has('EVENTS') && events.isLoading)
+    || (visibleCards.has('TASKS') && tasks.isLoading)
+    || (visibleCards.has('FAMILY') && family.isLoading)
+    || (visibleCards.has('NOTES') && notes.isLoading)
+    || (visibleCards.has('SCHOOL') && school.isLoading)
+    || (visibleCards.has('GOALS') && goals.isLoading)
+    || (visibleCards.has('REMINDERS') && reminders.isLoading);
+  const hasError = presentation.isError
+    || (visibleCards.has('EVENTS') && events.isError)
+    || (visibleCards.has('TASKS') && tasks.isError)
+    || (visibleCards.has('FAMILY') && family.isError)
+    || (visibleCards.has('NOTES') && notes.isError)
+    || (visibleCards.has('SCHOOL') && school.isError)
+    || (visibleCards.has('GOALS') && goals.isError)
+    || (visibleCards.has('REMINDERS') && reminders.isError);
+  const cards: Partial<Record<WallCardId, ReactNode>> = {
+    EVENTS: <WallEvents events={upcomingEvents} />,
+    TASKS: <WallTasks tasks={openTasks} />,
+    REMINDERS: !quietHours && reminders.data?.items.length ? <WallReminders board={reminders.data} /> : null,
+    GOALS: goals.data?.activeGoals[0] ? <WallGoal goal={goals.data.activeGoals[0]} /> : null,
+    NOTES: <WallNotes notes={notes.data ?? []} />,
+    SCHOOL: <WallSchool lessons={school.data?.lessons ?? []} items={school.data?.items ?? []} />,
+    FAMILY: <WallFamily members={activeFamily} />,
+  };
+  const pairPrimaryCards = visibleCards.has('EVENTS') && visibleCards.has('TASKS');
 
   if (nightMode) {
     return (
@@ -84,20 +117,12 @@ export function WallPage() {
               wakeLock={wakeLock}
               onResumeNight={nightOverrideActive ? () => setNightOverrideUntil(null) : undefined}
             />
-            {(events.isError || tasks.isError || family.isError || notes.isError || school.isError || presentation.isError || goals.isError || reminders.isError) && <Alert severity="warning">Einige Familieninformationen konnten gerade nicht geladen werden.</Alert>}
+            {hasError && <Alert severity="warning">Einige Familieninformationen konnten gerade nicht geladen werden.</Alert>}
             {loading
               ? <Stack alignItems="center" py={8}><CircularProgress /></Stack>
-              : <>
-                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '1.35fr 1fr' }, gap: { xs: 2, md: 2.5 }, alignItems: 'stretch' }}>
-                  <WallEvents events={upcomingEvents} />
-                  <WallTasks tasks={openTasks} />
-                </Box>
-                <WallReminders board={reminders.data} />
-                <WallGoal goal={goals.data?.activeGoals[0]} />
-                <WallNotes notes={notes.data ?? []} />
-                <WallSchool lessons={school.data?.lessons ?? []} items={school.data?.items ?? []} />
-                <WallFamily members={activeFamily} />
-              </>}
+              : <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: pairPrimaryCards ? '1.35fr 1fr' : '1fr' }, gap: { xs: 2, md: 2.5 }, alignItems: 'stretch' }}>
+                {orderedCards.map(id => cards[id] ? <Box key={id} sx={{ gridColumn: { xs: '1', lg: pairPrimaryCards && ['EVENTS', 'TASKS'].includes(id) ? 'span 1' : '1 / -1' } }}>{cards[id]}</Box> : null)}
+              </Box>}
           </Stack>
         </Container>
         {enteredFromDeviceSetup && <IdleWallReturnButton />}

@@ -5,6 +5,7 @@ import type { BrowserNotificationStatus } from '../types/browserNotification';
 import type { ReminderBoard } from '../types/reminder';
 import { getPushStatus, registerPushSubscription, removePushSubscription, sendPushTest } from '../api/pushApi';
 import type { PushStatus } from '../types/push';
+import { useProfilePreferences } from '../../preferences/hooks/useProfilePreferences';
 
 const initialStatus = (): BrowserNotificationStatus => {
   const supported = supportsBrowserNotifications();
@@ -30,6 +31,7 @@ export function useBrowserNotifications(board?: ReminderBoard) {
   const [status, setStatus] = useState<BrowserNotificationStatus>(initialStatus);
   const [error, setError] = useState<string | null>(null);
   const [server, setServer] = useState<PushStatus | null>(null);
+  const preferences = useProfilePreferences();
 
   useEffect(() => {
     if (!board) return;
@@ -108,12 +110,12 @@ export function useBrowserNotifications(board?: ReminderBoard) {
   }, []);
 
   useEffect(() => {
-    if (!board || !status.enabled) return;
-    const run = () => { void notifyNewReminders(board).catch(() => setError('Eine Browser-Benachrichtigung konnte nicht angezeigt werden.')); };
+    if (!board || !status.enabled || !preferences.data) return;
+    const run = () => { void notifyNewReminders(board, preferences.data).catch(() => setError('Eine Browser-Benachrichtigung konnte nicht angezeigt werden.')); };
     run();
     document.addEventListener('visibilitychange', run);
     return () => document.removeEventListener('visibilitychange', run);
-  }, [board, status.enabled]);
+  }, [board, preferences.data, status.enabled]);
 
   return { status, error, enable, disable, test };
 }

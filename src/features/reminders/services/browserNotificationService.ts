@@ -1,5 +1,7 @@
 import type { ReminderBoard, ReminderItem } from '../types/reminder';
 import { readNotificationState, rememberItems, reminderFingerprint } from './browserNotificationStore';
+import type { ProfilePreferences } from '../../preferences/types/profilePreferences';
+import { isQuietHoursActive } from '../../preferences/utils/quietHours';
 
 const cooldownMs = 30 * 60 * 1000;
 let dispatchPromise: Promise<boolean> | null = null;
@@ -32,8 +34,9 @@ export function markCurrentItemsAsSeen(board: ReminderBoard): void {
   if (items.length > 0) rememberItems(board.audience.id, items);
 }
 
-async function dispatchNewReminders(board: ReminderBoard): Promise<boolean> {
+async function dispatchNewReminders(board: ReminderBoard, preferences: ProfilePreferences): Promise<boolean> {
   if (!supportsBrowserNotifications() || Notification.permission !== 'granted' || document.visibilityState === 'visible') return false;
+  if (isQuietHoursActive(preferences)) return false;
   const state = readNotificationState(board.audience.id);
   if (!state.enabled) return false;
   const fresh = relevantItems(board).filter(item => !(reminderFingerprint(item) in state.notified));
@@ -49,8 +52,8 @@ async function dispatchNewReminders(board: ReminderBoard): Promise<boolean> {
   return true;
 }
 
-export function notifyNewReminders(board: ReminderBoard): Promise<boolean> {
+export function notifyNewReminders(board: ReminderBoard, preferences: ProfilePreferences): Promise<boolean> {
   if (dispatchPromise) return dispatchPromise;
-  dispatchPromise = dispatchNewReminders(board).finally(() => { dispatchPromise = null; });
+  dispatchPromise = dispatchNewReminders(board, preferences).finally(() => { dispatchPromise = null; });
   return dispatchPromise;
 }

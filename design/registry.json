@@ -16,6 +16,14 @@
       "status": "verified",
       "approvedByUser": true,
       "manifest": "screens/recipes/manifest.json"
+    },
+    {
+      "id": "personalization",
+      "title": "Ansicht und Ruhezeiten",
+      "currentVersion": "0.32.0",
+      "status": "verified",
+      "approvedByUser": true,
+      "manifest": "screens/personalization/manifest.json"
     }
   ]
 }

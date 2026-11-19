@@ -1,4 +1,5 @@
 import { Box, Stack } from '@mui/material';
+import { Fragment, type ReactNode } from 'react';
 import { PageHeader } from '../../../components/molecules/PageHeader';
 import { useAuthSession } from '../../auth/hooks/useAuth';
 import { useCalendarEvents } from '../../calendar/hooks/useCalendar';
@@ -27,6 +28,9 @@ import { useFamilyGoals } from '../../goals/hooks/useFamilyGoals';
 import { FamilyGoalSummaryCard } from '../components/FamilyGoalSummaryCard';
 import { useReminders } from '../../reminders/hooks/useReminders';
 import { ReminderOverview } from '../../reminders/components/ReminderOverview';
+import { useProfilePreferences } from '../../preferences/hooks/useProfilePreferences';
+import { defaultDashboardCards } from '../../preferences/constants/profilePreferences';
+import type { DashboardCardId } from '../../preferences/types/profilePreferences';
 
 const now = new Date();
 const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -48,6 +52,9 @@ export function DashboardPage() {
   const household = useHouseholdBoard();
   const goals = useFamilyGoals();
   const reminders = useReminders();
+  const preferences = useProfilePreferences();
+  const orderedCards = preferences.data?.dashboardCards ?? defaultDashboardCards;
+  const visibleCards = new Set(orderedCards);
   const todayEvents = events.data ?? [];
   const currentDate = localDate(now);
   const openTasks = (tasks.data ?? []).filter(task => task.status !== 'COMPLETED' && isDueBy(task, currentDate));
@@ -56,24 +63,27 @@ export function DashboardPage() {
   const ownPoints = rewards.data?.balances.find(balance => balance.member.id === session.data?.user?.id)?.points ?? 0;
   const shoppingOpen = (shopping.data ?? []).reduce((count, list) => count + list.items.filter(item => !item.isChecked).length, 0);
   const todayMeals = (meals.data?.entries ?? []).filter(entry => entry.date === currentDate);
+  const cards: Partial<Record<DashboardCardId, ReactNode>> = {
+    TODAY: <TodayCard events={todayEvents} loading={events.isLoading} error={events.isError} />,
+    TASKS: <TasksSummaryCard openCount={openTasks.length} completedCount={completedTasks.length} totalCount={openTasks.length + completedTasks.length} loading={tasks.isLoading} error={tasks.isError} />,
+    FAMILY: <FamilySummaryCard members={activeFamily} loading={family.isLoading} error={family.isError} />,
+    REWARDS: <RewardsSummaryCard points={ownPoints} loading={rewards.isLoading} error={rewards.isError} />,
+    SHOPPING: <ShoppingSummaryCard openCount={shoppingOpen} listCount={shopping.data?.length ?? 0} loading={shopping.isLoading} error={shopping.isError} />,
+    MEALS: <MealsSummaryCard entries={todayMeals} loading={meals.isLoading} error={meals.isError} />,
+    NOTES: <NotesSummaryCard notes={notes.data ?? []} loading={notes.isLoading} error={notes.isError} />,
+    SCHOOL: <SchoolSummaryCard board={school.data} loading={school.isLoading} error={school.isError} />,
+    HOUSEHOLD: <HouseholdSummaryCard board={household.data} loading={household.isLoading} error={household.isError} />,
+    GOALS: <FamilyGoalSummaryCard board={goals.data} loading={goals.isLoading} error={goals.isError} />,
+    WALL_MODE: <WallModeCard />,
+    ADMIN_SETUP: session.data?.user?.role === 'ADMIN' ? <AdminSetupCard /> : null,
+  };
 
   return (
     <Stack spacing={{ xs: 2.5, md: 3.5 }}>
       <PageHeader title={greeting} description={`${todayLabel} · Alles Wichtige für eure Familie.`} />
-      <ReminderOverview board={reminders.data} loading={reminders.isLoading} error={reminders.isError} />
+      {visibleCards.has('REMINDERS') && <ReminderOverview board={reminders.data} loading={reminders.isLoading} error={reminders.isError} />}
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', lg: 'repeat(3, minmax(0, 1fr))' }, gap: { xs: 2, md: 2.5 }, alignItems: 'stretch' }}>
-        <TodayCard events={todayEvents} loading={events.isLoading} error={events.isError} />
-        <TasksSummaryCard openCount={openTasks.length} completedCount={completedTasks.length} totalCount={openTasks.length + completedTasks.length} loading={tasks.isLoading} error={tasks.isError} />
-        <FamilySummaryCard members={activeFamily} loading={family.isLoading} error={family.isError} />
-        <RewardsSummaryCard points={ownPoints} loading={rewards.isLoading} error={rewards.isError} />
-        <ShoppingSummaryCard openCount={shoppingOpen} listCount={shopping.data?.length ?? 0} loading={shopping.isLoading} error={shopping.isError} />
-        <MealsSummaryCard entries={todayMeals} loading={meals.isLoading} error={meals.isError} />
-        <NotesSummaryCard notes={notes.data ?? []} loading={notes.isLoading} error={notes.isError} />
-        <SchoolSummaryCard board={school.data} loading={school.isLoading} error={school.isError} />
-        <HouseholdSummaryCard board={household.data} loading={household.isLoading} error={household.isError} />
-        <FamilyGoalSummaryCard board={goals.data} loading={goals.isLoading} error={goals.isError} />
-        <WallModeCard />
-        {session.data?.user?.role === 'ADMIN' && <AdminSetupCard />}
+        {orderedCards.filter(id => id !== 'REMINDERS').map(id => <Fragment key={id}>{cards[id]}</Fragment>)}
       </Box>
     </Stack>
   );

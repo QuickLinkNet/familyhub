@@ -1,0 +1,15 @@
+{
+  "screen": "personalization",
+  "title": "Ansicht und Ruhezeiten",
+  "currentVersion": "0.32.0",
+  "status": "verified",
+  "approvedByUser": true,
+  "approvedAt": "2026-11-19",
+  "versions": [
+    {
+      "version": "0.32.0",
+      "status": "verified",
+      "path": "versions/0.32.0"
+    }
+  ]
+}

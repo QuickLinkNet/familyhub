@@ -18,6 +18,7 @@ final class PushService
         private PushRepository $repository,
         private FamilyMemberRepository $members,
         private ReminderService $reminders,
+        private ProfilePreferenceService $preferences,
         private SecretCipher $cipher,
         private WebPushCrypto $crypto,
         private PublicUrl $urls
@@ -113,6 +114,7 @@ final class PushService
         foreach ($groups as $memberId => $memberSubscriptions) {
             $member = $this->members->find($memberId);
             if ($member === null || !$member->isActive) { continue; }
+            if ($this->preferences->quietHoursActive($memberId)) { continue; }
             $actor = ['id' => $member->uuid, 'name' => $member->name, 'color' => $member->color, 'role' => $member->role];
             $items = array_values(array_filter($this->reminders->overview($actor)['items'] ?? [], static fn (array $item): bool => in_array($item['urgency'] ?? '', ['CRITICAL', 'ATTENTION'], true)));
             if ($items === []) { continue; }

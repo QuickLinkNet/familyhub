@@ -4,6 +4,25 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.32.0] - 2026-11-19
+
+### Hinzugefügt
+
+- profilbezogene Auswahl und Reihenfolge der Karten auf Übersicht und Wandmodus
+- gemeinsamer Dialog „Ansicht & Ruhezeiten“ im Profilmenü
+- individuelle, geräteübergreifend gespeicherte Benachrichtigungs-Ruhezeiten
+
+### Geändert
+
+- Browser- und serverseitige Web-Push-Zustellung pausieren während der persönlichen Ruhezeit
+- der Wandmodus blendet den Familienradar während der Ruhezeit aus
+- Profilwechsel trennen den persönlichen Einstellungscache konsequent
+
+### Geprüft
+
+- fokussierter Preferences-Smoke-Test für Defaults, Speicherung, Validierung und Ruhefenster über Mitternacht
+- Production-Typecheck, PHP-Lint, Build und responsive Browser-Abnahme
+
 ## [0.31.0] - 2026-11-19
 
 ### Hinzugefügt

@@ -63,6 +63,13 @@ Die API führt Kalendertermine der nächsten 36 Stunden, fällige oder überfäl
 
 Der Familienradar ist eine abgeleitete Ansicht. Er legt keine zusätzlichen personenbezogenen Verlaufsdaten an. Web Push ist optional; Endpunkt und Browser-Schlüssel werden serverseitig verschlüsselt gespeichert, Nutzlasten pro Zielbrowser verschlüsselt und fehlgeschlagene oder abgelaufene Geräte automatisch ausgetragen.
 
+### Persönliche Ansicht und Ruhezeiten
+
+- `GET /profile-preferences` – eigene Kartenreihenfolge für Übersicht und Wandmodus sowie Ruhezeit laden
+- `PUT /profile-preferences` – vollständige persönliche Einstellung speichern; authentifiziert und CSRF-geschützt
+
+`dashboardCards` und `wallCards` enthalten geordnete Kartenkennungen. Beide Ansichten müssen mindestens eine bekannte Karte behalten. `quietHoursEnabled`, `quietHoursStart` und `quietHoursEnd` steuern ein persönliches Zeitfenster im Format `HH:MM`. Währenddessen pausieren automatische Browser- und Web-Push-Nachrichten; der Wandmodus blendet den Familienradar aus. Ein bewusst ausgelöster Push-Test bleibt möglich.
+
 ### Familienmitglieder
 
 - `GET /family-members` – alle angemeldeten Rollen

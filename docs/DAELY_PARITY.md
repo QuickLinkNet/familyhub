@@ -71,12 +71,12 @@ Prioritäten: **P0** Präsentations- und Alltagsreife, **P1** direkte Funktionsp
 | Familienpinnwand | erfüllt | – | Priorität, Urheber und Ablaufdatum |
 | gemeinsame Familienziele | erfüllt | – | Beiträge, Fortschritt und Wochenhighlights |
 | persönliches Dashboard und Familienradar | erfüllt | – | rollenabhängige Inhalte |
-| konfigurierbare Dashboard-Karten und Widgets | offen | P1 | Reihenfolge, Sichtbarkeit und Standardwerte je Profil |
+| konfigurierbare Dashboard-Karten und Widgets | erfüllt | – | Reihenfolge, Sichtbarkeit und Standardwerte je Profil |
 | Foto-, Wetter- und Ruhemodus | erfüllt | – | Inaktivität, Rotation und Nachtansicht |
 | installierbare mobile PWA | erfüllt | – | Desktop, Android und iOS-Homescreen dokumentiert |
 | optionales App-Store-Paket | offen | P2 | erst nach stabiler PWA und Markenentscheidung |
 | echte Web-Push-Erinnerungen | erfüllt | – | VAPID, Profilgeräte und Scheduler |
-| individuelle Ruhezeiten je Profil | offen | P1 | Push und Board respektieren Ruhefenster |
+| individuelle Ruhezeiten je Profil | erfüllt | – | Push und Board respektieren Ruhefenster |
 | Rollen, Elternpasswort und Kinder-PIN | erfüllt | – | Rechte serverseitig erzwungen |
 | granulare Modul- und Bearbeitungsrechte | offen | P2 | pro Rolle und Modul administrierbar |
 | geführte Geräte- und PWA-Einrichtung | erfüllt | – | QR-Freigabe, Gerätename, App-Installation und Push-Test sind geführt |

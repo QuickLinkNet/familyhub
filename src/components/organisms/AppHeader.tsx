@@ -1,9 +1,10 @@
 import { useState, type MouseEvent } from 'react';
-import { LogoutRounded, MenuRounded, MoreHorizRounded, TvRounded } from '@mui/icons-material';
+import { DashboardCustomizeRounded, LogoutRounded, MenuRounded, MoreHorizRounded, TvRounded } from '@mui/icons-material';
 import { AppBar, Box, Chip, IconButton, ListItemIcon, Menu, MenuItem, Stack, Toolbar } from '@mui/material';
 import { MemberAvatar } from '../atoms/MemberAvatar';
 import { ReminderCenter } from '../../features/reminders/components/ReminderCenter';
 import { DisplaySetupDialog } from '../../features/wall/components/DisplaySetupDialog';
+import { PersonalizationDialog } from '../../features/preferences/components/PersonalizationDialog';
 
 interface AppHeaderProps {
   user: { name: string; color: string } | null;
@@ -15,6 +16,7 @@ interface AppHeaderProps {
 export function AppHeader({ user, signingOut, onOpenNavigation, onSignOut }: AppHeaderProps) {
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
   const [idleDialogOpen, setIdleDialogOpen] = useState(false);
+  const [personalizationOpen, setPersonalizationOpen] = useState(false);
   const openMenu = (event: MouseEvent<HTMLElement>) => setMenuAnchor(event.currentTarget);
   const closeMenu = () => setMenuAnchor(null);
   const signOut = () => {
@@ -24,6 +26,10 @@ export function AppHeader({ user, signingOut, onOpenNavigation, onSignOut }: App
   const openIdleDialog = () => {
     closeMenu();
     setIdleDialogOpen(true);
+  };
+  const openPersonalization = () => {
+    closeMenu();
+    setPersonalizationOpen(true);
   };
 
   return (
@@ -42,6 +48,10 @@ export function AppHeader({ user, signingOut, onOpenNavigation, onSignOut }: App
         </Toolbar>
       </AppBar>
       <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={closeMenu}>
+        <MenuItem onClick={openPersonalization}>
+          <ListItemIcon><DashboardCustomizeRounded fontSize="small" /></ListItemIcon>
+          Ansicht & Ruhezeiten
+        </MenuItem>
         <MenuItem onClick={openIdleDialog}>
           <ListItemIcon><TvRounded fontSize="small" /></ListItemIcon>
           Familienboard einrichten
@@ -51,6 +61,7 @@ export function AppHeader({ user, signingOut, onOpenNavigation, onSignOut }: App
           Abmelden
         </MenuItem>
       </Menu>
+      <PersonalizationDialog open={personalizationOpen} onClose={() => setPersonalizationOpen(false)} />
       <DisplaySetupDialog open={idleDialogOpen} onClose={() => setIdleDialogOpen(false)} />
     </>
   );
