@@ -127,6 +127,20 @@ Guthaben werden nie als überschreibbarer Zähler gespeichert, sondern aus dem a
 
 Artikel unterstützen `name`, optionale `quantity` und `note`, `isUrgent` sowie einen festen Ladenbereich in `category`. Die API protokolliert, wer einen Artikel ergänzt beziehungsweise abgehakt hat. Gelöschte Datensätze werden weich gelöscht und nicht mehr ausgeliefert.
 
+### Flexible Listen
+
+- `GET /lists` – für das aktuelle Profil sichtbare Listen samt Punkten
+- `POST /lists` – Liste mit Name, Beschreibung, Symbol, Farbe und Sichtbarkeit anlegen
+- `PUT /lists/{uuid}` – eigene oder als Erwachsener verwaltbare gemeinsame Liste bearbeiten
+- `DELETE /lists/{uuid}` – verwaltbare Liste samt Punkten weich löschen
+- `POST /lists/{uuid}/items` – sichtbarer Liste einen Punkt hinzufügen
+- `POST /lists/{uuid}/clear-completed` – erledigte Punkte einer sichtbaren Liste entfernen
+- `PUT /list-items/{uuid}` – offenen Punkt, Notiz und Verantwortlichkeit bearbeiten
+- `POST /list-items/{uuid}/toggle` – Punkt abschließen oder wieder öffnen
+- `DELETE /list-items/{uuid}` – Punkt entfernen
+
+`visibility` akzeptiert `FAMILY`, `ADULTS` oder `PRIVATE`. Private Listen werden ausschließlich dem Ersteller ausgeliefert. Erwachsenenlisten sind nur für Admin- und Elternprofile sichtbar. Die optionale `assignedToMemberId` muss auf ein aktives Familienprofil zeigen.
+
 ### Essensplan und Lieblingsgerichte
 
 - `GET /meal-planner?from={datum}&to={datum}` – Wochenplan und alle aktiven Lieblingsgerichte; maximal 31 Tage

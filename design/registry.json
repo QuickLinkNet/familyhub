@@ -1,4 +1,13 @@
 {
   "schemaVersion": 1,
-  "screens": []
+  "screens": [
+    {
+      "id": "lists",
+      "title": "Flexible Listen",
+      "currentVersion": "0.30.0",
+      "status": "verified",
+      "approvedByUser": true,
+      "manifest": "screens/lists/manifest.json"
+    }
+  ]
 }

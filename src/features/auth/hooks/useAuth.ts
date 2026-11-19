@@ -36,6 +36,7 @@ export const useLogin = () => {
       void client.invalidateQueries({ queryKey: ['calendar-events'] });
       void client.invalidateQueries({ queryKey: ['rewards'] });
       void client.invalidateQueries({ queryKey: ['shopping-lists'] });
+      void client.invalidateQueries({ queryKey: ['family-lists'] });
       void client.invalidateQueries({ queryKey: ['meal-planner'] });
       void client.invalidateQueries({ queryKey: ['household-board'] });
       void client.invalidateQueries({ queryKey: ['wall-presentation'] });
@@ -59,6 +60,7 @@ export const useLogout = () => {
       client.removeQueries({ queryKey: ['calendar-events'] });
       client.removeQueries({ queryKey: ['rewards'] });
       client.removeQueries({ queryKey: ['shopping-lists'] });
+      client.removeQueries({ queryKey: ['family-lists'] });
       client.removeQueries({ queryKey: ['meal-planner'] });
       client.removeQueries({ queryKey: ['household-board'] });
       client.removeQueries({ queryKey: ['wall-presentation'] });

@@ -10,14 +10,14 @@
 
 <p align="center">
   <a href="https://github.com/QuickLinkNet/familyhub/actions/workflows/quality.yml"><img src="https://github.com/QuickLinkNet/familyhub/actions/workflows/quality.yml/badge.svg" alt="Quality"></a>
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.29.0-345b48" alt="Version 0.29.0"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.30.0-345b48" alt="Version 0.30.0"></a>
   <img src="https://img.shields.io/badge/PHP-8.2%2B-777BB4" alt="PHP 8.2 oder neuer">
   <img src="https://img.shields.io/badge/SQLite-self--hosted-0F80CC" alt="SQLite und Self-Hosting">
 </p>
 
 FamilyHub bündelt den Familienalltag in einer touch-optimierten React-PWA. Die native PHP-/SQLite-API läuft auf gewöhnlichem Webhosting, benötigt keine Framework-Laufzeit und hält Familien- und Zugangsdaten unter eigener Kontrolle.
 
-> **Projektstatus:** FamilyHub ist als selbst installierbare Produktversion nutzbar und wird aktiv weiterentwickelt. Aktueller Stand: **v0.29.0**.
+> **Projektstatus:** FamilyHub ist als selbst installierbare Produktversion nutzbar und wird aktiv weiterentwickelt. Aktueller Stand: **v0.30.0**.
 
 ## Einblick
 
@@ -53,7 +53,7 @@ FamilyHub bündelt den Familienalltag in einer touch-optimierten React-PWA. Die 
 - **Datenhoheit:** eigene Installation, eigene SQLite-Datenbank und portables Komplettarchiv
 - **Für den Familienalltag gebaut:** Wanddisplay, Tablet und Smartphone mit großen Touch-Zielen
 - **Kalender ohne Zwang:** Google Kalender read-only per iCal oder optional mit OAuth-Schreibzugriff
-- **Ein gemeinsamer Ort:** Termine, Aufgaben, Routinen, Einkauf, Essen, Schule und Haushalt
+- **Ein gemeinsamer Ort:** Termine, Aufgaben, Routinen, flexible Listen, Einkauf, Essen, Schule und Haushalt
 - **Schlanker Betrieb:** React/TypeScript im Frontend, natives PHP 8.2+ und SQLite im Backend
 
 ## Funktionsumfang
@@ -63,7 +63,7 @@ FamilyHub bündelt den Familienalltag in einer touch-optimierten React-PWA. Die 
 | Kalender | Tag, Woche und Monat, lokale Wiederholungen, Geburtstage, private Termine und Google-Synchronisierung |
 | Familienboard | konfigurierbarer Wandmodus mit Uhr, Wetter, Fotos, Terminen, Aufgaben, Schule und Nachtbetrieb |
 | Aufgaben & Routinen | Zuständigkeiten, Serien, Morgen-/Abendroutinen, Fortschritt und Erinnerungen |
-| Organisation | Einkauf, Essensplan, Pinnwand, Schule und Haushaltsplan |
+| Organisation | flexible und private Checklisten, Einkauf, Essensplan, Pinnwand, Schule und Haushaltsplan |
 | Motivation | Schatzkiste, Sternenguthaben, Wünsche und gemeinsame Familienziele |
 | Betrieb | Einrichtungsassistent, Rollenrechte, Backups, Health-Check und portables `.familyhub`-Archiv |
 | Benachrichtigungen | In-App-Hinweise und verschlüsselte Web-Push-Erinnerungen pro Gerät und Profil |

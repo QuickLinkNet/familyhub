@@ -28,6 +28,8 @@ Aktuelle Entwicklung:
 18. konfigurierbarer Wandmodus und Metadaten für geschützte Familienfotos
 19. gemeinsame Familienziele mit unveränderlichem Beitragsjournal
 20. private Kalenderkennzeichnung sowie verschlüsselte Push-Abonnements, VAPID-Schlüssel und Zustellungsfingerprints
+21. kurzlebige Gerätefreigaben und widerrufbare profilgebundene Sitzungen
+22. flexible Familienlisten, Sichtbarkeit, Verantwortlichkeiten und Abschlussstatus
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -52,6 +54,8 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 - `reward_ledger` – append-only Sternenjournal für Aufgabe, Bonus und Einlösung; Salden werden daraus berechnet
 - `shopping_lists` – benannte, farbige Einkaufslisten des Haushalts
 - `shopping_items` – Mengen, Ladenbereiche, Dringlichkeit und nachvollziehbarer Abhakstatus
+- `family_lists` – universelle Listen mit familienweiter, erwachsener oder privater Sichtbarkeit
+- `family_list_items` – Punkte mit Notiz, Zuständigkeit und nachvollziehbarem Abschlussstatus
 - `meal_recipes` – Lieblingsgerichte mit Darstellung und Zubereitungszeit
 - `meal_recipe_ingredients` – strukturierte Zutaten samt Menge und Einkaufsbereich
 - `meal_plan_entries` – höchstens ein aktiver Eintrag je Datum und Mahlzeit

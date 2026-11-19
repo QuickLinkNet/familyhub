@@ -45,8 +45,8 @@ Prioritäten: **P0** Präsentations- und Alltagsreife, **P1** direkte Funktionsp
 | optionaler Eltern-Check | erfüllt | – | serverseitig erzwungen |
 | Push für fällige Aufgaben und Routinen | erfüllt | – | verschlüsselt bei geschlossener App |
 | Punkte, Guthaben und frei definierbare Belohnungen | erfüllt | – | nachvollziehbares Ledger vorhanden |
-| beliebige Checklisten | offen | P1 | Einkauf, Reise, Projekt und eigene Listentypen |
-| versteckte Geschenk- und Überraschungslisten | offen | P1 | nur freigegebene Erwachsene sehen Inhalte |
+| beliebige Checklisten | erfüllt | – | Reise, Projekt, Haushalt und eigene Listentypen mit Zuständigkeit |
+| versteckte Geschenk- und Überraschungslisten | erfüllt | – | private sowie nur für Erwachsene sichtbare Listen werden serverseitig geschützt |
 | gemeinsame Einkaufslisten | erfüllt | – | Mengen, Kategorien und Dringlichkeit vorhanden |
 | Listen- und Aufgabenvorlagen | offen | P2 | wiederverwendbar und ohne Doppelanlage |
 

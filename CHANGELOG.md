@@ -4,6 +4,25 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.30.0] - 2026-11-19
+
+### Hinzugefügt
+
+- universelle Listen für Reise, Projekte, Haushalt, Ideen und eigene Anwendungsfälle
+- familienweite, nur für Erwachsene sichtbare und vollständig private Listen
+- Zuweisung von Listenpunkten an Familienmitglieder sowie Notizen, Bearbeitung und nachvollziehbarer Abschluss
+- responsive Touch-Oberfläche mit Fortschritt, Schnellerfassung und gesammelt aufräumbaren Erledigungen
+
+### Sicherheit
+
+- Sichtbarkeit privater und erwachsener Listen wird serverseitig bei jeder Lese- und Schreiboperation erzwungen
+- alle schreibenden Endpunkte erfordern authentifizierte Sitzungen und CSRF-Schutz
+
+### Geprüft
+
+- fokussierter Listen-Smoke-Test für Sichtbarkeit, Zuweisung, Abschluss und Aufräumen
+- Production-Typecheck, PHP-Lint, Build und responsive Browser-Abnahme
+
 ## [0.29.0] - 2026-11-19
 
 ### Hinzugefügt
