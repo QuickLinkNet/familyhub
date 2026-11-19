@@ -15,7 +15,8 @@ spl_autoload_register(static function (string $class) use ($apiPath): void {
 $event = new CalendarEvent(
     'private-1', 'calendar-1', 'Familie', '#345B48', 'Arzttermin', 'Vertraulich', 'Praxis',
     '2026-11-12T09:00:00Z', '2026-11-12T10:00:00Z', false, true, null, 1, null,
-    'member-1', 'Alex', '2026-11-01T00:00:00Z', '2026-11-01T00:00:00Z'
+    'member-1', 'Alex', '2026-11-01T00:00:00Z', '2026-11-01T00:00:00Z',
+    [['id' => 'member-1', 'name' => 'Alex', 'color' => '#345B48']]
 );
 if ($event->toArray()['isPrivate'] !== true) { fwrite(STDERR, "Local privacy mapping failed.\n"); exit(1); }
 
@@ -27,7 +28,7 @@ $service = (new ReflectionClass(CalendarService::class))->newInstanceWithoutCons
 $method = new ReflectionMethod(CalendarService::class, 'maskPrivateEvent');
 $method->setAccessible(true);
 $masked = $method->invoke($service, $event->toArray());
-if ($masked['title'] !== 'Privater Termin' || $masked['description'] !== null || $masked['location'] !== null || $masked['editable'] !== false) {
+if ($masked['title'] !== 'Privater Termin' || $masked['description'] !== null || $masked['location'] !== null || $masked['members'] !== [] || $masked['editable'] !== false) {
     fwrite(STDERR, "Child privacy masking failed.\n"); exit(1);
 }
 

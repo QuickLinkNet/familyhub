@@ -24,14 +24,14 @@ Prioritäten: **P0** Präsentations- und Alltagsreife, **P1** direkte Funktionsp
 | Tag-, Wochen- und Monatsansicht | erfüllt | – | touch- und mobil nutzbar |
 | 5-Tages- und Timeline-Ansicht | offen | P1 | zwischen beiden Ansichten ohne Datenverlust wechseln |
 | frei wählbare Standardansicht | offen | P1 | pro Profil oder Gerät gespeichert |
-| schneller Profil- und Kalenderfilter | offen | P1 | einzelne Personen und Quellen kombinierbar |
+| schneller Profil- und Kalenderfilter | erfüllt | – | einzelne Personen und Quellen kombinierbar |
 | lokale und Google-Termine erstellen, bearbeiten und löschen | erfüllt | – | CRUD live geprüft |
 | Google-Zwei-Wege-Synchronisation | erfüllt | – | OAuth, Schreibrechte und Livecheck vorhanden |
 | Apple/iCloud-, Outlook- und CalDAV-Anbindung | offen | P1 | mindestens ein sicherer Zwei-Wege-Adapter je Plattform |
 | iCal-/URL-Kalender | erfüllt | – | verschlüsselte read-only Quellen |
 | private Termine und reine Verfügbarkeitsanzeige | erfüllt | – | Kinder sehen keine vertraulichen Inhalte |
 | benutzerdefinierte Wiederholung nach Wochentagen | offen | P1 | etwa werktags oder jedes zweite Wochenende |
-| Mehrpersonen-Termine mit mehreren Profilfarben | offen | P1 | beliebige Familienprofile zuweisbar |
+| Mehrpersonen-Termine mit mehreren Profilfarben | erfüllt | – | beliebige Familienprofile zuweisbar |
 | Erinnerungszeit je Termin und optionaler Ton am Board | offen | P1 | mehrere Vorlaufzeiten und ruhige Standardwerte |
 | Termin- und Kalendersuche | offen | P2 | Titel, Beschreibung, Person und Zeitraum filterbar |
 | Ferien- und Feiertagsassistent | offen | P2 | Region wählen und Quelle nachvollziehbar aktivieren |
@@ -97,7 +97,7 @@ Prioritäten: **P0** Präsentations- und Alltagsreife, **P1** direkte Funktionsp
 ## Empfohlene Reihenfolge
 
 1. **P0 Produktabschluss:** kontextbezogene Hilfe, Barrierefreiheit und öffentliche Dokumentation.
-2. **P1 Kalenderkomfort:** Mehrpersonen-Termine, Filter, Standardansicht, Wiederholungen und individuelle Erinnerungen.
+2. **P1 Kalenderkomfort:** Standardansicht, erweiterte Wiederholungen und individuelle Erinnerungen.
 3. **P1 Alltagskomfort:** allgemeine/private Listen, vollständige Rezeptpflege, Widgets und Ruhezeiten.
 4. **P1 Integrationen:** Apple/iCloud, Outlook und CalDAV.
 5. **P2 Ausbau:** Ferien, Suche, Schulimport, Vorlagen, Zuständigkeitswechsel und optionales App-Paket.

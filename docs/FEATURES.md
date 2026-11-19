@@ -11,7 +11,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Referenzfunktion | FamilyHub-Ziel | Status |
 | --- | --- | --- |
 | zentraler Familienkalender | gemeinsamer Kalender plus persönlicher Kalender je Person | Tag, Woche und Monat sowie Termin-CRUD fertig |
-| farbige Personen und Termine | feste Personenfarben in Kalender, Aufgaben und Dashboard | fertig |
+| farbige Personen und Termine | Mehrpersonen-Termine mit kombinierten Profilfarben in Tag, Woche und Monat | fertig |
 | Kinder haken Aufgaben selbst ab | Touch-große Aufgaben, Kinder-PIN und optionaler Eltern-Check | fertig inklusive wiederkehrender Routinen |
 | Google-, Apple- oder Outlook-Anbindung | Adapter für Google Calendar, Microsoft Graph und CalDAV | Google iCal read-only und Google OAuth-Schreibzugriff fertig; CalDAV geplant |
 | Wanddisplay plus mobile Nutzung | responsive installierbare PWA für Display, Tablet und Smartphone | fertig |
@@ -30,7 +30,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Aufgaben | Zuweisung, Fälligkeit, Priorität, Abschluss, Eltern-Check | Wiederholung und Elternfreigabe fertig | Bearbeiten und Historie |
 | Belohnungen | Sterne, persönliche Guthaben, Wunschregal, Bonus und nachvollziehbares Ledger | fertig | Familienziele sind eigenes Modul; als Nächstes optionale Kategorien |
 | Familienziele | gemeinsame Vorhaben, sichtbarer Fortschritt und Wochenhighlights | Ziele, Beitragsjournal, Dashboard und Wandmodus fertig | Zielvorlagen und automatische Fortschrittsquellen |
-| Kalender | Tag/Woche/Monat, Wiederholungen, Geburtstage, Ferien | Tag/Woche/Monat, lokale Wiederholungen, Geburtstage und privater Kindermodus fertig | Ferien und Import |
+| Kalender | Tag/Woche/Monat, Mehrpersonen-Termine, Filter, Wiederholungen, Geburtstage, Ferien | Mehrpersonen-Termine und kombinierbare Profil-/Kalenderfilter sowie Wiederholungen, Geburtstage und privater Kindermodus fertig | Standardansicht und erweiterte Wiederholungen |
 | Routinen | Morgen-/Abendroutine, Schritte, Wochentage, Fortschritt | mehrstufige Tagesläufe, Fortschritt und Serienverwaltung fertig | Sterne und Routinehistorie |
 | Einkauf | mehrere Listen, Kategorien, Mengen, Dringlichkeit und schnelles Abhaken | fertig | Vorlagen und Spracheingabe |
 | Flexible Listen | Reise, Projekte, Haushalt, Ideen und private Überraschungen | fertig inklusive Sichtbarkeit, Zuständigkeit und Fortschritt | Vorlagen und Sortierung |
@@ -48,7 +48,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 ## Empfohlene Produktreihenfolge
 
 1. **Produktabschluss** – Geräte-Onboarding, kontextbezogene Hilfe, Barrierefreiheit und öffentliche Dokumentation.
-2. **Kalenderkomfort** – Mehrpersonen-Termine, Filter, Wiederholungen und frei wählbare Standardansicht.
+2. **Kalenderkomfort** – frei wählbare Standardansicht, erweiterte Wiederholungen und Terminerinnerungen.
 3. **Weitere Integrationen** – Apple/iCloud, Outlook, CalDAV und später Home Assistant.
 
 ## Qualitätsmaßstab

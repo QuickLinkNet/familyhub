@@ -1,7 +1,9 @@
 import { LocationOnRounded, LockRounded } from '@mui/icons-material';
 import { Box, CardActionArea, Chip, Stack, Typography } from '@mui/material';
+import { MemberAvatar } from '../../../components/atoms/MemberAvatar';
 import type { CalendarEvent } from '../types/calendar';
 import { isSameDay, timeFormatter } from '../utils/calendarDates';
+import { EventMemberRail } from './EventMemberRail';
 
 interface EventCardProps {
   event: CalendarEvent;
@@ -24,22 +26,28 @@ function timeLabel(event: CalendarEvent, day?: Date) {
 
 export function EventCard({ event, canManage, onOpen, compact = false, day }: EventCardProps) {
   const content = (
-    <Box sx={{ borderLeft: `5px solid ${event.calendar.color}`, pl: 1, py: 0.25, textAlign: 'left' }}>
-      <Stack direction="row" alignItems="center" gap={0.5}>
-        {event.isPrivate && <LockRounded aria-label="Privater Termin" sx={{ fontSize: 15 }} color="action" />}
-        <Typography variant="subtitle2" lineHeight={1.25} noWrap={compact}>{event.title}</Typography>
-      </Stack>
-      <Typography variant="caption" color="text.secondary" display="block">
-        {timeLabel(event, day)}
-      </Typography>
-      {!compact && event.location && (
-        <Stack direction="row" alignItems="center" gap={0.25} mt={0.25}>
-          <LocationOnRounded sx={{ fontSize: 14 }} color="action" />
-          <Typography variant="caption" color="text.secondary" noWrap>{event.location}</Typography>
+    <Stack direction="row" gap={1} sx={{ py: 0.25, textAlign: 'left' }}>
+      <EventMemberRail event={event} />
+      <Box minWidth={0} flex={1}>
+        <Stack direction="row" alignItems="center" gap={0.5}>
+          {event.isPrivate && <LockRounded aria-label="Privater Termin" sx={{ fontSize: 15 }} color="action" />}
+          <Typography variant="subtitle2" lineHeight={1.25} noWrap={compact}>{event.title}</Typography>
         </Stack>
-      )}
-      {!compact && <Chip label={event.calendar.name} size="small" sx={{ mt: 0.75, height: 22, bgcolor: `${event.calendar.color}1F` }} />}
-    </Box>
+        <Typography variant="caption" color="text.secondary" display="block">{timeLabel(event, day)}</Typography>
+        {!compact && event.location && (
+          <Stack direction="row" alignItems="center" gap={0.25} mt={0.25}>
+            <LocationOnRounded sx={{ fontSize: 14 }} color="action" />
+            <Typography variant="caption" color="text.secondary" noWrap>{event.location}</Typography>
+          </Stack>
+        )}
+        {!compact && (
+          <Stack direction="row" alignItems="center" gap={0.75} mt={0.75} flexWrap="wrap">
+            <Chip label={event.calendar.name} size="small" sx={{ height: 22, bgcolor: `${event.calendar.color}1F` }} />
+            {(event.members ?? []).map(member => <MemberAvatar key={member.id} name={member.name} title={member.name} sx={{ width: 22, height: 22, fontSize: 10, bgcolor: member.color }} />)}
+          </Stack>
+        )}
+      </Box>
+    </Stack>
   );
 
   return canManage && event.editable !== false

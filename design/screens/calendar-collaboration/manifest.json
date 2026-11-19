@@ -1,0 +1,15 @@
+{
+  "screen": "calendar-collaboration",
+  "title": "Gemeinsame Kalendertermine",
+  "currentVersion": "0.33.0",
+  "status": "verified",
+  "approvedByUser": true,
+  "approvedAt": "2026-11-19",
+  "versions": [
+    {
+      "version": "0.33.0",
+      "status": "verified",
+      "path": "versions/0.33.0"
+    }
+  ]
+}

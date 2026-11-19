@@ -3,6 +3,7 @@ import { Box, ButtonBase, Card, CardContent, IconButton, Stack, Typography } fro
 import type { CalendarEvent } from '../types/calendar';
 import { dayFormatter, eventsOnDay, fullDayFormatter, isSameDay, isSameMonth, weekdayLabels } from '../utils/calendarDates';
 import { EventCard } from './EventCard';
+import { eventColorGradient } from '../utils/eventColors';
 
 interface MonthCalendarProps {
   days: Date[];
@@ -75,7 +76,7 @@ function MobileMonthGrid({ days, month, events, selectedDay, selectedEvents, can
                 <ButtonBase key={day.toISOString()} aria-label={`${fullDayFormatter.format(day)}, ${dayEvents.length} ${dayEvents.length === 1 ? 'Termin' : 'Termine'}`} aria-pressed={selected} onClick={() => onSelectDay(day)} sx={{ minWidth: 0, minHeight: 54, borderRadius: 2, border: '1px solid', borderColor: selected ? 'primary.main' : 'transparent', bgcolor: selected ? 'primary.light' : 'transparent', opacity: isSameMonth(day, month) ? 1 : 0.45, flexDirection: 'column', gap: 0.5 }}>
                   <Typography variant="body2" fontWeight={today || selected ? 800 : 600} aria-current={today ? 'date' : undefined}>{day.getDate()}</Typography>
                   <Stack direction="row" gap={0.35} minHeight={6}>
-                    {dayEvents.slice(0, 3).map(event => <Box key={event.id} sx={{ width: 5, height: 5, borderRadius: '50%', bgcolor: event.calendar.color }} />)}
+                    {dayEvents.slice(0, 3).map(event => <Box key={event.id} sx={{ width: 5, height: 5, borderRadius: '50%', background: eventColorGradient(event, 'to right') }} />)}
                   </Stack>
                 </ButtonBase>
               );

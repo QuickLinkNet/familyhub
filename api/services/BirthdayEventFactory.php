@@ -49,6 +49,7 @@ final class BirthdayEventFactory
             'allDay' => true,
             'recurrence' => ['frequency' => 'YEARLY', 'interval' => 1, 'until' => null],
             'createdBy' => null,
+            'members' => [['id' => $member->uuid, 'name' => $member->name, 'color' => $member->color]],
             'source' => 'BIRTHDAY',
             'editable' => false,
             'createdAt' => $member->createdAt,

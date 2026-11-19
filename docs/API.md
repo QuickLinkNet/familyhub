@@ -212,7 +212,7 @@ Der Settings-Request akzeptiert `greeting`, `weatherEnabled` und `weatherLocatio
 - `PUT /calendar-events/{uuid}` – Admin oder Elternteil
 - `DELETE /calendar-events/{uuid}` – Admin oder Elternteil
 
-Lokale Termine enthalten `source: "LOCAL"` und `editable: true`. Für lokale Serien akzeptieren Create und Update `recurrenceFrequency` (`DAILY`, `WEEKLY`, `MONTHLY`, `YEARLY`), `recurrenceInterval` (1–12) und optional `recurrenceUntil` (`YYYY-MM-DD`). `isPrivate: true` markiert einen privaten Termin; Kinder erhalten dafür ausschließlich belegte Zeit und den neutralen Titel „Privater Termin“. Ausgelieferte Vorkommen tragen eine eindeutige `id` und die zugrunde liegende `seriesId`; Mutationen verwenden die Serien-ID. Virtuelle Geburtstage enthalten `source: "BIRTHDAY"`, `editable: false`. iCal-Termine enthalten `source: "EXTERNAL"`, `editable: false`. Direkt verbundene Google-Termine enthalten `source: "GOOGLE"`; `editable` richtet sich nach der von Google gemeldeten Kalenderrolle.
+Lokale Termine enthalten `source: "LOCAL"`, `editable: true` und `members` mit ID, Name und Farbe aller beteiligten Profile. Create und Update akzeptieren dafür `memberIds` mit einem bis zwölf aktiven Profil-IDs; ohne Angabe verwendet die API bei bestehenden Clients weiterhin Kalenderinhaber oder Ersteller. Für lokale Serien akzeptieren Create und Update `recurrenceFrequency` (`DAILY`, `WEEKLY`, `MONTHLY`, `YEARLY`), `recurrenceInterval` (1–12) und optional `recurrenceUntil` (`YYYY-MM-DD`). `isPrivate: true` markiert einen privaten Termin; Kinder erhalten dafür ausschließlich belegte Zeit, den neutralen Titel „Privater Termin“ und keine Profilzuordnung. Ausgelieferte Vorkommen tragen eine eindeutige `id` und die zugrunde liegende `seriesId`; Mutationen verwenden die Serien-ID. Virtuelle Geburtstage enthalten `source: "BIRTHDAY"`, `editable: false` und das zugehörige Profil. iCal- und Google-Termine liefern `members: []`; iCal-Termine sind nicht editierbar, bei Google richtet sich `editable` nach der gemeldeten Kalenderrolle.
 
 ### Administration: Google-Kalender
 
@@ -241,7 +241,7 @@ Alle Admin-Endpunkte benötigen Rolle `ADMIN`; Mutationen zusätzlich CSRF.
 
 Die Konfiguration akzeptiert `clientId` und `clientSecret`. Der Browser erhält danach nur einen gekürzten Client-ID-Hinweis, die exakt zu registrierende Callback-URL und neutrale Statusdaten. Der Callback tauscht den Autorisierungscode serverseitig gegen Token, importiert die Kalenderliste und aktiviert den primären Kalender. Schreibzugriffe auf `/calendar-events` werden anhand der Kalender-ID entweder lokal oder über die Google Calendar API ausgeführt.
 
-`from`, `to`, `startsAt` und `endsAt` sind ISO-8601-Zeitpunkte. Schreibzugriffe akzeptieren `calendarId`, `title`, optional `description` und `location` sowie `startsAt`, `endsAt`, `allDay` und `isPrivate`. Das Ende muss nach dem Beginn liegen. Ein Abfragezeitraum ist auf 370 Tage begrenzt.
+`from`, `to`, `startsAt` und `endsAt` sind ISO-8601-Zeitpunkte. Schreibzugriffe akzeptieren `calendarId`, `title`, optional `description`, `location` und `memberIds` sowie `startsAt`, `endsAt`, `allDay` und `isPrivate`. Das Ende muss nach dem Beginn liegen. Ein Abfragezeitraum ist auf 370 Tage begrenzt. Personen- und Kalenderfilter werden im Frontend auf dem bereits geladenen Zeitraum kombiniert und erzeugen keine zusätzlichen API-Anfragen.
 
 ### Administration: Web Push
 

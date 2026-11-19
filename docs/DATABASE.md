@@ -32,6 +32,7 @@ Aktuelle Entwicklung:
 22. flexible Familienlisten, Sichtbarkeit, Verantwortlichkeiten und Abschlussstatus
 23. Rezeptportionen, Rezeptkategorien und strukturierte Zubereitungsschritte
 24. profilbezogene Kartenreihenfolgen und Benachrichtigungs-Ruhezeiten
+25. geordnete Mehrpersonen-Zuordnung für lokale Kalendertermine
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -74,6 +75,7 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 - `households` – Haushalt, Locale, Zeitzone und Setup-Zeitpunkt
 - calendars – gemeinsamer sowie persönliche Kalender
 - `calendar_events` – Termine, Zeiträume, Orte, Ersteller, Privatkennzeichnung und optionale Wiederholungsregel
+- `calendar_event_members` – geordnete Zuordnung lokaler Termine zu einem oder mehreren Familienprofilen
 - `calendar_sources` – verschlüsselte Google-iCal-Verbindungen und Synchronisationsstatus
 - `external_calendar_events` – lokal zwischengespeicherte read-only Termine externer Quellen
 - `google_oauth_connections` – verschlüsselte OAuth-Konfiguration, Tokens und kurzlebiger State

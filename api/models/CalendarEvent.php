@@ -23,12 +23,15 @@ final class CalendarEvent
         public string $createdByMemberId,
         public ?string $createdByMemberName,
         public string $createdAt,
-        public string $updatedAt
+        public string $updatedAt,
+        /** @var list<array{id: string, name: string, color: string}> */
+        public array $members = []
     ) {}
 
-    public static function fromRow(array $row): self
+    /** @param list<array{id: string, name: string, color: string}> $members */
+    public static function fromRow(array $row, array $members = []): self
     {
-        return new self($row['uuid'], $row['calendar_uuid'], $row['calendar_name'], $row['calendar_color'], $row['title'], $row['description'], $row['location'], $row['starts_at'], $row['ends_at'], (bool) $row['all_day'], (bool) ($row['is_private'] ?? false), $row['recurrence_frequency'] ?? null, (int) ($row['recurrence_interval'] ?? 1), $row['recurrence_until'] ?? null, $row['created_by_member_uuid'], $row['created_by_member_name'] ?? null, $row['created_at'], $row['updated_at']);
+        return new self($row['uuid'], $row['calendar_uuid'], $row['calendar_name'], $row['calendar_color'], $row['title'], $row['description'], $row['location'], $row['starts_at'], $row['ends_at'], (bool) $row['all_day'], (bool) ($row['is_private'] ?? false), $row['recurrence_frequency'] ?? null, (int) ($row['recurrence_interval'] ?? 1), $row['recurrence_until'] ?? null, $row['created_by_member_uuid'], $row['created_by_member_name'] ?? null, $row['created_at'], $row['updated_at'], $members);
     }
 
     public function toArray(): array
@@ -50,6 +53,7 @@ final class CalendarEvent
             ],
             'seriesId' => null,
             'createdBy' => ['id' => $this->createdByMemberId, 'name' => $this->createdByMemberName],
+            'members' => $this->members,
             'source' => 'LOCAL',
             'editable' => true,
             'createdAt' => $this->createdAt,

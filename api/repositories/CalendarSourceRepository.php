@@ -132,6 +132,7 @@ final class CalendarSourceRepository
             'allDay' => (bool) $row['all_day'],
             'isPrivate' => (bool) ($row['is_private'] ?? false),
             'createdBy' => null,
+            'members' => [],
             'createdAt' => $row['created_at'],
             'updatedAt' => $row['updated_at'],
             'source' => 'EXTERNAL',

@@ -50,7 +50,7 @@ Die Familienpinnwand ist ein eigenständiger End-to-End-Slice. Zettel bleiben ih
 
 Das Schulmodul trennt den stabilen, wöchentlich wiederkehrenden Stundenplan von datierten Hausaufgaben und Tests. Unterrichtsstunden gehören zu genau einem Familienmitglied und dürfen nur durch Erwachsene strukturell verändert werden. Schuleinträge dürfen Kinder für das eigene Profil pflegen und abschließen; der Service erzwingt diese Grenze unabhängig von der Oberfläche.
 
-Lokale Kalenderwiederholungen bleiben als kompakte Serie in `calendar_events` gespeichert. Ein eigener Expander erzeugt nur die im angefragten Zeitraum sichtbaren Vorkommen; eine Serien-ID hält Bearbeiten und Löschen eindeutig. Geburtstage werden aus dem optionalen Geburtsdatum aktiver Familienprofile als schreibgeschützte virtuelle Kalenderereignisse erzeugt.
+Lokale Kalenderwiederholungen bleiben als kompakte Serie in `calendar_events` gespeichert. Ein eigener Expander erzeugt nur die im angefragten Zeitraum sichtbaren Vorkommen; eine Serien-ID hält Bearbeiten und Löschen eindeutig. Die normalisierte Zuordnung `calendar_event_members` verbindet einen Termin geordnet mit einem oder mehreren aktiven Profilen; das Repository lädt sie für einen Zeitraum gebündelt statt pro Termin. Geburtstage werden aus dem optionalen Geburtsdatum aktiver Familienprofile als schreibgeschützte virtuelle Kalenderereignisse erzeugt.
 
 Private Termine behalten ihre Zeit und Kalenderfarbe, werden für Kinder aber bereits im Backend auf einen neutralen Titel ohne Beschreibung oder Ort reduziert. Dieselbe rollenabhängige Sicht wird für Kalender, Familienradar und Push-Nachrichten verwendet.
 

@@ -4,6 +4,21 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.33.0] - 2026-11-19
+
+### Hinzugefügt
+
+- lokale Kalendertermine können einem oder mehreren aktiven Familienprofilen zugeordnet werden
+- kombinierte Profilfarben, Profilbilder und Namen machen gemeinsame Termine sofort erkennbar
+- schnelle, kombinierbare Personen- und Kalenderfilter für Tag, Woche und Monat
+- Datenmigration mit sicherer Standardzuordnung für bereits vorhandene Termine
+
+### Sicherheit und Qualität
+
+- private Termine verbergen gegenüber Kinderprofilen auch ihre beteiligten Personen
+- Google- und iCal-Termine bleiben ohne künstliche Profilzuordnung kompatibel
+- fokussierter Repository-Smoke-Test für Erstellen, Ändern und Auslesen von Mehrpersonen-Terminen
+
 ## [0.32.0] - 2026-11-19
 
 ### Hinzugefügt

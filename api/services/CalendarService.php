@@ -67,7 +67,8 @@ final class CalendarService
     public function create(array $input, array $actor): array
     {
         $calendarId = trim((string) ($input['calendarId'] ?? ''));
-        if ($this->repository->findCalendar($calendarId) === null) {
+        $calendar = $this->repository->findCalendar($calendarId);
+        if ($calendar === null) {
             return $this->googleService->createEvent($input);
         }
         $now = gmdate('c');
@@ -76,7 +77,7 @@ final class CalendarService
             'created_by_member_uuid' => $actor['id'],
             'created_at' => $now,
             'updated_at' => $now,
-        ])->toArray();
+        ], $this->memberIds($input, null, $calendar, $actor['id']))->toArray();
     }
 
     /** @param array<string, mixed> $input */
@@ -86,7 +87,10 @@ final class CalendarService
         if ($existing === null) {
             return $this->googleService->updateEvent($uuid, $input);
         }
-        return $this->repository->updateEvent($uuid, $this->validate($input, $existing) + ['updated_at' => gmdate('c')])->toArray();
+        $data = $this->validate($input, $existing);
+        $calendar = $this->repository->findCalendar((string) $data['calendar_uuid']);
+        if ($calendar === null) { throw new AppException('VALIDATION_ERROR', 'Der ausgewählte Kalender wurde nicht gefunden.', 422); }
+        return $this->repository->updateEvent($uuid, $data + ['updated_at' => gmdate('c')], $this->memberIds($input, $existing, $calendar, $existing->createdByMemberId))->toArray();
     }
 
     public function delete(string $uuid): void
@@ -188,7 +192,27 @@ final class CalendarService
     private function maskPrivateEvent(array $event): array
     {
         if (!(bool) ($event['isPrivate'] ?? false)) { return $event; }
-        return array_replace($event, ['title' => 'Privater Termin', 'description' => null, 'location' => null, 'editable' => false]);
+        return array_replace($event, ['title' => 'Privater Termin', 'description' => null, 'location' => null, 'members' => [], 'editable' => false]);
+    }
+
+    /** @param array<string, mixed> $input @return list<string> */
+    private function memberIds(array $input, ?CalendarEvent $existing, Calendar $calendar, string $fallbackMemberId): array
+    {
+        if (!array_key_exists('memberIds', $input)) {
+            $existingIds = $existing === null ? [] : array_values(array_map(static fn (array $member): string => $member['id'], $existing->members));
+            if ($existingIds !== []) { return $existingIds; }
+            return [$calendar->ownerMemberId ?? $fallbackMemberId];
+        }
+        if (!is_array($input['memberIds'])) { throw new AppException('VALIDATION_ERROR', 'Die Familienprofile sind ungültig.', 422); }
+        $ids = array_values(array_unique(array_map(static fn (mixed $id): string => trim((string) $id), $input['memberIds'])));
+        if ($ids === [] || count($ids) > 12 || in_array('', $ids, true)) {
+            throw new AppException('VALIDATION_ERROR', 'Wähle zwischen einem und zwölf Familienprofilen.', 422);
+        }
+        foreach ($ids as $id) {
+            $member = $this->familyRepository->find($id);
+            if ($member === null || !$member->isActive) { throw new AppException('VALIDATION_ERROR', 'Ein ausgewähltes Familienprofil ist nicht verfügbar.', 422); }
+        }
+        return $ids;
     }
 
     private function dateTime(string $value, string $message): DateTimeImmutable

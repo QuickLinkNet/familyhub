@@ -24,6 +24,14 @@
       "status": "verified",
       "approvedByUser": true,
       "manifest": "screens/personalization/manifest.json"
+    },
+    {
+      "id": "calendar-collaboration",
+      "title": "Gemeinsame Kalendertermine",
+      "currentVersion": "0.33.0",
+      "status": "verified",
+      "approvedByUser": true,
+      "manifest": "screens/calendar-collaboration/manifest.json"
     }
   ]
 }

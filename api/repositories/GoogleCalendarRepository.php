@@ -161,7 +161,7 @@ final class GoogleCalendarRepository
             'title' => $row['title'], 'description' => $row['description'], 'location' => $row['location'],
             'startsAt' => $row['starts_at'], 'endsAt' => $row['ends_at'], 'allDay' => (bool) $row['all_day'],
             'isPrivate' => (bool) ($row['is_private'] ?? false),
-            'createdBy' => null, 'source' => 'GOOGLE', 'editable' => in_array($row['access_role'], ['owner', 'writer'], true),
+            'createdBy' => null, 'members' => [], 'source' => 'GOOGLE', 'editable' => in_array($row['access_role'], ['owner', 'writer'], true),
             'createdAt' => $row['created_at'], 'updatedAt' => $row['updated_at'],
         ];
     }

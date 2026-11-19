@@ -24,11 +24,18 @@ export interface CalendarEvent {
   allDay: boolean;
   isPrivate: boolean;
   createdBy: { id: string; name: string | null } | null;
+  members: CalendarEventMember[];
   createdAt: string;
   updatedAt: string;
   source: 'LOCAL' | 'EXTERNAL' | 'GOOGLE' | 'BIRTHDAY';
   editable: boolean;
   recurrence: CalendarRecurrence | null;
+}
+
+export interface CalendarEventMember {
+  id: string;
+  name: string;
+  color: string;
 }
 
 export type RecurrenceFrequency = 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
@@ -48,6 +55,7 @@ export interface CalendarEventInput {
   endsAt: string;
   allDay: boolean;
   isPrivate?: boolean;
+  memberIds?: string[];
   recurrenceFrequency?: RecurrenceFrequency | null;
   recurrenceInterval?: number;
   recurrenceUntil?: string | null;

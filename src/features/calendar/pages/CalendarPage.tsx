@@ -1,9 +1,11 @@
-import { useState, type MouseEvent } from 'react';
+import { useMemo, useState, type MouseEvent } from 'react';
 import { EventAvailableRounded } from '@mui/icons-material';
 import { Alert, Stack } from '@mui/material';
 import { EmptyStateCard } from '../../../components/molecules/EmptyStateCard';
 import { ApiError } from '../../../services/apiClient';
 import { useAuthSession } from '../../auth/hooks/useAuth';
+import { useFamilyMembers } from '../../family/hooks/useFamilyMembers';
+import { CalendarFilters } from '../components/CalendarFilters';
 import { CalendarHeader, type CalendarView } from '../components/CalendarHeader';
 import { CalendarLoadingGrid } from '../components/CalendarLoadingGrid';
 import { CalendarPeriodNavigation } from '../components/CalendarPeriodNavigation';
@@ -21,6 +23,8 @@ export function CalendarPage() {
   const [selectedDay, setSelectedDay] = useState(() => startOfDay(new Date()));
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
   const [createDate, setCreateDate] = useState<Date | null>(null);
+  const [memberIds, setMemberIds] = useState<string[]>([]);
+  const [calendarIds, setCalendarIds] = useState<string[]>([]);
   const weekStart = startOfWeek(cursor);
   const weekEnd = addDays(weekStart, 7);
   const monthStart = startOfMonth(cursor);
@@ -30,9 +34,22 @@ export function CalendarPage() {
   const periodEnd = view === 'day' ? addDays(cursor, 1) : view === 'week' ? weekEnd : monthGridEnd;
   const events = useCalendarEvents(periodStart.toISOString(), periodEnd.toISOString());
   const calendars = useCalendars();
+  const family = useFamilyMembers();
   const session = useAuthSession();
   const canManage = session.data?.user?.role !== 'CHILD';
+  const activeFamily = (family.data ?? []).filter(member => member.isActive);
   const days = daysBetween(periodStart, periodEnd);
+  const calendarOptions = useMemo(() => {
+    const options = new Map<string, { id: string; name: string; color: string }>();
+    for (const calendar of calendars.data ?? []) options.set(calendar.id, calendar);
+    for (const event of events.data ?? []) options.set(event.calendar.id, event.calendar);
+    return [...options.values()];
+  }, [calendars.data, events.data]);
+  const filteredEvents = (events.data ?? []).filter(event =>
+    (calendarIds.length === 0 || calendarIds.includes(event.calendar.id))
+    && (memberIds.length === 0 || (event.members ?? []).some(member => memberIds.includes(member.id)))
+  );
+  const filtersActive = memberIds.length > 0 || calendarIds.length > 0;
   const periodLabel = view === 'day'
     ? fullDayFormatter.format(cursor)
     : view === 'week'
@@ -83,24 +100,33 @@ export function CalendarPage() {
     <Stack spacing={{ xs: 2.5, md: 3.5 }}>
       <CalendarHeader view={view} canManage={canManage} onViewChange={changeView} onCreate={() => openCreate()} />
       <CalendarPeriodNavigation view={view} label={periodLabel} onPrevious={() => changePeriod(-1)} onNext={() => changePeriod(1)} onToday={goToday} />
+      <CalendarFilters members={activeFamily} calendars={calendarOptions} memberIds={memberIds} calendarIds={calendarIds} onMembersChange={setMemberIds} onCalendarsChange={setCalendarIds} />
       {events.isError && <Alert severity="error">{events.error instanceof ApiError ? events.error.message : 'Die Termine konnten nicht geladen werden.'}</Alert>}
       {calendars.isError && <Alert severity="error">{calendars.error instanceof ApiError ? calendars.error.message : 'Die Kalender konnten nicht geladen werden.'}</Alert>}
+      {family.isError && <Alert severity="error">Die Familienprofile konnten nicht geladen werden.</Alert>}
       {events.isLoading
         ? <CalendarLoadingGrid days={days} view={view} />
         : view === 'day'
-          ? <DayCalendar day={cursor} events={events.data ?? []} canManage={canManage} onCreate={openCreate} onOpen={openEvent} />
+          ? <DayCalendar day={cursor} events={filteredEvents} canManage={canManage} onCreate={openCreate} onOpen={openEvent} />
           : view === 'week'
-            ? <WeekCalendar days={days} events={events.data ?? []} canManage={canManage} onCreate={openCreate} onOpen={openEvent} />
-            : <MonthCalendar days={days} month={monthStart} events={events.data ?? []} selectedDay={selectedDay} canManage={canManage} onSelectDay={setSelectedDay} onCreate={openCreate} onOpen={openEvent} />}
-      {!events.isLoading && events.data?.length === 0 && (
+            ? <WeekCalendar days={days} events={filteredEvents} canManage={canManage} onCreate={openCreate} onOpen={openEvent} />
+            : <MonthCalendar days={days} month={monthStart} events={filteredEvents} selectedDay={selectedDay} canManage={canManage} onSelectDay={setSelectedDay} onCreate={openCreate} onOpen={openEvent} />}
+      {!events.isLoading && filteredEvents.length === 0 && (
         <EmptyStateCard
           icon={<EventAvailableRounded color="primary" sx={{ fontSize: 52 }} />}
-          title={`Dieser ${periodNoun} ist noch frei`}
-          description={canManage ? 'Tragt euren ersten gemeinsamen oder persönlichen Termin ein.' : `Für diesen ${periodNoun} sind keine Termine eingetragen.`}
+          title={filtersActive ? 'Keine Termine für diese Auswahl' : `Dieser ${periodNoun} ist noch frei`}
+          description={filtersActive ? 'Passt die Personen- oder Kalenderfilter an.' : canManage ? 'Tragt euren ersten gemeinsamen oder persönlichen Termin ein.' : `Für diesen ${periodNoun} sind keine Termine eingetragen.`}
         />
       )}
       {(createDate !== null || selectedEvent !== null) && canManage && (
-        <EventDialog event={selectedEvent} initialDate={createDate ?? new Date()} calendars={(calendars.data ?? []).filter(calendar => calendar.writable)} onClose={closeDialog} />
+        <EventDialog
+          event={selectedEvent}
+          initialDate={createDate ?? new Date()}
+          calendars={(calendars.data ?? []).filter(calendar => calendar.writable)}
+          members={activeFamily}
+          currentUserId={session.data?.user?.id ?? null}
+          onClose={closeDialog}
+        />
       )}
     </Stack>
   );
