@@ -173,6 +173,32 @@ final class CalendarService
             }
         }
 
+        $weekdays = $existing?->recurrenceWeekdays ?? [];
+        if (array_key_exists('recurrenceWeekdays', $input)) {
+            if (!is_array($input['recurrenceWeekdays'])) {
+                throw new AppException('VALIDATION_ERROR', 'Die Wochentage der Wiederholung sind ungültig.', 422);
+            }
+            $weekdays = [];
+            foreach ($input['recurrenceWeekdays'] as $day) {
+                $validatedDay = filter_var($day, FILTER_VALIDATE_INT);
+                if ($validatedDay === false || $validatedDay < 1 || $validatedDay > 7) {
+                    throw new AppException('VALIDATION_ERROR', 'Die Wochentage der Wiederholung sind ungültig.', 422);
+                }
+                $weekdays[] = $validatedDay;
+            }
+            $weekdays = array_values(array_unique($weekdays));
+            sort($weekdays);
+        }
+        if ($frequency === 'WEEKLY' && $weekdays === []) {
+            if (array_key_exists('recurrenceWeekdays', $input)) {
+                throw new AppException('VALIDATION_ERROR', 'Wähle mindestens einen Wochentag für die Wiederholung.', 422);
+            }
+            $weekdays = [(int) $startsAt->format('N')];
+        }
+        if ($frequency !== 'WEEKLY') {
+            $weekdays = [];
+        }
+
         return [
             'calendar_uuid' => $calendarId,
             'title' => $title,
@@ -185,6 +211,7 @@ final class CalendarService
             'recurrence_frequency' => $frequency,
             'recurrence_interval' => $frequency === null ? 1 : $interval,
             'recurrence_until' => $until,
+            'recurrence_weekdays_json' => json_encode($weekdays, JSON_THROW_ON_ERROR),
         ];
     }
 

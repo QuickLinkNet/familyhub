@@ -34,6 +34,7 @@ Aktuelle Entwicklung:
 24. profilbezogene Kartenreihenfolgen und Benachrichtigungs-Ruhezeiten
 25. geordnete Mehrpersonen-Zuordnung für lokale Kalendertermine
 26. profilbezogene Kalenderstandardansicht und Filter
+27. frei kombinierbare Wochentage für lokale Kalenderwiederholungen
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -75,7 +76,7 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 - `family_goal_contributions` – append-only Fortschrittsjournal mit Person, Schrittzahl und Zeitpunkt
 - `households` – Haushalt, Locale, Zeitzone und Setup-Zeitpunkt
 - calendars – gemeinsamer sowie persönliche Kalender
-- `calendar_events` – Termine, Zeiträume, Orte, Ersteller, Privatkennzeichnung und optionale Wiederholungsregel
+- `calendar_events` – Termine, Zeiträume, Orte, Ersteller, Privatkennzeichnung und optionale Wiederholungsregel samt Wochentagsliste
 - `calendar_event_members` – geordnete Zuordnung lokaler Termine zu einem oder mehreren Familienprofilen
 - `calendar_sources` – verschlüsselte Google-iCal-Verbindungen und Synchronisationsstatus
 - `external_calendar_events` – lokal zwischengespeicherte read-only Termine externer Quellen

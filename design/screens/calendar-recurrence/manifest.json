@@ -1,0 +1,15 @@
+{
+  "screen": "calendar-recurrence",
+  "title": "Flexible Kalender-Wiederholungen",
+  "currentVersion": "0.35.0",
+  "status": "verified",
+  "approvedByUser": true,
+  "approvedAt": "2026-11-19",
+  "versions": [
+    {
+      "version": "0.35.0",
+      "status": "verified",
+      "path": "versions/0.35.0"
+    }
+  ]
+}

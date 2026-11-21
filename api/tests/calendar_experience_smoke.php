@@ -24,6 +24,19 @@ if ($starts !== ['2026-01-31T09:00:00Z', '2026-03-31T09:00:00Z'] || $occurrences
     fwrite(STDERR, "Calendar recurrence expansion failed.\n"); exit(1);
 }
 
+$weekendEvent = new CalendarEvent(
+    'event-2', 'calendar-1', 'Familie', '#345B48', 'Familienwochenende', null, null,
+    '2026-01-03T09:00:00Z', '2026-01-03T10:00:00Z', false, false, 'WEEKLY', 2, '2026-01-31',
+    'member-1', 'Alex', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z', [], [6, 7]
+);
+$weekendOccurrences = (new CalendarRecurrenceExpander())->expand($weekendEvent, new DateTimeImmutable('2026-01-01T00:00:00Z'), new DateTimeImmutable('2026-02-01T00:00:00Z'));
+if (array_column($weekendOccurrences, 'startsAt') !== ['2026-01-03T09:00:00Z', '2026-01-04T09:00:00Z', '2026-01-17T09:00:00Z', '2026-01-18T09:00:00Z', '2026-01-31T09:00:00Z']) {
+    fwrite(STDERR, "Multi-day weekly recurrence expansion failed.\n"); exit(1);
+}
+if (($weekendOccurrences[0]['recurrence']['weekdays'] ?? null) !== [6, 7]) {
+    fwrite(STDERR, "Calendar recurrence weekdays serialization failed.\n"); exit(1);
+}
+
 $member = new FamilyMember('member-1', 'Sophie', '#D6855F', 'PARENT', true, null, '1990-02-28', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z');
 $birthdays = (new BirthdayEventFactory())->between([$member], new DateTimeImmutable('2026-02-01T00:00:00Z'), new DateTimeImmutable('2026-03-01T00:00:00Z'));
 if (count($birthdays) !== 1 || $birthdays[0]['source'] !== 'BIRTHDAY' || $birthdays[0]['title'] !== '🎂 Sophie hat Geburtstag') {

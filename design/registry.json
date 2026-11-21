@@ -40,6 +40,14 @@
       "status": "verified",
       "approvedByUser": true,
       "manifest": "screens/calendar-defaults/manifest.json"
+    },
+    {
+      "id": "calendar-recurrence",
+      "title": "Flexible Kalender-Wiederholungen",
+      "currentVersion": "0.35.0",
+      "status": "verified",
+      "approvedByUser": true,
+      "manifest": "screens/calendar-recurrence/manifest.json"
     }
   ]
 }

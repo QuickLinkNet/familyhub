@@ -20,6 +20,9 @@ final class CalendarRecurrenceExpander
         $start = new DateTimeImmutable($event->startsAt);
         $duration = (new DateTimeImmutable($event->endsAt))->getTimestamp() - $start->getTimestamp();
         $until = $event->recurrenceUntil === null ? null : new DateTimeImmutable($event->recurrenceUntil . 'T23:59:59Z');
+        if ($event->recurrenceFrequency === 'WEEKLY') {
+            return $this->expandWeekly($event, $start, $duration, $until, $from, $to);
+        }
         $occurrences = [];
 
         $index = $this->firstRelevantIndex($start, $from->modify('-' . $duration . ' seconds'), $event->recurrenceFrequency, $event->recurrenceInterval);
@@ -36,16 +39,48 @@ final class CalendarRecurrenceExpander
                 continue;
             }
 
-            $item = $event->toArray();
-            $item['id'] = $event->uuid . '::' . $occurrenceStart->format('Ymd\THis');
-            $item['seriesId'] = $event->uuid;
-            $item['seriesStartsAt'] = $event->startsAt;
-            $item['seriesEndsAt'] = $event->endsAt;
-            $item['startsAt'] = $this->utc($occurrenceStart);
-            $item['endsAt'] = $this->utc($occurrenceEnd);
-            $occurrences[] = $item;
+            $occurrences[] = $this->occurrence($event, $occurrenceStart, $occurrenceEnd);
         }
         return $occurrences;
+    }
+
+    /** @return list<array<string, mixed>> */
+    private function expandWeekly(CalendarEvent $event, DateTimeImmutable $start, int $duration, ?DateTimeImmutable $until, DateTimeImmutable $from, DateTimeImmutable $to): array
+    {
+        $weekdays = $event->recurrenceWeekdays === [] ? [(int) $start->format('N')] : $event->recurrenceWeekdays;
+        sort($weekdays);
+        $weekStart = $start->modify('monday this week')->setTime((int) $start->format('H'), (int) $start->format('i'), (int) $start->format('s'));
+        $relevantFrom = $from->modify('-' . $duration . ' seconds');
+        $elapsedDays = max(0, intdiv($relevantFrom->getTimestamp() - $weekStart->getTimestamp(), 86400));
+        $firstCycle = max(0, intdiv($elapsedDays, 7 * $event->recurrenceInterval) - 1);
+        $occurrences = [];
+
+        for ($count = 0, $cycle = $firstCycle; $count < 5000; $count++, $cycle++) {
+            $cycleStart = $weekStart->add(new DateInterval('P' . ($cycle * $event->recurrenceInterval * 7) . 'D'));
+            if ($cycleStart >= $to) { break; }
+            foreach ($weekdays as $weekday) {
+                $occurrenceStart = $cycleStart->add(new DateInterval('P' . ($weekday - 1) . 'D'));
+                if ($occurrenceStart < $start || $occurrenceStart >= $to) { continue; }
+                if ($until !== null && $occurrenceStart > $until) { return $occurrences; }
+                $occurrenceEnd = $occurrenceStart->modify('+' . $duration . ' seconds');
+                if ($occurrenceEnd <= $from) { continue; }
+                $occurrences[] = $this->occurrence($event, $occurrenceStart, $occurrenceEnd);
+            }
+        }
+        return $occurrences;
+    }
+
+    /** @return array<string, mixed> */
+    private function occurrence(CalendarEvent $event, DateTimeImmutable $start, DateTimeImmutable $end): array
+    {
+        $item = $event->toArray();
+        $item['id'] = $event->uuid . '::' . $start->format('Ymd\THis');
+        $item['seriesId'] = $event->uuid;
+        $item['seriesStartsAt'] = $event->startsAt;
+        $item['seriesEndsAt'] = $event->endsAt;
+        $item['startsAt'] = $this->utc($start);
+        $item['endsAt'] = $this->utc($end);
+        return $item;
     }
 
     private function firstRelevantIndex(DateTimeImmutable $start, DateTimeImmutable $from, string $frequency, int $interval): int

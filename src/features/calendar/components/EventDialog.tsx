@@ -6,6 +6,7 @@ import type { FamilyMember } from '../../family/types/familyMember';
 import { useCreateCalendarEvent, useDeleteCalendarEvent, useUpdateCalendarEvent } from '../hooks/useCalendar';
 import type { CalendarEvent, CalendarEventInput, FamilyCalendar, RecurrenceFrequency } from '../types/calendar';
 import { addDays, localDate, localDateTime, parseLocalDate } from '../utils/calendarDates';
+import { RecurrenceFields } from './RecurrenceFields';
 
 interface EventDialogProps {
   event: CalendarEvent | null;
@@ -29,11 +30,8 @@ interface EventForm {
   recurrenceFrequency: RecurrenceFrequency | '';
   recurrenceInterval: number;
   recurrenceUntil: string;
+  recurrenceWeekdays: number[];
 }
-
-const recurrenceLabels: Record<RecurrenceFrequency | '', string> = {
-  '': 'Keine Wiederholung', DAILY: 'Täglich', WEEKLY: 'Wöchentlich', MONTHLY: 'Monatlich', YEARLY: 'Jährlich'
-};
 
 function supportsLocalCalendar(calendar: FamilyCalendar | undefined) {
   return calendar?.type === 'SHARED' || calendar?.type === 'PERSONAL';
@@ -42,6 +40,10 @@ function supportsLocalCalendar(calendar: FamilyCalendar | undefined) {
 function suggestedMemberIds(calendar: FamilyCalendar | undefined, currentUserId: string | null): string[] {
   if (calendar?.ownerMember?.id) return [calendar.ownerMember.id];
   return currentUserId ? [currentUserId] : [];
+}
+
+function isoWeekday(date: Date) {
+  return date.getDay() === 0 ? 7 : date.getDay();
 }
 
 export function EventDialog({ event, initialDate, calendars, members, currentUserId, onClose }: EventDialogProps) {
@@ -66,7 +68,10 @@ export function EventDialog({ event, initialDate, calendars, members, currentUse
       memberIds: event ? (event.members ?? []).map(member => member.id) : suggestedMemberIds(calendar, currentUserId),
       recurrenceFrequency: event?.recurrence?.frequency ?? '',
       recurrenceInterval: event?.recurrence?.interval ?? 1,
-      recurrenceUntil: event?.recurrence?.until ?? ''
+      recurrenceUntil: event?.recurrence?.until ?? '',
+      recurrenceWeekdays: event?.recurrence?.weekdays?.length
+        ? event.recurrence.weekdays
+        : event?.recurrence?.frequency === 'WEEKLY' ? [isoWeekday(initialStart)] : []
     };
   });
   const [error, setError] = useState<string | null>(null);
@@ -108,7 +113,8 @@ export function EventDialog({ event, initialDate, calendars, members, currentUse
         memberIds: supportsMembers ? form.memberIds : undefined,
         recurrenceFrequency: supportsRecurrence ? form.recurrenceFrequency || null : null,
         recurrenceInterval: supportsRecurrence ? form.recurrenceInterval : 1,
-        recurrenceUntil: supportsRecurrence ? form.recurrenceUntil || null : null
+        recurrenceUntil: supportsRecurrence ? form.recurrenceUntil || null : null,
+        recurrenceWeekdays: supportsRecurrence && form.recurrenceFrequency === 'WEEKLY' ? form.recurrenceWeekdays : []
       };
       if (event) await updateEvent.mutateAsync({ id: event.seriesId ?? event.id, input });
       else await create.mutateAsync(input);
@@ -176,17 +182,19 @@ export function EventDialog({ event, initialDate, calendars, members, currentUse
             <TextField required label="Beginn" type={form.allDay ? 'date' : 'datetime-local'} value={form.start} onChange={e => change('start', e.target.value)} slotProps={{ inputLabel: { shrink: true } }} />
             <TextField required label="Ende" type={form.allDay ? 'date' : 'datetime-local'} value={form.end} onChange={e => change('end', e.target.value)} slotProps={{ inputLabel: { shrink: true } }} helperText={form.allDay ? 'Letzter Tag des Termins' : undefined} />
           </Box>
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: form.recurrenceFrequency ? '2fr 1fr' : '1fr' }, gap: 2 }}>
-            <FormControl disabled={!supportsRecurrence}>
-              <InputLabel id="event-recurrence-label">Wiederholung (lokal)</InputLabel>
-              <Select labelId="event-recurrence-label" label="Wiederholung (lokal)" value={form.recurrenceFrequency} onChange={e => change('recurrenceFrequency', e.target.value as RecurrenceFrequency | '')}>
-                {(Object.keys(recurrenceLabels) as Array<RecurrenceFrequency | ''>).map(value => <MenuItem key={value || 'none'} value={value}>{recurrenceLabels[value]}</MenuItem>)}
-              </Select>
-            </FormControl>
-            {form.recurrenceFrequency && <TextField label="Alle …" type="number" value={form.recurrenceInterval} onChange={e => change('recurrenceInterval', Math.max(1, Math.min(12, Number(e.target.value))))} inputProps={{ min: 1, max: 12 }} helperText="Intervall" />}
-          </Box>
+          <RecurrenceFields
+            enabled={supportsRecurrence}
+            frequency={form.recurrenceFrequency}
+            interval={form.recurrenceInterval}
+            until={form.recurrenceUntil}
+            selectedWeekdays={form.recurrenceWeekdays}
+            start={form.start}
+            onFrequencyChange={value => change('recurrenceFrequency', value)}
+            onIntervalChange={value => change('recurrenceInterval', value)}
+            onUntilChange={value => change('recurrenceUntil', value)}
+            onWeekdaysChange={value => change('recurrenceWeekdays', value)}
+          />
           {!supportsRecurrence && <Alert severity="info">Wiederholungen verwaltet ihr für Google-Termine direkt in Google Kalender.</Alert>}
-          {form.recurrenceFrequency && <TextField label="Wiederholen bis (optional)" type="date" value={form.recurrenceUntil} onChange={e => change('recurrenceUntil', e.target.value)} slotProps={{ inputLabel: { shrink: true } }} helperText="Ohne Datum läuft die Serie unbegrenzt." />}
           <TextField label="Ort (optional)" value={form.location} onChange={e => change('location', e.target.value)} inputProps={{ maxLength: 160 }} />
           <TextField label="Beschreibung (optional)" value={form.description} onChange={e => change('description', e.target.value)} multiline minRows={2} inputProps={{ maxLength: 2000 }} />
         </Stack>

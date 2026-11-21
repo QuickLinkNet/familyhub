@@ -30,7 +30,7 @@ Prioritäten: **P0** Präsentations- und Alltagsreife, **P1** direkte Funktionsp
 | Apple/iCloud-, Outlook- und CalDAV-Anbindung | offen | P1 | mindestens ein sicherer Zwei-Wege-Adapter je Plattform |
 | iCal-/URL-Kalender | erfüllt | – | verschlüsselte read-only Quellen |
 | private Termine und reine Verfügbarkeitsanzeige | erfüllt | – | Kinder sehen keine vertraulichen Inhalte |
-| benutzerdefinierte Wiederholung nach Wochentagen | offen | P1 | etwa werktags oder jedes zweite Wochenende |
+| benutzerdefinierte Wiederholung nach Wochentagen | erfüllt | – | Werktage, Wochenende und frei kombinierbare Wochentage samt Intervall |
 | Mehrpersonen-Termine mit mehreren Profilfarben | erfüllt | – | beliebige Familienprofile zuweisbar |
 | Erinnerungszeit je Termin und optionaler Ton am Board | offen | P1 | mehrere Vorlaufzeiten und ruhige Standardwerte |
 | Termin- und Kalendersuche | offen | P2 | Titel, Beschreibung, Person und Zeitraum filterbar |
@@ -97,7 +97,7 @@ Prioritäten: **P0** Präsentations- und Alltagsreife, **P1** direkte Funktionsp
 ## Empfohlene Reihenfolge
 
 1. **P0 Produktabschluss:** kontextbezogene Hilfe, Barrierefreiheit und öffentliche Dokumentation.
-2. **P1 Kalenderkomfort:** erweiterte Wiederholungen und individuelle Erinnerungen.
+2. **P1 Kalenderkomfort:** individuelle Erinnerungen und optionale Töne am Board.
 3. **P1 Alltagskomfort:** allgemeine/private Listen, vollständige Rezeptpflege, Widgets und Ruhezeiten.
 4. **P1 Integrationen:** Apple/iCloud, Outlook und CalDAV.
 5. **P2 Ausbau:** Ferien, Suche, Schulimport, Vorlagen, Zuständigkeitswechsel und optionales App-Paket.

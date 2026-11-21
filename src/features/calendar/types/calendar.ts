@@ -44,6 +44,7 @@ export interface CalendarRecurrence {
   frequency: RecurrenceFrequency;
   interval: number;
   until: string | null;
+  weekdays: number[];
 }
 
 export interface CalendarEventInput {
@@ -59,4 +60,5 @@ export interface CalendarEventInput {
   recurrenceFrequency?: RecurrenceFrequency | null;
   recurrenceInterval?: number;
   recurrenceUntil?: string | null;
+  recurrenceWeekdays?: number[];
 }

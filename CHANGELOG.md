@@ -4,6 +4,20 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.35.0] - 2026-11-20
+
+### Hinzugefügt
+
+- frei kombinierbare Wochentage für wöchentliche lokale Kalendertermine
+- Schnellwahl für Werktage, Wochenende und den Starttag einer Serie
+- verständliche Rückmeldung für typische Rhythmen wie jedes zweite Wochenende
+
+### Qualität
+
+- bestehende Wochenserien ohne gespeicherte Wochentage verwenden weiterhin ihren ursprünglichen Starttag
+- neue Wochentagsregeln werden serverseitig normalisiert und validiert
+- fokussierter Smoke-Test deckt mehrtägige zweiwöchentliche Serien ab
+
 ## [0.34.0] - 2026-11-19
 
 ### Hinzugefügt
