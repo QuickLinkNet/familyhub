@@ -7,6 +7,7 @@ import { useCreateCalendarEvent, useDeleteCalendarEvent, useUpdateCalendarEvent 
 import type { CalendarEvent, CalendarEventInput, FamilyCalendar, RecurrenceFrequency } from '../types/calendar';
 import { addDays, localDate, localDateTime, parseLocalDate } from '../utils/calendarDates';
 import { RecurrenceFields } from './RecurrenceFields';
+import { EventReminderFields } from './EventReminderFields';
 
 interface EventDialogProps {
   event: CalendarEvent | null;
@@ -31,6 +32,8 @@ interface EventForm {
   recurrenceInterval: number;
   recurrenceUntil: string;
   recurrenceWeekdays: number[];
+  reminderOffsets: number[];
+  boardSound: boolean;
 }
 
 function supportsLocalCalendar(calendar: FamilyCalendar | undefined) {
@@ -71,7 +74,9 @@ export function EventDialog({ event, initialDate, calendars, members, currentUse
       recurrenceUntil: event?.recurrence?.until ?? '',
       recurrenceWeekdays: event?.recurrence?.weekdays?.length
         ? event.recurrence.weekdays
-        : event?.recurrence?.frequency === 'WEEKLY' ? [isoWeekday(initialStart)] : []
+        : event?.recurrence?.frequency === 'WEEKLY' ? [isoWeekday(initialStart)] : [],
+      reminderOffsets: event?.reminders?.offsetsMinutes ?? [120],
+      boardSound: event?.reminders?.boardSound ?? false
     };
   });
   const [error, setError] = useState<string | null>(null);
@@ -114,7 +119,9 @@ export function EventDialog({ event, initialDate, calendars, members, currentUse
         recurrenceFrequency: supportsRecurrence ? form.recurrenceFrequency || null : null,
         recurrenceInterval: supportsRecurrence ? form.recurrenceInterval : 1,
         recurrenceUntil: supportsRecurrence ? form.recurrenceUntil || null : null,
-        recurrenceWeekdays: supportsRecurrence && form.recurrenceFrequency === 'WEEKLY' ? form.recurrenceWeekdays : []
+        recurrenceWeekdays: supportsRecurrence && form.recurrenceFrequency === 'WEEKLY' ? form.recurrenceWeekdays : [],
+        reminderOffsets: supportsMembers ? form.reminderOffsets : undefined,
+        boardSound: supportsMembers ? form.boardSound : undefined
       };
       if (event) await updateEvent.mutateAsync({ id: event.seriesId ?? event.id, input });
       else await create.mutateAsync(input);
@@ -173,7 +180,7 @@ export function EventDialog({ event, initialDate, calendars, members, currentUse
               renderInput={params => <TextField {...params} required label="Für wen ist der Termin?" helperText="Mehrere Profile ergeben eine gemeinsame Farbcodierung." />}
             />
           )}
-          {!supportsMembers && <Alert severity="info">Profile ordnet ihr lokalen FamilyHub-Terminen zu. Google-Termine verwaltet Google Kalender.</Alert>}
+          {!supportsMembers && <Alert severity="info">Profile und FamilyHub-Erinnerungen ordnet ihr lokalen Terminen zu. Google-Termine und ihre Erinnerungen verwaltet Google Kalender.</Alert>}
           <Stack direction={{ xs: 'column', sm: 'row' }} gap={{ xs: 0, sm: 2 }}>
             <FormControlLabel control={<Checkbox checked={form.allDay} onChange={e => toggleAllDay(e.target.checked)} />} label="Ganztägig" />
             <FormControlLabel control={<Checkbox checked={form.isPrivate} onChange={e => change('isPrivate', e.target.checked)} />} label="Privat – Kinder sehen nur die belegte Zeit" />
@@ -195,6 +202,14 @@ export function EventDialog({ event, initialDate, calendars, members, currentUse
             onWeekdaysChange={value => change('recurrenceWeekdays', value)}
           />
           {!supportsRecurrence && <Alert severity="info">Wiederholungen verwaltet ihr für Google-Termine direkt in Google Kalender.</Alert>}
+          {supportsMembers && (
+            <EventReminderFields
+              offsets={form.reminderOffsets}
+              boardSound={form.boardSound}
+              onOffsetsChange={value => change('reminderOffsets', value)}
+              onBoardSoundChange={value => change('boardSound', value)}
+            />
+          )}
           <TextField label="Ort (optional)" value={form.location} onChange={e => change('location', e.target.value)} inputProps={{ maxLength: 160 }} />
           <TextField label="Beschreibung (optional)" value={form.description} onChange={e => change('description', e.target.value)} multiline minRows={2} inputProps={{ maxLength: 2000 }} />
         </Stack>

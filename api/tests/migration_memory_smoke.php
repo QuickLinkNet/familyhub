@@ -22,7 +22,7 @@ foreach (['routine_period', 'repeat_days', 'series_uuid', 'reward_points'] as $r
     }
 }
 $calendarColumns = array_column($database->query('PRAGMA table_info(calendar_events)')->fetchAll(PDO::FETCH_ASSOC), 'name');
-foreach (['recurrence_frequency', 'recurrence_interval', 'recurrence_until', 'recurrence_weekdays_json', 'is_private'] as $required) {
+foreach (['recurrence_frequency', 'recurrence_interval', 'recurrence_until', 'recurrence_weekdays_json', 'reminder_offsets_json', 'board_sound', 'is_private'] as $required) {
     if (!in_array($required, $calendarColumns, true)) { fwrite(STDERR, "Calendar migration column {$required} is missing.\n"); exit(1); }
 }
 $familyColumns = array_column($database->query('PRAGMA table_info(family_members)')->fetchAll(PDO::FETCH_ASSOC), 'name');

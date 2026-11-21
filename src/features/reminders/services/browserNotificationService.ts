@@ -42,8 +42,9 @@ async function dispatchNewReminders(board: ReminderBoard, preferences: ProfilePr
   const fresh = relevantItems(board).filter(item => !(reminderFingerprint(item) in state.notified));
   if (fresh.length === 0) return false;
   const hasCritical = fresh.some(item => item.urgency === 'CRITICAL');
+  const hasEventReminder = fresh.some(item => item.type === 'EVENT');
   const last = state.lastNotifiedAt ? new Date(state.lastNotifiedAt).getTime() : 0;
-  if (!hasCritical && Date.now() - last < cooldownMs) return false;
+  if (!hasCritical && !hasEventReminder && Date.now() - last < cooldownMs) return false;
   const first = fresh[0] as ReminderItem;
   const title = fresh.length === 1 ? first.title : `${fresh.length} Dinge brauchen Aufmerksamkeit`;
   const body = fresh.length === 1 ? first.message : `${first.title} und ${fresh.length - 1} weitere Hinweise`;

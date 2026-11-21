@@ -11,6 +11,7 @@ export interface ReminderItem {
   message: string;
   dueAt: string;
   member: { id: string; name: string; color: string } | null;
+  boardSound: boolean;
   action: { href: string; label: string };
 }
 

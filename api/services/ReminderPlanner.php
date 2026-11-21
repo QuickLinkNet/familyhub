@@ -48,16 +48,26 @@ final class ReminderPlanner
             $start = $this->date((string) ($event['startsAt'] ?? ''));
             $end = $this->date((string) ($event['endsAt'] ?? ''));
             if ($start === null || $end === null || $end <= $now) { continue; }
-            $hours = ($start->getTimestamp() - $now->getTimestamp()) / 3600;
+            $reminders = is_array($event['reminders'] ?? null) ? $event['reminders'] : null;
+            if ($reminders === null || !is_array($reminders['offsetsMinutes'] ?? null)) { continue; }
+            $reachedOffsets = array_values(array_filter(
+                array_map('intval', $reminders['offsetsMinutes']),
+                static fn (int $offset): bool => $now >= $start->modify('-' . $offset . ' minutes')
+            ));
+            if ($reachedOffsets === []) { continue; }
+            $activeOffset = min($reachedOffsets);
+            $context = $event['location'] ? 'Termin · ' . $event['location'] : 'Termin im Familienkalender';
             $items[] = $this->item(
                 'EVENT',
-                (string) ($event['id'] ?? ''),
-                $hours <= 2 ? 'ATTENTION' : 'INFO',
+                (string) ($event['id'] ?? '') . ':' . $activeOffset,
+                $activeOffset === 0 ? 'CRITICAL' : 'ATTENTION',
                 (string) ($event['title'] ?? 'Termin'),
-                $event['location'] ? 'Termin · ' . $event['location'] : 'Termin im Familienkalender',
+                $context . ' · ' . $this->offsetLabel($activeOffset),
                 $start->format(DATE_ATOM),
                 '/calendar',
-                'Kalender öffnen'
+                'Kalender öffnen',
+                null,
+                (bool) ($reminders['boardSound'] ?? false)
             );
         }
         return array_slice($items, 0, 3);
@@ -131,9 +141,22 @@ final class ReminderPlanner
     }
 
     /** @param array<string, mixed>|null $member @return array<string, mixed> */
-    private function item(string $type, string $id, string $urgency, string $title, string $message, string $dueAt, string $href, string $actionLabel, ?array $member = null): array
+    private function item(string $type, string $id, string $urgency, string $title, string $message, string $dueAt, string $href, string $actionLabel, ?array $member = null, bool $boardSound = false): array
     {
-        return ['id' => $type . ':' . $id, 'type' => $type, 'urgency' => $urgency, 'title' => $title, 'message' => $message, 'dueAt' => $dueAt, 'member' => $member, 'action' => ['href' => $href, 'label' => $actionLabel]];
+        return ['id' => $type . ':' . $id, 'type' => $type, 'urgency' => $urgency, 'title' => $title, 'message' => $message, 'dueAt' => $dueAt, 'member' => $member, 'boardSound' => $boardSound, 'action' => ['href' => $href, 'label' => $actionLabel]];
+    }
+
+    private function offsetLabel(int $minutes): string
+    {
+        return match ($minutes) {
+            0 => 'beginnt jetzt',
+            15 => 'in 15 Minuten',
+            30 => 'in 30 Minuten',
+            60 => 'in einer Stunde',
+            120 => 'in zwei Stunden',
+            1440 => 'in einem Tag',
+            default => 'steht bevor',
+        };
     }
 
     /** @param array<string, mixed> $item @return array{int, string, string} */

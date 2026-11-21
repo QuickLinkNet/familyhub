@@ -25,7 +25,10 @@ $tasks = [
 ];
 $school = ['items' => [['id' => 'school-own', 'title' => 'Vokabeltest', 'subject' => 'Englisch', 'itemType' => 'TEST', 'dueDate' => '2026-11-12', 'completedAt' => null, 'member' => $childRef]]];
 $routines = ['runs' => [['id' => 'routine-own', 'title' => 'Nachmittagsroutine', 'routinePeriod' => 'AFTERNOON', 'status' => 'OPEN', 'assignedMember' => $childRef, 'progress' => ['completed' => 1, 'total' => 3]]]];
-$events = [['id' => 'event-1', 'title' => 'Training', 'startsAt' => '2026-11-11T17:00:00+01:00', 'endsAt' => '2026-11-11T18:00:00+01:00', 'location' => 'Turnhalle']];
+$events = [
+    ['id' => 'event-1', 'title' => 'Training', 'startsAt' => '2026-11-11T17:00:00+01:00', 'endsAt' => '2026-11-11T18:00:00+01:00', 'location' => 'Turnhalle', 'reminders' => ['offsetsMinutes' => [120, 30, 0], 'boardSound' => true]],
+    ['id' => 'external-1', 'title' => 'Externer Termin', 'startsAt' => '2026-11-11T16:30:00+01:00', 'endsAt' => '2026-11-11T17:30:00+01:00', 'location' => null],
+];
 
 $childBoard = $planner->build($child, $events, $tasks, $routines, $school, $now);
 $childIds = array_column($childBoard['items'], 'id');
@@ -34,6 +37,14 @@ if (!in_array('TASK:task-own', $childIds, true) || in_array('TASK:task-other', $
 }
 if ($childBoard['items'][0]['urgency'] !== 'CRITICAL' || $childBoard['summary']['critical'] < 1) {
     fwrite(STDERR, "Reminder urgency smoke test failed.\n"); exit(1);
+}
+if (!in_array('EVENT:event-1:120', $childIds, true) || in_array('EVENT:external-1', $childIds, true)) {
+    fwrite(STDERR, "Configured event reminder selection failed.\n"); exit(1);
+}
+$laterBoard = $planner->build($child, $events, $tasks, $routines, $school, new DateTimeImmutable('2026-11-11T16:35:00+01:00'));
+$laterEvent = array_values(array_filter($laterBoard['items'], static fn (array $item): bool => $item['type'] === 'EVENT'))[0] ?? null;
+if (($laterEvent['id'] ?? null) !== 'EVENT:event-1:30' || ($laterEvent['boardSound'] ?? null) !== true) {
+    fwrite(STDERR, "Event reminder progression or board sound failed.\n"); exit(1);
 }
 
 $parentBoard = $planner->build($parent, $events, $tasks, $routines, $school, $now);

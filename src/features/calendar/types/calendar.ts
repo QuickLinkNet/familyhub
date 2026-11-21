@@ -30,6 +30,7 @@ export interface CalendarEvent {
   source: 'LOCAL' | 'EXTERNAL' | 'GOOGLE' | 'BIRTHDAY';
   editable: boolean;
   recurrence: CalendarRecurrence | null;
+  reminders?: CalendarEventReminders;
 }
 
 export interface CalendarEventMember {
@@ -47,6 +48,11 @@ export interface CalendarRecurrence {
   weekdays: number[];
 }
 
+export interface CalendarEventReminders {
+  offsetsMinutes: number[];
+  boardSound: boolean;
+}
+
 export interface CalendarEventInput {
   calendarId: string;
   title: string;
@@ -61,4 +67,6 @@ export interface CalendarEventInput {
   recurrenceInterval?: number;
   recurrenceUntil?: string | null;
   recurrenceWeekdays?: number[];
+  reminderOffsets?: number[];
+  boardSound?: boolean;
 }

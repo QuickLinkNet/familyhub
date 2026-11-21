@@ -51,7 +51,7 @@ final class CalendarRepository
     {
         $this->database->beginTransaction();
         try {
-            $statement = $this->database->prepare('INSERT INTO calendar_events (uuid, calendar_uuid, title, description, location, starts_at, ends_at, all_day, is_private, recurrence_frequency, recurrence_interval, recurrence_until, recurrence_weekdays_json, created_by_member_uuid, created_at, updated_at) VALUES (:uuid, :calendar_uuid, :title, :description, :location, :starts_at, :ends_at, :all_day, :is_private, :recurrence_frequency, :recurrence_interval, :recurrence_until, :recurrence_weekdays_json, :created_by_member_uuid, :created_at, :updated_at)');
+            $statement = $this->database->prepare('INSERT INTO calendar_events (uuid, calendar_uuid, title, description, location, starts_at, ends_at, all_day, is_private, recurrence_frequency, recurrence_interval, recurrence_until, recurrence_weekdays_json, reminder_offsets_json, board_sound, created_by_member_uuid, created_at, updated_at) VALUES (:uuid, :calendar_uuid, :title, :description, :location, :starts_at, :ends_at, :all_day, :is_private, :recurrence_frequency, :recurrence_interval, :recurrence_until, :recurrence_weekdays_json, :reminder_offsets_json, :board_sound, :created_by_member_uuid, :created_at, :updated_at)');
             $statement->execute($data);
             $this->replaceMembers((string) $data['uuid'], $memberIds);
             $this->database->commit();
@@ -67,7 +67,7 @@ final class CalendarRepository
     {
         $this->database->beginTransaction();
         try {
-            $statement = $this->database->prepare('UPDATE calendar_events SET calendar_uuid = :calendar_uuid, title = :title, description = :description, location = :location, starts_at = :starts_at, ends_at = :ends_at, all_day = :all_day, is_private = :is_private, recurrence_frequency = :recurrence_frequency, recurrence_interval = :recurrence_interval, recurrence_until = :recurrence_until, recurrence_weekdays_json = :recurrence_weekdays_json, updated_at = :updated_at WHERE uuid = :uuid AND deleted_at IS NULL');
+            $statement = $this->database->prepare('UPDATE calendar_events SET calendar_uuid = :calendar_uuid, title = :title, description = :description, location = :location, starts_at = :starts_at, ends_at = :ends_at, all_day = :all_day, is_private = :is_private, recurrence_frequency = :recurrence_frequency, recurrence_interval = :recurrence_interval, recurrence_until = :recurrence_until, recurrence_weekdays_json = :recurrence_weekdays_json, reminder_offsets_json = :reminder_offsets_json, board_sound = :board_sound, updated_at = :updated_at WHERE uuid = :uuid AND deleted_at IS NULL');
             $statement->execute($data + ['uuid' => $uuid]);
             $this->replaceMembers($uuid, $memberIds);
             $this->database->commit();

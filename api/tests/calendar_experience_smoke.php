@@ -36,6 +36,9 @@ if (array_column($weekendOccurrences, 'startsAt') !== ['2026-01-03T09:00:00Z', '
 if (($weekendOccurrences[0]['recurrence']['weekdays'] ?? null) !== [6, 7]) {
     fwrite(STDERR, "Calendar recurrence weekdays serialization failed.\n"); exit(1);
 }
+if (($weekendOccurrences[0]['reminders']['offsetsMinutes'] ?? null) !== [120] || ($weekendOccurrences[0]['reminders']['boardSound'] ?? null) !== false) {
+    fwrite(STDERR, "Calendar reminder defaults failed.\n"); exit(1);
+}
 
 $member = new FamilyMember('member-1', 'Sophie', '#D6855F', 'PARENT', true, null, '1990-02-28', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z');
 $birthdays = (new BirthdayEventFactory())->between([$member], new DateTimeImmutable('2026-02-01T00:00:00Z'), new DateTimeImmutable('2026-03-01T00:00:00Z'));

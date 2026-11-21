@@ -4,6 +4,20 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.36.0] - 2026-11-21
+
+### Hinzugefügt
+
+- keine, eine oder mehrere Vorlaufzeiten pro lokalem Kalendertermin
+- kompakte Schnellwahl von „zum Start“ bis „einen Tag vorher“
+- optionaler ruhiger Signalton im Wandmodus, der persönliche Ruhezeiten respektiert
+
+### Qualität
+
+- bestehende lokale Termine behalten den bisherigen Standard von zwei Stunden Vorlauf
+- Google-, iCal- und Geburtstagsereignisse erzeugen keine zusätzlichen FamilyHub-Terminerinnerungen
+- jede Erinnerungsstufe besitzt eine eigene Zustellkennung und löst nicht wiederholt aus
+
 ## [0.35.0] - 2026-11-20
 
 ### Hinzugefügt

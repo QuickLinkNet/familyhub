@@ -14,6 +14,8 @@ use FamilyHub\Repositories\FamilyMemberRepository;
 
 final class CalendarService
 {
+    private const ALLOWED_REMINDER_OFFSETS = [0, 15, 30, 60, 120, 1440];
+
     public function __construct(
         private CalendarRepository $repository,
         private CalendarSourceRepository $sourceRepository,
@@ -199,6 +201,30 @@ final class CalendarService
             $weekdays = [];
         }
 
+        $reminderOffsets = $existing?->reminderOffsets ?? [120];
+        if (array_key_exists('reminderOffsets', $input)) {
+            if (!is_array($input['reminderOffsets']) || count($input['reminderOffsets']) > count(self::ALLOWED_REMINDER_OFFSETS)) {
+                throw new AppException('VALIDATION_ERROR', 'Die Erinnerungszeiten sind ungültig.', 422);
+            }
+            $reminderOffsets = [];
+            foreach ($input['reminderOffsets'] as $offset) {
+                $validatedOffset = filter_var($offset, FILTER_VALIDATE_INT);
+                if ($validatedOffset === false || !in_array($validatedOffset, self::ALLOWED_REMINDER_OFFSETS, true)) {
+                    throw new AppException('VALIDATION_ERROR', 'Die Erinnerungszeiten sind ungültig.', 422);
+                }
+                $reminderOffsets[] = $validatedOffset;
+            }
+            $reminderOffsets = array_values(array_unique($reminderOffsets));
+            rsort($reminderOffsets);
+        }
+        $boardSound = array_key_exists('boardSound', $input)
+            ? filter_var($input['boardSound'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)
+            : ($existing?->boardSound ?? false);
+        if ($boardSound === null) {
+            throw new AppException('VALIDATION_ERROR', 'Die Board-Ton-Einstellung ist ungültig.', 422);
+        }
+        if ($reminderOffsets === []) { $boardSound = false; }
+
         return [
             'calendar_uuid' => $calendarId,
             'title' => $title,
@@ -212,6 +238,8 @@ final class CalendarService
             'recurrence_interval' => $frequency === null ? 1 : $interval,
             'recurrence_until' => $until,
             'recurrence_weekdays_json' => json_encode($weekdays, JSON_THROW_ON_ERROR),
+            'reminder_offsets_json' => json_encode($reminderOffsets, JSON_THROW_ON_ERROR),
+            'board_sound' => $boardSound ? 1 : 0,
         ];
     }
 

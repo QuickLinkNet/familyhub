@@ -48,6 +48,14 @@
       "status": "verified",
       "approvedByUser": true,
       "manifest": "screens/calendar-recurrence/manifest.json"
+    },
+    {
+      "id": "calendar-reminders",
+      "title": "Individuelle Termin-Erinnerungen",
+      "currentVersion": "0.36.0",
+      "status": "verified",
+      "approvedByUser": true,
+      "manifest": "screens/calendar-reminders/manifest.json"
     }
   ]
 }

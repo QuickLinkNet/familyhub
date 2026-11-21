@@ -30,6 +30,7 @@ import { useProfilePreferences } from '../../preferences/hooks/useProfilePrefere
 import { defaultWallCards } from '../../preferences/constants/profilePreferences';
 import type { WallCardId } from '../../preferences/types/profilePreferences';
 import { isQuietHoursActive } from '../../preferences/utils/quietHours';
+import { useWallReminderSound } from '../../reminders/hooks/useWallReminderSound';
 
 const defaultPresentation: WallPresentation = {
   greeting: 'Schön, dass ihr da seid', weatherEnabled: false, weatherLocation: null,
@@ -68,6 +69,7 @@ export function WallPage() {
   const orderedCards = preferences.data?.wallCards ?? defaultWallCards;
   const visibleCards = new Set(orderedCards);
   const quietHours = preferences.data ? isQuietHoursActive(preferences.data, now) : false;
+  useWallReminderSound(reminders.data, !quietHours);
   const openTasks = (tasks.data ?? []).filter(task => task.status !== 'COMPLETED' && isDueBy(task, localDate(now)));
   const activeFamily = (family.data ?? []).filter(member => member.isActive);
   const upcomingEvents = (events.data ?? []).filter(event => new Date(event.endsAt) > now);

@@ -32,6 +32,7 @@ $data = [
     'uuid' => $eventId, 'calendar_uuid' => $calendarId, 'title' => 'Familienausflug', 'description' => null, 'location' => null,
     'starts_at' => '2026-11-21T09:00:00Z', 'ends_at' => '2026-11-21T12:00:00Z', 'all_day' => 0, 'is_private' => 0,
     'recurrence_frequency' => null, 'recurrence_interval' => 1, 'recurrence_until' => null, 'recurrence_weekdays_json' => '[]',
+    'reminder_offsets_json' => '[120]', 'board_sound' => 0,
     'created_by_member_uuid' => $members[0][0], 'created_at' => $now, 'updated_at' => $now,
 ];
 $created = $repository->createEvent($data, [$members[0][0], $members[1][0]]);

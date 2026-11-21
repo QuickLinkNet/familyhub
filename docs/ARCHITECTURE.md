@@ -52,6 +52,8 @@ Das Schulmodul trennt den stabilen, wöchentlich wiederkehrenden Stundenplan von
 
 Lokale Kalenderwiederholungen bleiben als kompakte Serie in `calendar_events` gespeichert. Ein eigener Expander erzeugt nur die im angefragten Zeitraum sichtbaren Vorkommen und unterstützt bei Wochenserien mehrere ISO-Wochentage; eine Serien-ID hält Bearbeiten und Löschen eindeutig. Die normalisierte Zuordnung `calendar_event_members` verbindet einen Termin geordnet mit einem oder mehreren aktiven Profilen; das Repository lädt sie für einen Zeitraum gebündelt statt pro Termin. Geburtstage werden aus dem optionalen Geburtsdatum aktiver Familienprofile als schreibgeschützte virtuelle Kalenderereignisse erzeugt.
 
+Lokale Termine speichern eine begrenzte Liste von Vorlaufzeiten. Der Reminder-Planer aktiviert je Termin nur die zuletzt erreichte Stufe; ihre Kennung fließt in Browser- und Push-Fingerprints ein. Ein optionaler Wandmodus-Ton wird clientseitig ohne Audiodatei erzeugt, pro Stufe in der Browsersitzung höchstens einmal versucht und während persönlicher Ruhezeiten vollständig unterdrückt. Externe Kalender behalten ihre Erinnerungshoheit beim jeweiligen Anbieter.
+
 Private Termine behalten ihre Zeit und Kalenderfarbe, werden für Kinder aber bereits im Backend auf einen neutralen Titel ohne Beschreibung oder Ort reduziert. Dieselbe rollenabhängige Sicht wird für Kalender, Familienradar und Push-Nachrichten verwendet.
 
 ## Web Push
