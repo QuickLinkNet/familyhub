@@ -56,6 +56,14 @@
       "status": "verified",
       "approvedByUser": true,
       "manifest": "screens/calendar-reminders/manifest.json"
+    },
+    {
+      "id": "calendar-search",
+      "title": "Kalendersuche im sichtbaren Zeitraum",
+      "currentVersion": "0.37.0",
+      "status": "implemented",
+      "approvedByUser": true,
+      "manifest": "screens/calendar-search/manifest.json"
     }
   ]
 }

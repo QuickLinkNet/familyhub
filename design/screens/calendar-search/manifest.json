@@ -1,0 +1,15 @@
+{
+  "screen": "calendar-search",
+  "title": "Kalendersuche im sichtbaren Zeitraum",
+  "currentVersion": "0.37.0",
+  "status": "implemented",
+  "approvedByUser": true,
+  "approvedAt": "2026-11-21",
+  "versions": [
+    {
+      "version": "0.37.0",
+      "status": "implemented",
+      "path": "versions/0.37.0"
+    }
+  ]
+}

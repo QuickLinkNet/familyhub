@@ -4,6 +4,20 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.37.0] - 2026-11-21
+
+### Hinzugefügt
+
+- sofortige Textsuche in den Terminen des sichtbaren Tages, der Woche oder des Monats
+- Suche nach Titel, Ort, Beschreibung, Kalender und beteiligten Familienprofilen
+- zugängliche Trefferanzeige und eigener Nulltreffer-Zustand
+
+### Qualität
+
+- Suchbegriff sowie Personen- und Kalenderfilter lassen sich kombinieren und gemeinsam zurücksetzen
+- der temporäre Suchbegriff verändert den gespeicherten Kalenderstandard nicht
+- keine zusätzliche API-Abfrage oder Laufzeitabhängigkeit
+
 ## [0.36.0] - 2026-11-21
 
 ### Hinzugefügt

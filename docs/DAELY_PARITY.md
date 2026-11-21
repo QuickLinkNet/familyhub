@@ -33,7 +33,7 @@ Prioritäten: **P0** Präsentations- und Alltagsreife, **P1** direkte Funktionsp
 | benutzerdefinierte Wiederholung nach Wochentagen | erfüllt | – | Werktage, Wochenende und frei kombinierbare Wochentage samt Intervall |
 | Mehrpersonen-Termine mit mehreren Profilfarben | erfüllt | – | beliebige Familienprofile zuweisbar |
 | Erinnerungszeit je Termin und optionaler Ton am Board | erfüllt | – | mehrere Vorlaufzeiten, Ruhezeiten und einmaliger ruhiger Board-Ton |
-| Termin- und Kalendersuche | offen | P2 | Titel, Beschreibung, Person und Zeitraum filterbar |
+| Termin- und Kalendersuche | erfüllt | – | Titel, Ort, Beschreibung, Kalender und Person im sichtbaren Zeitraum filterbar |
 | Ferien- und Feiertagsassistent | offen | P2 | Region wählen und Quelle nachvollziehbar aktivieren |
 
 ## Aufgaben, Motivation und Listen
@@ -97,7 +97,7 @@ Prioritäten: **P0** Präsentations- und Alltagsreife, **P1** direkte Funktionsp
 ## Empfohlene Reihenfolge
 
 1. **P0 Produktabschluss:** kontextbezogene Hilfe, Barrierefreiheit und öffentliche Dokumentation.
-2. **P1 Kalenderkomfort:** Termin- und Kalendersuche sowie zusätzliche Ansichten.
+2. **P1 Kalenderkomfort:** zusätzliche Ansichten und weitere Integrationen.
 3. **P1 Alltagskomfort:** allgemeine/private Listen, vollständige Rezeptpflege, Widgets und Ruhezeiten.
 4. **P1 Integrationen:** Apple/iCloud, Outlook und CalDAV.
 5. **P2 Ausbau:** Ferien, Suche, Schulimport, Vorlagen, Zuständigkeitswechsel und optionales App-Paket.

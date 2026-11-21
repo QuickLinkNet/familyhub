@@ -30,7 +30,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Aufgaben | Zuweisung, Fälligkeit, Priorität, Abschluss, Eltern-Check | Wiederholung und Elternfreigabe fertig | Bearbeiten und Historie |
 | Belohnungen | Sterne, persönliche Guthaben, Wunschregal, Bonus und nachvollziehbares Ledger | fertig | Familienziele sind eigenes Modul; als Nächstes optionale Kategorien |
 | Familienziele | gemeinsame Vorhaben, sichtbarer Fortschritt und Wochenhighlights | Ziele, Beitragsjournal, Dashboard und Wandmodus fertig | Zielvorlagen und automatische Fortschrittsquellen |
-| Kalender | Tag/Woche/Monat, Mehrpersonen-Termine, Filter, Wiederholungen, Geburtstage, Ferien | Mehrpersonen-Termine, kombinierbare Profil-/Kalenderfilter, profilbezogene Standardansicht, Wochentagsserien und mehrere Erinnerungszeiten fertig | Termin- und Kalendersuche |
+| Kalender | Tag/Woche/Monat, Mehrpersonen-Termine, Filter, Wiederholungen, Geburtstage, Ferien | Mehrpersonen-Termine, kombinierbare Profil-/Kalenderfilter, schnelle Suche im sichtbaren Zeitraum, profilbezogene Standardansicht, Wochentagsserien und mehrere Erinnerungszeiten fertig | 5-Tages- und Timeline-Ansicht |
 | Routinen | Morgen-/Abendroutine, Schritte, Wochentage, Fortschritt | mehrstufige Tagesläufe, Fortschritt und Serienverwaltung fertig | Sterne und Routinehistorie |
 | Einkauf | mehrere Listen, Kategorien, Mengen, Dringlichkeit und schnelles Abhaken | fertig | Vorlagen und Spracheingabe |
 | Flexible Listen | Reise, Projekte, Haushalt, Ideen und private Überraschungen | fertig inklusive Sichtbarkeit, Zuständigkeit und Fortschritt | Vorlagen und Sortierung |
@@ -48,7 +48,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 ## Empfohlene Produktreihenfolge
 
 1. **Produktabschluss** – Geräte-Onboarding, kontextbezogene Hilfe, Barrierefreiheit und öffentliche Dokumentation.
-2. **Kalenderkomfort** – Termin- und Kalendersuche sowie zusätzliche Ansichten.
+2. **Kalenderkomfort** – zusätzliche Ansichten und weitere Kalenderintegrationen.
 3. **Weitere Integrationen** – Apple/iCloud, Outlook, CalDAV und später Home Assistant.
 
 ## Qualitätsmaßstab

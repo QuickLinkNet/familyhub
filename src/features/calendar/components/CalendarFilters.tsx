@@ -2,6 +2,7 @@ import { BookmarkAddedRounded, BookmarkAddRounded, RestartAltRounded } from '@mu
 import { Box, Button, Card, CardContent, Chip, Stack, Typography } from '@mui/material';
 import { MemberAvatar } from '../../../components/atoms/MemberAvatar';
 import type { FamilyMember } from '../../family/types/familyMember';
+import { CalendarSearchField } from './CalendarSearchField';
 
 export interface CalendarFilterOption {
   id: string;
@@ -14,8 +15,12 @@ interface CalendarFiltersProps {
   calendars: CalendarFilterOption[];
   memberIds: string[];
   calendarIds: string[];
+  search: string;
+  searchResultCount: number;
+  searchTotalCount: number;
   onMembersChange: (ids: string[]) => void;
   onCalendarsChange: (ids: string[]) => void;
+  onSearchChange: (value: string) => void;
   defaultSaved: boolean;
   loadingDefault: boolean;
   savingDefault: boolean;
@@ -27,13 +32,14 @@ function toggle(ids: string[], id: string) {
 }
 
 export function CalendarFilters(props: CalendarFiltersProps) {
-  const { members, calendars, memberIds, calendarIds, onMembersChange, onCalendarsChange, defaultSaved, loadingDefault, savingDefault, onSaveDefault } = props;
-  const active = memberIds.length + calendarIds.length > 0;
+  const { members, calendars, memberIds, calendarIds, search, searchResultCount, searchTotalCount, onMembersChange, onCalendarsChange, onSearchChange, defaultSaved, loadingDefault, savingDefault, onSaveDefault } = props;
+  const active = memberIds.length + calendarIds.length > 0 || search.trim().length > 0;
 
   return (
     <Card variant="outlined">
       <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
         <Stack spacing={1.25}>
+          <CalendarSearchField value={search} resultCount={searchResultCount} totalCount={searchTotalCount} onChange={onSearchChange} />
           <FilterRow label="Personen">
             <Chip label="Alle" color={memberIds.length === 0 ? 'primary' : 'default'} variant={memberIds.length === 0 ? 'filled' : 'outlined'} onClick={() => onMembersChange([])} />
             {members.map(member => (
@@ -59,7 +65,7 @@ export function CalendarFilters(props: CalendarFiltersProps) {
                 onClick={() => onCalendarsChange(toggle(calendarIds, calendar.id))}
               />
             ))}
-            {active && <Button size="small" startIcon={<RestartAltRounded />} onClick={() => { onMembersChange([]); onCalendarsChange([]); }}>Zurücksetzen</Button>}
+            {active && <Button size="small" startIcon={<RestartAltRounded />} onClick={() => { onSearchChange(''); onMembersChange([]); onCalendarsChange([]); }}>Zurücksetzen</Button>}
           </FilterRow>
           <Stack direction="row" justifyContent="flex-end">
             <Button

@@ -17,6 +17,7 @@ import { WeekCalendar } from '../components/WeekCalendar';
 import { useCalendarEvents, useCalendars } from '../hooks/useCalendar';
 import type { CalendarEvent } from '../types/calendar';
 import { addDays, daysBetween, endOfMonth, fullDayFormatter, isSameMonth, monthFormatter, monthTitleFormatter, startOfDay, startOfMonth, startOfWeek } from '../utils/calendarDates';
+import { eventMatchesSearch } from '../utils/calendarSearch';
 
 function sameIds(left: string[], right: string[]) {
   return left.length === right.length && left.every((id, index) => id === right[index]);
@@ -30,6 +31,7 @@ export function CalendarPage() {
   const [createDate, setCreateDate] = useState<Date | null>(null);
   const [memberIds, setMemberIds] = useState<string[]>([]);
   const [calendarIds, setCalendarIds] = useState<string[]>([]);
+  const [search, setSearch] = useState('');
   const [preferenceApplied, setPreferenceApplied] = useState(false);
   const weekStart = startOfWeek(cursor);
   const weekEnd = addDays(weekStart, 7);
@@ -53,11 +55,13 @@ export function CalendarPage() {
     for (const event of events.data ?? []) options.set(event.calendar.id, event.calendar);
     return [...options.values()];
   }, [calendars.data, events.data]);
-  const filteredEvents = (events.data ?? []).filter(event =>
+  const chipFilteredEvents = (events.data ?? []).filter(event =>
     (calendarIds.length === 0 || calendarIds.includes(event.calendar.id))
     && (memberIds.length === 0 || (event.members ?? []).some(member => memberIds.includes(member.id)))
   );
-  const filtersActive = memberIds.length > 0 || calendarIds.length > 0;
+  const filteredEvents = chipFilteredEvents.filter(event => eventMatchesSearch(event, search));
+  const searchActive = search.trim().length > 0;
+  const filtersActive = memberIds.length > 0 || calendarIds.length > 0 || searchActive;
   const savedView = (preferences.data?.calendarView ?? 'WEEK').toLowerCase() as CalendarView;
   const defaultSaved = preferences.data !== undefined
     && view === savedView
@@ -131,8 +135,12 @@ export function CalendarPage() {
         calendars={calendarOptions}
         memberIds={memberIds}
         calendarIds={calendarIds}
+        search={search}
+        searchResultCount={filteredEvents.length}
+        searchTotalCount={chipFilteredEvents.length}
         onMembersChange={setMemberIds}
         onCalendarsChange={setCalendarIds}
+        onSearchChange={setSearch}
         defaultSaved={defaultSaved}
         loadingDefault={preferences.isLoading}
         savingDefault={updatePreferences.isPending}
@@ -153,8 +161,8 @@ export function CalendarPage() {
       {!events.isLoading && filteredEvents.length === 0 && (
         <EmptyStateCard
           icon={<EventAvailableRounded color="primary" sx={{ fontSize: 52 }} />}
-          title={filtersActive ? 'Keine Termine für diese Auswahl' : `Dieser ${periodNoun} ist noch frei`}
-          description={filtersActive ? 'Passt die Personen- oder Kalenderfilter an.' : canManage ? 'Tragt euren ersten gemeinsamen oder persönlichen Termin ein.' : `Für diesen ${periodNoun} sind keine Termine eingetragen.`}
+          title={searchActive ? 'Keine passenden Termine' : filtersActive ? 'Keine Termine für diese Auswahl' : `Dieser ${periodNoun} ist noch frei`}
+          description={searchActive ? 'Versuche einen anderen Suchbegriff oder setze die Filter zurück.' : filtersActive ? 'Passt die Personen- oder Kalenderfilter an.' : canManage ? 'Tragt euren ersten gemeinsamen oder persönlichen Termin ein.' : `Für diesen ${periodNoun} sind keine Termine eingetragen.`}
         />
       )}
       {(createDate !== null || selectedEvent !== null) && canManage && (
