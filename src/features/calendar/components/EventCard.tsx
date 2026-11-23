@@ -2,7 +2,7 @@ import { LocationOnRounded, LockRounded } from '@mui/icons-material';
 import { Box, CardActionArea, Chip, Stack, Typography } from '@mui/material';
 import { MemberAvatar } from '../../../components/atoms/MemberAvatar';
 import type { CalendarEvent } from '../types/calendar';
-import { isSameDay, timeFormatter } from '../utils/calendarDates';
+import { addDays, isSameDay, startOfDay, timeFormatter } from '../utils/calendarDates';
 import { EventMemberRail } from './EventMemberRail';
 
 interface EventCardProps {
@@ -14,7 +14,17 @@ interface EventCardProps {
 }
 
 function timeLabel(event: CalendarEvent, day?: Date) {
-  if (event.allDay) return 'Ganztägig';
+  if (event.allDay) {
+    if (day === undefined) return 'Ganztägig';
+    const dayStart = startOfDay(day);
+    const dayEnd = addDays(dayStart, 1);
+    const beginsBefore = new Date(event.startsAt) < dayStart;
+    const endsAfter = new Date(event.endsAt) > dayEnd;
+    if (beginsBefore && endsAfter) return 'Ganztägig · läuft weiter';
+    if (beginsBefore) return 'Ganztägig · endet heute';
+    if (endsAfter) return 'Ganztägig · beginnt heute';
+    return 'Ganztägig';
+  }
   const startsAt = new Date(event.startsAt);
   const endsAt = new Date(event.endsAt);
   const spansDays = !isSameDay(startsAt, new Date(endsAt.getTime() - 1));

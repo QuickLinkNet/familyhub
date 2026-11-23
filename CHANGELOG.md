@@ -4,6 +4,20 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.38.0] - 2026-11-21
+
+### Hinzugefügt
+
+- rollierende 5-Tage-Ansicht einschließlich Wochenenden
+- visuelle Tages-Timeline mit Stundenraster, Ganztagsbereich und aktueller Uhrzeit
+- responsive Ansichtssteuerung mit fünf Kalenderperspektiven
+
+### Qualität
+
+- frühe, späte, mehrtägige und überschneidende Termine bleiben vollständig erreichbar
+- Timeline und 5-Tage-Ansicht lassen sich als profilbezogener Standard speichern
+- bestehende Suche, Filter, Rechte und Terminbearbeitung werden unverändert wiederverwendet
+
 ## [0.37.0] - 2026-11-21
 
 ### Hinzugefügt

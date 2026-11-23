@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type MouseEvent } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { EventAvailableRounded } from '@mui/icons-material';
 import { Alert, Stack } from '@mui/material';
 import { EmptyStateCard } from '../../../components/molecules/EmptyStateCard';
@@ -6,13 +6,16 @@ import { ApiError } from '../../../services/apiClient';
 import { useAuthSession } from '../../auth/hooks/useAuth';
 import { useFamilyMembers } from '../../family/hooks/useFamilyMembers';
 import { useProfilePreferences, useUpdateProfilePreferences } from '../../preferences/hooks/useProfilePreferences';
+import type { CalendarPreferenceView } from '../../preferences/types/profilePreferences';
 import { CalendarFilters } from '../components/CalendarFilters';
 import { CalendarHeader, type CalendarView } from '../components/CalendarHeader';
 import { CalendarLoadingGrid } from '../components/CalendarLoadingGrid';
 import { CalendarPeriodNavigation } from '../components/CalendarPeriodNavigation';
 import { DayCalendar } from '../components/DayCalendar';
 import { EventDialog } from '../components/EventDialog';
+import { FiveDayCalendar } from '../components/FiveDayCalendar';
 import { MonthCalendar } from '../components/MonthCalendar';
+import { TimelineCalendar } from '../components/TimelineCalendar';
 import { WeekCalendar } from '../components/WeekCalendar';
 import { useCalendarEvents, useCalendars } from '../hooks/useCalendar';
 import type { CalendarEvent } from '../types/calendar';
@@ -22,6 +25,22 @@ import { eventMatchesSearch } from '../utils/calendarSearch';
 function sameIds(left: string[], right: string[]) {
   return left.length === right.length && left.every((id, index) => id === right[index]);
 }
+
+const viewFromPreference: Record<CalendarPreferenceView, CalendarView> = {
+  DAY: 'day',
+  TIMELINE: 'timeline',
+  FIVE_DAY: 'five-day',
+  WEEK: 'week',
+  MONTH: 'month'
+};
+
+const preferenceFromView: Record<CalendarView, CalendarPreferenceView> = {
+  day: 'DAY',
+  timeline: 'TIMELINE',
+  'five-day': 'FIVE_DAY',
+  week: 'WEEK',
+  month: 'MONTH'
+};
 
 export function CalendarPage() {
   const [view, setView] = useState<CalendarView>('week');
@@ -35,11 +54,16 @@ export function CalendarPage() {
   const [preferenceApplied, setPreferenceApplied] = useState(false);
   const weekStart = startOfWeek(cursor);
   const weekEnd = addDays(weekStart, 7);
+  const fiveDayEnd = addDays(cursor, 5);
   const monthStart = startOfMonth(cursor);
   const monthGridStart = startOfWeek(monthStart);
   const monthGridEnd = addDays(startOfWeek(endOfMonth(cursor)), 7);
-  const periodStart = view === 'day' ? cursor : view === 'week' ? weekStart : monthGridStart;
-  const periodEnd = view === 'day' ? addDays(cursor, 1) : view === 'week' ? weekEnd : monthGridEnd;
+  const periodStart = view === 'week' ? weekStart : view === 'month' ? monthGridStart : cursor;
+  const periodEnd = view === 'day' || view === 'timeline'
+    ? addDays(cursor, 1)
+    : view === 'five-day'
+      ? fiveDayEnd
+      : view === 'week' ? weekEnd : monthGridEnd;
   const events = useCalendarEvents(periodStart.toISOString(), periodEnd.toISOString());
   const calendars = useCalendars();
   const family = useFamilyMembers();
@@ -62,21 +86,23 @@ export function CalendarPage() {
   const filteredEvents = chipFilteredEvents.filter(event => eventMatchesSearch(event, search));
   const searchActive = search.trim().length > 0;
   const filtersActive = memberIds.length > 0 || calendarIds.length > 0 || searchActive;
-  const savedView = (preferences.data?.calendarView ?? 'WEEK').toLowerCase() as CalendarView;
+  const savedView = viewFromPreference[preferences.data?.calendarView ?? 'WEEK'];
   const defaultSaved = preferences.data !== undefined
     && view === savedView
     && sameIds(memberIds, preferences.data.calendarMemberIds ?? [])
     && sameIds(calendarIds, preferences.data.calendarIds ?? []);
-  const periodLabel = view === 'day'
+  const periodLabel = view === 'day' || view === 'timeline'
     ? fullDayFormatter.format(cursor)
+    : view === 'five-day'
+      ? `${monthFormatter.format(cursor)} – ${monthFormatter.format(addDays(fiveDayEnd, -1))}`
     : view === 'week'
       ? `${monthFormatter.format(weekStart)} – ${monthFormatter.format(addDays(weekEnd, -1))}`
       : monthTitleFormatter.format(monthStart);
-  const periodNoun = view === 'day' ? 'Tag' : view === 'week' ? 'Woche' : 'Monat';
+  const periodNoun = view === 'day' || view === 'timeline' ? 'Tag' : view === 'five-day' ? 'Zeitraum' : view === 'week' ? 'Woche' : 'Monat';
 
   useEffect(() => {
     if (preferenceApplied || preferences.data === undefined) return;
-    setView((preferences.data.calendarView ?? 'WEEK').toLowerCase() as CalendarView);
+    setView(viewFromPreference[preferences.data.calendarView ?? 'WEEK']);
     setMemberIds(preferences.data.calendarMemberIds ?? []);
     setCalendarIds(preferences.data.calendarIds ?? []);
     setPreferenceApplied(true);
@@ -94,14 +120,17 @@ export function CalendarPage() {
     setSelectedEvent(null);
     setCreateDate(null);
   };
-  const changeView = (_event: MouseEvent<HTMLElement>, nextView: CalendarView | null) => {
-    if (nextView === null) return;
+  const changeView = (nextView: CalendarView) => {
     setView(nextView);
     setSelectedDay(startOfDay(cursor));
   };
   const changePeriod = (direction: -1 | 1) => {
-    if (view === 'day') {
+    if (view === 'day' || view === 'timeline') {
       setCursor(current => addDays(current, direction));
+      return;
+    }
+    if (view === 'five-day') {
+      setCursor(current => addDays(current, direction * 5));
       return;
     }
     if (view === 'week') {
@@ -121,7 +150,7 @@ export function CalendarPage() {
     setSelectedDay(today);
   };
   const saveDefault = () => updatePreferences.mutate({
-    calendarView: view.toUpperCase() as 'DAY' | 'WEEK' | 'MONTH',
+    calendarView: preferenceFromView[view],
     calendarMemberIds: memberIds,
     calendarIds
   });
@@ -155,6 +184,10 @@ export function CalendarPage() {
         ? <CalendarLoadingGrid days={days} view={view} />
         : view === 'day'
           ? <DayCalendar day={cursor} events={filteredEvents} canManage={canManage} onCreate={openCreate} onOpen={openEvent} />
+          : view === 'timeline'
+            ? <TimelineCalendar day={cursor} events={filteredEvents} canManage={canManage} onCreate={openCreate} onOpen={openEvent} />
+            : view === 'five-day'
+              ? <FiveDayCalendar days={days} events={filteredEvents} canManage={canManage} onCreate={openCreate} onOpen={openEvent} />
           : view === 'week'
             ? <WeekCalendar days={days} events={filteredEvents} canManage={canManage} onCreate={openCreate} onOpen={openEvent} />
             : <MonthCalendar days={days} month={monthStart} events={filteredEvents} selectedDay={selectedDay} canManage={canManage} onSelectDay={setSelectedDay} onCreate={openCreate} onOpen={openEvent} />}

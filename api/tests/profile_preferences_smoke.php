@@ -30,13 +30,14 @@ $saved = $service->update($actor, [
     'quietHoursEnabled' => true,
     'quietHoursStart' => '22:00',
     'quietHoursEnd' => '07:00',
-    'calendarView' => 'MONTH',
+    'calendarView' => 'FIVE_DAY',
     'calendarMemberIds' => [$memberId],
     'calendarIds' => ['family-calendar', 'birthdays'],
 ]);
 $late = $service->quietHoursActive($memberId, new DateTimeImmutable('2026-11-19 23:00:00', new DateTimeZone('Europe/Berlin')));
 $day = $service->quietHoursActive($memberId, new DateTimeImmutable('2026-11-19 12:00:00', new DateTimeZone('Europe/Berlin')));
-if (!in_array('REMINDERS', $defaults['dashboardCards'], true) || $defaults['calendarView'] !== 'WEEK' || $saved['dashboardCards'] !== ['MEALS', 'TODAY', 'TASKS'] || $saved['calendarView'] !== 'MONTH' || $saved['calendarMemberIds'] !== [$memberId] || $saved['calendarIds'] !== ['family-calendar', 'birthdays'] || !$late || $day) {
+$timeline = $service->update($actor, ['calendarView' => 'TIMELINE']);
+if (!in_array('REMINDERS', $defaults['dashboardCards'], true) || $defaults['calendarView'] !== 'WEEK' || $saved['dashboardCards'] !== ['MEALS', 'TODAY', 'TASKS'] || $saved['calendarView'] !== 'FIVE_DAY' || $timeline['calendarView'] !== 'TIMELINE' || $saved['calendarMemberIds'] !== [$memberId] || $saved['calendarIds'] !== ['family-calendar', 'birthdays'] || !$late || $day) {
     fwrite(STDERR, "Profile preferences smoke test failed.\n"); exit(1);
 }
 try {
@@ -46,7 +47,7 @@ try {
     if ($exception->errorCode() !== 'VALIDATION_ERROR') { throw $exception; }
 }
 try {
-    $service->update($actor, ['calendarView' => 'TIMELINE']);
+    $service->update($actor, ['calendarView' => 'BOARD']);
     fwrite(STDERR, "Calendar preference validation test failed.\n"); exit(1);
 } catch (AppException $exception) {
     if ($exception->errorCode() !== 'VALIDATION_ERROR') { throw $exception; }

@@ -1,0 +1,15 @@
+{
+  "screen": "calendar-time-views",
+  "title": "5-Tage- und Timeline-Kalender",
+  "currentVersion": "0.38.0",
+  "status": "implemented",
+  "approvedByUser": true,
+  "approvedAt": "2026-11-21",
+  "versions": [
+    {
+      "version": "0.38.0",
+      "status": "implemented",
+      "path": "versions/0.38.0"
+    }
+  ]
+}

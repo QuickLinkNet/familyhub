@@ -30,7 +30,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Aufgaben | Zuweisung, Fälligkeit, Priorität, Abschluss, Eltern-Check | Wiederholung und Elternfreigabe fertig | Bearbeiten und Historie |
 | Belohnungen | Sterne, persönliche Guthaben, Wunschregal, Bonus und nachvollziehbares Ledger | fertig | Familienziele sind eigenes Modul; als Nächstes optionale Kategorien |
 | Familienziele | gemeinsame Vorhaben, sichtbarer Fortschritt und Wochenhighlights | Ziele, Beitragsjournal, Dashboard und Wandmodus fertig | Zielvorlagen und automatische Fortschrittsquellen |
-| Kalender | Tag/Woche/Monat, Mehrpersonen-Termine, Filter, Wiederholungen, Geburtstage, Ferien | Mehrpersonen-Termine, kombinierbare Profil-/Kalenderfilter, schnelle Suche im sichtbaren Zeitraum, profilbezogene Standardansicht, Wochentagsserien und mehrere Erinnerungszeiten fertig | 5-Tages- und Timeline-Ansicht |
+| Kalender | Tag/Timeline/5 Tage/Woche/Monat, Mehrpersonen-Termine, Filter, Wiederholungen, Geburtstage, Ferien | fünf responsive Ansichten, Mehrpersonen-Termine, kombinierbare Profil-/Kalenderfilter, schnelle Suche, profilbezogene Standards, Wochentagsserien und mehrere Erinnerungszeiten fertig | Ferien- und Feiertagsassistent |
 | Routinen | Morgen-/Abendroutine, Schritte, Wochentage, Fortschritt | mehrstufige Tagesläufe, Fortschritt und Serienverwaltung fertig | Sterne und Routinehistorie |
 | Einkauf | mehrere Listen, Kategorien, Mengen, Dringlichkeit und schnelles Abhaken | fertig | Vorlagen und Spracheingabe |
 | Flexible Listen | Reise, Projekte, Haushalt, Ideen und private Überraschungen | fertig inklusive Sichtbarkeit, Zuständigkeit und Fortschritt | Vorlagen und Sortierung |

@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 $database = new PDO('sqlite::memory:');
+$database->exec('PRAGMA foreign_keys = ON');
 $files = glob(dirname(__DIR__) . '/database/migrations/*.sql') ?: [];
 sort($files, SORT_NATURAL);
 foreach ($files as $file) {
@@ -27,6 +28,8 @@ foreach (['recurrence_frequency', 'recurrence_interval', 'recurrence_until', 're
 }
 $familyColumns = array_column($database->query('PRAGMA table_info(family_members)')->fetchAll(PDO::FETCH_ASSOC), 'name');
 if (!in_array('birth_date', $familyColumns, true)) { fwrite(STDERR, "Family birth_date migration column is missing.\n"); exit(1); }
+$preferenceSql = (string) $database->query("SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'profile_preferences'")->fetchColumn();
+if (!str_contains($preferenceSql, "'TIMELINE'") || !str_contains($preferenceSql, "'FIVE_DAY'")) { fwrite(STDERR, "Calendar preference views are missing.\n"); exit(1); }
 foreach (['external_calendar_events', 'google_calendar_events'] as $table) {
     $eventColumns = array_column($database->query("PRAGMA table_info({$table})")->fetchAll(PDO::FETCH_ASSOC), 'name');
     if (!in_array('is_private', $eventColumns, true)) { fwrite(STDERR, "Privacy column on {$table} is missing.\n"); exit(1); }

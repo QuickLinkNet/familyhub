@@ -12,7 +12,7 @@ final class ProfilePreferenceService
 {
     private const DASHBOARD_CARDS = ['REMINDERS', 'TODAY', 'TASKS', 'FAMILY', 'REWARDS', 'SHOPPING', 'MEALS', 'NOTES', 'SCHOOL', 'HOUSEHOLD', 'GOALS', 'WALL_MODE', 'ADMIN_SETUP'];
     private const WALL_CARDS = ['EVENTS', 'TASKS', 'REMINDERS', 'GOALS', 'NOTES', 'SCHOOL', 'FAMILY'];
-    private const CALENDAR_VIEWS = ['DAY', 'WEEK', 'MONTH'];
+    private const CALENDAR_VIEWS = ['DAY', 'TIMELINE', 'FIVE_DAY', 'WEEK', 'MONTH'];
 
     public function __construct(private ProfilePreferenceRepository $repository) {}
 

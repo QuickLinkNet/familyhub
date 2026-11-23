@@ -61,9 +61,17 @@
       "id": "calendar-search",
       "title": "Kalendersuche im sichtbaren Zeitraum",
       "currentVersion": "0.37.0",
-      "status": "implemented",
+      "status": "verified",
       "approvedByUser": true,
       "manifest": "screens/calendar-search/manifest.json"
+    },
+    {
+      "id": "calendar-time-views",
+      "title": "5-Tage- und Timeline-Kalender",
+      "currentVersion": "0.38.0",
+      "status": "implemented",
+      "approvedByUser": true,
+      "manifest": "screens/calendar-time-views/manifest.json"
     }
   ]
 }

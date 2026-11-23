@@ -22,7 +22,7 @@ Prioritäten: **P0** Präsentations- und Alltagsreife, **P1** direkte Funktionsp
 | Ziel | Status | Priorität | Abnahmekriterium |
 | --- | --- | --- | --- |
 | Tag-, Wochen- und Monatsansicht | erfüllt | – | touch- und mobil nutzbar |
-| 5-Tages- und Timeline-Ansicht | offen | P1 | zwischen beiden Ansichten ohne Datenverlust wechseln |
+| 5-Tages- und Timeline-Ansicht | erfüllt | – | rollierende fünf Tage und visuelle Tageszeitleiste responsiv nutzbar |
 | frei wählbare Standardansicht | erfüllt | – | pro Profil gespeichert, geräteübergreifend |
 | schneller Profil- und Kalenderfilter | erfüllt | – | einzelne Personen und Quellen kombinierbar |
 | lokale und Google-Termine erstellen, bearbeiten und löschen | erfüllt | – | CRUD live geprüft |

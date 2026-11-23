@@ -68,7 +68,7 @@ Der Familienradar ist eine abgeleitete Ansicht. Er legt keine zusätzlichen pers
 - `GET /profile-preferences` – eigene Kartenreihenfolge, Kalenderstandard und Ruhezeit laden
 - `PUT /profile-preferences` – vollständige persönliche Einstellung speichern; authentifiziert und CSRF-geschützt
 
-`dashboardCards` und `wallCards` enthalten geordnete Kartenkennungen. Beide Ansichten müssen mindestens eine bekannte Karte behalten. `calendarView` ist `DAY`, `WEEK` oder `MONTH`; `calendarMemberIds` und `calendarIds` halten optionale geordnete Filterkennungen. `quietHoursEnabled`, `quietHoursStart` und `quietHoursEnd` steuern ein persönliches Zeitfenster im Format `HH:MM`. Währenddessen pausieren automatische Browser- und Web-Push-Nachrichten; der Wandmodus blendet den Familienradar aus. Ein bewusst ausgelöster Push-Test bleibt möglich.
+`dashboardCards` und `wallCards` enthalten geordnete Kartenkennungen. Beide Ansichten müssen mindestens eine bekannte Karte behalten. `calendarView` ist `DAY`, `TIMELINE`, `FIVE_DAY`, `WEEK` oder `MONTH`; `calendarMemberIds` und `calendarIds` halten optionale geordnete Filterkennungen. `quietHoursEnabled`, `quietHoursStart` und `quietHoursEnd` steuern ein persönliches Zeitfenster im Format `HH:MM`. Währenddessen pausieren automatische Browser- und Web-Push-Nachrichten; der Wandmodus blendet den Familienradar aus. Ein bewusst ausgelöster Push-Test bleibt möglich.
 
 ### Familienmitglieder
 

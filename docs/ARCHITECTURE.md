@@ -54,7 +54,9 @@ Lokale Kalenderwiederholungen bleiben als kompakte Serie in `calendar_events` ge
 
 Lokale Termine speichern eine begrenzte Liste von Vorlaufzeiten. Der Reminder-Planer aktiviert je Termin nur die zuletzt erreichte Stufe; ihre Kennung fließt in Browser- und Push-Fingerprints ein. Ein optionaler Wandmodus-Ton wird clientseitig ohne Audiodatei erzeugt, pro Stufe in der Browsersitzung höchstens einmal versucht und während persönlicher Ruhezeiten vollständig unterdrückt. Externe Kalender behalten ihre Erinnerungshoheit beim jeweiligen Anbieter.
 
-Die Kalenderseite durchsucht den bereits für Tag, Woche oder Monat geladenen Ereignissatz lokal. Suchbegriff, Personen- und Kalenderfilter werden in einer gemeinsamen Filterpipeline kombiniert; nur Ansicht und Chipfilter sind persönliche Standards, während der Suchbegriff bewusst flüchtig bleibt.
+Die Kalenderseite durchsucht den bereits für die aktuelle Ansicht geladenen Ereignissatz lokal. Suchbegriff, Personen- und Kalenderfilter werden in einer gemeinsamen Filterpipeline kombiniert; nur Ansicht und Chipfilter sind persönliche Standards, während der Suchbegriff bewusst flüchtig bleibt.
+
+Neben Tagesagenda, Woche und Monat stehen eine rollierende 5-Tage-Ansicht und eine visuelle Tages-Timeline bereit. Beide nutzen denselben zeitraumbezogenen Kalender-Endpunkt, dieselbe Filterpipeline und dieselben Terminkarten. Die Timeline erweitert ihr Stundenraster bei frühen oder späten Terminen, gruppiert Überschneidungen und trennt Ganztagstermine; auf kleinen Bildschirmen bleiben alle Inhalte linear lesbar.
 
 Private Termine behalten ihre Zeit und Kalenderfarbe, werden für Kinder aber bereits im Backend auf einen neutralen Titel ohne Beschreibung oder Ort reduziert. Dieselbe rollenabhängige Sicht wird für Kalender, Familienradar und Push-Nachrichten verwendet.
 

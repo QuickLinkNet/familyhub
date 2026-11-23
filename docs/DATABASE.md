@@ -36,6 +36,7 @@ Aktuelle Entwicklung:
 26. profilbezogene Kalenderstandardansicht und Filter
 27. frei kombinierbare Wochentage für lokale Kalenderwiederholungen
 28. mehrere Vorlaufzeiten und optionaler Wandmodus-Ton für lokale Termine
+29. erweiterte profilbezogene Kalenderansichten für Timeline und fünf Tage
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 

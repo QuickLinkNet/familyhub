@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CalendarMonthRounded, DashboardCustomizeRounded, NotificationsPausedRounded, TvRounded } from '@mui/icons-material';
-import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControlLabel, Stack, Switch, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, Switch, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { dashboardCardOptions, defaultDashboardCards, defaultWallCards, wallCardOptions } from '../constants/profilePreferences';
 import { useProfilePreferences, useUpdateProfilePreferences } from '../hooks/useProfilePreferences';
 import type { ProfilePreferences } from '../types/profilePreferences';
@@ -42,8 +42,16 @@ export function PersonalizationDialog({ open, onClose }: Props) {
           <Stack spacing={1.25}>
             <Stack direction="row" gap={1} alignItems="center"><CalendarMonthRounded color="action" /><Typography variant="h6">Kalender</Typography></Stack>
             <Typography color="text.secondary" variant="body2">Mit dieser Ansicht öffnet sich dein Kalender auf allen Geräten.</Typography>
-            <ToggleButtonGroup exclusive value={draft.calendarView} onChange={(_event, value) => { if (value) setDraft(current => ({ ...current, calendarView: value })); }} aria-label="Standardansicht des Kalenders">
+            <FormControl fullWidth sx={{ display: { xs: 'flex', sm: 'none' } }}>
+              <InputLabel id="preference-calendar-view-label">Standardansicht</InputLabel>
+              <Select labelId="preference-calendar-view-label" label="Standardansicht" value={draft.calendarView} onChange={event => setDraft(current => ({ ...current, calendarView: event.target.value as ProfilePreferences['calendarView'] }))}>
+                <MenuItem value="DAY">Tag</MenuItem><MenuItem value="TIMELINE">Timeline</MenuItem><MenuItem value="FIVE_DAY">5 Tage</MenuItem><MenuItem value="WEEK">Woche</MenuItem><MenuItem value="MONTH">Monat</MenuItem>
+              </Select>
+            </FormControl>
+            <ToggleButtonGroup sx={{ display: { xs: 'none', sm: 'inline-flex' } }} exclusive value={draft.calendarView} onChange={(_event, value) => { if (value) setDraft(current => ({ ...current, calendarView: value })); }} aria-label="Standardansicht des Kalenders">
               <ToggleButton value="DAY">Tag</ToggleButton>
+              <ToggleButton value="TIMELINE">Timeline</ToggleButton>
+              <ToggleButton value="FIVE_DAY">5 Tage</ToggleButton>
               <ToggleButton value="WEEK">Woche</ToggleButton>
               <ToggleButton value="MONTH">Monat</ToggleButton>
             </ToggleButtonGroup>
