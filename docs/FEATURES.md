@@ -43,7 +43,7 @@ Der Vergleich basiert auf den sichtbaren Produktmerkmalen des als Referenz genan
 | Benachrichtigungen | In-App, Browser und Web Push | rollenabhängiger Radar, mehrere Vorlaufzeiten, ruhiger Board-Ton, verschlüsselter Web Push und persönliche Ruhezeiten fertig | optionale globale Standardwerte |
 | Integrationen | Google, Microsoft, CalDAV, Home Assistant | Google iCal read-only und OAuth-Schreibzugriff fertig | CalDAV oder Microsoft Graph |
 | Datenhoheit | lokaler Export, Import, Backups und Self-Hosting | portables Komplettarchiv mit Datenbank, Fotos, Schlüsseln, Prüfsummen und Rollback fertig | optional verschlüsselte Archivdateien |
-| Barrierefreiheit | Tastatur, Kontrast, Screenreader, reduzierte Bewegung | in Arbeit | automatisierte und manuelle Prüfung |
+| Hilfe und Barrierefreiheit | kontextbezogene Anleitungen, Tastatur, Kontrast, Screenreader, reduzierte Bewegung | zentrale rollenbewusste Hilfe und direkte Kontexthilfen fertig | vollständige automatisierte und manuelle Barrierefreiheitsprüfung |
 
 ## Empfohlene Produktreihenfolge
 

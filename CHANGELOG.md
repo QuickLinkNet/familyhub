@@ -4,6 +4,20 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.40.0] - 2026-11-28
+
+### Hinzugefügt
+
+- zentrale, rollenbewusste Hilfe-Seite mit kompakten Anleitungen für Alltag und Administration
+- jederzeit erreichbarer Hilfe-Einstieg im App-Kopf und in der Desktop-Navigation
+- direkte Hilfelinks bei Google Kalender, Ferien, Push, verbundenen Geräten, Datensicherung und Familienarchiv
+
+### Qualität
+
+- statische, datensparsame Hilfe ohne Tracking, neue API oder zusätzliche Abhängigkeit
+- responsive Themenkarten mit semantischer Überschriften- und Listenstruktur
+- vorhandene Funktionen und Berechtigungen bleiben unverändert
+
 ## [0.39.0] - 2026-11-28
 
 ### Hinzugefügt

@@ -1,6 +1,7 @@
 import { useState, type MouseEvent } from 'react';
-import { DashboardCustomizeRounded, LogoutRounded, MenuRounded, MoreHorizRounded, TvRounded } from '@mui/icons-material';
-import { AppBar, Box, Chip, IconButton, ListItemIcon, Menu, MenuItem, Stack, Toolbar } from '@mui/material';
+import { DashboardCustomizeRounded, HelpOutlineRounded, LogoutRounded, MenuRounded, MoreHorizRounded, TvRounded } from '@mui/icons-material';
+import { AppBar, Box, Chip, IconButton, ListItemIcon, Menu, MenuItem, Stack, Toolbar, Tooltip } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { MemberAvatar } from '../atoms/MemberAvatar';
 import { ReminderCenter } from '../../features/reminders/components/ReminderCenter';
 import { DisplaySetupDialog } from '../../features/wall/components/DisplaySetupDialog';
@@ -42,6 +43,7 @@ export function AppHeader({ user, signingOut, onOpenNavigation, onSignOut }: App
           <Box sx={{ flex: 1 }} />
           <Stack direction="row" spacing={1} alignItems="center">
             <ReminderCenter />
+            <Tooltip title="Hilfe & Anleitungen"><IconButton component={Link} to="/help" aria-label="Hilfe und Anleitungen öffnen"><HelpOutlineRounded /></IconButton></Tooltip>
             {user && <Chip avatar={<MemberAvatar name={user.name} sx={{ bgcolor: user.color }} />} label={user.name} variant="outlined" />}
             <IconButton aria-label="Profilmenü öffnen" onClick={openMenu}><MoreHorizRounded /></IconButton>
           </Stack>

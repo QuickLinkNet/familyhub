@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ApiError } from '../../../services/apiClient';
 import { useDispatchPush, usePushAdministration } from '../hooks/usePushAdministration';
 import type { PushAdministration } from '../types/push';
+import { ContextHelpLink } from '../../../components/atoms/ContextHelpLink';
 
 const previewData: PushAdministration = {
   active: 2,
@@ -33,7 +34,7 @@ export function PushSchedulerCard({ enabled, preview = false }: { enabled: boole
           <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'stretch', md: 'center' }} gap={2}>
             <Stack direction="row" gap={1.5} alignItems="flex-start">
               <NotificationsActiveRounded color="secondary" fontSize="large" />
-              <div><Typography variant="h6">Echte Push-Erinnerungen</Typography><Typography color="text.secondary">Verschlüsselte Hinweise erreichen verbundene Familiengeräte auch bei geschlossener App.</Typography></div>
+              <div><Stack direction="row" gap={1} alignItems="center" flexWrap="wrap"><Typography variant="h6">Echte Push-Erinnerungen</Typography><ContextHelpLink topic="push" /></Stack><Typography color="text.secondary">Verschlüsselte Hinweise erreichen verbundene Familiengeräte auch bei geschlossener App.</Typography></div>
             </Stack>
             {data && <Stack direction="row" gap={1} flexWrap="wrap"><Chip color={data.active > 0 ? 'success' : 'default'} label={`${data.active} Geräte aktiv`} /><Button variant="outlined" startIcon={<PlayArrowRounded />} disabled={dispatch.isPending} onClick={() => dispatch.mutate()}>{dispatch.isPending ? 'Prüft …' : 'Jetzt prüfen'}</Button></Stack>}
           </Stack>

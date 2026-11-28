@@ -1,6 +1,7 @@
 import { BeachAccessRounded, EditCalendarRounded, RefreshRounded } from '@mui/icons-material';
 import { Alert, Box, Button, Card, CardContent, Chip, CircularProgress, Link, Stack, Typography } from '@mui/material';
 import type { HolidayStatus } from '../types/holiday';
+import { ContextHelpLink } from '../../../components/atoms/ContextHelpLink';
 import { HolidayPreviewList } from './HolidayPreviewList';
 
 interface Props {
@@ -24,6 +25,7 @@ export function HolidayAssistantCard({ status, loading, error, syncing, onSetup,
                 <Stack direction="row" gap={1} alignItems="center" flexWrap="wrap">
                   <Typography variant="h6">Ferien & Feiertage</Typography>
                   {status?.configured && <Chip size="small" color="success" label="Aktiv" />}
+                  <ContextHelpLink topic="holidays" />
                 </Stack>
                 <Typography color="text.secondary">Regionale Kalender automatisch und schreibgeschützt ergänzen.</Typography>
               </Box>
@@ -58,4 +60,3 @@ export function HolidayAssistantCard({ status, loading, error, syncing, onSetup,
     </Card>
   );
 }
-

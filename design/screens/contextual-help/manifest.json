@@ -1,0 +1,15 @@
+{
+  "screen": "contextual-help",
+  "title": "Kontextbezogene Hilfe",
+  "currentVersion": "0.40.0",
+  "status": "implemented",
+  "approvedByUser": true,
+  "approvedAt": "2026-11-28",
+  "versions": [
+    {
+      "version": "0.40.0",
+      "status": "implemented",
+      "path": "versions/0.40.0"
+    }
+  ]
+}

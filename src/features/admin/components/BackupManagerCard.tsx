@@ -6,6 +6,7 @@ import { backupDownloadUrl } from '../api/backupApi';
 import { useBackups, useCreateBackup, useRestoreBackup, useRestoreUploadedBackup } from '../hooks/useBackups';
 import type { BackupFile } from '../types/backup';
 import { BackupRestoreDialog } from './BackupRestoreDialog';
+import { ContextHelpLink } from '../../../components/atoms/ContextHelpLink';
 
 const reasonLabel = (reason: string) => ({ manual: 'Manuell', 'before-migration': 'Vor Update', 'before-restore': 'Vor Wiederherstellung' })[reason] ?? reason;
 const formatSize = (bytes: number) => bytes < 1_048_576 ? `${Math.max(1, Math.round(bytes / 1024))} KB` : `${(bytes / 1_048_576).toFixed(1)} MB`;
@@ -46,6 +47,7 @@ export function BackupManagerCard({ enabled }: { enabled: boolean }) {
                   <Stack direction="row" gap={1} alignItems="center" flexWrap="wrap">
                     <Typography variant="h6">Datensicherung</Typography>
                     <Chip label={`${overview.data?.backups.length ?? 0} Sicherungen`} size="small" variant="outlined" />
+                    <ContextHelpLink topic="backups" />
                   </Stack>
                   <Typography color="text.secondary">Technische SQLite-Schnappschüsse lokal verwalten und einen früheren Datenbankstand wiederherstellen.</Typography>
                 </div>

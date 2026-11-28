@@ -1,6 +1,7 @@
 import { CheckCircleRounded, Google, LinkOffRounded, RefreshRounded, SettingsRounded, VerifiedRounded } from '@mui/icons-material';
 import { Alert, Box, Button, Card, CardContent, Chip, Divider, FormControlLabel, Stack, Switch, Typography } from '@mui/material';
 import type { GoogleCalendarConnection, GoogleCalendarSource, GoogleVerification } from '../types/googleCalendar';
+import { ContextHelpLink } from '../../../components/atoms/ContextHelpLink';
 
 interface GoogleConnectionCardProps {
   connection: GoogleCalendarConnection;
@@ -33,6 +34,7 @@ export function GoogleConnectionCard(props: GoogleConnectionCardProps) {
                 <Stack direction="row" alignItems="center" gap={1} flexWrap="wrap">
                   <Typography variant="h6">Google direkt verbinden</Typography>
                   <Chip size="small" color={connection.connected ? 'success' : connection.configured ? 'warning' : 'default'} label={connection.connected ? 'Verbunden' : connection.configured ? 'Anmeldung offen' : 'Nicht eingerichtet'} />
+                  <ContextHelpLink topic="google-calendar" />
                 </Stack>
                 <Typography color="text.secondary">Termine am Board erstellen, bearbeiten und löschen – Änderungen landen direkt in Google Kalender.</Typography>
               </Box>

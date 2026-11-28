@@ -5,6 +5,7 @@ import { ApiError } from '../../../services/apiClient';
 import { archiveDownloadUrl } from '../api/backupApi';
 import { useRestoreUploadedArchive } from '../hooks/useBackups';
 import { ArchiveRestoreDialog } from './ArchiveRestoreDialog';
+import { ContextHelpLink } from '../../../components/atoms/ContextHelpLink';
 
 export function PortableArchiveCard({ preview = false }: { preview?: boolean }) {
   const restore = useRestoreUploadedArchive();
@@ -32,7 +33,7 @@ export function PortableArchiveCard({ preview = false }: { preview?: boolean }) 
               <Stack direction="row" gap={1.5} alignItems="flex-start">
                 <ArchiveRounded color="primary" fontSize="large" />
                 <div>
-                  <Typography variant="h6">Portables Familienarchiv</Typography>
+                  <Stack direction="row" gap={1} alignItems="center" flexWrap="wrap"><Typography variant="h6">Portables Familienarchiv</Typography><ContextHelpLink topic="archive" /></Stack>
                   <Typography color="text.secondary">Ein Download für Serverumzug, Notfallkopie oder sichere Aufbewahrung eures vollständigen Familienstands.</Typography>
                 </div>
               </Stack>

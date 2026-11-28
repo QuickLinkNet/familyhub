@@ -80,7 +80,7 @@ Prioritäten: **P0** Präsentations- und Alltagsreife, **P1** direkte Funktionsp
 | Rollen, Elternpasswort und Kinder-PIN | erfüllt | – | Rechte serverseitig erzwungen |
 | granulare Modul- und Bearbeitungsrechte | offen | P2 | pro Rolle und Modul administrierbar |
 | geführte Geräte- und PWA-Einrichtung | erfüllt | – | QR-Freigabe, Gerätename, App-Installation und Push-Test sind geführt |
-| integrierte kontextbezogene Hilfe | teilweise | P0 | kurze Anleitungen direkt an schwierigen Stellen |
+| integrierte kontextbezogene Hilfe | erfüllt | – | zentrale Hilfe und direkte Anleitungen an schwierigen Stellen |
 | vollständige Barrierefreiheitsabnahme | offen | P0 | Tastatur, Screenreader, Kontrast und reduzierte Bewegung |
 
 ## Betrieb und Datenhoheit

@@ -80,6 +80,14 @@
       "status": "implemented",
       "approvedByUser": true,
       "manifest": "screens/holiday-assistant/manifest.json"
+    },
+    {
+      "id": "contextual-help",
+      "title": "Kontextbezogene Hilfe",
+      "currentVersion": "0.40.0",
+      "status": "implemented",
+      "approvedByUser": true,
+      "manifest": "screens/contextual-help/manifest.json"
     }
   ]
 }

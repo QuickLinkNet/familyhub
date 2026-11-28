@@ -10,14 +10,14 @@
 
 <p align="center">
   <a href="https://github.com/QuickLinkNet/familyhub/actions/workflows/quality.yml"><img src="https://github.com/QuickLinkNet/familyhub/actions/workflows/quality.yml/badge.svg" alt="Quality"></a>
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.39.0-345b48" alt="Version 0.39.0"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.40.0-345b48" alt="Version 0.40.0"></a>
   <img src="https://img.shields.io/badge/PHP-8.2%2B-777BB4" alt="PHP 8.2 oder neuer">
   <img src="https://img.shields.io/badge/SQLite-self--hosted-0F80CC" alt="SQLite und Self-Hosting">
 </p>
 
 FamilyHub bündelt den Familienalltag in einer touch-optimierten React-PWA. Die native PHP-/SQLite-API läuft auf gewöhnlichem Webhosting, benötigt keine Framework-Laufzeit und hält Familien- und Zugangsdaten unter eigener Kontrolle.
 
-> **Projektstatus:** FamilyHub ist als selbst installierbare Produktversion nutzbar und wird aktiv weiterentwickelt. Aktueller Stand: **v0.39.0**.
+> **Projektstatus:** FamilyHub ist als selbst installierbare Produktversion nutzbar und wird aktiv weiterentwickelt. Aktueller Stand: **v0.40.0**.
 
 ## Einblick
 

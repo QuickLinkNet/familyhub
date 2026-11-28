@@ -3,6 +3,7 @@ import { Alert, Button, Card, CardContent, Chip, CircularProgress, Divider, Stac
 import { MemberAvatar } from '../../../components/atoms/MemberAvatar';
 import { ApiError } from '../../../services/apiClient';
 import { useAuthDevices, useRevokeAuthDevice } from '../hooks/useCompanion';
+import { ContextHelpLink } from '../../../components/atoms/ContextHelpLink';
 
 const formatDateTime = (value: string) => new Intl.DateTimeFormat('de-DE', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value));
 
@@ -19,7 +20,7 @@ export function DeviceManagerCard({ enabled }: { enabled: boolean }) {
     <CardContent>
       <Stack spacing={2.25}>
         <Stack direction={{ xs: 'column', sm: 'row' }} gap={1.5} justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }}>
-          <Stack direction="row" gap={1.25} alignItems="center"><DevicesRounded color="primary" /><Stack><Typography variant="h6">Verbundene Geräte</Typography><Typography variant="body2" color="text.secondary">Aktive Handys, Tablets und Browser zentral verwalten.</Typography></Stack></Stack>
+          <Stack direction="row" gap={1.25} alignItems="center"><DevicesRounded color="primary" /><Stack><Stack direction="row" gap={1} alignItems="center" flexWrap="wrap"><Typography variant="h6">Verbundene Geräte</Typography><ContextHelpLink topic="mobile" /></Stack><Typography variant="body2" color="text.secondary">Aktive Handys, Tablets und Browser zentral verwalten.</Typography></Stack></Stack>
           <Chip label={`${active.length} aktiv`} color={active.length > 0 ? 'success' : 'default'} />
         </Stack>
         {devices.isLoading && <Stack alignItems="center"><CircularProgress size={28} /></Stack>}

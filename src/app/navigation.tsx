@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { CalendarMonthRounded, CardGiftcardRounded, ChecklistRounded, DashboardRounded, FamilyRestroomRounded, FlagRounded, FormatListBulletedRounded, HomeWorkRounded, PushPinRounded, RestaurantMenuRounded, SchoolRounded, SettingsRounded, ShoppingCartRounded, TvRounded } from '@mui/icons-material';
+import { CalendarMonthRounded, CardGiftcardRounded, ChecklistRounded, DashboardRounded, FamilyRestroomRounded, FlagRounded, FormatListBulletedRounded, HelpOutlineRounded, HomeWorkRounded, PushPinRounded, RestaurantMenuRounded, SchoolRounded, SettingsRounded, ShoppingCartRounded, TvRounded } from '@mui/icons-material';
 import type { AuthRole } from '../features/auth/types/auth';
 
 export interface NavigationItem {
@@ -24,5 +24,6 @@ export const navigationItems: NavigationItem[] = [
   { label: 'Familienziele', path: '/goals', icon: <FlagRounded />, mobile: false },
   { label: 'Schätze', path: '/rewards', icon: <CardGiftcardRounded />, mobile: false },
   { label: 'Familie', path: '/family', icon: <FamilyRestroomRounded />, mobile: false },
+  { label: 'Hilfe', path: '/help', icon: <HelpOutlineRounded />, mobile: false },
   { label: 'Administration', path: '/admin', icon: <SettingsRounded />, mobile: false, roles: ['ADMIN'] }
 ];
