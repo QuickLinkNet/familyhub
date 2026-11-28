@@ -7,6 +7,7 @@ use FamilyHub\Controllers\CalendarSourceController;
 use FamilyHub\Controllers\AdminArchiveController;
 use FamilyHub\Controllers\AdminBackupController;
 use FamilyHub\Controllers\GoogleCalendarController;
+use FamilyHub\Controllers\HolidayController;
 use FamilyHub\Controllers\WallPresentationController;
 use FamilyHub\Core\Router;
 use FamilyHub\Services\AuthService;
@@ -19,6 +20,7 @@ final class AdminRoutes
         WallPresentationController $wall,
         CalendarSourceController $calendarSources,
         GoogleCalendarController $googleCalendar,
+        HolidayController $holidays,
         AdminBackupController $backups,
         AdminArchiveController $archives
     ): void {
@@ -73,6 +75,22 @@ final class AdminRoutes
             $auth->requireAdmin(); $auth->requireCsrf(); $calendarSources->delete($uuid);
         });
 
+
+        $router->get('/v1/admin/holidays', static function () use ($auth, $holidays): void {
+            $auth->requireAdmin(); $holidays->status();
+        });
+        $router->post('/v1/admin/holidays/preview', static function () use ($auth, $holidays): void {
+            $auth->requireAdmin(); $auth->requireCsrf(); $holidays->preview();
+        });
+        $router->put('/v1/admin/holidays', static function () use ($auth, $holidays): void {
+            $actor = $auth->requireAdmin(); $auth->requireCsrf(); $holidays->configure($actor);
+        });
+        $router->post('/v1/admin/holidays/sync', static function () use ($auth, $holidays): void {
+            $auth->requireAdmin(); $auth->requireCsrf(); $holidays->synchronize();
+        });
+        $router->delete('/v1/admin/holidays', static function () use ($auth, $holidays): void {
+            $auth->requireAdmin(); $auth->requireCsrf(); $holidays->delete();
+        });
         $router->get('/v1/admin/google-calendar', static function () use ($auth, $googleCalendar): void {
             $auth->requireAdmin(); $googleCalendar->status();
         });

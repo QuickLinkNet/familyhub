@@ -4,6 +4,20 @@ Alle wesentlichen Änderungen werden hier dokumentiert. Das Projekt orientiert s
 
 ## [Unreleased]
 
+## [0.39.0] - 2026-11-28
+
+### Hinzugefügt
+
+- geführter Ferien- und Feiertagsassistent mit Auswahl aller deutschen Bundesländer
+- getrennt aktivierbare Schulferien und gesetzliche Feiertage mit Vorschau vor dem Speichern
+- serverseitige Synchronisierung über die offene OpenHolidays-API mit lokalem, ausfallsicherem Termincache
+
+### Qualität
+
+- automatisch verwaltete Kalenderquellen bleiben von manuellen iCal-Quellen getrennt
+- keine neue Frontend- oder PHP-Laufzeitabhängigkeit
+- bestehende Kalenderdaten und echte Familiendaten werden durch Einrichtung und Vorschau nicht verändert
+
 ## [0.38.0] - 2026-11-21
 
 ### Hinzugefügt

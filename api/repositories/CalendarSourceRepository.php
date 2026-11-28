@@ -13,7 +13,7 @@ final class CalendarSourceRepository
     /** @return list<array<string, mixed>> */
     public function all(): array
     {
-        return $this->database->query($this->sourceSelect() . ' WHERE deleted_at IS NULL ORDER BY name COLLATE NOCASE')->fetchAll();
+        return $this->database->query($this->sourceSelect() . " WHERE deleted_at IS NULL AND provider = 'GOOGLE_ICAL' ORDER BY name COLLATE NOCASE")->fetchAll();
     }
 
     /** @return list<array<string, mixed>> */
@@ -34,7 +34,7 @@ final class CalendarSourceRepository
     /** @return list<array<string, mixed>> */
     public function dueForSync(string $before, int $limit = 2): array
     {
-        $statement = $this->database->prepare($this->sourceSelect() . ' WHERE deleted_at IS NULL AND is_active = 1 AND COALESCE(last_synced_at, updated_at) < :before ORDER BY COALESCE(last_synced_at, updated_at) LIMIT :limit');
+        $statement = $this->database->prepare($this->sourceSelect() . " WHERE deleted_at IS NULL AND provider = 'GOOGLE_ICAL' AND is_active = 1 AND COALESCE(last_synced_at, updated_at) < :before ORDER BY COALESCE(last_synced_at, updated_at) LIMIT :limit");
         $statement->bindValue(':before', $before);
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
         $statement->execute();

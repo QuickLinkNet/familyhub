@@ -23,7 +23,8 @@ final class CalendarService
         private GoogleCalendarService $googleService,
         private FamilyMemberRepository $familyRepository,
         private CalendarRecurrenceExpander $recurrenceExpander,
-        private BirthdayEventFactory $birthdayFactory
+        private BirthdayEventFactory $birthdayFactory,
+        private ?HolidayService $holidayService = null
     ) {}
 
     /** @return list<array<string, mixed>> */
@@ -46,6 +47,7 @@ final class CalendarService
         }
         $this->sourceService->synchronizeStale();
         $this->googleService->synchronizeStale();
+        $this->holidayService?->synchronizeStale();
         $fromUtc = $this->utc($fromDate);
         $toUtc = $this->utc($toDate);
         $localEvents = [];

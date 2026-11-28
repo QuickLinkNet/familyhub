@@ -78,6 +78,8 @@ Weitere externe Dienste wie Wetter- und Smart-Home-Systeme werden später hinter
 
 ## Externe Kalender
 
+Der Ferien- und Feiertagsassistent bindet OpenHolidays über einen kleinen nativen HTTPS-Client ein. Eine Admin-Vorschau zeigt die Auswahl vor der Persistierung. Nach Freigabe materialisiert der Service gesetzliche Feiertage und Schulferien in zwei getrennte, automatisch verwaltete read-only Kalenderquellen. Abfragen nutzen den lokalen Cache und versuchen höchstens einmal täglich eine Aktualisierung; ein Anbieterfehler entfernt keine bereits verfügbaren Termine.
+
 Google-Kalender werden über einen kleinen nativen iCal-Adapter eingebunden:
 
 ```text

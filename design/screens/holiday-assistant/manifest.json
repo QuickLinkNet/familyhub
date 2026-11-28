@@ -1,0 +1,15 @@
+{
+  "screen": "holiday-assistant",
+  "title": "Ferien- und Feiertagsassistent",
+  "currentVersion": "0.39.0",
+  "status": "implemented",
+  "approvedByUser": true,
+  "approvedAt": "2026-11-25",
+  "versions": [
+    {
+      "version": "0.39.0",
+      "status": "implemented",
+      "path": "versions/0.39.0"
+    }
+  ]
+}

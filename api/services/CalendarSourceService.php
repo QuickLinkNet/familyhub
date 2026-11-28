@@ -150,7 +150,7 @@ final class CalendarSourceService
     private function requireSource(string $uuid): array
     {
         $source = $this->repository->find($uuid);
-        if ($source === null) {
+        if ($source === null || $source['provider'] !== 'GOOGLE_ICAL') {
             throw new AppException('NOT_FOUND', 'Die Kalenderquelle wurde nicht gefunden.', 404);
         }
         return $source;

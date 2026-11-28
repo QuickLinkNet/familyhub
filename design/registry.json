@@ -72,6 +72,14 @@
       "status": "implemented",
       "approvedByUser": true,
       "manifest": "screens/calendar-time-views/manifest.json"
+    },
+    {
+      "id": "holiday-assistant",
+      "title": "Ferien- und Feiertagsassistent",
+      "currentVersion": "0.39.0",
+      "status": "implemented",
+      "approvedByUser": true,
+      "manifest": "screens/holiday-assistant/manifest.json"
     }
   ]
 }

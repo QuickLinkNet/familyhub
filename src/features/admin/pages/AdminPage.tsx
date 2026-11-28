@@ -13,11 +13,14 @@ import { AppearanceSettingsCard } from '../components/AppearanceSettingsCard';
 import { CalendarSourceDialog } from '../components/CalendarSourceDialog';
 import { GoogleConnectionCard } from '../components/GoogleConnectionCard';
 import { GoogleSetupDialog } from '../components/GoogleSetupDialog';
+import { HolidayAssistantCard } from '../components/HolidayAssistantCard';
+import { HolidayAssistantDialog } from '../components/HolidayAssistantDialog';
 import { PortableArchiveCard } from '../components/PortableArchiveCard';
 import { PushSchedulerCard } from '../components/PushSchedulerCard';
 import { WallPresentationCard } from '../components/WallPresentationCard';
 import { useCalendarSources, useCreateCalendarSource, useDeleteCalendarSource, useSyncCalendarSource, useUpdateCalendarSource } from '../hooks/useCalendarSources';
 import { useAuthorizeGoogle, useConfigureGoogle, useDisconnectGoogle, useGoogleConnection, useSyncGoogleCalendar, useToggleGoogleCalendar, useVerifyGoogle } from '../hooks/useGoogleCalendar';
+import { useConfigureHolidays, useHolidayPreview, useHolidayStatus, useRemoveHolidays, useSyncHolidays } from '../hooks/useHolidays';
 import type { CalendarSource, CalendarSourceInput } from '../types/calendarSource';
 import type { GoogleOAuthConfigInput } from '../types/googleCalendar';
 
@@ -37,11 +40,18 @@ export function AdminPage() {
   const syncGoogle = useSyncGoogleCalendar();
   const disconnectGoogle = useDisconnectGoogle();
   const verifyGoogle = useVerifyGoogle();
+  const holidays = useHolidayStatus(isAdmin);
+  const holidayPreview = useHolidayPreview();
+  const configureHolidays = useConfigureHolidays();
+  const syncHolidays = useSyncHolidays();
+  const removeHolidays = useRemoveHolidays();
   const [dialogSource, setDialogSource] = useState<CalendarSource | null | undefined>(undefined);
   const [googleSetupOpen, setGoogleSetupOpen] = useState(false);
+  const [holidayDialogOpen, setHolidayDialogOpen] = useState(false);
   const mutationError = createSource.error ?? updateSource.error;
   const actionError = syncSource.error ?? deleteSource.error;
   const googleError = configureGoogle.error ?? authorizeGoogle.error ?? toggleGoogle.error ?? syncGoogle.error ?? disconnectGoogle.error ?? verifyGoogle.error;
+  const holidayError = holidays.error ?? holidayPreview.error ?? configureHolidays.error ?? syncHolidays.error ?? removeHolidays.error;
 
   if (!isAdmin) {
     return <Alert severity="warning">Dieser Bereich ist ausschließlich für Administratoren freigeschaltet.</Alert>;
@@ -77,6 +87,15 @@ export function AdminPage() {
       window.location.assign(result.authorizationUrl);
     } catch { /* Mutation state renders the safe API error. */ }
   };
+  const saveHolidays = async (input: import('../types/holiday').HolidaySettingsInput) => {
+    await configureHolidays.mutateAsync(input);
+    setHolidayDialogOpen(false);
+  };
+  const deleteHolidays = async () => {
+    if (!window.confirm('Ferien- und Feiertagskalender wirklich entfernen? Andere Kalender bleiben unverändert.')) return;
+    await removeHolidays.mutateAsync(undefined);
+    setHolidayDialogOpen(false);
+  };
   const disconnect = () => {
     if (window.confirm('Google-Verbindung wirklich trennen? Die Termine in Google bleiben unverändert.')) disconnectGoogle.mutate();
   };
@@ -92,6 +111,14 @@ export function AdminPage() {
       <PushSchedulerCard enabled={isAdmin} preview={import.meta.env.DEV && searchParams.get('push') === 'preview'} />
       <PortableArchiveCard preview={import.meta.env.DEV && searchParams.get('archive') === 'preview'} />
       <BackupManagerCard enabled={isAdmin} />
+      <HolidayAssistantCard
+        status={holidays.data}
+        loading={holidays.isLoading}
+        error={holidays.isError ? (holidayError instanceof ApiError ? holidayError.message : 'Ferien und Feiertage konnten nicht geladen werden.') : null}
+        syncing={syncHolidays.isPending}
+        onSetup={() => { holidayPreview.reset(); configureHolidays.reset(); setHolidayDialogOpen(true); }}
+        onSync={() => syncHolidays.mutate(undefined)}
+      />
       <Stack direction="row" alignItems="center" gap={1}><AdminPanelSettingsRounded color="primary" /><Typography variant="h5">Direkte Google-Verbindung</Typography></Stack>
       {googleError && <Alert severity="error">{googleError instanceof ApiError ? googleError.message : 'Die Google-Verbindung konnte nicht aktualisiert werden.'}</Alert>}
       {google.isLoading && <Stack alignItems="center" py={3}><CircularProgress /></Stack>}
@@ -123,6 +150,20 @@ export function AdminPage() {
       <Stack spacing={1.5}>
         {sources.data?.map(source => <CalendarSourceCard key={source.id} source={source} syncing={syncSource.isPending && syncSource.variables === source.id} deleting={deleteSource.isPending && deleteSource.variables === source.id} onEdit={() => openEdit(source)} onSync={() => syncSource.mutate(source.id)} onDelete={() => remove(source)} />)}
       </Stack>
+      {holidayDialogOpen && holidays.data && (
+        <HolidayAssistantDialog
+          status={holidays.data}
+          preview={holidayPreview.data}
+          previewing={holidayPreview.isPending}
+          saving={configureHolidays.isPending}
+          removing={removeHolidays.isPending}
+          error={holidayError instanceof ApiError ? holidayError.message : holidayError ? 'Die Ferienkalender konnten nicht aktualisiert werden.' : null}
+          onPreview={async input => { await holidayPreview.mutateAsync(input); }}
+          onSave={saveHolidays}
+          onRemove={() => { void deleteHolidays(); }}
+          onClose={() => setHolidayDialogOpen(false)}
+        />
+      )}
       {dialogSource !== undefined && (
         <CalendarSourceDialog
           source={dialogSource}

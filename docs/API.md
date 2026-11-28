@@ -216,6 +216,16 @@ Lokale Termine enthalten `source: "LOCAL"`, `editable: true` und `members` mit I
 
 ### Administration: Google-Kalender
 
+### Administration: Ferien und Feiertage
+
+- `GET /admin/holidays` – aktuelle Konfiguration, Synchronisationsstatus und nächste Einträge
+- `POST /admin/holidays/preview` – Vorschau für Bundesland und gewählte Kalendertypen laden
+- `PUT /admin/holidays` – Auswahl speichern und beide verwalteten Quellen synchronisieren
+- `POST /admin/holidays/sync` – eingerichtete Quellen manuell aktualisieren
+- `DELETE /admin/holidays` – verwaltete Quellen und deren lokalen Cache entfernen
+
+Vorschau und Konfiguration akzeptieren `regionCode` sowie `includePublicHolidays` und `includeSchoolHolidays`. Die API ruft ausschließlich feste HTTPS-Endpunkte von OpenHolidays ab. Die Quellen sind read-only; bei einem Anbieterfehler bleibt der letzte erfolgreiche Cache erhalten.
+
 Alle Endpunkte benötigen die Rolle `ADMIN`; Mutationen benötigen zusätzlich CSRF.
 
 - `GET /admin/calendar-sources` – eingerichtete Quellen ohne geheime URL

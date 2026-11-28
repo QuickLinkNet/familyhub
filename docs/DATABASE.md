@@ -37,6 +37,7 @@ Aktuelle Entwicklung:
 27. frei kombinierbare Wochentage für lokale Kalenderwiederholungen
 28. mehrere Vorlaufzeiten und optionaler Wandmodus-Ton für lokale Termine
 29. erweiterte profilbezogene Kalenderansichten für Timeline und fünf Tage
+30. Bundesland- und Typauswahl des Ferienassistenten sowie verwaltete OpenHolidays-Kalenderquellen
 
 Vor ausstehenden Migrationen erstellt die API ein Backup unter `storage/backups/`. Standardmäßig bleiben die 14 neuesten Sicherungen erhalten.
 
@@ -84,6 +85,7 @@ Neue Migrationen erhalten einen fortlaufenden dreistelligen Präfix, beispielswe
 - `external_calendar_events` – lokal zwischengespeicherte read-only Termine externer Quellen
 - `google_oauth_connections` – verschlüsselte OAuth-Konfiguration, Tokens und kurzlebiger State
 - `google_calendar_sources` – verfügbare Google-Kalender, Auswahl, Rechte und Synchronisationsstatus
+- `holiday_settings` – ausgewähltes Bundesland, Ferien-/Feiertagstypen und Verweise auf verwaltete Quellen
 - `google_calendar_events` – lokal zwischengespeicherte Google-Termine mit externer Kennung
 - `push_vapid_keys` – öffentliches VAPID-Material und verschlüsselter privater Signaturschlüssel
 - `push_subscriptions` – verschlüsselte Browser-Endpunkte und Schlüssel je Familienprofil und Gerät

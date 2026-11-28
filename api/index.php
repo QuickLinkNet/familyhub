@@ -13,6 +13,7 @@ use FamilyHub\Controllers\FamilyListController;
 use FamilyHub\Controllers\FamilyNoteController;
 use FamilyHub\Controllers\HealthController;
 use FamilyHub\Controllers\GoogleCalendarController;
+use FamilyHub\Controllers\HolidayController;
 use FamilyHub\Controllers\HouseholdChoreController;
 use FamilyHub\Controllers\MealController;
 use FamilyHub\Controllers\PushController;
@@ -44,6 +45,7 @@ use FamilyHub\Repositories\FamilyListRepository;
 use FamilyHub\Repositories\FamilyNoteRepository;
 use FamilyHub\Repositories\GoogleCalendarRepository;
 use FamilyHub\Repositories\GoogleOAuthRepository;
+use FamilyHub\Repositories\HolidayRepository;
 use FamilyHub\Repositories\HouseholdChoreRepository;
 use FamilyHub\Repositories\MealRepository;
 use FamilyHub\Repositories\PushRepository;
@@ -76,6 +78,7 @@ use FamilyHub\Services\FamilyNoteService;
 use FamilyHub\Services\GoogleApiClient;
 use FamilyHub\Services\GoogleCalendarService;
 use FamilyHub\Services\GoogleOAuthService;
+use FamilyHub\Services\HolidayService;
 use FamilyHub\Services\HouseholdChoreService;
 use FamilyHub\Services\MealService;
 use FamilyHub\Services\PushService;
@@ -93,6 +96,7 @@ use FamilyHub\Services\WeatherService;
 use FamilyHub\Services\WebPushCrypto;
 use FamilyHub\Services\IcalFetcher;
 use FamilyHub\Services\IcalParser;
+use FamilyHub\Services\OpenHolidaysClient;
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
     http_response_code(204);
     exit;
@@ -138,6 +142,7 @@ try {
     $googleClient = new GoogleApiClient();
     $googleOAuthService = new GoogleOAuthService(new GoogleOAuthRepository($database), $secretCipher, $googleClient);
     $googleCalendarService = new GoogleCalendarService(new GoogleCalendarRepository($database), $googleOAuthService, $googleClient, $secretCipher);
+    $holidayService = new HolidayService(new HolidayRepository($database), new OpenHolidaysClient());
     $familyRepository = new FamilyMemberRepository($database);
     $calendarService = new CalendarService(
         new CalendarRepository($database),
@@ -146,11 +151,13 @@ try {
         $googleCalendarService,
         $familyRepository,
         new CalendarRecurrenceExpander(),
-        new BirthdayEventFactory()
+        new BirthdayEventFactory(),
+        $holidayService
     );
     $calendarController = new CalendarController($calendarService);
     $calendarSourceController = new CalendarSourceController($calendarSourceService);
     $googleCalendarController = new GoogleCalendarController($googleOAuthService, $googleCalendarService, new PublicUrl());
+    $holidayController = new HolidayController($holidayService);
     $familyController = new FamilyMemberController(new FamilyMemberService($familyRepository));
     $familyGoalController = new FamilyGoalController(new FamilyGoalService(new FamilyGoalRepository($database)));
     $familyListController = new FamilyListController(new FamilyListService(new FamilyListRepository($database), $familyRepository));
@@ -467,7 +474,7 @@ try {
     CalendarRoutes::register($router, $authService, $calendarController);
     FamilyListRoutes::register($router, $authService, $familyListController);
     MealRoutes::register($router, $authService, $mealController);
-    AdminRoutes::register($router, $authService, $wallPresentationController, $calendarSourceController, $googleCalendarController, $adminBackupController, $adminArchiveController);
+    AdminRoutes::register($router, $authService, $wallPresentationController, $calendarSourceController, $googleCalendarController, $holidayController, $adminBackupController, $adminArchiveController);
 
     $router->dispatch($_SERVER['REQUEST_METHOD'] ?? 'GET', $_SERVER['REQUEST_URI'] ?? '/');
 } catch (AppException $exception) {
